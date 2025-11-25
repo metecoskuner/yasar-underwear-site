@@ -1,0 +1,14 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "collections": "Collections",
+    "sale": "Promotions",
+    "about": "À propos",
+    "contact": "Contact",
+    "language": "Langue"
+  },
+  "hero": {
+    "title": "Confort et Style",
+    "subtitle": "Découvrez le confort avec notre collection de sous-vêtements quotidiens"
+  }
+}

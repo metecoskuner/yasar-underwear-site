@@ -1,0 +1,13 @@
+{
+  "nav": {
+    "home": "Home",
+    "collections": "Collections",
+    "sale": "Sale",
+    "about": "About",
+    "contact": "Contact"
+  },
+  "hero": {
+    "title": "Comfort & Style",
+    "subtitle": "Experience comfort with our everyday underwear collection"
+  }
+}

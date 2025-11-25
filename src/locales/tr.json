@@ -1,0 +1,14 @@
+{
+  "nav": {
+    "home": "Anasayfa",
+    "collections": "Koleksiyonlar",
+    "sale": "Kampanyalar",
+    "about": "Hakkımızda",
+    "contact": "İletişim",
+    "language": "Dil"
+  },
+  "hero": {
+    "title": "Konfor ve Şıklık",
+    "subtitle": "Günlük iç giyim koleksiyonumuzla rahatlığı deneyimleyin"
+  }
+}

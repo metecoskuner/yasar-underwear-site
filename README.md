@@ -1,3 +1,35 @@
+# Yasar Underwear Site
+
+Kısa kurulum ve çalışma talimatları.
+
+Gereksinimler
+- Node.js (v16+ önerilir)
+
+Kurulum
+```bash
+# proje kökünde
+npm install
+```
+
+Geliştirme
+```bash
+npm run dev
+# ardından http://localhost:3000 aç
+```
+
+Production build
+```bash
+npm run build
+npm start
+```
+
+Notlar
+- Favicon `/public/photos/yasarLogo2.jpg` olarak ayarlandı; tarayıcı cache nedeniyle değişikliğin görünmesi için hard refresh (Cmd+Shift+R) gerekebilir.
+- Tüm metinler şu anda Türkçe. Çoklu dil (i18n) desteği planlanıyor.
+
+Eklenecek/Potansiyel geliştirmeler
+- Meta tag'lar ve sosyal paylaşım etiketleri eklendi (SEO).
+- Mobil navigasyon (hamburger), i18n scaffold, CI workflow gibi iyileştirmeler öneriliyor.
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
 
 ## Getting Started
