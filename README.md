@@ -3,12 +3,25 @@
 Kısa kurulum ve çalışma talimatları.
 
 Gereksinimler
-- Node.js (v16+ önerilir)
+# Yasar Underwear Site
 
-Kurulum
+Bu depo Yasar markası için yeniden tasarlanmış bir Next.js ön yüzünü içerir.
+
+## Türkçe (TR)
+
+Kısa Açıklama
+: Basit bir Next.js projesi. Ürün kartları, ana sayfa, koleksiyon sayfaları ve çoklu dil (i18n) için hazırlık içerir.
+
+Gereksinimler
+- Node.js v16 veya üzeri
+- npm veya yarn
+
+Kurulum (yerel)
 ```bash
-# proje kökünde
+cd /Users/metecoskuner/yasar-redesign/yasar-underwear-site
 npm install
+# veya
+# yarn install
 ```
 
 Geliştirme
@@ -24,49 +37,70 @@ npm start
 ```
 
 Notlar
-- Favicon `/public/photos/yasarLogo2.jpg` olarak ayarlandı; tarayıcı cache nedeniyle değişikliğin görünmesi için hard refresh (Cmd+Shift+R) gerekebilir.
-- Tüm metinler şu anda Türkçe. Çoklu dil (i18n) desteği planlanıyor.
+- `.gitignore` dosyası projeye eklendi (node_modules, .next, .env vb.).
+- Görseller `/public/photos/` içinde bulunuyor.
 
-Eklenecek/Potansiyel geliştirmeler
-- Meta tag'lar ve sosyal paylaşım etiketleri eklendi (SEO).
-- Mobil navigasyon (hamburger), i18n scaffold, CI workflow gibi iyileştirmeler öneriliyor.
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+Eklenecek/Öneriler
+- SEO meta tag'ları, mobil navigasyon, CI/CD workflow ve i18n iyileştirmeleri.
 
-## Getting Started
+## English (EN)
 
-First, run the development server:
+Short description
+This repository contains a redesigned Next.js front-end for the Yasar brand.
 
+Requirements
+- Node.js v16+
+- npm or yarn
+
+Local setup
 ```bash
-npm run dev
+cd /Users/metecoskuner/yasar-redesign/yasar-underwear-site
+npm install
 # or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# yarn install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Development
+```bash
+npm run dev
+# then open http://localhost:3000
+```
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+Production
+```bash
+npm run build
+npm start
+```
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+Notes
+- `.gitignore` includes common ignores (node_modules, .next, .env).
+- Images are in `/public/photos/`.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
+Deploy
+You can deploy this Next.js app to Vercel, Netlify or any Node hosting. For Vercel, connect the GitHub repository and follow Vercel setup.
 
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Useful commands
+- `npm run dev` — start development server
+- `npm run build` — build for production
+- `npm start` — start built app (if configured)
 
-## Learn More
+License
+Lisans belirtilmemiştir. İstersen MIT lisansı ekleyebilirim.
 
-To learn more about Next.js, take a look at the following resources:
+Contact
+Hazırlayan: Mete
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Not: Uzak (GitHub) henüz eklenmedi. GitHub'a göndermek için:
 
-## Deploy on Vercel
+1) GitHub'da yeni bir repository oluştur (ör: `yasar-underwear-site`).
+2) Terminalde:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+git remote add origin https://github.com/USERNAME/yasar-underwear-site.git
+git branch -M main
+git push -u origin main
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+
