@@ -16,29 +16,7 @@ Gereksinimler
 - Node.js v16 veya üzeri
 - npm veya yarn
 
-Kurulum (yerel)
-```bash
-cd /Users/metecoskuner/yasar-redesign/yasar-underwear-site
-npm install
-# veya
-# yarn install
-```
 
-Geliştirme
-```bash
-npm run dev
-# ardından http://localhost:3000 aç
-```
-
-Production build
-```bash
-npm run build
-npm start
-```
-
-Notlar
-- `.gitignore` dosyası projeye eklendi (node_modules, .next, .env vb.).
-- Görseller `/public/photos/` içinde bulunuyor.
 
 Eklenecek/Öneriler
 - SEO meta tag'ları, mobil navigasyon, CI/CD workflow ve i18n iyileştirmeleri.
@@ -79,28 +57,10 @@ Notes
 Deploy
 You can deploy this Next.js app to Vercel, Netlify or any Node hosting. For Vercel, connect the GitHub repository and follow Vercel setup.
 
-Useful commands
-- `npm run dev` — start development server
-- `npm run build` — build for production
-- `npm start` — start built app (if configured)
-
-License
-Lisans belirtilmemiştir. İstersen MIT lisansı ekleyebilirim.
 
 Contact
 Hazırlayan: Mete
 
 ---
-
-Not: Uzak (GitHub) henüz eklenmedi. GitHub'a göndermek için:
-
-1) GitHub'da yeni bir repository oluştur (ör: `yasar-underwear-site`).
-2) Terminalde:
-
-```bash
-git remote add origin https://github.com/USERNAME/yasar-underwear-site.git
-git branch -M main
-git push -u origin main
-```
 
 
