@@ -9,7 +9,7 @@ const NAV_ITEMS = [
   { href: "/about", label: "Kurumsal" },
   { href: "/production", label: "Üretim" },
   { href: "/sustainability", label: "Sürdürülebilirlik" },
-  { href: "/collections", label: "Ürünlerimiz" },
+  { href: "/collections", label: "Ürünler" },
 ];
 
 const LANG_OPTIONS = ["TR", "EN", "FR", "AR", "RU"] as const;
@@ -21,6 +21,7 @@ export default function Header() {
   const [langOpen, setLangOpen] = useState(false);
   const [mobileLangOpen, setMobileLangOpen] = useState(false);
   const langRef = useRef<HTMLDivElement | null>(null);
+  const mobileLangRef = useRef<HTMLDivElement | null>(null);
   const firstLangButtonRef = useRef<HTMLButtonElement | null>(null);
 
   const { lang, setLang, t } = useLanguage();
@@ -45,6 +46,9 @@ export default function Header() {
       const target = e.target as Node | null;
       if (langRef.current && target && !langRef.current.contains(target)) {
         setLangOpen(false);
+      }
+      if (mobileLangRef.current && target && !mobileLangRef.current.contains(target)) {
+        setMobileLangOpen(false);
       }
     }
 
@@ -83,7 +87,7 @@ export default function Header() {
 
   return (
   <header className="w-full shadow-sm text-white bg-[var(--brand-color)] sticky top-0 z-40 relative">
-      <div className="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center sm:grid sm:grid-cols-3 relative">
+  <div className="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center sm:grid sm:[grid-template-columns:1fr_auto_1fr] relative">
         {/* LEFT - NAV */}
         <div className="hidden sm:flex items-center space-x-6 text-sm font-medium">
           {NAV_ITEMS.map((item) => {
@@ -95,7 +99,7 @@ export default function Header() {
                 className={`group relative hover:text-white/90 ${active ? "text-white" : ""}`}
                 aria-current={active ? "page" : undefined}
               >
-                <span className={`relative z-10 ${active ? "font-semibold" : ""}`}>{item.label}</span>
+                <span className={`relative z-10 ${active ? "font-semibold" : ""} whitespace-nowrap`}>{item.label}</span>
                 <span
                   className={`absolute left-0 -bottom-1 h-0.5 bg-white transition-all duration-200 ${
                     active ? "w-full" : "w-0 group-hover:w-full"
@@ -169,6 +173,52 @@ export default function Header() {
             {t("nav.contact")}
           </Link>
 
+          {/* MOBILE: phone icon linking to contact page */}
+          <Link href="/contact" aria-label="Contact" className="sm:hidden p-2 rounded-full bg-white text-black flex items-center justify-center">
+            <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M22 16.92V21a1 1 0 0 1-1.11 1 19.86 19.86 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.86 19.86 0 0 1 2 3.11 1 1 0 0 1 3 2h4.09a1 1 0 0 1 1 .75c.12.68.31 1.36.56 2a1 1 0 0 1-.24 1l-1.27 1.27a16 16 0 0 0 6 6l1.27-1.27a1 1 0 0 1 1-.24c.64.25 1.32.44 2 .56a1 1 0 0 1 .75 1V21z" />
+            </svg>
+          </Link>
+
+          {/* MOBILE: language button next to hamburger */}
+          <div className="sm:hidden relative" ref={mobileLangRef}>
+            <button
+              type="button"
+              onClick={() => setMobileLangOpen((p) => !p)}
+              aria-haspopup="menu"
+              aria-expanded={mobileLangOpen}
+              aria-label={mobileLangOpen ? "Close language menu" : "Open language menu"}
+              className="px-2 py-1 text-sm rounded flex items-center space-x-1"
+            >
+              <span className="text-lg">{FLAGS[lang]}</span>
+            </button>
+
+            <div
+              role="menu"
+              aria-label={t("nav.language")}
+              className={`absolute right-0 mt-2 bg-white text-black rounded shadow-md w-36 z-50 transform transition-all duration-150 origin-top ${
+                mobileLangOpen ? "opacity-100 scale-100 pointer-events-auto" : "opacity-0 scale-95 pointer-events-none"
+              }`}
+              aria-hidden={!mobileLangOpen}
+            >
+              {LANG_OPTIONS.map((l) => (
+                <button
+                  key={l}
+                  role="menuitem"
+                  type="button"
+                  className="w-full px-3 py-2 flex items-center space-x-2 hover:bg-gray-100"
+                  onClick={() => {
+                    setLang(l);
+                    setMobileLangOpen(false);
+                  }}
+                >
+                  <span className="text-lg">{FLAGS[l]}</span>
+                  <span>{l}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
           {/* MOBILE MENU BUTTON */}
           <button
             type="button"
@@ -214,44 +264,7 @@ export default function Header() {
           {t("nav.contact")}
         </Link>
 
-        <div className="border-t border-white/30 pt-3">
-          <button
-            type="button"
-            aria-expanded={mobileLangOpen}
-            aria-controls="mobile-lang-menu"
-            onClick={() => setMobileLangOpen((p) => !p)}
-            className="w-full flex items-center justify-between px-3 py-2 text-sm text-gray-200 rounded hover:bg-black/10"
-          >
-            <span>{t("nav.language")}</span>
-            <span className="flex items-center space-x-2">
-              <span className="text-lg">{FLAGS[lang]}</span>
-              <svg className={`h-4 w-4 transition-transform ${mobileLangOpen ? "rotate-180" : "rotate-0"}`} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-              </svg>
-            </span>
-          </button>
-
-          <div
-            id="mobile-lang-menu"
-            className={`mt-2 overflow-hidden transition-[max-height,opacity] duration-200 ${mobileLangOpen ? "max-h-60 opacity-100" : "max-h-0 opacity-0"}`}
-            aria-hidden={!mobileLangOpen}
-          >
-            {LANG_OPTIONS.map((l) => (
-              <button
-                key={l}
-                type="button"
-                className="w-full flex items-center px-3 py-2 space-x-2 rounded hover:bg-black/20"
-                onClick={() => {
-                  setLang(l);
-                  setMobileLangOpen(false);
-                }}
-              >
-                <span className="text-lg">{FLAGS[l]}</span>
-                <span>{l}</span>
-              </button>
-            ))}
-          </div>
-        </div>
+        
       </div>
     </header>
   );
