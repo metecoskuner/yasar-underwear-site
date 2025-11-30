@@ -252,7 +252,8 @@ export default function Header() {
 
           <Link
             href="/contact"
-            className="hidden lg:inline-block bg-white text-black px-4 py-1 rounded-full font-semibold hover:scale-105 transition text-sm"
+            className="hidden lg:inline-flex items-center bg-white text-black px-5 py-2 rounded-full font-semibold hover:scale-105 transition text-sm shadow-md"
+            aria-label="İletişim sayfası"
           >
             {t("nav.contact")}
           </Link>
@@ -356,9 +357,7 @@ export default function Header() {
           </Link>
         ))}
 
-        <Link href="/contact" className="block px-3 py-2 rounded bg-white text-black mt-2 hover:bg-gray-200">
-          {t("nav.contact")}
-        </Link>
+        {/* contact button intentionally removed from mobile menu per design (contact button lives in header) */}
 
         
       </div>

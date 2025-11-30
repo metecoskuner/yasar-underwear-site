@@ -2,6 +2,7 @@ import '../styles/globals.css';
 import type { AppProps } from 'next/app';
 import Layout from '../components/Layout';
 import { LanguageProvider } from '../contexts/LanguageContext';
+import CookieBanner from '../components/CookieBanner';
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -9,6 +10,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <Layout>
         <Component {...pageProps} />
       </Layout>
+      <CookieBanner />
     </LanguageProvider>
   );
 }
