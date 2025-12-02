@@ -1,6 +1,7 @@
 import Hero from '../components/Hero';
 import SEO from '../components/SEO';
 import CategoryTiles from '../components/CategoryTiles';
+import MediaWrap from '../components/MediaWrap';
 import ProductGrid from '../components/ProductGrid';
 
 export default function Home() {
@@ -10,8 +11,9 @@ export default function Home() {
 
       <main>
         <Hero />
-        <CategoryTiles />
-        <ProductGrid />
+  <CategoryTiles />
+  <MediaWrap />
+  <ProductGrid />
         <section className="max-w-4xl mx-auto px-4 py-12">
           
         </section>
