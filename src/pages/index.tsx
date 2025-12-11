@@ -2,7 +2,9 @@ import Hero from '../components/Hero';
 import SEO from '../components/SEO';
 import CategoryTiles from '../components/CategoryTiles';
 import MediaWrap from '../components/MediaWrap';
+import WhyUs from '../components/WhyUs';
 import ProductGrid from '../components/ProductGrid';
+import WorldMapReal from '../components/WorldMapReal';
 
 export default function Home() {
   return (
@@ -13,9 +15,10 @@ export default function Home() {
         <Hero />
   <CategoryTiles />
   <MediaWrap />
-  <ProductGrid />
-        <section className="max-w-4xl mx-auto px-4 py-12">
-          
+      <WhyUs />
+      <ProductGrid />
+        <section className="max-w-6xl mx-auto px-4 py-12">
+          <WorldMapReal />
         </section>
       </main>
     </>

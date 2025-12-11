@@ -28,3 +28,70 @@ body {
 }
 
 /* Keep additional global rules minimal — component-level classes handle most styling */
+
+/* Slide-in sections (used for alternating left/right entrance) */
+
+/* Slide-in sections (simple offset-based approach) */
+.slide-section {
+  opacity: 0;
+  transform: translateX(var(--offset, 0));
+  transition: opacity .6s cubic-bezier(.22,.61,.36,1),
+              transform .6s cubic-bezier(.22,.61,.36,1);
+}
+.slide-section[data-side='left'] { --offset: -50px; }
+.slide-section[data-side='right'] { --offset: 50px; }
+.slide-section.in-view { opacity: 1; transform: translateX(0); }
+
+/* Responsive tweak: smaller offset on narrow screens */
+@media (max-width: 640px) {
+  .slide-section[data-side='left'] { --offset: -30px; }
+  .slide-section[data-side='right'] { --offset: 30px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slide-section,
+  .slide-section.in-view {
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
+
+/* Glassmorphism card + hover glow */
+.glass-card {
+  background-color: rgba(255,255,255,0.6);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+  transition: transform 320ms ease-out, box-shadow 320ms ease-out, background-color 320ms ease-out;
+  will-change: transform, box-shadow;
+  cursor: pointer; /* show pointer when hovering cards to indicate clickability */
+}
+
+@media (prefers-color-scheme: dark) {
+  .glass-card {
+    background-color: rgba(15,15,15,0.5);
+    border: 1px solid rgba(255,255,255,0.04);
+    box-shadow: 0 1px 8px rgba(0,0,0,0.35);
+  }
+}
+
+/* class-based dark mode support (Tailwind often uses a 'dark' class on root) */
+
+
+.glass-card:hover {
+  transform: translateY(-6px);
+  /* layered colorful glow: warm accent + subtle cool tint */
+  box-shadow: 0 12px 40px rgba(234,179,8,0.10), 0 6px 20px rgba(99,102,241,0.06);
+}
+
+/* Ensure reduced-motion users are not affected */
+@media (prefers-reduced-motion: reduce) {
+  .glass-card,
+  .glass-card:hover {
+    transition: none !important;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+}
