@@ -1,16 +1,22 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import LOCATIONS from '@/data/locations';
 
-// Mercator projection helper (no extra packages)
-// More accurate for common world SVGs (many maps are Mercator-projected)
-function projectMercator(lon: number, lat: number, width: number, height: number) {
-  // x is linear in longitude
-  const x = ((lon + 180) / 360) * width;
-  // y uses the Mercator transform
-  const latRad = (lat * Math.PI) / 180;
-  const mercN = Math.log(Math.tan(Math.PI / 4 + latRad / 2));
-  // normalize mercN to 0..1 range and scale to height
-  const y = (0.5 - mercN / (2 * Math.PI)) * height;
+// Equirectangular projection helper (no extra packages)
+// Simplemaps SVGs are often equirectangular; this is a lightweight, tweakable mapping.
+function projectEquirectangular(lon: number, lat: number, width: number, height: number) {
+  // Basic mapping: lon -180..180 => x 0..width ; lat 90..-90 => y 0..height
+  let x = ((lon + 180) / 360) * width;
+  let y = ((90 - lat) / 180) * height;
+
+  // Small manual tweaks (scale/offset) to align pins with this specific SVG.
+  // Tune these if you notice consistent shift/scale issues.
+  const scaleX = 1.0; // try 0.98..1.02 for horizontal tweak
+  const scaleY = 1.0; // try 0.98..1.02 for vertical tweak
+  const offsetX = 0; // pixel offset
+  const offsetY = 0; // pixel offset
+
+  x = x * scaleX + offsetX;
+  y = y * scaleY + offsetY;
   return [x, y];
 }
 
@@ -44,7 +50,7 @@ export default function WorldMap() {
 
   const points = useMemo(() => {
     return LOCATIONS.map((l) => {
-      const [x, y] = projectMercator(l.lon, l.lat, size.w, size.h);
+      const [x, y] = projectEquirectangular(l.lon, l.lat, size.w, size.h);
       return { ...l, x, y };
     });
   }, [size]);
