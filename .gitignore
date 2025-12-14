@@ -7,6 +7,8 @@ npm-debug.log
 yarn-error.log
 .vscode
 dist
+# local backup folder for nested-src created during cleanup
+backup/
 # ignore large media files
 # public/videos/  <-- videos are now tracked in the repo root
 public/photos/*.png
