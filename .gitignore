@@ -8,6 +8,6 @@ yarn-error.log
 .vscode
 dist
 # ignore large media files
-public/videos/
+# public/videos/  <-- videos are now tracked in the repo root
 public/photos/*.png
 *.tsbuildinfo
