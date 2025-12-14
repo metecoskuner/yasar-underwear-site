@@ -1,12 +1,16 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import LOCATIONS from '@/data/locations';
 
-// Equirectangular projection helper (no extra packages)
-function projectEquirectangular(lon: number, lat: number, width: number, height: number) {
-  // lon: -180..180 => x: 0..width
+// Mercator projection helper (no extra packages)
+// More accurate for common world SVGs (many maps are Mercator-projected)
+function projectMercator(lon: number, lat: number, width: number, height: number) {
+  // x is linear in longitude
   const x = ((lon + 180) / 360) * width;
-  // lat: -90..90 => y: 0..height (flip because SVG y increases down)
-  const y = ((90 - lat) / 180) * height;
+  // y uses the Mercator transform
+  const latRad = (lat * Math.PI) / 180;
+  const mercN = Math.log(Math.tan(Math.PI / 4 + latRad / 2));
+  // normalize mercN to 0..1 range and scale to height
+  const y = (0.5 - mercN / (2 * Math.PI)) * height;
   return [x, y];
 }
 
@@ -40,7 +44,7 @@ export default function WorldMap() {
 
   const points = useMemo(() => {
     return LOCATIONS.map((l) => {
-      const [x, y] = projectEquirectangular(l.lon, l.lat, size.w, size.h);
+      const [x, y] = projectMercator(l.lon, l.lat, size.w, size.h);
       return { ...l, x, y };
     });
   }, [size]);
@@ -70,33 +74,44 @@ export default function WorldMap() {
           </filter>
         </defs>
 
-        {points.map((p) => (
-          <g
-            key={p.id}
-            transform={`translate(${p.x}, ${p.y})`}
-            className="cursor-pointer"
-            onMouseEnter={(e) => {
-              setHovered(p.id);
-              setTooltip({ x: p.x, y: p.y, text: p.name + (p.desc ? ` — ${p.desc}` : '') });
-            }}
-            onMouseLeave={() => {
-              setHovered(null);
-              setTooltip(null);
-            }}
-            onClick={() => {
-              // default action: nothing heavy; can be extended
-              // eslint-disable-next-line no-alert
-              alert(`${p.name}\n${p.desc ?? ''}`);
-            }}
-            role="button"
-            tabIndex={0}
-            aria-label={p.name}
-          >
-            {/* pulsing ring */}
-            <circle r={16} fill="#06b6d4" opacity={0.12} />
-            <circle r={8} fill="#06b6d4" stroke="#fff" strokeWidth={1.5} />
-          </g>
-        ))}
+        {points.map((p) => {
+          const isCenter = Boolean((p as any).isCenter);
+          return (
+            <g
+              key={p.id}
+              transform={`translate(${p.x}, ${p.y})`}
+              className="cursor-pointer"
+              onMouseEnter={() => {
+                setHovered(p.id);
+                setTooltip({ x: p.x, y: p.y, text: p.name + (p.desc ? ` — ${p.desc}` : '') });
+              }}
+              onMouseLeave={() => {
+                setHovered(null);
+                setTooltip(null);
+              }}
+              onClick={() => {
+                // eslint-disable-next-line no-alert
+                alert(`${p.name}\n${p.desc ?? ''}`);
+              }}
+              role="button"
+              tabIndex={0}
+              aria-label={p.name}
+            >
+              {/* if center, use distinctive look */}
+              {isCenter ? (
+                <>
+                  <circle r={22} fill="#fb923c" opacity={0.14} />
+                  <circle r={12} fill="#fb923c" stroke="#fff" strokeWidth={1.8} />
+                </>
+              ) : (
+                <>
+                  <circle r={16} fill="#06b6d4" opacity={0.12} />
+                  <circle r={8} fill="#06b6d4" stroke="#fff" strokeWidth={1.5} />
+                </>
+              )}
+            </g>
+          );
+        })}
       </svg>
 
       {/* tooltip rendered in DOM so we can style and clamp to viewport */}
