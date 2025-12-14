@@ -3,6 +3,7 @@ import SEO from '../components/SEO';
 import CategoryTiles from '../components/CategoryTiles';
 import MediaWrap from '../components/MediaWrap';
 import WhyUs from '../components/WhyUs';
+import WorldMap from '../components/WorldMap';
 import ProductGrid from '../components/ProductGrid';
 
 export default function Home() {
@@ -14,9 +15,9 @@ export default function Home() {
         <Hero />
   <CategoryTiles />
   <MediaWrap />
+      <WorldMap />
       <WhyUs />
       <ProductGrid />
-        {/* World map removed */}
       </main>
     </>
   );
