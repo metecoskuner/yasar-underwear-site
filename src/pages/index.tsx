@@ -11,14 +11,14 @@ export default function Home() {
     <>
   <SEO title="Yasar - Ana Sayfa" description="Yasar - Günlük kullanım için konforlu iç çamaşırları, Türkiye'de tasarlandı." url="/" />
 
-      <main>
-        <Hero />
+  <main>
+    <Hero />
   <CategoryTiles />
   <MediaWrap />
-      <WorldMap />
-      <WhyUs />
-      <ProductGrid />
-      </main>
+  <WhyUs />
+  <ProductGrid />
+  <WorldMap />
+  </main>
     </>
   );
 }

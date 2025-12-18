@@ -1,25 +1,80 @@
-// Simple list of locations to show on the world map
-// Coordinates are in decimal degrees (lat, lon)
-// This list contains the countries you asked to mark (cities used for placement).
-const LOCATIONS = [
-  { id: 'uk-london', name: 'London, UK', lat: 51.5074, lon: -0.1278, desc: 'United Kingdom' },
-  { id: 'de-berlin', name: 'Berlin, DE', lat: 52.52, lon: 13.405, desc: 'Germany' },
-  // Turkey marked as the centre (different style)
-  { id: 'tr-ankara', name: 'Ankara, TR', lat: 39.9334, lon: 32.8597, desc: 'Turkey (center)', isCenter: true },
-  { id: 'ro-bucharest', name: 'Bucharest, RO', lat: 44.4268, lon: 26.1025, desc: 'Romania' },
-  { id: 'kw-kuwait', name: 'Kuwait City, KW', lat: 29.3759, lon: 47.9774, desc: 'Kuwait' },
-  { id: 'ly-tripoli', name: 'Tripoli, LY', lat: 32.8872, lon: 13.1913, desc: 'Libya' },
-  { id: 'nl-amsterdam', name: 'Amsterdam, NL', lat: 52.3676, lon: 4.9041, desc: 'Netherlands' },
-  { id: 'fr-paris', name: 'Paris, FR', lat: 48.8566, lon: 2.3522, desc: 'France' },
-  { id: 'us-nyc', name: 'New York, USA', lat: 40.7128, lon: -74.006, desc: 'United States' },
-];
-
+// locations.ts
 export type LocationItem = {
   id: string;
   name: string;
   lat: number;
   lon: number;
   desc?: string;
+  offsetX?: number;
+  offsetY?: number;
+  isCenter?: boolean;
 };
+
+const LOCATIONS: LocationItem[] = [
+  {
+    id: 'uk',
+    name: 'United Kingdom',
+    lat: 55.3781,
+    lon: -3.4360,
+    desc: 'United Kingdom',
+  },
+  {
+    id: 'de',
+    name: 'Germany',
+    lat: 51.1657,
+    lon: 10.4515,
+    desc: 'Germany',
+  },
+  {
+    id: 'tr',
+    name: 'Turkey',
+    lat: 39.0,
+    lon: 35.0,
+    desc: 'Turkey',
+    isCenter: true,
+  },
+  {
+    id: 'ro',
+    name: 'Romania',
+    lat: 45.9432,
+    lon: 24.9668,
+    desc: 'Romania',
+  },
+  {
+    id: 'kw',
+    name: 'Kuwait',
+    lat: 29.3117,
+    lon: 47.4818,
+    desc: 'Kuwait',
+  },
+  {
+    id: 'ly',
+    name: 'Libya',
+    lat: 26.3351,
+    lon: 17.2283,
+    desc: 'Libya',
+  },
+  {
+    id: 'nl',
+    name: 'Netherlands',
+    lat: 52.1326,
+    lon: 5.2913,
+    desc: 'Netherlands',
+  },
+  {
+    id: 'fr',
+    name: 'France',
+    lat: 46.2276,
+    lon: 2.2137,
+    desc: 'France',
+  },
+  {
+    id: 'us',
+    name: 'United States',
+    lat: 37.0902,
+    lon: -95.7129,
+    desc: 'United States',
+  },
+];
 
 export default LOCATIONS;

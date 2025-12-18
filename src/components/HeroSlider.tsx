@@ -22,7 +22,7 @@ export default function HeroSlider() {
           style={{ backgroundImage: `url(${s})` }}
         />
       ))}
-      <div className="absolute inset-0 bg-black opacity-10" />
+  <div className="absolute inset-0 bg-black opacity-20 sm:opacity-10" />
     </div>
   );
 }

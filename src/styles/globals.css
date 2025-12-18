@@ -14,6 +14,11 @@ html, body {
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
 }
 
+/* Prevent any accidental horizontal overflow which can cause layout shifts on load */
+html, body, #__next {
+  overflow-x: hidden;
+}
+
 /* subtle page background */
 body {
   background: linear-gradient(180deg, #ffffff 0%, #fbfbfb 100%);
@@ -94,4 +99,61 @@ body {
     transform: none !important;
     box-shadow: none !important;
   }
+}
+
+/*
+When the user hovers or touches the site map we add the `map-hovered` class on
+the document body. The goal: invert menu/header colors (white <-> black) while
+leaving the map itself unchanged. Use specific overrides to avoid large visual
+breakage; these rules apply only to elements inside the header.
+*/
+body.map-hovered header {
+  background-color: #ffffff !important; /* make header light */
+  color: #000000 !important; /* main text becomes dark */
+}
+
+/* elements that were white should become black background with white text */
+body.map-hovered header .bg-white {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+/* elements that were text-white should appear dark */
+body.map-hovered header .text-white {
+  color: #000000 !important;
+}
+
+/* elements that were text-black should invert to white */
+body.map-hovered header .text-black {
+  color: #ffffff !important;
+}
+
+/* borders used in header (language button) should invert to dark on light background */
+body.map-hovered header .border-gray-400 {
+  border-color: #000000 !important;
+}
+
+/* mobile menu (overlay inside header) also inverts */
+body.map-hovered header #mobile-menu {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+}
+
+/* Ensure link underline/active indicators remain visible */
+body.map-hovered header a, body.map-hovered header button {
+  color: inherit !important;
+}
+
+/* keep image/logo unaffected by color overrides (explicit rule) */
+body.map-hovered header img {
+  filter: none !important;
+}
+
+/* Smooth transitions when header/color/logo state changes due to map hover */
+header {
+  transition: background-color 260ms ease, color 260ms ease;
+}
+
+header img {
+  transition: opacity 260ms ease;
 }

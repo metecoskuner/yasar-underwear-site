@@ -76,7 +76,7 @@ export default function MediaWrap() {
         v.load();
       } catch {}
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, []);
 
   // --- IntersectionObserver: lazy-load & mark visible ---
@@ -109,7 +109,7 @@ export default function MediaWrap() {
 
     videoRefs.current.forEach((v) => v && obs.observe(v));
     return () => obs.disconnect();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, []);
 
   // --- play active video (try to play regardless of intersection visibility) ---
@@ -245,7 +245,7 @@ export default function MediaWrap() {
   // burada istersen belirli bir süre sonra autoplay i yeniden başlatabilirsin
   useEffect(() => {
     if (!paused) return;
-    let t = setTimeout(() => {
+    const t = setTimeout(() => {
       setPaused(false);
     }, 30000); // 30s sonra otomatik geri başlat (isteğe bağlı)
     return () => clearTimeout(t);

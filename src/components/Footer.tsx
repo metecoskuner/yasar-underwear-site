@@ -8,6 +8,8 @@ export default function Footer() {
   const [openCorporate, setOpenCorporate] = useState(false);
   const linksRef = useRef<HTMLDivElement | null>(null);
   const corpRef = useRef<HTMLDivElement | null>(null);
+  const [linksMaxHeight, setLinksMaxHeight] = useState<number>(0);
+  const [corpMaxHeight, setCorpMaxHeight] = useState<number>(0);
   const [windowWidth, setWindowWidth] = useState<number>(0);
 
   const linksInner = (
@@ -62,6 +64,20 @@ export default function Footer() {
     }
   }, []);
 
+  // measure the inner containers after render and when dependencies change
+  useEffect(() => {
+    const measure = () => {
+      try {
+        setLinksMaxHeight(linksRef.current?.scrollHeight ?? 0);
+        setCorpMaxHeight(corpRef.current?.scrollHeight ?? 0);
+      } catch (e) {}
+    };
+
+    // measure on next frame so DOM updated
+    const id = requestAnimationFrame(measure);
+    return () => cancelAnimationFrame(id);
+  }, [windowWidth, openLinks, openCorporate]);
+
   const orgJson = {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -83,7 +99,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="relative text-white mt-12 bg-[var(--brand-color)]">
+    <footer className="relative text-white mt-0 bg-[var(--brand-color)]">
   <div aria-hidden className="absolute inset-0 pointer-events-none">
         <Image
           src="/photos/footerBgImage1.webp"
@@ -96,7 +112,7 @@ export default function Footer() {
       {/* tint the image with the brand color so footer reads like the header while keeping the image */}
   <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: 'var(--brand-color)', opacity: 0.18 }} />
 
-  <div className="relative z-10 max-w-6xl mx-auto px-4 py-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 items-start">
+  <div className="relative z-10 max-w-6xl mx-auto px-4 py-8 sm:py-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-12 items-start">
         <div className="flex flex-col space-y-4">
           <Link href="/" className="inline-block -mt-1 lg:-mt-2" aria-label="Yasar ana sayfa">
             <Image src="/photos/yasarLogo2.jpg" alt="Yasar" width={200} height={80} className="h-14 lg:h-20 w-auto" />
@@ -154,7 +170,7 @@ export default function Footer() {
               ref={linksRef}
               className="overflow-hidden"
               style={{
-                maxHeight: openLinks ? `${linksRef.current?.scrollHeight ?? 0}px` : '0px',
+                maxHeight: openLinks ? `${linksMaxHeight}px` : '0px',
                 transition: 'max-height 250ms ease'
               }}
             >
@@ -194,7 +210,7 @@ export default function Footer() {
               ref={corpRef}
               className="overflow-hidden"
               style={{
-                maxHeight: openCorporate ? `${corpRef.current?.scrollHeight ?? 0}px` : '0px',
+                maxHeight: openCorporate ? `${corpMaxHeight}px` : '0px',
                 transition: 'max-height 250ms ease'
               }}
             >
@@ -208,7 +224,11 @@ export default function Footer() {
           <span className="block mt-1 h-0.5 w-12 bg-white/90 rounded" aria-hidden />
           <p className="text-sm text-white">Sosyal kanallarımızdan kampanyaları ve yenilikleri takip edebilirsiniz.</p>
           <div className="flex items-center space-x-4 mt-3">
-            <a href="#" aria-label="Instagram" className="text-white hover:text-white transform transition-transform duration-150 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white/60 rounded inline-block">
+            <a
+              href="#"
+              aria-label="Instagram"
+              className="text-white transform transition duration-150 hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E1306C]/60 rounded inline-block hover:text-[#E1306C]"
+            >
               <span className="sr-only">Instagram</span>
               <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
                 <rect x="3" y="3" width="18" height="18" rx="4" />
@@ -216,16 +236,38 @@ export default function Footer() {
                 <path d="M17.5 6.5h.01" />
               </svg>
             </a>
-            <a href="#" aria-label="Facebook" className="text-white hover:text-white transform transition-transform duration-150 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white/60 rounded inline-block">
+
+            <a
+              href="#"
+              aria-label="Facebook"
+              className="text-white transform transition duration-150 hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1877F2]/60 rounded inline-block hover:text-[#1877F2]"
+            >
               <span className="sr-only">Facebook</span>
               <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
                 <path d="M18 2h-3a4 4 0 0 0-4 4v3H8v4h3v8h4v-8h3l1-4h-4V6a1 1 0 0 1 1-1h3V2z" />
               </svg>
             </a>
-            <a href="#" aria-label="Pinterest" className="text-white hover:text-white transform transition-transform duration-150 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white/60 rounded inline-block">
-              <span className="sr-only">Pinterest</span>
+
+            <a
+              href="https://wa.me/905551234567" target="_blank" rel="noopener noreferrer"
+              aria-label="WhatsApp"
+              className="text-white transform transition duration-150 hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#25D366]/60 rounded inline-block hover:text-[#25D366]"
+            >
+              <span className="sr-only">WhatsApp</span>
+              <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                <path d="M20.52 3.48C18.36 1.32 15.42 0 12.24 0 5.48 0 .16 5.32.16 12.08c0 2.13.56 4.2 1.62 6.03L0 24l6.14-1.61c1.78.98 3.8 1.5 5.97 1.5 6.76 0 12.08-5.32 12.08-12.08 0-3.18-1.32-6.12-3.77-8.41zM12.24 21.9c-1.8 0-3.55-.48-5.08-1.38l-.36-.21-3.64.95.97-3.55-.24-.36C2.24 15.2 1.72 13.32 1.72 11.4c0-5.36 4.36-9.72 9.72-9.72 2.59 0 5.02 1.01 6.84 2.84 1.82 1.82 2.84 4.25 2.84 6.84-.01 5.36-4.37 9.72-9.74 9.72zm5.62-7.46c-.31-.16-1.82-.9-2.1-1-.28-.12-.48-.16-.68.16-.2.31-.78 1-.95 1.2-.17.2-.34.23-.64.08-.31-.15-1.28-.47-2.43-1.5-.9-.8-1.5-1.8-1.67-2.11-.17-.31-.02-.48.14-.64.14-.14.31-.36.47-.54.16-.18.21-.31.31-.52.1-.2.05-.39-.03-.54-.08-.16-.68-1.65-.93-2.27-.24-.58-.48-.5-.66-.51-.17 0-.36-.01-.55-.01-.18 0-.48.07-.73.36-.26.29-.99.97-.99 2.37 0 1.4 1.02 2.75 1.16 2.94.14.2 2.01 3.14 4.87 4.4 2.86 1.27 2.86.85 3.37.8.52-.05 1.68-.66 1.92-1.3.24-.64.24-1.19.17-1.31-.06-.12-.28-.18-.59-.34z" />
+              </svg>
+            </a>
+
+            <a
+              href="https://maps.google.com?q=Yasar+Tekstil" target="_blank" rel="noopener noreferrer"
+              aria-label="Google Maps"
+              className="text-white transform transition duration-150 hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#EA4335]/60 rounded inline-block hover:text-[#EA4335]"
+            >
+              <span className="sr-only">Google Maps</span>
               <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
-                <path d="M8.5 21S8 14.5 8 12.5A4.5 4.5 0 1 1 13 17c-.9 2-2.8 3.9-4.5 4z" />
+                <path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 1 1 18 0z" />
+                <circle cx="12" cy="10" r="2.5" />
               </svg>
             </a>
           </div>
@@ -240,8 +282,8 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="border-t border-white/8">
-        <div className="max-w-6xl mx-auto px-4 py-3 flex flex-col sm:flex-row justify-between items-center text-xs text-white/70">
+  <div className="border-t border-white/8">
+  <div className="max-w-6xl mx-auto px-4 py-2 sm:py-3 flex flex-col sm:flex-row justify-between items-center text-xs text-white/70">
           <div className="flex items-center space-x-3">
             <span>© {new Date().getFullYear()} Yasar. Tüm hakları saklıdır.</span>
             <button

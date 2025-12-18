@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Image from "next/image";
+// Image import removed (not used) to avoid lint warning
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import { useLanguage } from "../contexts/LanguageContext";
@@ -26,6 +26,7 @@ const NAMES: Record<LangOption, string> = {
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
+  const [mapHovered, setMapHovered] = useState(false);
   const [mobileLangOpen, setMobileLangOpen] = useState(false);
   const langRef = useRef<HTMLDivElement | null>(null);
   const mobileLangRef = useRef<HTMLDivElement | null>(null);
@@ -81,6 +82,16 @@ export default function Header() {
       document.removeEventListener("mousedown", handleClick);
       document.removeEventListener("keydown", handleKey);
     };
+  }, []);
+
+  // observe body.class for `map-hovered` so header can react (logo swap + styles)
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+    const sync = () => setMapHovered(document.body.classList.contains('map-hovered'));
+    sync();
+    const mo = new MutationObserver(() => sync());
+    mo.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+    return () => mo.disconnect();
   }, []);
 
   // Focus first language btn
@@ -155,6 +166,8 @@ export default function Header() {
     };
   }, []);
 
+  // (no-op)
+
   return (
   <header className={`w-full shadow-sm text-white bg-[var(--brand-color)] sticky top-0 z-40 relative transform transition-transform duration-700 ease-in-out ${
     headerVisible ? "translate-y-0" : "-translate-y-full"
@@ -182,17 +195,28 @@ export default function Header() {
           })}
         </div>
 
-        {/* CENTER - LOGO */}
+    {/* CENTER - LOGO */}
   <div className="flex justify-center lg:justify-center">
-          <Link href="/" className="flex items-center">
-            <Image
-              src="/photos/yasarLogo2.jpg"
-              alt="Yasar Tekstil Logo"
-              width={96}
-              height={96}
-              priority
-              className="max-w-[90px] lg:max-w-[100px] h-auto"
-            />
+          <Link href="/" className="flex items-center" aria-label="Yasar Tekstil">
+            {/* smaller on mobile, scale up on sm/lg */}
+            <div className="relative w-[64px] sm:w-[90px] lg:w-[100px] h-[64px] sm:h-[90px] lg:h-[100px]">
+              {/* normal logo (positioned absolutely so both logos stack identically) */}
+              <img
+                src="/photos/yasarLogo2.jpg"
+                alt="Yasar Tekstil Logo"
+                className={`absolute left-0 top-0 w-full h-full object-contain transition-opacity duration-300 ease-in-out ${mapHovered ? 'opacity-0' : 'opacity-100'}`}
+              />
+
+              {/* black logo: prefer PNG, fallback to SVG if PNG missing; stacked in same position */}
+              <picture className="absolute left-0 top-0 w-full h-full">
+                <source srcSet="/photos/yasarlogo_black.png" type="image/png" />
+                <img
+                  src="/photos/yasarlogo_black.svg"
+                  alt="Yasar Tekstil Logo (black)"
+                  className={`absolute left-0 top-0 w-full h-full object-contain transition-opacity duration-300 ease-in-out ${mapHovered ? 'opacity-100' : 'opacity-0'}`}
+                />
+              </picture>
+            </div>
           </Link>
         </div>
 
@@ -259,7 +283,7 @@ export default function Header() {
           </Link>
 
           {/* MOBILE: phone icon linking to contact page */}
-          <Link href="/contact" aria-label="Contact" className="lg:hidden p-2 rounded-full bg-white text-black flex items-center justify-center">
+          <Link href="/contact" aria-label="Contact" className="lg:hidden p-3 rounded-full bg-white text-black flex items-center justify-center">
             <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
               <path strokeLinecap="round" strokeLinejoin="round" d="M22 16.92V21a1 1 0 0 1-1.11 1 19.86 19.86 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.86 19.86 0 0 1 2 3.11 1 1 0 0 1 3 2h4.09a1 1 0 0 1 1 .75c.12.68.31 1.36.56 2a1 1 0 0 1-.24 1l-1.27 1.27a16 16 0 0 0 6 6l1.27-1.27a1 1 0 0 1 1-.24c.64.25 1.32.44 2 .56a1 1 0 0 1 .75 1V21z" />
             </svg>
@@ -323,7 +347,7 @@ export default function Header() {
             aria-expanded={mobileOpen}
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
             aria-controls="mobile-menu"
-            className="lg:hidden p-2 rounded-md hover:bg-black/20"
+            className="lg:hidden p-3 rounded-md hover:bg-black/20"
           >
             {mobileOpen ? (
               <svg className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -341,7 +365,7 @@ export default function Header() {
       {/* MOBILE MENU */}
       <div
         id="mobile-menu"
-        className={`lg:hidden absolute left-0 right-0 top-full bg-[var(--brand-color)] text-white px-4 pb-4 space-y-1 transform transition-all duration-300 origin-top ${
+        className={`lg:hidden absolute left-0 right-0 top-full bg-[var(--brand-color)] text-white px-4 pt-4 pb-6 space-y-3 rounded-b-md shadow-md transform transition-all duration-300 origin-top ${
           mobileOpen ? "translate-y-0 opacity-100 pointer-events-auto" : "-translate-y-4 opacity-0 pointer-events-none"
         }`}
         aria-hidden={!mobileOpen}
@@ -350,16 +374,22 @@ export default function Header() {
           <Link
             key={item.href}
             href={item.href}
-            className={`block px-3 py-2 rounded hover:bg-black/20 ${isActive(item.href) ? "bg-black/20 font-semibold" : ""}`}
+            className={`block px-3 py-3 rounded hover:bg-black/20 text-lg ${isActive(item.href) ? "bg-black/20 font-semibold" : ""}`}
             aria-current={isActive(item.href) ? "page" : undefined}
           >
             {item.label}
           </Link>
         ))}
 
-        {/* contact button intentionally removed from mobile menu per design (contact button lives in header) */}
+        {/* Make contact easy to reach on mobile */}
+        <Link
+          href="/contact"
+          className="block w-full text-center bg-white text-black px-4 py-3 rounded-full font-semibold hover:scale-105 transition-transform"
+          aria-label="İletişim"
+        >
+          {t("nav.contact")}
+        </Link>
 
-        
       </div>
     </header>
   );

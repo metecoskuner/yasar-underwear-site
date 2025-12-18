@@ -1,151 +1,314 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import LOCATIONS from '@/data/locations';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
+import LOCATIONS from '../data/locations';
+import * as d3Geo from 'd3-geo';
+import * as topojsonClient from 'topojson-client';
+import world110 from 'world-atlas/countries-110m.json';
 
-// Equirectangular projection helper (no extra packages)
-// Simplemaps SVGs are often equirectangular; this is a lightweight, tweakable mapping.
-function projectEquirectangular(lon: number, lat: number, width: number, height: number) {
-  // Basic mapping: lon -180..180 => x 0..width ; lat 90..-90 => y 0..height
-  let x = ((lon + 180) / 360) * width;
-  let y = ((90 - lat) / 180) * height;
+const MAP_WIDTH = 2000;
+const MAP_HEIGHT = 857;
 
-  // Small manual tweaks (scale/offset) to align pins with this specific SVG.
-  // Tune these if you notice consistent shift/scale issues.
-  const scaleX = 1.0; // try 0.98..1.02 for horizontal tweak
-  const scaleY = 1.0; // try 0.98..1.02 for vertical tweak
-  const offsetX = 0; // pixel offset
-  const offsetY = 0; // pixel offset
-
-  x = x * scaleX + offsetX;
-  y = y * scaleY + offsetY;
-  return [x, y];
-}
+const Pin: React.FC<{ color?: string; size?: number }> = ({ color = '#ef4444', size = 28 }) => (
+  <g transform={`translate(${-size / 2}, ${-size}) scale(${size / 24})`}>
+    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill={color} />
+    <circle cx="12" cy="9" r="3" fill="white" />
+  </g>
+);
 
 export default function WorldMap() {
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const imgRef = useRef<HTMLImageElement | null>(null);
-  const [size, setSize] = useState({ w: 800, h: 420 });
-  const [ratio, setRatio] = useState(0.5);
+  const [size, setSize] = useState({ w: 800, h: 400 });
+  const [isMobileView, setIsMobileView] = useState(false);
   const [hovered, setHovered] = useState<string | null>(null);
+  const [hoveredCountry, setHoveredCountry] = useState<string | null>(null);
   const [tooltip, setTooltip] = useState<{ x: number; y: number; text: string } | null>(null);
 
-  useEffect(() => {
-    // if image has intrinsic ratio, use it
-    if (imgRef.current && imgRef.current.naturalWidth && imgRef.current.naturalHeight) {
-      setRatio(imgRef.current.naturalHeight / imgRef.current.naturalWidth);
+  const ratio = MAP_HEIGHT / MAP_WIDTH;
+
+  const worldFeatures = useMemo(() => {
+    try {
+      // @ts-ignore
+      const geo = topojsonClient.feature(world110 as any, (world110 as any).objects.countries) as any;
+      return geo.features;
+    } catch {
+      return [] as any[];
     }
   }, []);
 
+ const { projection, pathGenerator } = useMemo(() => {
+  const proj = d3Geo.geoEquirectangular();
+  const path = d3Geo.geoPath().projection(proj as any);
+
+  if (worldFeatures.length > 0) {
+    // Ortalama LOCATIONS ile merkez
+    if (LOCATIONS.length > 0) {
+      const avgLon = LOCATIONS.reduce((sum, l) => sum + l.lon, 0) / LOCATIONS.length;
+      const avgLat = LOCATIONS.reduce((sum, l) => sum + l.lat, 0) / LOCATIONS.length;
+      try { (proj as any).center([avgLon, avgLat]); } catch {}
+    }
+
+    // Container boyutlarına göre fitSize (zoom)
+    const containerW = size.w;
+    const containerH = size.h;
+
+    // İstenen doluluk oranı (container’ın %95’i dolacak)
+    const fillRatio = isMobileView ? 0.95 : 0.98;
+
+    // Sanal fit boyutu = normal map * fillRatio
+    const fitW = MAP_WIDTH * fillRatio;
+    const fitH = MAP_HEIGHT * fillRatio;
+
+    // Projection zoom
+    try {
+      // @ts-ignore
+      proj.fitSize([fitW, fitH], { type: 'FeatureCollection', features: worldFeatures });
+    } catch {}
+  } else {
+    proj.translate([MAP_WIDTH / 2, MAP_HEIGHT / 2]).scale(MAP_WIDTH / (2 * Math.PI));
+  }
+
+  return { projection: proj, pathGenerator: path };
+}, [worldFeatures, isMobileView, size]);
+
+  // ResizeObserver + matchMedia
   useEffect(() => {
     if (!containerRef.current) return;
-    const el = containerRef.current;
-    const ro = new ResizeObserver(() => {
-      const rect = el.getBoundingClientRect();
-      const w = Math.max(280, Math.round(rect.width));
-      const h = Math.max(180, Math.round(w * ratio));
+
+    const updateSize = () => {
+      if (!containerRef.current) return;
+      const w = containerRef.current.getBoundingClientRect().width || MAP_WIDTH;
+      const hRaw = w * ratio;
+      let h = Math.min(hRaw, window.innerHeight * 0.95);
+      h = Math.max(h, 240);
       setSize({ w, h });
-    });
-    ro.observe(el);
-    return () => ro.disconnect();
+      setIsMobileView(window.innerWidth < 640);
+    };
+
+    const ro = new ResizeObserver(updateSize);
+    ro.observe(containerRef.current);
+
+    const mql = window.matchMedia('(max-width: 639px)');
+    const onMql = (e: MediaQueryListEvent) => {
+      setIsMobileView(e.matches);
+      updateSize();
+    };
+    mql.addEventListener('change', onMql);
+
+    window.addEventListener('orientationchange', () => setTimeout(updateSize, 50));
+
+    updateSize();
+
+    return () => {
+      ro.disconnect();
+      mql.removeEventListener('change', onMql);
+    };
   }, [ratio]);
 
-  const points = useMemo(() => {
-    return LOCATIONS.map((l) => {
-      const [x, y] = projectEquirectangular(l.lon, l.lat, size.w, size.h);
-      return { ...l, x, y };
-    });
-  }, [size]);
+  // Header overlap detection
+  useEffect(() => {
+    const mapEl = containerRef.current;
+    const headerEl = document.querySelector('header');
+    if (!mapEl || !headerEl) return;
+
+    let ticking = false;
+
+    const check = () => {
+      const m = mapEl.getBoundingClientRect();
+      const h = headerEl.getBoundingClientRect();
+      const intersects = !(h.right < m.left || h.left > m.right || h.bottom < m.top || h.top > m.bottom);
+      document.body.classList.toggle('map-hovered', intersects);
+      ticking = false;
+    };
+
+    const rafCheck = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(check);
+    };
+
+    window.addEventListener('scroll', rafCheck, { passive: true });
+    window.addEventListener('resize', rafCheck);
+
+    const roHeader = new ResizeObserver(rafCheck);
+    const roMap = new ResizeObserver(rafCheck);
+    roHeader.observe(headerEl);
+    roMap.observe(mapEl);
+
+    rafCheck();
+
+    return () => {
+      window.removeEventListener('scroll', rafCheck);
+      window.removeEventListener('resize', rafCheck);
+      roHeader.disconnect();
+      roMap.disconnect();
+      document.body.classList.remove('map-hovered');
+    };
+  }, []);
 
   return (
-    <div ref={containerRef} className="w-full relative rounded-xl overflow-hidden shadow-xl bg-gray-50">
-      {/* background map image (placed in public/photos/world.svg) */}
-      <img
-        ref={imgRef}
-        src="/photos/world.svg"
-        alt="World map"
-        className="w-full h-auto block"
-        style={{ display: 'block', pointerEvents: 'none' }}
-      />
-
-      {/* overlay SVG sized to the displayed image area */}
-      <svg
-        width={size.w}
-        height={size.h}
-        viewBox={`0 0 ${size.w} ${size.h}`}
-        className="absolute left-0 top-0"
-      >
-        <defs>
-          <filter id="pulseBlur" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation="8" result="b" />
-            <feBlend in="SourceGraphic" in2="b" />
-          </filter>
-        </defs>
-
-        {points.map((p) => {
-          const isCenter = Boolean((p as any).isCenter);
-          return (
-            <g
-              key={p.id}
-              transform={`translate(${p.x}, ${p.y})`}
-              className="cursor-pointer"
-              onMouseEnter={() => {
-                setHovered(p.id);
-                setTooltip({ x: p.x, y: p.y, text: p.name + (p.desc ? ` — ${p.desc}` : '') });
-              }}
-              onMouseLeave={() => {
-                setHovered(null);
-                setTooltip(null);
-              }}
-              onClick={() => {
-                // eslint-disable-next-line no-alert
-                alert(`${p.name}\n${p.desc ?? ''}`);
-              }}
-              role="button"
-              tabIndex={0}
-              aria-label={p.name}
-            >
-              {/* if center, use distinctive look */}
-              {isCenter ? (
-                <>
-                  <circle r={22} fill="#fb923c" opacity={0.14} />
-                  <circle r={12} fill="#fb923c" stroke="#fff" strokeWidth={1.8} />
-                </>
-              ) : (
-                <>
-                  <circle r={16} fill="#06b6d4" opacity={0.12} />
-                  <circle r={8} fill="#06b6d4" stroke="#fff" strokeWidth={1.5} />
-                </>
-              )}
-            </g>
-          );
-        })}
-      </svg>
-
-      {/* tooltip rendered in DOM so we can style and clamp to viewport */}
-      {tooltip ? (
-        <div
-          aria-hidden={hovered === null}
-          className="absolute z-30 pointer-events-none"
-          style={{
-            left: Math.min(Math.max(8, tooltip.x), size.w - 220),
-            top: Math.max(8, tooltip.y - 48),
-            width: 200,
-          }}
+    <div
+      ref={containerRef}
+      className="relative w-full overflow-hidden rounded-xl shadow-xl bg-gray-50"
+      style={{ width: '100%' }}
+    >
+      <div style={{ position: 'relative', width: '100%', height: `${size.h}px` }}>
+        <svg
+          viewBox={`0 0 ${MAP_WIDTH} ${MAP_HEIGHT}`}
+          preserveAspectRatio={size.w < 420 ? 'xMidYMid slice' : 'xMidYMid meet'}
+          style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
         >
-          <div className="bg-white shadow rounded p-2 text-sm">
-            <strong className="block text-sm">{tooltip.text.split(' — ')[0]}</strong>
-            <div className="text-gray-600 text-xs mt-1">{tooltip.text.split(' — ')[1]}</div>
+          <rect x={0} y={0} width={MAP_WIDTH} height={MAP_HEIGHT} fill="#0b1220" />
+          <g>
+            {worldFeatures.map((f: any, i: number) => {
+              const fid = f.id || `feat-${i}`;
+              const isHovered = hoveredCountry === String(fid);
+              return (
+                <path
+                  key={fid}
+                  d={pathGenerator(f) as string}
+                  fill={isHovered ? '#cde7ef' : '#e6e8ea'}
+                  stroke={isHovered ? '#0b1220' : '#111827'}
+                  strokeWidth={(isHovered ? 0.9 : 0.32) * Math.max(0.6, Math.min(1, size.w / MAP_WIDTH))}
+                  strokeOpacity={isHovered ? 0.95 : 0.6}
+                  style={{ transition: 'fill 160ms ease, stroke 160ms ease' }}
+                  onMouseEnter={() => setHoveredCountry(String(fid))}
+                  onMouseLeave={() => setHoveredCountry((cur) => (cur === String(fid) ? null : cur))}
+                />
+              );
+            })}
+
+            {LOCATIONS.map((loc) => {
+              const [x, y] = projection([loc.lon, loc.lat]) as [number, number];
+              const xAdj = x + (loc.offsetX ?? 0);
+              const yAdj = y + (loc.offsetY ?? 0);
+              const isHovered = hovered === loc.id;
+              const visualScale = Math.max(0.35, Math.min(1, size.w / MAP_WIDTH));
+              const baseR = loc.isCenter ? (isHovered ? 30 : 22) : (isHovered ? 24 : 16);
+              const r = baseR * visualScale;
+              const pinSize = loc.isCenter ? 34 * visualScale : 24 * visualScale;
+
+              return (
+                <g
+                  key={loc.id}
+                  transform={`translate(${xAdj}, ${yAdj})`}
+                  className="cursor-pointer"
+                  onMouseEnter={() => {
+                    setTooltip({ x: xAdj, y: yAdj, text: loc.name });
+                    setHovered(loc.id);
+                  }}
+                  onMouseLeave={() => {
+                    setTooltip(null);
+                    setHovered(null);
+                  }}
+                  onPointerDown={() => {
+                    if (hovered === loc.id) {
+                      setTooltip(null);
+                      setHovered(null);
+                    } else {
+                      setTooltip({ x: xAdj, y: yAdj, text: loc.name });
+                      setHovered(loc.id);
+                    }
+                  }}
+                >
+                  <circle
+                    r={r}
+                    fill="#ef4444"
+                    opacity={isHovered ? 0.18 : 0.08}
+                    style={{ transition: 'r 120ms ease, opacity 120ms ease', pointerEvents: 'none' }}
+                  />
+                  <Pin color="#ef4444" size={pinSize} />
+                </g>
+              );
+            })}
+          </g>
+        </svg>
+      </div>
+
+      {tooltip && (() => {
+        const maxW = 180;
+        const leftRaw = (tooltip.x / MAP_WIDTH) * size.w;
+        const left = Math.max(8, Math.min(leftRaw, size.w - 8 - maxW));
+        const topRaw = (tooltip.y / MAP_HEIGHT) * size.h - 48;
+        const top = Math.max(8, Math.min(topRaw, size.h - 40));
+        return (
+          <div
+            className="absolute z-30 rounded p-2 text-sm shadow"
+            style={{
+              left,
+              top,
+              width: maxW,
+              backgroundColor: 'rgba(0,0,0,0.75)',
+              color: '#fff',
+            }}
+          >
+            <strong>{tooltip.text}</strong>
+          </div>
+        );
+      })()}
+      {/* Country ticker: flags + names scrolling right-to-left */}
+      <div className="w-full overflow-hidden bg-white border-t">
+        <div className="relative">
+          <div className="ticker py-2 sm:py-3">
+            <div className="ticker-track">
+              {LOCATIONS.concat(LOCATIONS).map((loc, i) => {
+                // Turkish names for the ticker. Fallback to loc.name if not present.
+                const TURKISH_NAMES: Record<string, string> = {
+                  uk: 'Birleşik Krallık',
+                  de: 'Almanya',
+                  tr: 'Türkiye',
+                  ro: 'Romanya',
+                  kw: 'Kuveyt',
+                  ly: 'Libya',
+                  nl: 'Hollanda',
+                  fr: 'Fransa',
+                  us: 'Amerika Birleşik Devletleri',
+                };
+
+                // Some repos use 'uk' but flag emoji expects ISO alpha-2 (GB for United Kingdom)
+                const isoCode = (loc.id === 'uk' ? 'GB' : (loc.id || '')).toUpperCase();
+                const flag = (() => {
+                  if (!isoCode || isoCode.length !== 2) return '🏳️';
+                  const A = 0x1f1e6;
+                  const first = A + (isoCode.charCodeAt(0) - 65);
+                  const second = A + (isoCode.charCodeAt(1) - 65);
+                  return String.fromCodePoint(first, second);
+                })();
+
+                const label = TURKISH_NAMES[loc.id as string] ?? loc.name;
+
+                return (
+                  <div
+                    key={`ticker-${loc.id}-${i}`}
+                    className="ticker-item inline-flex items-center gap-3 px-6 text-sm text-gray-700"
+                    aria-hidden={i >= LOCATIONS.length ? 'true' : 'false'}
+                  >
+                    <span className="text-xl" aria-hidden>
+                      {flag}
+                    </span>
+                    <span className="whitespace-nowrap font-medium">{label}</span>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
-      ) : null}
 
-      <style jsx>{`
-        /* small pulse animation fallback (if wanted to enhance) */
-        @keyframes map-pulse {
-          0% { transform: scale(0.9); opacity: 0.9 }
-          70% { transform: scale(1.6); opacity: 0 }
-          100% { opacity: 0 }
-        }
-      `}</style>
+        <style jsx>{`
+          .ticker { overflow: hidden; }
+          .ticker-track { display: inline-flex; align-items: center; gap: 0; white-space: nowrap; animation: scrollLeft 28s linear infinite; }
+          .ticker-item { flex: 0 0 auto; }
+          .ticker-track:hover { animation-play-state: paused; }
+
+          @keyframes scrollLeft {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+          }
+
+          /* reduce motion for users who prefer it */
+          @media (prefers-reduced-motion: reduce) {
+            .ticker-track { animation: none; }
+          }
+        `}</style>
+      </div>
     </div>
   );
 }
