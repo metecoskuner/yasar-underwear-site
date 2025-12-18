@@ -4,6 +4,10 @@ import CategoryTiles from '../components/CategoryTiles';
 import MediaWrap from '../components/MediaWrap';
 import WhyUs from '../components/WhyUs';
 import ProductGrid from '../components/ProductGrid';
+import dynamic from 'next/dynamic';
+
+// Dynamically import the WorldMap to avoid SSR issues and keep initial bundle small
+const WorldMap = dynamic(() => import('../components/WorldMap'), { ssr: false });
 
 export default function Home() {
   return (
@@ -16,7 +20,10 @@ export default function Home() {
   <MediaWrap />
       <WhyUs />
       <ProductGrid />
-        {/* World map removed */}
+        {/* Re-added world map component */}
+        <section className="max-w-6xl mx-auto my-8 px-4">
+          <WorldMap />
+        </section>
       </main>
     </>
   );
