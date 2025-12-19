@@ -32,22 +32,23 @@ export default function WorldMapRestored() {
   return (
     <div ref={containerRef} className="w-full">
       <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`} className="block mx-auto">
-        <rect width={width} height={height} fill="#f8fafc" />
+        {/* Black ocean background like the reference site */}
+        <rect width={width} height={height} fill="#000" />
 
         <g className="countries">
           {countries.features.map((f: any, i: number) => (
             <path
               key={i}
               d={pathGenerator(f) || undefined}
-              fill="#ffffff"
-              stroke="#e6eef8"
+              fill="#071025" /* very dark navy for land */
+              stroke="#0f1724"
               strokeWidth={0.6}
-              style={{ transition: 'fill 120ms ease' }}
+              style={{ transition: 'fill 120ms ease', mixBlendMode: 'screen' }}
               onMouseEnter={(e) => {
-                (e.currentTarget as SVGPathElement).style.fill = '#eef6ff';
+                (e.currentTarget as SVGPathElement).style.fill = '#0f2740';
               }}
               onMouseLeave={(e) => {
-                (e.currentTarget as SVGPathElement).style.fill = '#ffffff';
+                (e.currentTarget as SVGPathElement).style.fill = '#071025';
               }}
             />
           ))}
@@ -60,14 +61,20 @@ export default function WorldMapRestored() {
             return (
               <g key={loc.id} transform={`translate(${x},${y})`} className="pointer-events-auto">
                 <title>{loc.name}</title>
-                <circle r={isCenter ? 8 : 5} fill={isCenter ? '#0ea5a0' : '#ef4444'} stroke="#fff" strokeWidth={1.5} />
-                {/* show label for those with explicit offsets or for center */}
+                {/* bright pin with subtle outer glow effect via stroke */}
+                <circle
+                  r={isCenter ? 8 : 5}
+                  fill={isCenter ? '#00e6c3' : '#ff6b6b'}
+                  stroke={isCenter ? '#0f172a' : '#ffffff'}
+                  strokeWidth={1.5}
+                  style={{ filter: isCenter ? 'drop-shadow(0 2px 6px rgba(0,230,195,0.35))' : undefined }}
+                />
                 {(isCenter || loc.offsetX !== undefined || loc.offsetY !== undefined) ? (
                   <text
                     x={(loc.offsetX ?? 10)}
                     y={(loc.offsetY ?? -8)}
                     fontSize={12}
-                    fill="#0f172a"
+                    fill="#e6eef8"
                     fontWeight={isCenter ? 700 : 500}
                   >
                     {loc.name}
