@@ -6,8 +6,8 @@ import WhyUs from '../components/WhyUs';
 import ProductGrid from '../components/ProductGrid';
 import dynamic from 'next/dynamic';
 
-// Dynamically import the WorldMap to avoid SSR issues and keep initial bundle small
-const WorldMap = dynamic(() => import('../components/WorldMap'), { ssr: false });
+// Dynamically import the restored WorldMap (client-only) so the preview PR shows the richer map
+const WorldMap = dynamic(() => import('../components/WorldMapRestored'), { ssr: false });
 
 export default function Home() {
   return (
