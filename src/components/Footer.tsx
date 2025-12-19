@@ -113,7 +113,7 @@ export default function Footer() {
         {/* Country flags strip attached to footer (left-to-right) */}
         <div className="col-span-full w-full mb-4">
           <div className="w-full overflow-x-auto">
-            <div className="inline-flex items-center space-x-6 px-2">
+            <div className="inline-flex items-center space-x-6 px-2 flex-row-reverse">
               {LOCATIONS.map((loc) => (
                 <div key={loc.id} className="flex items-center space-x-2 text-sm text-white/95 whitespace-nowrap">
                   <span aria-hidden className="text-lg">{flagEmoji(loc.id)}</span>

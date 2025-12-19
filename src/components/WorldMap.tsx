@@ -60,9 +60,7 @@ export default function WorldMap() {
         role="img"
         aria-label="Dünya haritası"
       >
-        <rect width={width} height={height} fill="#000" />
-        {/* Overlay to remove the deep black under Antarctica so the map doesn't show a hard black footer gap */}
-        <rect x={0} y={Math.round(height * 0.88)} width={width} height={Math.round(height * 0.12)} fill="#ffffff" />
+  <rect width={width} height={height} fill="#000" />
 
         <g className="countries">
           {countries.features.map((f: any, i: number) => (
