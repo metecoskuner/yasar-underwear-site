@@ -112,16 +112,47 @@ export default function Footer() {
 
         {/* Country flags strip attached to footer (left-to-right) */}
         <div className="col-span-full w-full mb-4">
-          <div className="w-full overflow-x-auto">
-            <div className="inline-flex items-center space-x-6 px-2 flex-row-reverse">
-              {LOCATIONS.map((loc) => (
-                <div key={loc.id} className="flex items-center space-x-2 text-sm text-white/95 whitespace-nowrap">
-                  <span aria-hidden className="text-lg">{flagEmoji(loc.id)}</span>
-                  <span>{loc.name}</span>
-                </div>
-              ))}
+          {/* Marquee: duplicated content for seamless slow-right-to-left scroll */}
+          <div className="w-full overflow-hidden">
+            <div className="marquee" aria-hidden="false">
+              <div className="marquee__inner">
+                {LOCATIONS.map((loc) => (
+                  <div key={`a-${loc.id}`} className="flex items-center space-x-2 text-sm text-white/95 whitespace-nowrap px-6">
+                    <span aria-hidden className="text-lg">{flagEmoji(loc.id)}</span>
+                    <span>{loc.name}</span>
+                  </div>
+                ))}
+                {LOCATIONS.map((loc) => (
+                  <div key={`b-${loc.id}`} className="flex items-center space-x-2 text-sm text-white/95 whitespace-nowrap px-6">
+                    <span aria-hidden className="text-lg">{flagEmoji(loc.id)}</span>
+                    <span>{loc.name}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
+
+          <style jsx>{`
+            .marquee {
+              --marquee-speed: 36s; /* slower: larger value */
+              display: block;
+              width: 100%;
+            }
+            .marquee__inner {
+              display: inline-flex;
+              align-items: center;
+              gap: 0.75rem;
+              animation: marquee var(--marquee-speed) linear infinite;
+            }
+            @keyframes marquee {
+              0% { transform: translateX(0%); }
+              100% { transform: translateX(-50%); }
+            }
+            /* Reduce motion preference respect */
+            @media (prefers-reduced-motion: reduce) {
+              .marquee__inner { animation: none; }
+            }
+          `}</style>
         </div>
         <div className="flex flex-col space-y-4">
           <Link href="/" className="inline-block -mt-1 lg:-mt-2" aria-label="Yasar ana sayfa">
