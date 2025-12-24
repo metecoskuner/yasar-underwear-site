@@ -1,7 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { geoEquirectangular, geoPath } from 'd3-geo';
-import { feature } from 'topojson-client';
-import countriesTopo from 'world-atlas/countries-110m.json';
 import LOCATIONS from '../data/locations';
 
 const BASE_WIDTH = 1200;
@@ -24,13 +22,34 @@ export default function WorldMap() {
 
   const height = Math.round((BASE_HEIGHT * width) / BASE_WIDTH);
 
-  // Memoize countries (static) and projection/path (dependent on width)
-  const countries = React.useMemo(
-    () => feature(countriesTopo as any, (countriesTopo as any).objects.countries) as any,
-    []
-  );
+  // Load topojson & countries on client only to avoid SSR/build-time issues
+  const [countries, setCountries] = React.useState<any | null>(null);
+
+  useEffect(() => {
+    let mounted = true;
+    // dynamic import inside useEffect => runs only on client
+    (async () => {
+      try {
+        const topo = await import('world-atlas/countries-110m.json');
+        const topojson = await import('topojson-client');
+        const feat = (topojson as any).feature(topo as any, (topo as any).objects.countries);
+        if (mounted) setCountries(feat as any);
+      } catch (e) {
+        // swallow; map will render empty until resolved
+        // console.error('Failed to load topojson', e);
+      }
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   const { projection, pathGenerator } = React.useMemo(() => {
+    if (!countries) {
+      // fallback projection while countries load
+      const p = geoEquirectangular().translate([width / 2, height / 2]).scale((width + height) / 8);
+      return { projection: p, pathGenerator: geoPath().projection(p as any) };
+    }
     const p = geoEquirectangular().fitSize([width, height], countries as any);
     return { projection: p, pathGenerator: geoPath().projection(p as any) };
   }, [width, height, countries]);
@@ -63,17 +82,18 @@ export default function WorldMap() {
   <rect width={width} height={height} fill="#000" />
 
         <g className="countries">
-          {countries.features.map((f: any, i: number) => (
-            <path
-              key={i}
-              d={pathGenerator(f) || undefined}
-              fill="#2c6f86" /* lighter slate so continents read clearly against black ocean */
-              stroke="#163f4a"
-              strokeWidth={0.6}
-              onMouseEnter={(e) => ((e.currentTarget as SVGPathElement).style.fill = '#3a9ab3')}
-              onMouseLeave={(e) => ((e.currentTarget as SVGPathElement).style.fill = '#2c6f86')}
-            />
-          ))}
+          {countries
+            ? countries.features.map((f: any, i: number) => (
+                <path
+                  key={i}
+                  d={pathGenerator(f) || undefined}
+                  fill="#2c6f86" /* lighter slate so continents read clearly against black ocean */
+                  stroke="#163f4a"
+                  strokeWidth={0.6}
+                  style={{ cursor: 'default' }}
+                />
+              ))
+            : null}
         </g>
 
         <g className="pins">
@@ -98,6 +118,8 @@ export default function WorldMap() {
               }
             };
 
+            const tipOffset = isCenter ? 11 : 12;
+
             return (
               <g
                 key={loc.id}
@@ -106,26 +128,49 @@ export default function WorldMap() {
                 role="button"
                 tabIndex={0}
                 aria-label={`Konum: ${loc.name}`}
-                onPointerEnter={handlePointerEnter}
-                onPointerLeave={handlePointerLeave}
                 onFocus={handlePointerEnter}
                 onBlur={handlePointerLeave}
                 onKeyDown={handleKey}
               >
-                <title>{loc.name}</title>
-                <circle
-                  r={isCenter ? 8 : 5}
-                  fill={isCenter ? '#00e6c3' : '#ff6b6b'}
-                  stroke={isCenter ? '#0f172a' : '#ffffff'}
-                  strokeWidth={1.5}
-                  className={isCenter ? 'animate-pulse' : undefined}
-                  style={{ filter: isCenter ? 'drop-shadow(0 2px 6px rgba(0,230,195,0.35))' : undefined }}
-                />
-                {(isCenter || loc.offsetX !== undefined || loc.offsetY !== undefined) ? (
-                  <text x={(loc.offsetX ?? 10)} y={(loc.offsetY ?? -8)} fontSize={12} fill="#e6eef8" fontWeight={isCenter ? 700 : 500}>
-                    {loc.name}
-                  </text>
-                ) : null}
+                <g aria-hidden className="pin-icon" transform={`translate(0,${-tipOffset})`}>
+                  {isCenter ? (
+                    <>
+                      <path
+                        d="M0 -7 C3 -7 6 -4 6 -1 C6 3 0 10 0 12 C0 10 -6 3 -6 -1 C-6 -4 -3 -7 0 -7 Z"
+                        fill="#00e6c3"
+                        stroke="#0f172a"
+                        strokeWidth={0.9}
+                        className="animate-pulse"
+                      />
+                      <circle r={1.6} fill="#0f172a" />
+                    </>
+                  ) : (
+                    <>
+                      <path
+                        d="M0 -7 C3 -7 6 -4 6 -1 C6 3 0 10 0 12 C0 10 -6 3 -6 -1 C-6 -4 -3 -7 0 -7 Z"
+                        fill="#ff3b30"
+                        stroke="#ffffff"
+                        strokeWidth={0.9}
+                      />
+                      <circle r={1.2} fill="#ffffff" />
+                    </>
+                  )}
+                </g>
+
+                {/* Always render labels for our LOCATIONS and give them an outline for contrast */}
+                <text
+                  x={(loc.offsetX ?? 10)}
+                  y={(loc.offsetY ?? -8)}
+                  // reduce labels a bit more per user request
+                  fontSize={isCenter ? 11 : 10}
+                  fill="#ffffff"
+                  stroke="#000000"
+                  strokeWidth={isCenter ? 0.6 : 0.5}
+                  style={{ paintOrder: 'stroke', pointerEvents: 'none' }}
+                  fontWeight={600}
+                >
+                  {loc.name}
+                </text>
               </g>
             );
           })}

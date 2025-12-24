@@ -1,18 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
-import LOCATIONS from '../data/locations';
-
-function flagEmoji(code: string) {
-  // normalize UK->GB
-  const map: Record<string, string> = { uk: 'GB' };
-  const cc = (map[code] ?? code).toUpperCase();
-  // A->Regional Indicator Symbol Letter A = 0x1F1E6
-  if (cc.length !== 2) return '';
-  const first = 0x1f1e6 + (cc.charCodeAt(0) - 65);
-  const second = 0x1f1e6 + (cc.charCodeAt(1) - 65);
-  return String.fromCodePoint(first, second);
-}
 
 export default function Footer() {
   const [showTop, setShowTop] = useState(false);
@@ -95,7 +83,7 @@ export default function Footer() {
   };
 
   return (
-  <footer className="relative text-white mt-0 bg-[var(--brand-color)]">
+    <footer className="relative text-white mt-12 bg-[var(--brand-color)]">
   <div aria-hidden className="absolute inset-0 pointer-events-none">
         <Image
           src="/photos/footerBgImage1.webp"
@@ -109,8 +97,6 @@ export default function Footer() {
   <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: 'var(--brand-color)', opacity: 0.18 }} />
 
   <div className="relative z-10 max-w-6xl mx-auto px-4 py-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 items-start">
-
-        {/* (flags moved to homepage under the map) */}
         <div className="flex flex-col space-y-4">
           <Link href="/" className="inline-block -mt-1 lg:-mt-2" aria-label="Yasar ana sayfa">
             <Image src="/photos/yasarLogo2.jpg" alt="Yasar" width={200} height={80} className="h-14 lg:h-20 w-auto" />

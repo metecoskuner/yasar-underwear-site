@@ -4,11 +4,6 @@ import CategoryTiles from '../components/CategoryTiles';
 import MediaWrap from '../components/MediaWrap';
 import WhyUs from '../components/WhyUs';
 import ProductGrid from '../components/ProductGrid';
-import dynamic from 'next/dynamic';
-import FlagsStrip from '../components/FlagsStrip';
-
-// Dynamically import the WorldMap component (client-only)
-const WorldMap = dynamic(() => import('../components/WorldMap'), { ssr: false });
 
 export default function Home() {
   return (
@@ -21,15 +16,7 @@ export default function Home() {
   <MediaWrap />
       <WhyUs />
       <ProductGrid />
-        {/* Re-added world map component (full-width) */}
-        <section className="w-full mx-0 my-0 px-0">
-          <div className="w-full">
-            <WorldMap />
-          </div>
-          <div className="w-full flex items-center justify-center h-24 sm:h-28 md:h-32">
-            <FlagsStrip />
-          </div>
-        </section>
+        {/* World map removed */}
       </main>
     </>
   );
