@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
 
 const slides = [
   '/photos/PYJAMA-BRANDS.avif',
@@ -16,11 +17,16 @@ export default function HeroSlider() {
   return (
     <div className="absolute inset-0">
       {slides.map((s, i) => (
-        <div
-          key={s}
-          className={`absolute inset-0 bg-cover bg-top transition-opacity duration-700 ${i === idx ? 'opacity-100' : 'opacity-0'}`}
-          style={{ backgroundImage: `url(${s})` }}
-        />
+        <div key={s} className={`absolute inset-0 transition-opacity duration-700 ${i === idx ? 'opacity-100' : 'opacity-0'}`}>
+          <Image
+            src={s}
+            alt=""
+            fill
+            sizes="100vw"
+            priority={i === 0}
+            className="object-cover object-top"
+          />
+        </div>
       ))}
       <div className="absolute inset-0 bg-black opacity-10" />
     </div>

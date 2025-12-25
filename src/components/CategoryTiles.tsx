@@ -12,7 +12,7 @@ export default function CategoryTiles() {
   return (
     <section className="max-w-6xl mx-auto px-4 py-8">
       <h3 className="text-lg font-semibold mb-4">Kategoriler</h3>
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
         {categories.map(cat => (
           <Link key={cat.id} href={cat.href} legacyBehavior>
             <a className="block p-6 rounded-lg bg-white shadow-sm hover:shadow-md text-center">

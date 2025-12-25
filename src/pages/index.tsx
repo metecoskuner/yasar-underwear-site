@@ -5,10 +5,10 @@ import MediaWrap from '../components/MediaWrap';
 import WhyUs from '../components/WhyUs';
 import ProductGrid from '../components/ProductGrid';
 import dynamic from 'next/dynamic';
-import FlagsStrip from '../components/FlagsStrip';
 
 // Dynamically import the WorldMap component (client-only)
-const WorldMap = dynamic(() => import('../components/WorldMap'), { ssr: false });
+// ensure TypeScript understands the loader returns the component default export
+const WorldMap = dynamic(() => import('../components/WorldMap') as Promise<any>, { ssr: false });
 
 export default function Home() {
   return (
@@ -21,15 +21,17 @@ export default function Home() {
   <MediaWrap />
       <WhyUs />
       <ProductGrid />
-        {/* Re-added world map component (full-width) */}
-        <section className="w-full mx-0 my-0 px-0">
-          <div className="w-full">
-            <WorldMap />
-          </div>
-          <div className="w-full flex items-center justify-center h-24 sm:h-28 md:h-32">
-            <FlagsStrip />
-          </div>
-        </section>
+  {/* Re-added world map component (full-width) */}
+      <section className="w-full mx-0 my-0 px-0">
+    <div className="w-full">
+      {/* mobile fixed to 258px, restore larger breakpoints for desktop sizes */}
+      <div className="w-full h-[258px] sm:h-[420px] md:h-[520px] lg:h-[640px] mb-6 md:mb-12 z-0">
+        <WorldMap />
+      </div>
+    </div>
+  </section>
+
+  {/* FlagsStrip is now rendered by the site Layout (between main content and footer) */}
       </main>
     </>
   );

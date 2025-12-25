@@ -20,7 +20,7 @@ export default function Footer() {
   const [openCorporate, setOpenCorporate] = useState(false);
   const linksRef = useRef<HTMLDivElement | null>(null);
   const corpRef = useRef<HTMLDivElement | null>(null);
-  const [windowWidth, setWindowWidth] = useState<number>(0);
+  const [windowWidth, setWindowWidth] = useState<number | undefined>(typeof window !== 'undefined' ? window.innerWidth : undefined);
 
   const linksInner = (
     <div className="flex flex-col space-y-2">
@@ -73,6 +73,9 @@ export default function Footer() {
       return () => window.removeEventListener('resize', setWidth);
     }
   }, []);
+
+  // Treat undefined (SSR) conservatively as desktop-sized to avoid hydration mismatches.
+  const isDesktop = (windowWidth ?? 640) >= 640;
 
   const orgJson = {
     "@context": "https://schema.org",
@@ -140,7 +143,7 @@ export default function Footer() {
           <h4 className="text-base lg:text-lg font-semibold text-white">Bağlantılar</h4>
           <span className="block mt-1 h-0.5 w-12 bg-white/90 rounded" aria-hidden />
           {/* mobile accordion toggle */}
-          {windowWidth < 640 && (
+          {!isDesktop && (
             <button
               type="button"
               className="text-sm text-white/90 text-left w-full flex items-center justify-end"
@@ -161,7 +164,7 @@ export default function Footer() {
             </button>
           )}
           {/* mobile: animated max-height container; desktop: always show */}
-          {windowWidth >= 640 ? (
+          {isDesktop ? (
             <div>{linksInner}</div>
           ) : (
             <div
@@ -180,7 +183,7 @@ export default function Footer() {
         <nav aria-label="Kurumsal" className="flex flex-col space-y-2 pl-4 lg:pl-6">
           <h4 className="text-base lg:text-lg font-semibold text-white">Kurumsal</h4>
           <span className="block mt-1 h-0.5 w-12 bg-white/90 rounded" aria-hidden />
-          {windowWidth < 640 && (
+          {!isDesktop && (
             <button
               type="button"
               className="text-sm text-white/90 text-left w-full flex items-center justify-end"
@@ -201,7 +204,7 @@ export default function Footer() {
             </button>
           )}
           {/* mobile: animated max-height container; desktop: always show */}
-          {windowWidth >= 640 ? (
+          {isDesktop ? (
             <div>{corpInner}</div>
           ) : (
             <div

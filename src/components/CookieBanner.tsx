@@ -87,7 +87,7 @@ export default function CookieBanner() {
   if (!show) return null;
 
   return (
-    <div className="fixed left-4 right-4 bottom-6 z-[70] md:left-8 md:right-auto md:right-8">
+    <div className="fixed left-4 right-4 bottom-6 z-30 md:left-8 md:right-auto md:right-8">
       <div className="max-w-3xl mx-auto bg-white/95 dark:bg-black/80 text-black dark:text-white rounded-lg shadow-2xl ring-1 ring-black/5 p-4 flex flex-col md:flex-row items-start md:items-center gap-3">
         <div className="flex-1 text-sm leading-tight">
           <strong className="block font-semibold">Çerez tercihleri</strong>

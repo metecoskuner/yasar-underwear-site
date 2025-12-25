@@ -157,7 +157,7 @@ export default function Header() {
 
   return (
   <header className={`w-full shadow-sm text-white bg-[var(--brand-color)] sticky top-0 z-40 relative transform transition-transform duration-700 ease-in-out ${
-    headerVisible ? "translate-y-0" : "-translate-y-full"
+    headerVisible || mobileOpen ? "translate-y-0" : "-translate-y-full"
   }`}>
   <div className="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center lg:grid lg:[grid-template-columns:1fr_auto_1fr] relative">
         {/* LEFT - NAV */}
@@ -346,20 +346,20 @@ export default function Header() {
         }`}
         aria-hidden={!mobileOpen}
       >
-        {NAV_ITEMS.map((item) => (
-          <Link
-            key={item.href}
-            href={item.href}
-            className={`block px-3 py-2 rounded hover:bg-black/20 ${isActive(item.href) ? "bg-black/20 font-semibold" : ""}`}
-            aria-current={isActive(item.href) ? "page" : undefined}
-          >
-            {item.label}
-          </Link>
-        ))}
+        <div className="max-w-6xl mx-auto px-4">
+          {NAV_ITEMS.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`block px-3 py-2 rounded hover:bg-black/20 ${isActive(item.href) ? "bg-black/20 font-semibold" : ""}`}
+              aria-current={isActive(item.href) ? "page" : undefined}
+            >
+              {item.label}
+            </Link>
+          ))}
 
-        {/* contact button intentionally removed from mobile menu per design (contact button lives in header) */}
-
-        
+          {/* contact button intentionally removed from mobile menu per design (contact button lives in header) */}
+        </div>
       </div>
     </header>
   );

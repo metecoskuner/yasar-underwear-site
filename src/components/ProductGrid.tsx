@@ -23,7 +23,7 @@ export default function ProductGrid() {
         </div>
         <a href="/collections" className="text-sm text-blue-600 transition-colors duration-200 hover:text-blue-500">Tümünü Gör</a>
       </div>
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {products.map((p, idx) => (
           <SlideCard key={p.id} id={`product-${p.id}`} side={idx % 2 === 0 ? 'left' : 'right'}>
             <ProductCard product={p} />
