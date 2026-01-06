@@ -14,6 +14,27 @@ html, body {
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
 }
 
+/* Prevent horizontal overflow on very small phones (Mobile S). This keeps
+   the viewport width as the authoritative cap and prevents elements from
+   extending past the viewport due to transforms or negative offsets. */
+html, body, #__next {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+/* Ensure the main content is pushed below the fixed header by default.
+   Header component exposes --site-header-height; fall back to 0 if not set. */
+main#content {
+  padding-top: var(--site-header-height, 0px);
+}
+
+/* Ensure images, videos and svgs don't accidentally exceed their containers */
+img, picture, video, svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
 /* subtle page background */
 body {
   background: linear-gradient(180deg, #ffffff 0%, #fbfbfb 100%);
@@ -65,6 +86,64 @@ body {
   border: 1px solid rgba(255,255,255,0.12);
   box-shadow: 0 1px 6px rgba(0,0,0,0.06);
   transition: transform 320ms ease-out, box-shadow 320ms ease-out, background-color 320ms ease-out;
+
+/* World map (4K) — keep strokes crisp and make labels legible on very large displays.
+   We add a dedicated selector `.worldmap-svg` on the SVG element in the component
+   and then apply non-scaling strokes and larger label font sizes at big breakpoints.
+*/
+
+/* Make the inline worldmap SVG behave like a block-level element and align to the
+  top of its container to avoid vertical centering that can push it down in the
+  document flow (fixes cases where the SVG appears lower and overlaps neighbors). */
+.worldmap-svg { display: block; }
+
+.worldmap-svg .countries path,
+.worldmap-svg .pins .pin-icon path,
+.worldmap-svg .pins circle,
+.worldmap-svg .pins text {
+  /* Prevent stroke thickness from scaling with the SVG transform (keeps lines crisp).
+     Note: some older browsers may not fully support vector-effect, but modern WebKit
+     / Blink do. */
+  vector-effect: non-scaling-stroke;
+  shape-rendering: geometricPrecision;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+/* Large desktop (roughly 2560px wide and above) — nudge up label sizes and stroke widths */
+@media (min-width: 2560px) {
+  .worldmap-svg .countries path {
+    stroke-width: 1px; /* a touch thicker for high-res displays */
+  }
+  .worldmap-svg .pins .pin-icon path {
+    stroke-width: 1.2px;
+  }
+  .worldmap-svg .pins text {
+    /* Use !important to override inline `fontSize` where necessary — these are
+       visual adjustments aimed specifically at very large screens. */
+    font-size: 14px !important;
+    stroke-width: 1.2px !important;
+  }
+}
+
+/* 4K UHD and above — make labels substantially larger so they remain readable */
+@media (min-width: 3840px) {
+  .worldmap-svg {
+    /* keep the map from becoming excessively huge vertically in some layouts */
+    max-height: 85vh;
+  }
+  .worldmap-svg .countries path {
+    stroke-width: 1.6px;
+  }
+  .worldmap-svg .pins .pin-icon path {
+    stroke-width: 1.6px;
+  }
+  .worldmap-svg .pins text {
+    font-size: 18px !important;
+    stroke-width: 2.4px !important;
+  }
+}
+
   will-change: transform, box-shadow;
   cursor: pointer; /* show pointer when hovering cards to indicate clickability */
 }
@@ -94,4 +173,125 @@ body {
     transform: none !important;
     box-shadow: none !important;
   }
+}
+
+/* Mobile / "Mobile L" adjustments: make the world map visually match the
+   supplied SVG on narrow viewports. This forces a compact height, enlarges
+   pin labels and increases stroke weight of the pin outlines so labels stay
+   legible on phones (overrides inline SVG font-size where necessary). */
+@media (max-width: 820px) {
+  .worldmap-svg {
+    /* match the SVG snippet's height behaviour (approx 30% of viewport) */
+    width: 100%;
+    height: 30vh;
+    max-height: 40vh;
+    display: block;
+  }
+
+  /* Pin icons: slightly larger and vertically nudged so the text doesn't
+     collide with the pin tip on narrow screens. Use transform with an
+     explicit transform-origin so SVG <g> transforms behave predictably. */
+  .worldmap-svg .pins .pin-icon {
+    transform-origin: center;
+    /* override inline transform.scale where present; scale up a bit */
+    transform: translateY(-6px) scale(0.95);
+  }
+
+  /* Make the pin marker outlines a bit bolder on mobile */
+  .worldmap-svg .pins .pin-icon path {
+    stroke-width: 1px;
+  }
+
+  /* Force label sizes to be readable on phones (important to beat inline attrs) */
+  .worldmap-svg .pins text {
+    font-size: 18px !important;
+    stroke-width: 3.2px !important; /* keeps the white/black outline visible */
+    paint-order: stroke; /* ensure stroke sits under the fill */
+    dominant-baseline: middle;
+    alignment-baseline: middle;
+  }
+}
+
+/* Extra-small phones: slightly reduce label size to avoid wrapping */
+@media (max-width: 420px) {
+  .worldmap-svg {
+    height: 28vh;
+    max-height: 36vh;
+  }
+  .worldmap-svg .pins text {
+    font-size: 16px !important;
+    stroke-width: 2.6px !important;
+  }
+}
+
+/* Tablet-specific tuning: improve proportions and legibility on iPad-like sizes
+   (roughly 641px — 1024px). This increases pin label size a bit, slightly
+   thickens outlines, and caps the wrapper height to avoid pushing content. */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .worldmap-svg {
+    /* On tablets prefer the SVG to fill the wrapper width (not the viewport
+       height). Previously we forced a height (42vh) which made the SVG's
+       computed width equal to 2x that height (due to the 2:1 viewBox), so on
+       typical tablet viewports the map became narrower than the page width
+       (e.g. 824px at a 1024px viewport). Use the wrapper's aspect-ratio to
+       control height and allow the SVG to size by width. */
+    width: 100%;
+    height: 100%; /* fill the wrapper's computed height */
+    max-height: 520px;
+    display: block;
+  }
+
+  .worldmap-svg .pins .pin-icon {
+    transform: translateY(-4px) scale(0.98);
+  }
+
+  .worldmap-svg .pins .pin-icon path {
+    stroke-width: 1.2px;
+  }
+
+  .worldmap-svg .pins text {
+    font-size: 18px !important;
+    stroke-width: 3px !important;
+    dominant-baseline: middle;
+    alignment-baseline: middle;
+  }
+
+  .map-wrapper {
+    /* restrict maximum expansion on tablets while keeping 2:1 ratio */
+    max-height: 520px;
+  }
+}
+
+/* Wrapper to keep the world map from forcing a large inline height. We prefer
+   to let the SVG scale naturally; on small viewports cap the wrapper so the
+   map doesn't push following content down. */
+.map-wrapper {
+  /* Keep the wrapper fluid but maintain the SVG's 2:1 aspect ratio so pins
+     and labels keep relative positions across viewports. A max-height caps
+     extreme expansion on very wide screens. */
+  width: 100%;
+  aspect-ratio: 2 / 1;
+  height: auto;
+  max-height: 720px;
+}
+
+@media (max-width: 820px) {
+  .map-wrapper {
+    /* On narrow viewports prefer a viewport-relative cap so the map doesn't
+       push following content too far down on short screens. */
+    max-height: 40vh;
+  }
+}
+
+/* Force uniform pin label typography across all responsive breakpoints.
+   This overrides inline `fontSize` attributes and media-query tweaks so
+   country labels keep the same font family and size everywhere. */
+.worldmap-svg .pins text {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial !important;
+  font-size: 12px !important; /* choose the desired uniform size here */
+  stroke-width: 0.8px !important;
+  paint-order: stroke;
+  dominant-baseline: middle;
+  alignment-baseline: middle;
+  pointer-events: none;
 }

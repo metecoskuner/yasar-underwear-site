@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useRef, useState } from 'react';
 import { geoEquirectangular, geoPath } from 'd3-geo';
 import { feature } from 'topojson-client';
@@ -11,6 +12,7 @@ const BASE_HEIGHT = 600;
 export default function WorldMapRestored() {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [width, setWidth] = useState(BASE_WIDTH);
+  const [hovered, setHovered] = useState<string | null>(null);
 
   useEffect(() => {
     const el = containerRef.current;
@@ -43,13 +45,7 @@ export default function WorldMapRestored() {
               fill="#2c6f86" /* lighter slate so continents are visible on black ocean */
               stroke="#163f4a"
               strokeWidth={0.6}
-              style={{ transition: 'fill 120ms ease', mixBlendMode: 'screen' }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as SVGPathElement).style.fill = '#3a9ab3';
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as SVGPathElement).style.fill = '#2c6f86';
-              }}
+              style={{ transition: 'fill 120ms ease', mixBlendMode: 'screen', pointerEvents: 'none' }}
             />
           ))}
         </g>
@@ -58,9 +54,10 @@ export default function WorldMapRestored() {
           {LOCATIONS.map((loc) => {
             const [x, y] = projection([loc.lon, loc.lat]) as [number, number];
             const isCenter = !!loc.isCenter;
+            const onPointerEnter = () => setHovered(loc.id);
+            const onPointerLeave = () => setHovered((cur) => (cur === loc.id ? null : cur));
             return (
-              <g key={loc.id} transform={`translate(${x},${y})`} className="pointer-events-auto">
-                <title>{loc.name}</title>
+              <g key={loc.id} transform={`translate(${x},${y})`} aria-hidden onPointerEnter={onPointerEnter} onPointerLeave={onPointerLeave}>
                 {/* bright pin with subtle outer glow effect via stroke */}
                 <circle
                   r={isCenter ? 8 : 5}
@@ -69,13 +66,17 @@ export default function WorldMapRestored() {
                   strokeWidth={1.5}
                   style={{ filter: isCenter ? 'drop-shadow(0 2px 6px rgba(0,230,195,0.35))' : undefined }}
                 />
-                {(isCenter || loc.offsetX !== undefined || loc.offsetY !== undefined) ? (
+                {hovered === loc.id ? (
                   <text
                     x={(loc.offsetX ?? 10)}
                     y={(loc.offsetY ?? -8)}
                     fontSize={12}
-                    fill="#e6eef8"
+                    fill="#ffffff"
+                    stroke="#000000"
+                    strokeWidth={0.9}
+                    strokeLinejoin="round"
                     fontWeight={isCenter ? 700 : 500}
+                    style={{ pointerEvents: 'none', paintOrder: 'stroke' }}
                   >
                     {loc.name}
                   </text>

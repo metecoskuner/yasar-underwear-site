@@ -17,15 +17,15 @@ export default function FlagsStrip({ className = '' }: { className?: string }) {
         <div className="marquee" aria-hidden="false">
           <div className="marquee__inner">
             {LOCATIONS.map((loc) => (
-              <div key={`a-${loc.id}`} className="flex flex-col items-center space-y-1 text-center text-base sm:text-lg whitespace-nowrap px-6 sm:px-8">
-                <span aria-hidden className="text-3xl sm:text-4xl leading-none">{flagEmoji(loc.id)}</span>
-                <span className="text-sm sm:text-base font-extrabold">{loc.name}</span>
+              <div key={`a-${loc.id}`} className="flex flex-col items-center space-y-1 text-center text-sm sm:text-base whitespace-nowrap px-4 sm:px-6 md:px-8">
+                <span aria-hidden className="text-2xl sm:text-3xl md:text-4xl leading-none">{flagEmoji(loc.id)}</span>
+                <span className="text-xs sm:text-sm md:text-base font-extrabold">{loc.name}</span>
               </div>
             ))}
             {LOCATIONS.map((loc) => (
-              <div key={`b-${loc.id}`} className="flex flex-col items-center space-y-1 text-center text-base sm:text-lg whitespace-nowrap px-6 sm:px-8">
-                <span aria-hidden className="text-3xl sm:text-4xl leading-none">{flagEmoji(loc.id)}</span>
-                <span className="text-sm sm:text-base font-extrabold">{loc.name}</span>
+              <div key={`b-${loc.id}`} className="flex flex-col items-center space-y-1 text-center text-sm sm:text-base whitespace-nowrap px-4 sm:px-6 md:px-8">
+                <span aria-hidden className="text-2xl sm:text-3xl md:text-4xl leading-none">{flagEmoji(loc.id)}</span>
+                <span className="text-xs sm:text-sm md:text-base font-extrabold">{loc.name}</span>
               </div>
             ))}
           </div>

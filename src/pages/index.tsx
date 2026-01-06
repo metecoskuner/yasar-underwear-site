@@ -7,7 +7,9 @@ import ProductGrid from '../components/ProductGrid';
 import dynamic from 'next/dynamic';
 
 // Dynamically import the WorldMap component (client-only)
-// ensure TypeScript understands the loader returns the component default export
+// Dynamically load the WorldMap component (client-only)
+// dynamic import type is noisy; explicitly allow the any here
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const WorldMap = dynamic(() => import('../components/WorldMap') as Promise<any>, { ssr: false });
 
 export default function Home() {
@@ -24,8 +26,10 @@ export default function Home() {
   {/* Re-added world map component (full-width) */}
       <section className="w-full mx-0 my-0 px-0">
     <div className="w-full">
-      {/* mobile fixed to 258px, restore larger breakpoints for desktop sizes */}
-      <div className="w-full h-[258px] sm:h-[420px] md:h-[520px] lg:h-[640px] mb-6 md:mb-12 z-0">
+      {/* Map container: use a responsive aspect-ratio wrapper so the SVG keeps
+          its 2:1 proportions across devices and doesn't force extra vertical
+          space that pushes other blocks down. */}
+      <div className="w-full map-wrapper mb-0 md:mb-4 z-20 overflow-hidden">
         <WorldMap />
       </div>
     </div>

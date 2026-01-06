@@ -42,7 +42,7 @@ export default function WhyUs() {
           Neden Biz?
         </h2>
 
-        <p className="text-center text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-6 sm:mb-8 text-sm sm:text-base">
+            <p className="text-center text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-6 sm:mb-8 text-sm sm:text-base">
           Kurulduğumuz günden bu yana kaliteyi, konforu ve müşteri memnuniyetini merkeze alıyoruz.
 
         </p>
@@ -62,7 +62,7 @@ export default function WhyUs() {
               </svg>
             </div>
             <h3 className="text-base sm:text-lg font-medium text-gray-900 dark:text-gray-100">50+ Yıllık Tecrübe</h3>
-            <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mt-1 sm:mt-2">1969'dan bu yana iç giyim sektöründe uzmanlık, güven ve istikrarlı üretim anlayışı.</p>
+            <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mt-1 sm:mt-2">1969&apos;dan bu yana iç giyim sektöründe uzmanlık, güven ve istikrarlı üretim anlayışı.</p>
           </SlideLi>
 
           <SlideLi side="right">

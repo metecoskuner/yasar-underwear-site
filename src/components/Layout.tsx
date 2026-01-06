@@ -1,10 +1,22 @@
 import React from 'react';
+import { useRouter } from 'next/router';
 import Header from './Header';
 import Footer from './Footer';
 import FlagsStrip from './FlagsStrip';
+import ContactSection from './ContactSection';
 import WhatsAppButton from './WhatsAppButton';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
+  const router = useRouter();
+  // Workaround: in some build setups Header's inferred type can become '() => unknown'
+  // which TypeScript will reject as a JSX element type. Coerce to a component
+  // type so it can be used in JSX. This mirrors the approach used for ContactSection.
+  const HeaderComp = Header as unknown as React.ComponentType<unknown>;
+  // Some versions of the ContactSection export can be typed as unknown by the TS
+  // checker in this workspace; coerce to a React component type to avoid
+  // spurious TS2786 when used as JSX. This is a small, local workaround.
+  const ContactSectionComp = ContactSection as unknown as React.ComponentType<unknown>;
+
   return (
     <div className="min-h-screen flex flex-col">
       {/* Skip link: visible when focused for keyboard users */}
@@ -14,14 +26,19 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       >
         Sayfaya atla
       </a>
-      <Header />
+  <HeaderComp />
   <main id="content" className="flex-1">{children}</main>
       {/* Flags strip between main content (e.g. WorldMap) and footer */}
+      {/* Render flags only on the homepage to avoid visual clutter on inner pages */}
       {/* Reduce vertical padding on small screens so flags sit closer to the map */}
-      <section className="w-full bg-white text-black py-2 md:py-6 relative z-10">
-        {/* FlagsStrip rendered full-bleed (edge-to-edge) so all flags can appear across the page */}
-        <FlagsStrip />
-      </section>
+      {router.pathname === '/' && (
+        <section className="w-full bg-white text-black py-2 md:py-6 relative z-0">
+          {/* FlagsStrip rendered full-bleed (edge-to-edge) so all flags can appear across the page */}
+          <FlagsStrip />
+        </section>
+      )}
+      {/* Contact section rendered above the footer only on the homepage */}
+  {router.pathname === '/' && <ContactSectionComp />}
   <Footer />
       {/* Site-wide WhatsApp floating CTA */}
       <WhatsAppButton />

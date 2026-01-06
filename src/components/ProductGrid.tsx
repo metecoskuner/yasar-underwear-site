@@ -14,7 +14,7 @@ function SlideCard({ id, side = 'left', children }: { id?: string; side?: 'left'
 
 export default function ProductGrid() {
   return (
-  <section className="max-w-6xl mx-auto px-4 py-12">
+  <section className="max-w-6xl mx-auto px-4 py-6 md:py-12">
       <div className="flex items-center justify-between mb-6">
         <div>
           <h2 className="text-xl font-semibold">Öne Çıkan Ürünler</h2>

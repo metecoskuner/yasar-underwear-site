@@ -30,7 +30,7 @@ export default function WhatsAppButton({ number }: { number?: string }) {
       onClick={handleClick}
       aria-label="WhatsApp uygulamasında aç"
       title="WhatsApp uygulamasında aç"
-  className="fixed right-4 bottom-28 z-[60] bg-[#25D366] hover:bg-[#1bbf57] text-white p-3 rounded-full shadow-2xl hover:shadow-2xl ring-1 ring-black/6 flex items-center justify-center w-14 h-14 transition-transform transform hover:scale-110"
+      className="fixed right-4 bottom-28 z-[60] bg-[#25D366] hover:bg-[#1bbf57] text-white p-3 rounded-full shadow-2xl hover:shadow-2xl ring-1 ring-black/6 flex items-center justify-center w-14 h-14 transition-transform transform hover:scale-110"
     >
       <span className="sr-only">WhatsApp</span>
       <svg

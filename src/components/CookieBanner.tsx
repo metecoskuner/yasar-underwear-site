@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import ReactDOM from 'react-dom';
 
 type Consent = {
   necessary: true;
@@ -14,14 +15,14 @@ function readConsent(): Consent | null {
   try {
     const raw = localStorage.getItem(CONSENT_KEY);
     if (raw) return JSON.parse(raw) as Consent;
-  } catch (e) {
+  } catch {
     // ignore
   }
   // try cookie fallback
   try {
     const match = document.cookie.match(new RegExp('(^| )' + CONSENT_KEY + '=([^;]+)'));
     if (match) return JSON.parse(decodeURIComponent(match[2])) as Consent;
-  } catch (e) {
+  } catch {
     // ignore
   }
   return null;
@@ -30,41 +31,42 @@ function readConsent(): Consent | null {
 function writeConsent(consent: Consent) {
   try {
     localStorage.setItem(CONSENT_KEY, JSON.stringify(consent));
-  } catch (e) {
+  } catch {
     // ignore
   }
   try {
     const v = encodeURIComponent(JSON.stringify(consent));
     // 365 days
     document.cookie = `${CONSENT_KEY}=${v}; max-age=${365 * 24 * 60 * 60}; path=/; samesite=lax`;
-  } catch (e) {
+  } catch {
     // ignore
   }
   // make available to other scripts at runtime
   try {
-    (window as any).__yasarConsent = consent;
-  } catch (e) {
+    // avoid `any` here to satisfy lint rules
+    (window as unknown as { __yasarConsent?: Consent }).__yasarConsent = consent;
+  } catch {
     // ignore
   }
 }
 
 export default function CookieBanner() {
-  const [consent, setConsent] = useState<Consent | null>(null);
-  const [show, setShow] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
 
+  // Initialize consent synchronously from storage to avoid calling setState inside an effect
+  const [initialConsent] = useState<Consent | null>(() => readConsent());
+  const [consent, setConsent] = useState<Consent | null>(initialConsent);
+  const [show, setShow] = useState(() => !initialConsent);
+
   useEffect(() => {
-    const c = readConsent();
-    if (c) {
-      setConsent(c);
+    if (consent) {
       try {
-        (window as any).__yasarConsent = c;
-      } catch (e) {}
-      setShow(false);
-    } else {
-      setShow(true);
+        (window as unknown as { __yasarConsent?: Consent }).__yasarConsent = consent;
+      } catch {
+        // ignore
+      }
     }
-  }, []);
+  }, [consent]);
 
   const save = (partial: Partial<Consent>) => {
     const next: Consent = {
@@ -86,9 +88,10 @@ export default function CookieBanner() {
 
   if (!show) return null;
 
-  return (
-    <div className="fixed left-4 right-4 bottom-6 z-30 md:left-8 md:right-auto md:right-8">
-      <div className="max-w-3xl mx-auto bg-white/95 dark:bg-black/80 text-black dark:text-white rounded-lg shadow-2xl ring-1 ring-black/5 p-4 flex flex-col md:flex-row items-start md:items-center gap-3">
+  // Render the banner into a top-level portal so stacking context issues don't block pointer events
+  const banner = (
+    <div className="fixed left-4 right-4 bottom-6 z-[9999] md:left-8 md:right-auto md:right-8" role="dialog" aria-label="Çerez tercihleri">
+      <div className="max-w-3xl mx-auto bg-white/95 dark:bg-black/80 text-black dark:text-white rounded-lg shadow-2xl ring-1 ring-black/5 p-4 flex flex-col md:flex-row items-start md:items-center gap-3 pointer-events-auto">
         <div className="flex-1 text-sm leading-tight">
           <strong className="block font-semibold">Çerez tercihleri</strong>
           <p className="mt-1 text-xs text-gray-700 dark:text-gray-200">Sitemiz deneyimi iyileştirmek için çerezler kullanır. Analitik ve pazarlama çerezlerini kabul edip etmemek size bağlıdır.</p>
@@ -201,4 +204,9 @@ export default function CookieBanner() {
       </div>
     </div>
   );
+
+  // Only render portal on client
+  if (typeof document === 'undefined') return null;
+  const portalRoot = document.body;
+  return ReactDOM.createPortal(banner, portalRoot);
 }
