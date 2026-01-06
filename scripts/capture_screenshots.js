@@ -1,5 +1,4 @@
 const { chromium, devices } = require('playwright');
-const { chromium, devices } = require('playwright');
 const fs = require('fs');
 const path = require('path');
 const sharp = require('sharp');
