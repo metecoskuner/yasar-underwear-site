@@ -1,0 +1,37 @@
+name: Capture Screenshots
+
+on:
+  workflow_dispatch: {}
+  push:
+    branches:
+      - feat/mobile-header-contact
+
+jobs:
+  screenshots:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: |
+          npm ci
+
+      - name: Install Playwright browsers
+        run: |
+          npx playwright install --with-deps
+
+      - name: Run screenshot script
+        run: |
+          npm run capture-screenshots
+
+      - name: Upload screenshots artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots
+          path: screenshots/

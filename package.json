@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "capture-screenshots": "node ./scripts/capture_screenshots.js"
   },
   "dependencies": {
     "d3-geo": "^3.1.1",
@@ -28,6 +29,8 @@
     "eslint": "^9",
     "eslint-config-next": "16.0.3",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "playwright": "^1.38.0",
+    "sharp": "^0.32.0"
   }
 }
