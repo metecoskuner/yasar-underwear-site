@@ -16,8 +16,9 @@ fs.mkdirSync(outDir, { recursive: true });
     // Desktop screenshot
     const desktopContext = await browser.newContext({ viewport: { width: 1200, height: 800 } });
     const page = await desktopContext.newPage();
-    console.log('Navigating to', url, '(desktop)');
-    await page.goto(url, { waitUntil: 'networkidle' });
+  console.log('Navigating to', url, '(desktop)');
+  // Use domcontentloaded and a longer timeout in case the site is slow to respond from CI/local
+  await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
     const desktopPath = path.join(outDir, 'yasar-desktop-raw.png');
     await page.screenshot({ path: desktopPath, fullPage: false });
     console.log('Saved desktop screenshot to', desktopPath);
@@ -27,8 +28,8 @@ fs.mkdirSync(outDir, { recursive: true });
     const iPhone = devices['iPhone 12'];
     const mobileContext = await browser.newContext({ ...iPhone });
     const page2 = await mobileContext.newPage();
-    console.log('Navigating to', url, '(mobile: iPhone 12)');
-    await page2.goto(url, { waitUntil: 'networkidle' });
+  console.log('Navigating to', url, '(mobile: iPhone 12)');
+  await page2.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
     const mobilePath = path.join(outDir, 'yasar-mobile-raw.png');
     await page2.screenshot({ path: mobilePath, fullPage: false });
     console.log('Saved mobile screenshot to', mobilePath);
