@@ -1,3 +1,4 @@
+import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect, useRef, useLayoutEffect } from "react";
@@ -25,7 +26,7 @@ const NAMES: Record<LangOption, string> = {
   RU: "Русский",
 };
 
-export default function Header(): JSX.Element {
+export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
   const [mobileLangOpen, setMobileLangOpen] = useState(false);
