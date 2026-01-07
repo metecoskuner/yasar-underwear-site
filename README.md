@@ -6,6 +6,7 @@ Quick setup and usage instructions.
 
 Live Demo
 
+[Check it out here](https://yasar-underwear-site-fp6u4ibd2-metes-projects-d3b2be38.vercel.app/)
 🚀 View live on Vercel￼
 
 ⚠️ Note: Only the homepage is live for now. Images are placeholders; full site and real assets coming soon.
