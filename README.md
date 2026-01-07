@@ -1,66 +1,57 @@
-# Yasar Underwear Site
+Yasar Underwear Site
 
-Kısa kurulum ve çalışma talimatları.
+Quick setup and usage instructions.
 
-Gereksinimler
-# Yasar Underwear Site
+⸻
 
-Bu depo Yasar markası için yeniden tasarlanmış bir Next.js ön yüzünü içerir.
+Live Demo
 
-## Türkçe (TR)
+🚀 View live on Vercel￼
 
-Kısa Açıklama
-: Basit bir Next.js projesi. Ürün kartları, ana sayfa, koleksiyon sayfaları ve çoklu dil (i18n) için hazırlık içerir.
+⚠️ Note: Only the homepage is live for now. Images are placeholders; full site and real assets coming soon.
 
-Gereksinimler
-- Node.js v16 veya üzeri
-- npm veya yarn
+⸻
 
+Short Description
 
+This repository contains a redesigned Next.js front-end for the Yasar brand. It includes:
+	•	Homepage and product cards
+	•	Collection pages
+	•	Multilingual (i18n) readiness
 
-Eklenecek/Öneriler
-- SEO meta tag'ları, mobil navigasyon, CI/CD workflow ve i18n iyileştirmeleri.
-
-## English (EN)
-
-Short description
-This repository contains a redesigned Next.js front-end for the Yasar brand.
+⸻
 
 Requirements
-- Node.js v16+
-- npm or yarn
+	•	Node.js v16 or higher
+	•	npm or yarn
 
-Local setup
-```bash
+
+  Local Setup
 cd /Users/metecoskuner/yasar-redesign/yasar-underwear-site
 npm install
 # or
 # yarn install
-```
 
 Development
-```bash
 npm run dev
 # then open http://localhost:3000
-```
 
 Production
-```bash
 npm run build
 npm start
-```
 
 Notes
-- `.gitignore` includes common ignores (node_modules, .next, .env).
-- Images are in `/public/photos/`.
+	•	.gitignore includes node_modules, .next, .env, and other standard ignores
+	•	Images are located in /public/photos/
 
-Deploy
-You can deploy this Next.js app to Vercel, Netlify or any Node hosting. For Vercel, connect the GitHub repository and follow Vercel setup.
+⸻
 
+Deployment
+
+You can deploy this Next.js app to Vercel, Netlify, or any Node hosting.
+For Vercel, connect the GitHub repository and follow Vercel setup instructions.
 
 Contact
-Hazırlayan: Mete
 
----
-
+Author: Mete Coskuner
 
