@@ -1,4 +1,0 @@
-# Ignore backup and build artifacts so lint only runs on source
-backup/
-.next/
-node_modules/

@@ -1,7 +1,7 @@
-const { chromium, devices } = require('playwright');
-const fs = require('fs');
-const path = require('path');
-const sharp = require('sharp');
+import { chromium } from 'playwright';
+import fs from 'fs';
+import path from 'path';
+import sharp from 'sharp';
 
 const defaultUrl = 'https://yasar-underwear-site-fp6u4ibd2-metes-projects-d3b2be38.vercel.app/';
 const url = process.env.SCREENSHOT_URL || process.argv[2] || defaultUrl;
@@ -24,16 +24,45 @@ fs.mkdirSync(outDir, { recursive: true });
     console.log('Saved desktop screenshot to', desktopPath);
     await desktopContext.close();
 
-    // Mobile screenshot (iPhone 12)
-    const iPhone = devices['iPhone 12'];
-    const mobileContext = await browser.newContext({ ...iPhone });
-    const page2 = await mobileContext.newPage();
-  console.log('Navigating to', url, '(mobile: iPhone 12)');
+  // Mobile screenshot (small)
+  const mobileContext = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2 });
+  const page2 = await mobileContext.newPage();
+  console.log('Navigating to', url, '(mobile small)');
   await page2.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
-    const mobilePath = path.join(outDir, 'yasar-mobile-raw.png');
-    await page2.screenshot({ path: mobilePath, fullPage: false });
-    console.log('Saved mobile screenshot to', mobilePath);
-    await mobileContext.close();
+  const mobilePath = path.join(outDir, 'yasar-mobile-raw.png');
+  await page2.screenshot({ path: mobilePath, fullPage: false });
+  console.log('Saved mobile screenshot to', mobilePath);
+  await mobileContext.close();
+
+  // Mobile large (e.g. Android / bigger phones)
+  const mobileLargeContext = await browser.newContext({ viewport: { width: 428, height: 926 }, deviceScaleFactor: 2 });
+  const pageMobileLarge = await mobileLargeContext.newPage();
+  console.log('Navigating to', url, '(mobile large)');
+  await pageMobileLarge.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
+  const mobileLargePath = path.join(outDir, 'yasar-mobile-large-428x926.png');
+  await pageMobileLarge.screenshot({ path: mobileLargePath, fullPage: false });
+  console.log('Saved mobile large screenshot to', mobileLargePath);
+  await mobileLargeContext.close();
+
+  // Tablet portrait
+  const tabletContext = await browser.newContext({ viewport: { width: 834, height: 1194 }, deviceScaleFactor: 2 });
+  const pageTablet = await tabletContext.newPage();
+  console.log('Navigating to', url, '(tablet portrait)');
+  await pageTablet.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
+  const tabletPath = path.join(outDir, 'yasar-tablet-834x1194.png');
+  await pageTablet.screenshot({ path: tabletPath, fullPage: false });
+  console.log('Saved tablet screenshot to', tabletPath);
+  await tabletContext.close();
+
+  // Tablet landscape
+  const tabletLandscapeContext = await browser.newContext({ viewport: { width: 1194, height: 834 }, deviceScaleFactor: 2 });
+  const pageTabletLandscape = await tabletLandscapeContext.newPage();
+  console.log('Navigating to', url, '(tablet landscape)');
+  await pageTabletLandscape.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
+  const tabletLandscapePath = path.join(outDir, 'yasar-tablet-landscape-1194x834.png');
+  await pageTabletLandscape.screenshot({ path: tabletLandscapePath, fullPage: false });
+  console.log('Saved tablet landscape screenshot to', tabletLandscapePath);
+  await tabletLandscapeContext.close();
 
     // Resize and prepare LinkedIn-ready images using sharp
     const desktopResizedPath = path.join(outDir, 'yasar-desktop-1200x627.png');

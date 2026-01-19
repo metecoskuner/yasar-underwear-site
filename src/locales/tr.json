@@ -5,10 +5,246 @@
     "sale": "Kampanyalar",
     "about": "Hakkımızda",
     "contact": "İletişim",
-    "language": "Dil"
+    "language": "Dil",
+    "corporate": {
+      "title": "Kurumsal",
+      "about": "Hakkımızda",
+      "description": "Yasar Tekstil - misyonumuz, vizyonumuz ve kurumsal değerlerimiz hakkında özet bilgiler.",
+      "aboutSubtitle": "Şirket geçmişi, değerler ve misyon & vizyon bilgileri"
+    },
+    "production": {
+      "title": "Üretim",
+      "facilities": "Tesislerimiz",
+      "quality": "Kalite Süreçlerimiz",
+      "description": "Tesislerimiz, kapasitemiz ve kalite süreçlerimiz hakkında detaylı bilgi.",
+      "facilitiesSubtitle": "Tesis altyapısı, kapasite ve görseller",
+      "qualitySubtitle": "Kalite kontrolleri, testler ve sertifikasyon"
+    },
+    "sustainability": "Sürdürülebilirlik",
+    "products": "Ürünler"
   },
   "hero": {
     "title": "Konfor ve Şıklık",
     "subtitle": "Günlük iç giyim koleksiyonumuzla rahatlığı deneyimleyin"
+  }
+  ,
+  "pages": {
+    "products": {
+      "title": "Ürünler — Yasar",
+      "description": "Yasar ürün koleksiyonu",
+      "hero": {
+        "title": "Erkek & Kadın İç Giyim Koleksiyonu",
+        "subtitle": "Günlük kullanıma uygun, yüksek kaliteli kumaşlarla üretilmiş ürünlerimizi inceleyin.",
+        "ctaInspect": "Ürünleri İncele",
+        "ctaContact": "Bizimle İletişime Geç"
+      },
+      "gender": {
+        "all": "Tümü",
+        "male": "Erkek",
+        "female": "Kadın"
+      },
+      "searchPlaceholder": "Ürün ara",
+      "noResults": "Sonuç bulunamadı",
+      "productCode": "Ürün kodu:",
+      "copy": "Kopyala",
+      "copied": "Kopyalandı",
+      "copyCodeAria": "Ürün kodunu kopyala",
+      "preview": "Önizleme",
+      "requestInfo": "Bilgi Al",
+      "requestInfoAria": "Bilgi Al -"
+    }
+    ,
+    "about": {
+      "title": "Kurumsal - Yasar",
+      "description": "Yasar Tekstil hakkında, misyonumuz, vizyonumuz ve üretim altyapımız.",
+      "hero": {
+        "title": "Kurumsal",
+        "desc": "Yasar olarak kalite, sürdürülebilirlik ve çalışan refahını merkeze alan üretim süreçleri ile iç giyim sektöründe öne çıkıyoruz. Türkiye’deki tesislerimizde modern üretim teknikleriyle dünya standartlarında ürünler geliştiriyoruz."
+      },
+      "cta": {
+        "facilities": "Tesislerimiz",
+        "quality": "Kalite Süreçleri"
+      },
+      "imageAlt": "Üretim Tesisleri",
+      "isoLines": "ISO uyumlu üretim hatları",
+      "sections": {
+        "about": {
+          "title": "Hakkımızda",
+          "desc": "Şirket geçmişimiz, üretim felsefemiz, misyon ve vizyonumuz hakkında detaylı bilgi alın."
+        }
+      },
+      "values": {
+        "design": { "title": "Tasarım & Konfor", "body": "İyi tasarım, dayanıklılık ve kullanım rahatlığı bir arada." },
+        "facilities": { "title": "Modern Tesisler", "body": "Enerji verimli, izlenebilir üretim altyapısı." },
+        "responsibility": { "title": "Sosyal Sorumluluk", "body": "Çalışan sağlığı, adil ücretlendirme ve çevresel önlemler." }
+      },
+      "quick": {
+        "title": "Hızlı Bakış",
+        "labels": { "experience": "Yıllık tecrübe", "audits": "Denetim / yıl", "reducedWaste": "Azaltılmış atık" }
+      },
+      "contactPrompt": "Daha fazla bilgi veya kurumsal iş birliği talepleri için bizimle iletişime geçin.",
+      "collab": { "title": "İş Birliği & Talepler", "body": "Saha ziyaretleri, teknik sorular veya büyük hacimli sipariş talepleri için doğrudan iletişime geçebilirsiniz.", "cta": "İletişime Geç" }
+    }
+  }
+  ,
+  "wishlist": {
+    "title": "Favoriler",
+    "clear": "Hepsini Kaldır",
+    "emptyTitle": "Favori listen boş",
+    "emptyBody": "Beğendiğin ürünleri kalbe tıklayarak favorilere ekleyebilirsin.",
+    "viewProducts": "Ürünleri Görüntüle",
+    "added": "Ürün favorilere eklendi ❤️",
+    "remove": "Kaldır"
+  },
+  "footer": {
+    "links": "Bağlantılar",
+    "home": "Ana sayfa",
+    "products": "Ürünlerimiz",
+    "sustainability": "Sürdürülebilirlik",
+    "contact": "İletişim",
+    "corporate": {
+      "title": "Kurumsal",
+      "about": "Hakkımızda",
+      "vision": "Vizyon",
+      "mission": "Misyon",
+      "clients": "Müşterilerimiz"
+    },
+    "production": {
+      "title": "Üretim",
+      "facilities": "Üretim Tesislerimiz",
+      "quality": "Kalite Süreçlerimiz"
+    },
+    "follow": {
+      "title": "Bizi takip et",
+      "desc": "Sosyal kanallarımızdan kampanyaları ve yenilikleri takip edebilirsiniz."
+    },
+    "contactInfo": {
+      "title": "İletişim",
+      "phone": "+90 212 000 00 00",
+      "email": "info@yasar.example",
+      "map": "Adresimizi haritada gör"
+    },
+    "company": {
+      "paragraph1": "Türkiye yapımı iç giyim. Konfor ve kalite odaklı.",
+      "paragraph2": "1969 yılında kurulan firmamız, yarım asrı aşan köklü tecrübesiyle gecelik, pijama takımı, paçalı pijama altı ve iç giyim üretiminde uzmanlaşmış, sektörün önde gelen üretici ve ihracatçıları arasında yer almaktadır.",
+      "paragraph3": "Amerika, Fransa, İspanya, Yunanistan, İsrail başta olmak üzere Doğu Avrupa ve Orta Doğu pazarlarına gerçekleştirdiğimiz ihracatlarla, yüksek kalite standartlarımızı ve müşteri odaklı yaklaşımımızı uluslararası arenada başarıyla temsil ediyoruz. Güvenilirliği, sürekliliği ve kaliteyi esas alan firmamız, global ölçekte tercih edilen güçlü bir iş ortağı olmayı sürdürmektedir."
+    },
+    "cookie": {
+      "reset": "Çerezleri sıfırla"
+    },
+    "privacy": "Gizlilik",
+    "terms": "Kullanım Şartları",
+    "copyright": "© {year} Yasar. Tüm hakları saklıdır.",
+    "backToTop": "Sayfanın başına dön"
+  }
+  ,
+  "components": {
+    "productCard": {
+      "inspect": "İncele",
+      "imageAlt": "Ürün görseli",
+      "categories": {
+        "ic-giyim": "İç Giyim",
+        "ev-giyim": "Ev Giyimi",
+        "corap": "Çorap & Aksesuar",
+        "aktif": "Aktif & Rahat"
+      },
+      "wishlist": {
+        "add": "Favorilere ekle",
+        "remove": "Favorilerden çıkar"
+      }
+    },
+    "productGrid": {
+      "title": "Öne Çıkan Ürünler",
+      "subtitle": "Seçtiğimiz popüler ve önerilen ürünler — kalite ve konfor bir arada.",
+      "viewAll": "Tümünü Gör"
+    },
+    "categories": {
+      "ic-giyim": "İç Giyim",
+      "ev-giyim": "Ev Giyimi",
+      "corap": "Çorap & Aksesuar",
+      "aktif": "Aktif & Rahat"
+    },
+    "common": {
+      "imagePlaceholder": "Resim"
+    },
+    "cookieBanner": {
+      "ariaLabel": "Çerez tercihleri",
+      "title": "Çerez tercihleri",
+      "body": "Sitemiz deneyimi iyileştirmek için çerezler kullanır. Analitik ve pazarlama çerezlerini kabul edip etmemek size bağlıdır.",
+      "privacyLink": "Gizlilik Politikası",
+      "acceptAll": "Tümünü kabul et",
+      "settings": "Ayarlar",
+      "reject": "Reddet",
+      "settingsTitle": "Çerez ayarları",
+      "settingsBody": "Hangi çerezleri kabul etmek istediğinizi seçin.",
+      "required": { "title": "Zorunlu", "body": "Site çalışması için gerekli çerezler (devre dışı bırakılamaz)." },
+      "analytics": { "title": "Analitik", "body": "Site kullanımını anlamamıza yardımcı olur." },
+      "marketing": { "title": "Pazarlama", "body": "Reklam ve hedefleme çerezleri." },
+      "cancel": "Vazgeç",
+      "save": "Kaydet"
+    },
+    "hero": {
+      "title": "Konfor & Şıklık — Her Gün",
+      "subtitle": "Yumuşak, nefes alan iç giyim koleksiyonumuzla rahatlığı ve zarafeti keşfedin. Türkiye'de tasarlandı.",
+      "ctaCollections": "Koleksiyonları Gör",
+      "ctaQuote": "Teklif Al"
+    },
+    "contact": {
+      "title": "İletişime Geç",
+      "intro": "Sorularınız, iş birlikleri veya toptan talepler için bize yazabilirsiniz. Ortalama dönüş süresi",
+      "avgResponse": "24 saat",
+      "replyApprox": "Yanıt: ~24s",
+      "emailLabel": "E-posta",
+      "phoneLabel": "Telefon",
+      "hoursLabel": "Saatler",
+      "hours": "Hafta içi 09:00 – 18:00",
+      "sendEmail": "E-posta Gönder",
+      "callUs": "Bizi Ara",
+      "sending": "Gönderiliyor…",
+      "sendMessage": "Mesaj Gönder",
+      "success": "Mesajınız başarıyla gönderildi ✅",
+      "errors": {
+        "nameRequired": "İsim zorunlu",
+        "emailRequired": "E-posta zorunlu",
+        "emailInvalid": "Geçersiz e-posta",
+        "messageRequired": "Mesaj boş olamaz"
+      },
+      "form": { "name": "İsim", "email": "E-posta", "message": "Mesaj" }
+    },
+    "media": {
+      "title": "Gör, Hisset, Keşfet",
+      "prev": "Önceki",
+      "next": "Sonraki",
+      "goTo": "Git {n}"
+    },
+    "whyUs": {
+      "title": "Neden Biz?",
+      "intro": "Kurulduğumuz günden bu yana kaliteyi, konforu ve müşteri memnuniyetini merkeze alıyoruz.",
+      "experience": { "title": "50+ Yıllık Tecrübe", "body": "1969'dan bu yana iç giyim sektöründe uzmanlık, güven ve istikrarlı üretim anlayışı." },
+      "quality": { "title": "Yüksek Kalite Kumaş", "body": "Cilde dost, nefes alabilir ve uzun ömürlü kumaşlar ile maksimum konfor." },
+      "design": { "title": "Modern & Konforlu Tasarım", "body": "Günlük kullanıma uygun, şık, ergonomik ve kullanıcı odaklı kesimler." },
+      "standards": { "title": "Güvenilir Üretim Standartları", "body": "Her aşamada kontrol edilen dikkatli üretim süreçleri." },
+      "counters": {
+        "monthlyCapacity": "Aylık Üretim Kapasitesi",
+        "facilityArea": "m² Üretim Tesisi",
+        "employees": "Çalışan",
+        "exportCountries": "Ülkeye İhracat"
+      }
+    },
+    "whatsApp": {
+      "open": "WhatsApp uygulamasında aç",
+      "sr": "WhatsApp"
+    }
+  },
+  "locations": {
+    "tr": "Türkiye",
+    "uk": "Birleşik Krallık",
+    "de": "Almanya",
+    "ro": "Romanya",
+    "kw": "Kuveyt",
+    "ly": "Libya",
+    "nl": "Hollanda",
+    "fr": "Fransa",
+    "us": "ABD"
   }
 }

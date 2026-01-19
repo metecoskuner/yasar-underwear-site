@@ -1,5 +1,6 @@
 import React from 'react';
 import LOCATIONS from '../data/locations';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 function flagEmoji(code: string) {
   const map: Record<string, string> = { uk: 'GB' };
@@ -11,6 +12,15 @@ function flagEmoji(code: string) {
 }
 
 export default function FlagsStrip({ className = '' }: { className?: string }) {
+  const { t } = useLanguage();
+  const locName = (id: string, fallback: string) => {
+    try {
+      const v = t(`locations.${id}`);
+      return v === `locations.${id}` ? fallback : v;
+    } catch {
+      return fallback;
+    }
+  };
   return (
     <div className={`w-full mt-0 mb-0 ${className}`}>
       <div className="w-full overflow-hidden h-full flex items-center">
@@ -19,13 +29,13 @@ export default function FlagsStrip({ className = '' }: { className?: string }) {
             {LOCATIONS.map((loc) => (
               <div key={`a-${loc.id}`} className="flex flex-col items-center space-y-1 text-center text-sm sm:text-base whitespace-nowrap px-4 sm:px-6 md:px-8">
                 <span aria-hidden className="text-2xl sm:text-3xl md:text-4xl leading-none">{flagEmoji(loc.id)}</span>
-                <span className="text-xs sm:text-sm md:text-base font-extrabold">{loc.name}</span>
+                <span className="text-xs sm:text-sm md:text-base font-extrabold">{locName(loc.id, loc.name)}</span>
               </div>
             ))}
             {LOCATIONS.map((loc) => (
               <div key={`b-${loc.id}`} className="flex flex-col items-center space-y-1 text-center text-sm sm:text-base whitespace-nowrap px-4 sm:px-6 md:px-8">
                 <span aria-hidden className="text-2xl sm:text-3xl md:text-4xl leading-none">{flagEmoji(loc.id)}</span>
-                <span className="text-xs sm:text-sm md:text-base font-extrabold">{loc.name}</span>
+                <span className="text-xs sm:text-sm md:text-base font-extrabold">{locName(loc.id, loc.name)}</span>
               </div>
             ))}
           </div>

@@ -18,14 +18,18 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          # Next 16 wants Node >=20.9.0; use Node 20 on CI to avoid engine warnings
+          node-version: 20
           cache: 'npm'
 
       - name: Install root dependencies
-        run: npm ci --legacy-peer-deps
+        run: |
+          # Use npm install here because package-lock.json on main may be out of sync.
+          npm install --legacy-peer-deps
 
       - name: Install site dependencies
-        run: npm --prefix yasar-underwear-site ci --legacy-peer-deps
+        run: |
+          npm --prefix yasar-underwear-site install --legacy-peer-deps
 
       - name: Build site
         run: npm --prefix yasar-underwear-site run build

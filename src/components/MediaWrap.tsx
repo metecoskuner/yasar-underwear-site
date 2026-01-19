@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useLanguage } from '@/contexts/LanguageContext';
 
 type VideoItem = { src: string; poster?: string; focal?: string };
 
@@ -12,6 +13,15 @@ const VIDEOS: VideoItem[] = [
 ];
 
 export default function MediaWrap() {
+  const { t, lang } = useLanguage();
+  const tr = (key: string, fallback: string) => {
+    try {
+      const v = t(key);
+      return v === key ? fallback : v;
+    } catch {
+      return fallback;
+    }
+  };
   const containerRef = useRef<HTMLDivElement | null>(null);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
   const [index, setIndex] = useState(0);
@@ -249,14 +259,27 @@ export default function MediaWrap() {
     return () => clearTimeout(t);
   }, [paused]);
 
+  // debug: print current lang and resolved media title to help diagnose missing translations
+  // this runs as a side-effect and does not render anything
+  React.useEffect(() => {
+    if (typeof window === 'undefined') return;
+    try {
+      if (process.env.NODE_ENV === 'development') {
+        console.debug('[MediaWrap] lang=', lang, 'title=', t('components.media.title'));
+      }
+    } catch {
+      // ignore
+    }
+  }, [lang, t]);
+
   return (
     <section className="max-w-6xl mx-auto px-4 py-8">
-      <h3 className="text-lg font-semibold mb-4">Gör, Hisset, Keşfet</h3>
+      <h3 className="text-lg font-semibold mb-4">{tr('components.media.title','Gör, Hisset, Keşfet')}</h3>
 
       <div className="relative">
         {/* LEFT BUTTON */}
         <button
-          aria-label="Önceki"
+          aria-label={tr('components.media.prev','Önceki')}
           className="absolute left-2 top-1/2 -translate-y-1/2 z-20 p-2 bg-white/90 rounded-full shadow-md cursor-pointer"
           onClick={() => {
             setPaused(true);
@@ -268,7 +291,7 @@ export default function MediaWrap() {
 
         {/* RIGHT BUTTON */}
         <button
-          aria-label="Sonraki"
+          aria-label={tr('components.media.next','Sonraki')}
           className="absolute right-2 top-1/2 -translate-y-1/2 z-20 p-2 bg-white/90 rounded-full shadow-md cursor-pointer"
           onClick={() => {
             setPaused(true);
@@ -325,7 +348,7 @@ export default function MediaWrap() {
           {VIDEOS.map((_, i) => (
             <button
               key={i}
-              aria-label={`Go to ${i + 1}`}
+              aria-label={tr('components.media.goTo','Go to {n}').replace('{n}', String(i + 1))}
               onClick={() => {
                 setPaused(true);
                 setIndex(i);

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLanguage } from '@/contexts/LanguageContext';
 import Counter from './Counter';
 import { useInView } from '../hooks/useInView';
 
@@ -29,6 +30,15 @@ function SlideDiv({ side = 'left', children }: { side?: 'left' | 'right'; childr
 }
 
 export default function WhyUs() {
+  const { t } = useLanguage();
+  const tr = (key: string, fallback: string) => {
+    try {
+      const v = t(key);
+      return v === key ? fallback : v;
+    } catch {
+      return fallback;
+    }
+  };
   return (
     <section
       aria-labelledby="whyus-title"
@@ -39,11 +49,11 @@ export default function WhyUs() {
           id="whyus-title"
           className="text-xl sm:text-3xl font-semibold text-gray-900 dark:text-gray-100 text-center mb-5 sm:mb-6"
         >
-          Neden Biz?
+          {tr('components.whyUs.title','Neden Biz?')}
         </h2>
 
             <p className="text-center text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-6 sm:mb-8 text-sm sm:text-base">
-          Kurulduğumuz günden bu yana kaliteyi, konforu ve müşteri memnuniyetini merkeze alıyoruz.
+          {tr('components.whyUs.intro','Kurulduğumuz günden bu yana kaliteyi, konforu ve müşteri memnuniyetini merkeze alıyoruz.')}
 
         </p>
 
@@ -61,8 +71,8 @@ export default function WhyUs() {
                 <path d="M12 2a3 3 0 00-3 3v.26A6.5 6.5 0 006 12a6.5 6.5 0 003 5.74V21l3-1 3 1v-3.26A6.5 6.5 0 0018 12a6.5 6.5 0 00-3-6.74V5a3 3 0 00-3-3z" />
               </svg>
             </div>
-            <h3 className="text-base sm:text-lg font-medium text-gray-900 dark:text-gray-100">50+ Yıllık Tecrübe</h3>
-            <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mt-1 sm:mt-2">1969&apos;dan bu yana iç giyim sektöründe uzmanlık, güven ve istikrarlı üretim anlayışı.</p>
+            <h3 className="text-base sm:text-lg font-medium text-gray-900 dark:text-gray-100">{tr('components.whyUs.experience.title','50+ Yıllık Tecrübe')}</h3>
+            <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mt-1 sm:mt-2">{tr('components.whyUs.experience.body',"1969'dan bu yana iç giyim sektöründe uzmanlık, güven ve istikrarlı üretim anlayışı.")}</p>
           </SlideLi>
 
           <SlideLi side="right">
@@ -79,8 +89,8 @@ export default function WhyUs() {
                 <path d="M4 13v2a3 3 0 003 3h10a3 3 0 003-3v-2" opacity=".6" />
               </svg>
             </div>
-            <h3 className="text-base sm:text-lg font-medium text-gray-900 dark:text-gray-100">Yüksek Kalite Kumaş</h3>
-            <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mt-1 sm:mt-2">Cilde dost, nefes alabilir ve uzun ömürlü kumaşlar ile maksimum konfor.</p>
+            <h3 className="text-base sm:text-lg font-medium text-gray-900 dark:text-gray-100">{tr('components.whyUs.quality.title','Yüksek Kalite Kumaş')}</h3>
+            <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mt-1 sm:mt-2">{tr('components.whyUs.quality.body','Cilde dost, nefes alabilir ve uzun ömürlü kumaşlar ile maksimum konfor.')}</p>
           </SlideLi>
 
           <SlideLi side="left">
@@ -97,8 +107,8 @@ export default function WhyUs() {
                 <path d="M7 9a5 5 0 0110 0v1H7V9z" opacity=".9" />
               </svg>
             </div>
-            <h3 className="text-base sm:text-lg font-medium text-gray-900 dark:text-gray-100">Modern & Konforlu Tasarım</h3>
-            <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mt-1 sm:mt-2">Günlük kullanıma uygun, şık, ergonomik ve kullanıcı odaklı kesimler.</p>
+            <h3 className="text-base sm:text-lg font-medium text-gray-900 dark:text-gray-100">{tr('components.whyUs.design.title','Modern & Konforlu Tasarım')}</h3>
+            <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mt-1 sm:mt-2">{tr('components.whyUs.design.body','Günlük kullanıma uygun, şık, ergonomik ve kullanıcı odaklı kesimler.')}</p>
           </SlideLi>
 
           <SlideLi side="right">
@@ -115,20 +125,20 @@ export default function WhyUs() {
                 <path d="M10 11l2 2 4-4" stroke="#fff" strokeWidth="1" fill="none" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </div>
-            <h3 className="text-base sm:text-lg font-medium text-gray-900 dark:text-gray-100">Güvenilir Üretim Standartları</h3>
-            <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mt-1 sm:mt-2">Her aşamada kontrol edilen dikkatli üretim süreçleri.</p>
+            <h3 className="text-base sm:text-lg font-medium text-gray-900 dark:text-gray-100">{tr('components.whyUs.standards.title','Güvenilir Üretim Standartları')}</h3>
+            <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mt-1 sm:mt-2">{tr('components.whyUs.standards.body','Her aşamada kontrol edilen dikkatli üretim süreçleri.')}</p>
           </SlideLi>
         </ul>
 
         {/* Counters block */}
         <SlideDiv side="left">
           <div className="mt-8 border-t pt-8">
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
-              <Counter end={200000} label="Aylık Üretim Kapasitesi" />
-              <Counter end={4500} label="m² Üretim Tesisi" />
-              <Counter end={150} label="Çalışan" />
-              <Counter end={25} label="Ülkeye İhracat" />
-            </div>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
+              <Counter end={200000} label={tr('components.whyUs.counters.monthlyCapacity','Aylık Üretim Kapasitesi')} />
+              <Counter end={4500} label={tr('components.whyUs.counters.facilityArea','m² Üretim Tesisi')} />
+              <Counter end={150} label={tr('components.whyUs.counters.employees','Çalışan')} />
+              <Counter end={25} label={tr('components.whyUs.counters.exportCountries','Ülkeye İhracat')} />
+              </div>
           </div>
         </SlideDiv>
       </div>

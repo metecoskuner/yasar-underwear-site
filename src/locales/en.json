@@ -5,10 +5,234 @@
     "sale": "Sale",
     "about": "About",
     "contact": "Contact",
-    "language": "Language"
+    "language": "Language",
+    "corporate": {
+      "title": "Corporate",
+      "about": "About Us",
+      "description": "Yasar Textile — summary of our mission, vision and corporate values.",
+      "aboutSubtitle": "Company history, values and mission & vision information"
+    },
+    "production": {
+      "title": "Production",
+      "facilities": "Our Facilities",
+      "quality": "Quality Processes",
+      "description": "Detailed information about our facilities, capacity and quality processes.",
+      "facilitiesSubtitle": "Facilities infrastructure, capacity and imagery",
+      "qualitySubtitle": "Quality controls, testing and certification"
+    },
+    "sustainability": "Sustainability",
+    "products": "Products"
   },
   "hero": {
     "title": "Comfort & Style",
     "subtitle": "Experience comfort with our everyday underwear collection"
+  }
+  ,
+  "wishlist": {
+    "title": "Favorites",
+    "clear": "Remove all",
+    "emptyTitle": "Your favorites list is empty",
+    "emptyBody": "Tap the heart on products to add them to your favorites.",
+    "viewProducts": "View products",
+    "added": "Product added to favorites ❤️",
+    "remove": "Remove"
+  },
+  "footer": {
+    "links": "Links",
+    "home": "Home",
+    "products": "Products",
+    "sustainability": "Sustainability",
+    "contact": "Contact",
+    "corporate": {
+      "title": "Corporate",
+      "about": "About",
+      "vision": "Vision",
+      "mission": "Mission",
+      "clients": "Clients"
+    },
+    "production": {
+      "title": "Production",
+      "facilities": "Facilities",
+      "quality": "Quality Processes"
+    },
+    "follow": {
+      "title": "Follow us",
+      "desc": "Follow our social channels for promotions and updates."
+    },
+    "contactInfo": {
+      "title": "Contact",
+      "phone": "+90 212 000 00 00",
+      "email": "info@yasar.example",
+      "map": "View our address on the map"
+    },
+    "company": {
+      "paragraph1": "Made in Turkey underwear. Focused on comfort and quality.",
+      "paragraph2": "Founded in 1969, our company has become one of the industry's leading manufacturers and exporters with over half a century of experience, specializing in nightwear, pajama sets, pajama bottoms and underwear.",
+      "paragraph3": "With exports to markets in Eastern Europe and the Middle East — notably the United States, France, Spain, Greece and Israel — we proudly represent our high quality standards and customer-focused approach internationally. Committed to reliability, continuity and quality, our company remains a strong and trusted business partner globally."
+    },
+    "tagline": "Made in Turkey underwear. Focused on comfort and quality.",
+    "cookie": {
+      "reset": "Reset cookies"
+    },
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "copyright": "© {year} Yasar. All rights reserved.",
+    "backToTop": "Back to top"
+  }
+  ,
+  "components": {
+    "productCard": {
+      "inspect": "Inspect",
+      "imageAlt": "Product image",
+      "categories": {
+        "ic-giyim": "Underwear",
+        "ev-giyim": "Homewear",
+        "corap": "Socks & Accessories",
+        "aktif": "Active & Casual"
+      },
+      "wishlist": {
+        "add": "Add to favorites",
+        "remove": "Remove from favorites"
+      }
+    },
+    "productGrid": {
+      "title": "Featured Products",
+      "subtitle": "Our curated popular and recommended items — quality and comfort together.",
+      "viewAll": "View all"
+    }
+    ,
+    "categories": {
+      "ic-giyim": "Underwear",
+      "ev-giyim": "Homewear",
+      "corap": "Socks & Accessories",
+      "aktif": "Active & Casual"
+    },
+    "common": {
+      "imagePlaceholder": "Image"
+    }
+    ,
+    "hero": {
+      "title": "Comfort & Style — Every Day",
+      "subtitle": "Experience comfort with our everyday underwear collection",
+      "ctaCollections": "View Collections",
+      "ctaQuote": "Get a Quote"
+    }
+    ,
+    "media": {
+      "title": "See, Feel, Discover",
+      "prev": "Previous",
+      "next": "Next",
+      "goTo": "Go to {n}"
+    }
+    ,
+    "whyUs": {
+      "title": "Why Us?",
+      "intro": "Since our founding we prioritize quality, comfort and customer satisfaction.",
+      "experience": { "title": "50+ Years of Experience", "body": "Expertise, trust and stable production practices since 1969." },
+      "quality": { "title": "High Quality Fabrics", "body": "Skin-friendly, breathable and long-lasting fabrics for maximum comfort." },
+      "design": { "title": "Modern & Comfortable Design", "body": "Stylish, ergonomic cuts focused on everyday wear and the user." },
+      "standards": { "title": "Reliable Production Standards", "body": "Careful production processes inspected at every stage." },
+      "counters": {
+        "monthlyCapacity": "Monthly Production Capacity",
+        "facilityArea": "m² Production Facility",
+        "employees": "Employees",
+        "exportCountries": "Countries Exported To"
+      }
+    }
+    ,
+    "contact": {
+      "title": "Get in touch",
+      "intro": "Send us a message for questions, partnerships or wholesale inquiries. Average response time",
+      "avgResponse": "24 hours",
+      "replyApprox": "Reply: ~24s",
+      "emailLabel": "Email",
+      "phoneLabel": "Phone",
+      "hoursLabel": "Hours",
+      "hours": "Weekdays 09:00 – 18:00",
+      "sendEmail": "Send Email",
+      "callUs": "Call Us",
+      "sending": "Sending…",
+      "sendMessage": "Send Message",
+      "success": "Your message was sent successfully ✅",
+      "errors": {
+        "nameRequired": "Name is required",
+        "emailRequired": "Email is required",
+        "emailInvalid": "Invalid email",
+        "messageRequired": "Message cannot be empty"
+      },
+      "form": { "name": "Name", "email": "Email", "message": "Message" }
+    }
+  }
+  ,
+  "pages": {
+    "products": {
+      "title": "Products — Yasar",
+      "description": "Yasar product collection",
+      "hero": {
+        "title": "Men & Women Underwear Collection",
+        "subtitle": "Explore our products made from high-quality fabrics suitable for everyday use.",
+        "ctaInspect": "Browse products",
+        "ctaContact": "Contact us"
+      },
+      "gender": {
+        "all": "All",
+        "male": "Men",
+        "female": "Women"
+      },
+      "searchPlaceholder": "Search products",
+      "noResults": "No results found",
+      "productCode": "Product code:",
+      "copy": "Copy",
+      "copied": "Copied",
+      "copyCodeAria": "Copy product code",
+      "preview": "Preview",
+      "requestInfo": "Request info",
+      "requestInfoAria": "Request info -"
+    }
+    ,
+    "about": {
+      "title": "Corporate - Yasar",
+      "description": "About Yasar Textile: our mission, vision and production capabilities.",
+      "hero": {
+        "title": "Corporate",
+        "desc": "At Yasar we focus on quality, sustainability and worker wellbeing. Our facilities in Turkey use modern production techniques to deliver products that meet international standards."
+      },
+      "cta": {
+        "facilities": "Our Facilities",
+        "quality": "Quality Processes"
+      },
+      "imageAlt": "Production Facilities",
+      "isoLines": "ISO-compliant production lines",
+      "sections": {
+        "about": {
+          "title": "About Us",
+          "desc": "Learn more about our company history, production philosophy, mission and vision."
+        }
+      },
+      "values": {
+        "design": { "title": "Design & Comfort", "body": "Good design, durability and wearing comfort together." },
+        "facilities": { "title": "Modern Facilities", "body": "Energy-efficient, traceable production infrastructure." },
+        "responsibility": { "title": "Social Responsibility", "body": "Worker health, fair wages and environmental measures." }
+      },
+      "quick": {
+        "title": "Quick Facts",
+        "labels": { "experience": "Years of experience", "audits": "Audits / year", "reducedWaste": "Reduced waste" }
+      },
+      "contactPrompt": "For more information or corporate partnership requests, please contact us.",
+      "collab": { "title": "Partnerships & Requests", "body": "For site visits, technical questions or bulk order inquiries, contact us directly.", "cta": "Contact Us" }
+    }
+  }
+
+  ,
+  "locations": {
+    "tr": "Turkey",
+    "uk": "United Kingdom",
+    "de": "Germany",
+    "ro": "Romania",
+    "kw": "Kuwait",
+    "ly": "Libya",
+    "nl": "Netherlands",
+    "fr": "France",
+    "us": "United States"
   }
 }

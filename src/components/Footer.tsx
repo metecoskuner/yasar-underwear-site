@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
+import { useLanguage } from '../contexts/LanguageContext';
 // LOCATIONS not used in Footer; removed import to avoid unused-var lint
 
 // flagEmoji removed: not used in footer
@@ -16,24 +17,35 @@ export default function Footer() {
   const [windowWidth, setWindowWidth] = useState<number | undefined>(typeof window !== 'undefined' ? window.innerWidth : undefined);
   const [mounted, setMounted] = useState(false);
 
+  const { t } = useLanguage();
+  const tr = (key: string, fallback: string) => {
+    try {
+      const v = t(key);
+      return v === key ? fallback : v;
+    } catch (err) {
+      void err;
+      return fallback;
+    }
+  };
+
   const linksInner = (
     <div className="flex flex-col space-y-2">
-      <Link href="/" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">Ana sayfa</Link>
-      <Link href="/products" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">Ürünlerimiz</Link>
-      <Link href="/surdurulebilirlik" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">Sürdürülebilirlik</Link>
-      <Link href="/contact" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">İletişim</Link>
+      <Link href="/" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{tr('footer.home','Ana sayfa')}</Link>
+      <Link href="/products" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{tr('footer.products','Ürünlerimiz')}</Link>
+      <Link href="/surdurulebilirlik" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{tr('footer.sustainability','Sürdürülebilirlik')}</Link>
+      <Link href="/contact" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{tr('footer.contact','İletişim')}</Link>
     </div>
   );
 
   const corpInner = (
     <div className="flex flex-col space-y-2">
-      <Link href="/about" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">Hakkımızda</Link>
-      <Link href="/about#vision" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">Vizyon</Link>
-      <Link href="/about#mission" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">Misyon</Link>
-      <Link href="/about#clients" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">Müşterilerimiz</Link>
-      <Link href="/production" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">Üretim</Link>
-      <Link href="/production#facilities" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">Üretim Tesislerimiz</Link>
-      <Link href="/production#quality" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">Kalite Süreçlerimiz</Link>
+      <Link href="/about" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{tr('footer.corporate.about','Hakkımızda')}</Link>
+      <Link href="/about#vision" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{tr('footer.corporate.vision','Vizyon')}</Link>
+      <Link href="/about#mission" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{tr('footer.corporate.mission','Misyon')}</Link>
+      <Link href="/about#clients" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{tr('footer.corporate.clients','Müşterilerimiz')}</Link>
+      <Link href="/production" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{tr('footer.production.title','Üretim')}</Link>
+      <Link href="/production#facilities" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{tr('footer.production.facilities','Üretim Tesislerimiz')}</Link>
+      <Link href="/production#quality" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{tr('footer.production.quality','Kalite Süreçlerimiz')}</Link>
     </div>
   );
 
@@ -128,32 +140,22 @@ export default function Footer() {
 
         {/* (flags moved to homepage under the map) */}
         <div className="flex flex-col space-y-4">
-          <Link href="/" className="inline-block -mt-1 lg:-mt-2" aria-label="Yasar ana sayfa">
+          <Link href="/" className="inline-block -mt-1 lg:-mt-2" aria-label={tr('footer.home','Yasar ana sayfa')}>
             <Image src="/photos/yasarLogo2.jpg" alt="Yasar" width={200} height={80} className="h-14 lg:h-20 w-auto" />
           </Link>
-          <p className="text-sm text-white">Türkiye yapımı iç giyim. Konfor ve kalite odaklı.</p>
+          <p className="text-sm text-white">{tr('footer.tagline','Türkiye yapımı iç giyim. Konfor ve kalite odaklı.')}</p>
 
           <div className="text-xs text-white/80 space-y-2 leading-relaxed max-w-prose">
-            <p>
-              1969 yılında kurulan firmamız, yarım asrı aşan köklü tecrübesiyle gecelik, pijama takımı, paçalı pijama altı ve
-              iç giyim üretiminde uzmanlaşmış, sektörün önde gelen üretici ve ihracatçıları arasında yer almaktadır.
-            </p>
+            <p>{tr('footer.company.paragraph1','1969 yılında kurulan firmamız, yarım asrı aşan köklü tecrübesiyle gecelik, pijama takımı, paçalı pijama altı ve iç giyim üretiminde uzmanlaşmış, sektörün önde gelen üretici ve ihracatçıları arasında yer almaktadır.')}</p>
 
-            <p>
-              Amerika, Fransa, İspanya, Yunanistan, İsrail başta olmak üzere Doğu Avrupa ve Orta Doğu pazarlarına
-              gerçekleştirdiğimiz ihracatlarla, yüksek kalite standartlarımızı ve müşteri odaklı yaklaşımımızı uluslararası
-              arenada başarıyla temsil ediyoruz.
-            </p>
+            <p>{tr('footer.company.paragraph2','Amerika, Fransa, İspanya, Yunanistan, İsrail başta olmak üzere Doğu Avrupa ve Orta Doğu pazarlarına gerçekleştirdiğimiz ihracatlarla, yüksek kalite standartlarımızı ve müşteri odaklı yaklaşımımızı uluslararası arenada başarıyla temsil ediyoruz.')}</p>
 
-            <p>
-              Güvenilirliği, sürekliliği ve kaliteyi esas alan firmamız, global ölçekte tercih edilen güçlü bir iş ortağı
-              olmayı sürdürmektedir.
-            </p>
+            <p>{tr('footer.company.paragraph3','Güvenilirliği, sürekliliği ve kaliteyi esas alan firmamız, global ölçekte tercih edilen güçlü bir iş ortağı olmayı sürdürmektedir.')}</p>
           </div>
         </div>
 
         <nav aria-label="Bağlantılar" className="flex flex-col space-y-2 pl-4 lg:pl-6">
-          <h4 className="text-base lg:text-lg font-semibold text-white">Bağlantılar</h4>
+          <h4 className="text-base lg:text-lg font-semibold text-white">{tr('footer.links','Bağlantılar')}</h4>
           <span className="block mt-1 h-0.5 w-12 bg-white/90 rounded" aria-hidden />
           {/* mobile accordion toggle */}
           {!isDesktop && (
@@ -194,7 +196,7 @@ export default function Footer() {
         </nav>
 
         <nav aria-label="Kurumsal" className="flex flex-col space-y-2 pl-4 lg:pl-6">
-          <h4 className="text-base lg:text-lg font-semibold text-white">Kurumsal</h4>
+          <h4 className="text-base lg:text-lg font-semibold text-white">{tr('footer.corporate.title','Kurumsal')}</h4>
           <span className="block mt-1 h-0.5 w-12 bg-white/90 rounded" aria-hidden />
           {!isDesktop && (
             <button
@@ -234,9 +236,9 @@ export default function Footer() {
         </nav>
 
         <div className="flex flex-col space-y-2 pl-4 lg:pl-6">
-          <h4 className="text-base lg:text-lg font-semibold text-white">Bizi takip et</h4>
+          <h4 className="text-base lg:text-lg font-semibold text-white">{tr('footer.follow.title','Bizi takip et')}</h4>
           <span className="block mt-1 h-0.5 w-12 bg-white/90 rounded" aria-hidden />
-          <p className="text-sm text-white">Sosyal kanallarımızdan kampanyaları ve yenilikleri takip edebilirsiniz.</p>
+          <p className="text-sm text-white">{tr('footer.follow.desc','Sosyal kanallarımızdan kampanyaları ve yenilikleri takip edebilirsiniz.')}</p>
           <div className="flex items-center space-x-4 mt-3">
             {/* Instagram */}
             <a
@@ -285,11 +287,11 @@ export default function Footer() {
           </div>
 
           <div className="mt-4 text-sm text-white flex flex-col space-y-2">
-            <h4 className="text-base lg:text-lg font-semibold text-white">İletişim</h4>
+            <h4 className="text-base lg:text-lg font-semibold text-white">{tr('footer.contactInfo.title','İletişim')}</h4>
             <span className="block mt-1 h-0.5 w-12 bg-white/90 rounded" aria-hidden />
-            <a href="tel:+902120000000" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">+90 212 000 00 00</a>
-            <a href="mailto:info@yasar.example" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">info@yasar.example</a>
-            <a href="https://maps.google.com?q=Yasar+Tekstil" target="_blank" rel="noopener noreferrer" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">Adresimizi haritada gör</a>
+            <a href="tel:+902120000000" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{tr('footer.contactInfo.phone','+90 212 000 00 00')}</a>
+            <a href="mailto:info@yasar.example" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{tr('footer.contactInfo.email','info@yasar.example')}</a>
+            <a href="https://maps.google.com?q=Yasar+Tekstil" target="_blank" rel="noopener noreferrer" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{tr('footer.contactInfo.map','Adresimizi haritada gör')}</a>
           </div>
         </div>
       </div>
@@ -297,7 +299,7 @@ export default function Footer() {
       <div className="border-t border-white/8">
         <div className="max-w-6xl mx-auto px-4 py-3 flex flex-col sm:flex-row justify-between items-center text-xs text-white/70">
           <div className="flex items-center space-x-3">
-            <span>© {new Date().getFullYear()} Yasar. Tüm hakları saklıdır.</span>
+            <span>{tr('footer.copyright', `© ${new Date().getFullYear()} Yasar. Tüm hakları saklıdır.`)}</span>
             <button
               type="button"
               onClick={() => {
@@ -316,12 +318,12 @@ export default function Footer() {
               }}
               className="text-[10px] text-white bg-white/10 hover:bg-white/20 px-1.5 py-0.5 rounded-md transition"
             >
-              Çerezleri sıfırla
+              {tr('footer.cookie.reset','Çerezleri sıfırla')}
             </button>
           </div>
           <div className="flex items-center space-x-4 mt-2 sm:mt-0">
-            <Link href="/privacy" className="text-sm text-white/70 hover:no-underline hover:text-white hover:font-medium transition-all duration-150">Gizlilik</Link>
-            <Link href="/terms" className="text-sm text-white/70 hover:no-underline hover:text-white hover:font-medium transition-all duration-150">Kullanım Şartları</Link>
+            <Link href="/privacy" className="text-sm text-white/70 hover:no-underline hover:text-white hover:font-medium transition-all duration-150">{tr('footer.privacy','Gizlilik')}</Link>
+            <Link href="/terms" className="text-sm text-white/70 hover:no-underline hover:text-white hover:font-medium transition-all duration-150">{tr('footer.terms','Kullanım Şartları')}</Link>
           </div>
         </div>
       </div>
@@ -330,10 +332,10 @@ export default function Footer() {
       <button
         type="button"
         onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-        aria-label="Sayfanın başına dön"
+  aria-label={tr('footer.backToTop','Sayfanın başına dön')}
         className={`fixed right-4 bottom-4 z-50 inline-flex items-center justify-center p-2 rounded-full bg-black/60 text-white hover:bg-black/70 shadow-2xl ring-1 ring-black/20 hover:shadow-2xl transition-opacity transition-transform duration-200 hover:scale-105 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-black/20 ${showTop ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
       >
-        <span className="sr-only">Sayfanın başına dön</span>
+  <span className="sr-only">{tr('footer.backToTop','Sayfanın başına dön')}</span>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"

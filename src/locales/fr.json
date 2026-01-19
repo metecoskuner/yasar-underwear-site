@@ -5,10 +5,233 @@
     "sale": "Promotions",
     "about": "À propos",
     "contact": "Contact",
-    "language": "Langue"
+    "language": "Langue",
+    "corporate": {
+      "title": "Entreprise",
+      "about": "À propos"
+    },
+    "production": {
+      "title": "Production",
+      "facilities": "Nos installations",
+      "quality": "Processus de qualité",
+      "description": "Informations détaillées sur nos installations, notre capacité et nos processus de qualité.",
+      "facilitiesSubtitle": "Infrastructure des installations, capacité et images",
+      "qualitySubtitle": "Contrôles qualité, tests et certification"
+    },
+    "sustainability": "Durabilité",
+    "products": "Produits"
   },
   "hero": {
     "title": "Confort et Style",
     "subtitle": "Découvrez le confort avec notre collection de sous-vêtements quotidiens"
+  }
+  ,
+  "wishlist": {
+    "title": "Favoris",
+    "clear": "Tout supprimer",
+    "emptyTitle": "Votre liste de favoris est vide",
+    "emptyBody": "Appuyez sur le cœur des produits pour les ajouter à vos favoris.",
+    "viewProducts": "Voir les produits",
+    "added": "Produit ajouté aux favoris ❤️",
+    "remove": "Supprimer"
+  },
+  "footer": {
+    "links": "Liens",
+    "home": "Accueil",
+    "products": "Produits",
+    "sustainability": "Durabilité",
+    "contact": "Contact",
+    "corporate": {
+      "title": "Entreprise",
+      "about": "À propos",
+    "description": "Yasar Textile - résumé de notre mission, vision et valeurs d'entreprise.",
+    "aboutSubtitle": "Histoire de l'entreprise, valeurs et informations mission & vision",
+      "mission": "Mission",
+      "clients": "Clients"
+    },
+    "company": {
+      "paragraph1": "Sous-vêtements fabriqués en Turquie. Axés sur le confort et la qualité.",
+      "paragraph2": "Fondée en 1969, notre entreprise s'est imposée comme l'un des principaux fabricants et exportateurs du secteur, spécialisée dans les chemises de nuit, ensembles de pyjamas, pantalons de pyjama et sous-vêtements, avec plus d'un demi-siècle d'expérience.",
+      "paragraph3": "Grâce à nos exportations vers les marchés d'Europe de l'Est et du Moyen-Orient — notamment les États-Unis, la France, l'Espagne, la Grèce et Israël — nous représentons fièrement nos normes de haute qualité et notre approche axée sur le client à l'échelle internationale. Engagée en faveur de la fiabilité, de la continuité et de la qualité, notre entreprise demeure un partenaire commercial solide et apprécié à l'échelle mondiale."
+    },
+    "tagline": "Sous-vêtements fabriqués en Turquie. Axés sur le confort et la qualité.",
+    "production": {
+      "title": "Production",
+      "facilities": "Nos installations",
+      "quality": "Processus de qualité"
+    },
+    "follow": {
+      "title": "Suivez-nous",
+      "desc": "Suivez nos réseaux sociaux pour les promotions et les nouveautés."
+    },
+    "contactInfo": {
+      "title": "Contact",
+      "phone": "+90 212 000 00 00",
+      "email": "info@yasar.example",
+      "map": "Voir notre adresse sur la carte"
+    },
+    "cookie": {
+      "reset": "Réinitialiser les cookies"
+    },
+    "privacy": "Confidentialité",
+    "terms": "Conditions",
+    "copyright": "© {year} Yasar. Tous droits réservés.",
+    "backToTop": "Haut de page"
+  }
+  ,
+  "components": {
+    "productCard": {
+      "inspect": "Afficher",
+      "imageAlt": "Image du produit",
+      "categories": {
+        "ic-giyim": "Sous-vêtements",
+        "ev-giyim": "Tenue d'intérieur",
+        "corap": "Chaussettes & Accessoires",
+        "aktif": "Sport & Confort"
+      },
+      "wishlist": {
+        "add": "Ajouter aux favoris",
+        "remove": "Retirer des favoris"
+      }
+    },
+    "productGrid": {
+      "title": "Produits en vedette",
+      "subtitle": "Nos articles populaires et recommandés sélectionnés — qualité et confort.",
+      "viewAll": "Voir tout"
+    }
+    ,
+    "categories": {
+      "ic-giyim": "Sous-vêtements",
+      "ev-giyim": "Tenue d'intérieur",
+      "corap": "Chaussettes & Accessoires",
+      "aktif": "Sport & Confort"
+    },
+    "common": {
+      "imagePlaceholder": "Image"
+    }
+    ,
+    "hero": {
+      "title": "Confort & Élégance — Tous les jours",
+      "subtitle": "Découvrez le confort avec notre collection de sous-vêtements quotidiens",
+      "ctaCollections": "Voir les collections",
+      "ctaQuote": "Demander un devis"
+    }
+    ,
+    "media": {
+      "title": "Voir, Ressentir, Découvrir",
+      "prev": "Précédent",
+      "next": "Suivant",
+      "goTo": "Aller à {n}"
+    }
+    ,
+    "whyUs": {
+      "title": "Pourquoi nous?",
+      "intro": "Depuis notre création, nous privilégions la qualité, le confort et la satisfaction client.",
+      "experience": { "title": "50+ ans d'expérience", "body": "Expertise, confiance et pratiques de production stables depuis 1969." },
+      "quality": { "title": "Tissus de haute qualité", "body": "Des tissus doux pour la peau, respirants et durables pour un confort maximal." },
+      "design": { "title": "Design moderne & confortable", "body": "Des coupes élégantes, ergonomiques et pensées pour un usage quotidien." },
+      "standards": { "title": "Normes de production fiables", "body": "Des processus de production soigneusement contrôlés à chaque étape." },
+      "counters": {
+        "monthlyCapacity": "Capacité de production mensuelle",
+        "facilityArea": "m² d'installation de production",
+        "employees": "Employés",
+        "exportCountries": "Pays exportés"
+      }
+    }
+    ,
+    "contact": {
+      "title": "Contactez-nous",
+      "intro": "Envoyez-nous un message pour des questions, des partenariats ou des demandes de gros. Temps de réponse moyen",
+      "avgResponse": "24 heures",
+      "replyApprox": "Réponse : ~24s",
+      "emailLabel": "E-mail",
+      "phoneLabel": "Téléphone",
+      "hoursLabel": "Horaires",
+      "hours": "Jours ouvrables 09:00 – 18:00",
+      "sendEmail": "Envoyer un e-mail",
+      "callUs": "Appelez-nous",
+      "sending": "Envoi…",
+      "sendMessage": "Envoyer le message",
+      "success": "Votre message a été envoyé avec succès ✅",
+      "errors": {
+        "nameRequired": "Le nom est requis",
+        "emailRequired": "L'e-mail est requis",
+        "emailInvalid": "E-mail invalide",
+        "messageRequired": "Le message ne peut pas être vide"
+      },
+      "form": { "name": "Nom", "email": "E-mail", "message": "Message" }
+    }
+  }
+  ,
+  "pages": {
+    "products": {
+      "title": "Produits — Yasar",
+      "description": "Collection de produits Yasar",
+      "hero": {
+        "title": "Collection homme & femme",
+        "subtitle": "Découvrez nos produits fabriqués à partir de tissus de haute qualité adaptés à un usage quotidien.",
+        "ctaInspect": "Parcourir les produits",
+        "ctaContact": "Contactez-nous"
+      },
+      "gender": {
+        "all": "Tous",
+        "male": "Homme",
+        "female": "Femme"
+      },
+      "searchPlaceholder": "Rechercher des produits",
+      "noResults": "Aucun résultat",
+      "productCode": "Code produit:",
+      "copy": "Copier",
+      "copied": "Copié",
+      "copyCodeAria": "Copier le code produit",
+      "preview": "Aperçu",
+      "requestInfo": "Demander des infos",
+      "requestInfoAria": "Demander des infos -"
+    }
+    ,
+    "about": {
+      "title": "Entreprise - Yasar",
+      "description": "À propos de Yasar Textile : notre mission, vision et capacités de production.",
+      "hero": {
+        "title": "Entreprise",
+        "desc": "Chez Yasar, nous mettons l'accent sur la qualité, la durabilité et le bien-être des travailleurs. Nos installations en Turquie utilisent des techniques de production modernes pour offrir des produits conformes aux normes internationales."
+      },
+      "cta": {
+        "facilities": "Nos installations",
+        "quality": "Processus de qualité"
+      },
+      "imageAlt": "Installations de production",
+      "isoLines": "Lignes de production conformes ISO",
+      "sections": {
+        "about": {
+          "title": "À propos",
+          "desc": "En savoir plus sur l'histoire de notre entreprise, notre philosophie de production, notre mission et notre vision."
+        }
+      },
+      "values": {
+        "design": { "title": "Design & Confort", "body": "Bon design, durabilité et confort d'utilisation." },
+        "facilities": { "title": "Installations modernes", "body": "Infrastructure de production économe en énergie et traçable." },
+        "responsibility": { "title": "Responsabilité sociale", "body": "Santé des travailleurs, salaires équitables et mesures environnementales." }
+      },
+      "quick": {
+        "title": "Aperçu rapide",
+        "labels": { "experience": "Années d'expérience", "audits": "Audits / an", "reducedWaste": "Déchets réduits" }
+      },
+      "contactPrompt": "Pour plus d'informations ou des demandes de partenariat, veuillez nous contacter.",
+      "collab": { "title": "Partenariats & Demandes", "body": "Pour des visites sur site, des questions techniques ou des commandes en gros, contactez-nous directement.", "cta": "Contactez-nous" }
+    }
+  }
+
+  ,
+  "locations": {
+    "tr": "Turquie",
+    "uk": "Royaume-Uni",
+    "de": "Allemagne",
+    "ro": "Roumanie",
+    "kw": "Koweït",
+    "ly": "Libye",
+    "nl": "Pays-Bas",
+    "fr": "France",
+    "us": "États-Unis"
   }
 }

@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { geoEquirectangular, geoPath } from 'd3-geo';
 import LOCATIONS from '../data/locations';
 
@@ -15,6 +16,15 @@ const BASE_HEIGHT = 600;
 // mobile SVG has been removed.
 
 export default function WorldMap(): JSX.Element {
+  const { t } = useLanguage();
+  const tr = useCallback((key: string, fallback: string) => {
+    try {
+      const v = t(key);
+      return v === key ? fallback : v;
+    } catch {
+      return fallback;
+    }
+  }, [t]);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef<SVGSVGElement | null>(null);
   // track container width for responsive sizing; projection will be computed in
@@ -317,7 +327,7 @@ export default function WorldMap(): JSX.Element {
                     fontWeight={600}
                     style={{ pointerEvents: 'none', userSelect: 'none', paintOrder: 'stroke' }}
                   >
-                    {loc.name}
+                    {tr(`locations.${loc.id}`, loc.name)}
                   </text>
                 ) : null}
               </g>
