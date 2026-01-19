@@ -33,6 +33,6 @@ jobs:
       - name: Build site
         run: npm run build
 
-      - name: Run lint (non-blocking)
+      - name: Run lint
         run: |
-          npm run lint || true
+          npm run lint
