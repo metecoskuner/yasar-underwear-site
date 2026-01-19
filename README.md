@@ -1,5 +1,7 @@
 # Yasar Underwear Site
 
+![CI](https://github.com/metecoskuner/yasar-underwear-site/actions/workflows/ci.yml/badge.svg)
+
 Minimal Next.js (Pages Router) site used for the Yasar redesign demo.
 
 Quick start
