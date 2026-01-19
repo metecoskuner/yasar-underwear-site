@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - feat/mobile-header-contact
+      - 'feat/**'
 
 jobs:
   screenshots:
@@ -21,8 +22,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          # Use npm install here (lockfile in repo may be out of sync).
-          # --legacy-peer-deps helps avoid peer dependency conflicts in CI.
+          # Install dependencies at repository root
           npm install --legacy-peer-deps
 
       - name: Install Playwright browsers
