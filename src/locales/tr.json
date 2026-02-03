@@ -5,7 +5,8 @@
     "sale": "Kampanyalar",
     "about": "Hakkımızda",
     "contact": "İletişim",
-    "language": "Dil",
+  "language": "Dil",
+  "sustainability": "Sürdürülebilirlik",
     "corporate": {
       "title": "Kurumsal",
       "about": "Hakkımızda",
@@ -20,7 +21,7 @@
       "facilitiesSubtitle": "Tesis altyapısı, kapasite ve görseller",
       "qualitySubtitle": "Kalite kontrolleri, testler ve sertifikasyon"
     },
-    "sustainability": "Sürdürülebilirlik",
+    
     "products": "Ürünler"
   },
   "hero": {
@@ -28,6 +29,61 @@
     "subtitle": "Günlük iç giyim koleksiyonumuzla rahatlığı deneyimleyin"
   }
   ,
+  "sustainability": {
+    "title": "Sürdürülebilirlik",
+    "heroLead": "Çevresel ve sosyal sorumluluk odaklı üretim süreçlerimizle geleceğe yatırım yapıyoruz.",
+    "metrics": {
+      "m1": "ISO 9001 uyumlu",
+      "m2": "Enerji verimliliği",
+      "m3": "İzlenebilirlik"
+    },
+    "pillars": [
+      { "title": "Sorumlu Hammadde", "desc": "Sürdürülebilir kaynaklardan sağlanan lif ve kumaşların tercih edilmesi." },
+      { "title": "Çevresel Yönetim", "desc": "Atık azaltma ve enerji optimizasyonu ile çevresel etkileri azaltıyoruz." },
+      { "title": "Sosyal Sorumluluk", "desc": "Çalışan sağlığı, adil ücretlendirme ve güvenli çalışma koşulları sağlıyoruz." }
+    ],
+    "how": {
+      "title": "Nasıl Çalışıyoruz",
+      "lead": "Süreçlerimizde şeffaflık, kalite ve sürekli iyileştirme ön plandadır.",
+      "bullets": [
+        "Ham madde tedarikinde sürdürülebilir kriterler",
+        "Enerji verimliliği ve su tasarrufu projeleri",
+        "Atık yönetimi ve geri dönüşüm uygulamaları",
+        "Düzenli denetimler ve şeffaf raporlama"
+      ]
+    },
+    "cards": [
+      { "title": "İzlenebilir Üretim", "text": "Tüm üretim süreçlerini kayıt altında tutuyoruz." },
+      { "title": "Kalite ve Güvence", "text": "Her parti için titiz kalite kontrolleri uyguluyoruz." },
+      { "title": "Enerji Projeleri", "text": "Enerji verimliliği projeleri ile tüketimi azaltıyoruz." }
+    ],
+    "imageAlt2": "Sürdürülebilirlik görseli",
+    "footerNote": "Sürdürülebilirlik yaklaşımımız hakkında daha fazla bilgi için bizimle iletişime geçin."
+  }
+  ,
+  "uretim": {
+    "tesis": {
+      "title": "Üretim Tesislerimiz",
+      "lead": "Modern, güvenli ve sürdürülebilir bir üretim altyapısı sunuyoruz. Tesislerimizde kalite, çalışan güvenliği ve çevresel sorumluluk eş zamanlı olarak yönetilir; süreçler dijital kayıtlarla izlenir.",
+      "tags": {
+        "iso": "ISO 9001 uyumlu",
+        "energy": "Enerji verimliliği",
+        "spc": "SPC & izlenebilirlik"
+      },
+      "features": {
+        "modernLines": { "title": "Modern Hatlar", "desc": "Otomatik kesim ve dikim hatları ile verimli üretim." },
+        "qualityLab": { "title": "Kalite Laboratuvarı", "desc": "Gelişmiş test ve ölçüm laboratuvarları." },
+        "environment": { "title": "Çevresel Tedbirler", "desc": "Atık yönetimi ve enerji verimliliği uygulamaları." },
+        "training": { "title": "Eğitim & Güvenlik", "desc": "Sürekli eğitim ve iş sağlığı önlemleri." }
+      },
+      "how": { "title": "Nasıl Çalışıyoruz", "lead": "Tesislerimizde verimli üretim, çalışan güvenliği ve çevresel sorumluluk bir arada yürütülür. Dijital kayıtlarla izlenebilirlik sağlanır ve süreçler sürekli iyileştirilir." },
+      "infrastructure": { "title": "Altyapı & Makine", "items": ["Otomatik kesim ve dikim hatları","SPC tabanlı süreç kontrolü","Enerji verimli makineler"] },
+      "training": { "title": "Eğitim & Güvenlik", "heading": "Çalışan Eğitimi", "lead": "Personel eğitimleri ve güvenlik protokolleri düzenli olarak güncellenir ve takip edilir.", "items": ["Düzenli personel eğitimleri","İş sağlığı ve güvenliği protokolleri","Geri bildirim mekanizmaları"], "body": "Personel eğitimleri sektörel en iyi uygulamalar ve yerel protokoller çerçevesinde düzenli olarak yapılır. Güvenlik kültürünü güçlendiriyoruz ve katılımcı geri bildirimleriyle programları geliştiriyoruz." },
+    "quality": { "title": "Kalite Güvencesi", "lead": "Sürekli izleme, veri kayıtları ve geri bildirim mekanizmaları ile kalite güvencesi sağlanır.", "bullets": ["ISO 9001 uyumlu süreçler","SPC ve raporlama"] },
+    "applications": { "title": "Tesislerde Uygulamalar", "lead": "Tesislerimizde yürütülen başlıca uygulamalar ve dikkat ettiğimiz noktalar aşağıdaki gibidir.", "items": ["Otomatik kesim ve kalite takibi","SPC ile proses kontrolü","Atık yönetimi ve su tasarrufu"], "summary": "Tesis altyapımız verimlilik, iş sağlığı ve çevresel etki odağında tasarlanmıştır. Ölçülebilir hedeflerle enerji tüketimimizi azaltıyor ve atıklarımızı yönetiyoruz." },
+    "energy": { "title": "Enerji & Çevre", "lead": "Enerji verimliliği projeleri ve atık azaltma programları tesis operasyonlarımızın parçasıdır.", "body": "Enerji verimliliği ve su tasarrufu projeleri mevcut; tesis genelinde ölçümler yapılıyor ve düzenli raporlama ile ilerleme izleniyor." }
+    }
+  },
   "pages": {
     "products": {
       "title": "Ürünler — Yasar",
@@ -61,6 +117,32 @@
         "title": "Kurumsal",
         "desc": "Yasar olarak kalite, sürdürülebilirlik ve çalışan refahını merkeze alan üretim süreçleri ile iç giyim sektöründe öne çıkıyoruz. Türkiye’deki tesislerimizde modern üretim teknikleriyle dünya standartlarında ürünler geliştiriyoruz."
       },
+      "intro": {
+        "p1": "Türkiye’de modern tesislerde üretim yapan bir aile şirketiyiz. Tasarımdan teslimata kadar tüm süreçlerde kalite ve izlenebilirlik ilkelerini uygularız.",
+        "p2": "Sürdürülebilir hammadde seçimi, enerji verimliliği ve atık azaltma uygulamaları iş süreçlerimizin merkezindedir.",
+        "p3": "Takımımız; deneyimli, disiplinli ve sürekli gelişime açık profesyonellerden oluşur. İnsan odaklı yönetim anlayışımız ile güvenilir iş ortaklarıyız."
+      },
+      "mission": "Müşterilerimize konforlu, dayanıklı ve etik üretimle hazırlanmış iç giyim çözümleri sunmak; iş ortaklarımıza sürdürülebilir değer üretmektir.",
+      "vision": "Ulusal ve uluslararası pazarlarda kalite ve güven denildiğinde ilk akla gelen üreticilerden biri olmak.",
+      "stats": {
+        "production": "Yıllık Üretim (adet)",
+        "exports": "İhracat Ülkeleri",
+        "facilities": "Tesis"
+      },
+      "milestones": {
+        "1992": "Kuruluş ve yerel üretime başlama.",
+        "2005": "Modernize edilmiş üretim hattı ve kalite laboratuvarı.",
+        "2017": "Sürdürülebilir ham madde programının başlatılması.",
+        "2023": "Uluslararası iş ortaklıklarının güçlendirilmesi."
+      },
+      "headings": {
+        "mission": "Misyonumuz",
+        "vision": "Vizyonumuz",
+        "values": "Değerlerimiz",
+        "milestones": "Kilometre Taşlarımız",
+        "global": "Global Varlığımız",
+        "countries": "İş yaptığımız ülkeler"
+      },
       "cta": {
         "facilities": "Tesislerimiz",
         "quality": "Kalite Süreçleri"
@@ -76,14 +158,66 @@
       "values": {
         "design": { "title": "Tasarım & Konfor", "body": "İyi tasarım, dayanıklılık ve kullanım rahatlığı bir arada." },
         "facilities": { "title": "Modern Tesisler", "body": "Enerji verimli, izlenebilir üretim altyapısı." },
-        "responsibility": { "title": "Sosyal Sorumluluk", "body": "Çalışan sağlığı, adil ücretlendirme ve çevresel önlemler." }
+        "responsibility": { "title": "Sosyal Sorumluluk", "body": "Çalışan sağlığı, adil ücretlendirme ve çevresel önlemler." },
+        "human": { "title": "İnsan Odaklılık", "body": "Çalışan güvenliği ve gelişimini ön planda tutmak." }
       },
       "quick": {
         "title": "Hızlı Bakış",
-        "labels": { "experience": "Yıllık tecrübe", "audits": "Denetim / yıl", "reducedWaste": "Azaltılmış atık" }
+        "labels": { "experience": "Yıllık tecrübe", "audits": "Denetim / yıl", "reducedWaste": "Azaltılmış atık", "foundation": "Kuruluş", "location": "Konum", "certificates": "Sertifikalar" }
       },
       "contactPrompt": "Daha fazla bilgi veya kurumsal iş birliği talepleri için bizimle iletişime geçin.",
       "collab": { "title": "İş Birliği & Talepler", "body": "Saha ziyaretleri, teknik sorular veya büyük hacimli sipariş talepleri için doğrudan iletişime geçebilirsiniz.", "cta": "İletişime Geç" }
+    },
+    "production": {
+      "quality": {
+        "title": "Kalite Kontrol Süreçlerimiz",
+        "heroLead": "Üretimin her aşamasında uyguladığımız sıkı kalite denetimleriyle tutarlı, izlenebilir ve güvenilir ürünler sunuyoruz. Numuneden paketlemeye kadar her adım, kayıt altına alınır ve sürekli iyileştirme ile desteklenir.",
+        "imageAlt": { "hero": "Kalite görseli", "sample": "Numune" },
+        "badges": { "iso": "ISO 9001 uyumlu", "spc": "İzlenebilirlik / SPC", "experience": "30+ yıllık üretim tecrübesi" },
+        "features": {
+          "sample": { "title": "Numune", "desc": "Numune aşamasında ölçü, dikiş ve yıkama değerlendirmeleri." },
+          "production": { "title": "Üretim", "desc": "Kesim ve dikim süreçlerinde sürekli kontroller." },
+          "packing": { "title": "Paketleme", "desc": "Ambalaj öncesi son kontroller ve etiketleme." },
+          "assurance": {
+            "title": "Kalite Güvencesi",
+            "desc": "Sürekli izleme, veri kayıtları ve geri bildirim mekanizmaları ile kalite güvencesini sağlar; gerektiğinde geri çağırma ve düzeltici faaliyet prosedürleri uygulanır.",
+            "bullets": [
+              "ISO 9001 uyumlu süreçler",
+              "Geri çağırma & düzeltici faaliyet prosedürleri",
+              "SPC ve raporlama"
+            ]
+          }
+        },
+        "sections": {
+          "how": { "title": "Nasıl Çalışıyoruz", "lead": "Aşağıda kalite kontrol süreçlerimizin ana başlıklarını ve uygulama örneklerini bulabilirsiniz. Her adımda standart prosedürler (SOP) uygulanır ve kayıt altına alınır." },
+          "sample": { "title": "Numune Aşaması", "desc": "Numune aşamasında aşağıdaki maddeler en ince detayına kadar incelenir:" },
+          "production": { "title": "Üretim Aşaması", "desc": "Üretim boyunca kaliteyi sağlamak için planlama, kesim ve dikim adımlarında özel kontroller yürütülür:" },
+          "packing": { "title": "Paketleme Aşaması", "desc": "Son aşamada ambalaj öncesi ve ambalaj sırasında uyguladığımız kontroller:" }
+        },
+        "sampleChecks": [
+          "Güvence kontrolü",
+          "Kalıp kontrolü",
+          "Dikim içi ve sonrası kontrolü",
+          "Yıkama aşamasında kontroller",
+          "Paketleme aşamasındaki kontroller"
+        ],
+        "productionChecks": [
+          "Aksesuar ve kumaş kabul kontrolleri",
+          "Kalıp ölçü ve çekme değerlerinin kontrolü",
+          "Pastal ve kumaş kontrolü",
+          "Kesim sonrası defo ayıklama",
+          "Dikim anı ve sonrası kalite raporlaması"
+        ],
+        "packingChecks": [
+          "İplik temizleme kontrolü",
+          "Ütü kalite kontrolü",
+          "Ölçü kontrolü",
+          "Renk kontrolü",
+          "Optik kalite kontrol"
+        ],
+        "sample": { "detail": "Numune aşamasında yapılan ölçümler, yıkama testleri ve dikiş kontrolleri ürünün seri üretime hazır olduğundan emin olmamıza yardımcı olur. Numunelerimiz genellikle 3 iş günü içinde raporlanır ve gerekli düzeltmeler hızlıca uygulanır." },
+        "stats": { "firstPass": "98%", "sampleReportTime": "3 gün" }
+      }
     }
   }
   ,
@@ -97,17 +231,18 @@
     "remove": "Kaldır"
   },
   "footer": {
-    "links": "Bağlantılar",
-    "home": "Ana sayfa",
-    "products": "Ürünlerimiz",
-    "sustainability": "Sürdürülebilirlik",
-    "contact": "İletişim",
-    "corporate": {
-      "title": "Kurumsal",
-      "about": "Hakkımızda",
-      "vision": "Vizyon",
-      "mission": "Misyon",
-      "clients": "Müşterilerimiz"
+    "tagline": "Kaliteli üretim, sürdürülebilir gelecek",
+  "links": "Bağlantılar",
+  "home": "Ana sayfa",
+  "products": "Ürünlerimiz",
+  "contact": "İletişim",
+  "corporate": {
+    "title": "Kurumsal",
+    "about": "Hakkımızda",
+    "aboutDetail": "Şirket Bilgileri",
+    "vision": "Vizyon",
+    "mission": "Misyon",
+    "clients": "Müşterilerimiz"
     },
     "production": {
       "title": "Üretim",
@@ -120,8 +255,8 @@
     },
     "contactInfo": {
       "title": "İletişim",
-      "phone": "+90 212 000 00 00",
-      "email": "info@yasar.example",
+      "phone": "+90 212 520 92 99",
+      "email": "info@yasarunderwear.com",
       "map": "Adresimizi haritada gör"
     },
     "company": {
@@ -165,7 +300,8 @@
       "aktif": "Aktif & Rahat"
     },
     "common": {
-      "imagePlaceholder": "Resim"
+      "imagePlaceholder": "Resim",
+      "close": "Kapat"
     },
     "cookieBanner": {
       "ariaLabel": "Çerez tercihleri",

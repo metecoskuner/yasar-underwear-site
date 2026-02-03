@@ -6,9 +6,12 @@
     "about": "À propos",
     "contact": "Contact",
     "language": "Langue",
+    "sustainability": "Durabilité",
     "corporate": {
       "title": "Entreprise",
-      "about": "À propos"
+      "about": "À propos",
+      "description": "Yasar Tekstil - misyonumuz, vizyonumuz ve kurumsal değerlerimiz hakkında özet bilgiler.",
+      "aboutSubtitle": "Şirket geçmişi, değerler ve misyon & vizyon bilgileri"
     },
     "production": {
       "title": "Production",
@@ -18,151 +21,136 @@
       "facilitiesSubtitle": "Infrastructure des installations, capacité et images",
       "qualitySubtitle": "Contrôles qualité, tests et certification"
     },
-    "sustainability": "Durabilité",
     "products": "Produits"
   },
   "hero": {
     "title": "Confort et Style",
     "subtitle": "Découvrez le confort avec notre collection de sous-vêtements quotidiens"
-  }
-  ,
-  "wishlist": {
-    "title": "Favoris",
-    "clear": "Tout supprimer",
-    "emptyTitle": "Votre liste de favoris est vide",
-    "emptyBody": "Appuyez sur le cœur des produits pour les ajouter à vos favoris.",
-    "viewProducts": "Voir les produits",
-    "added": "Produit ajouté aux favoris ❤️",
-    "remove": "Supprimer"
   },
-  "footer": {
-    "links": "Liens",
-    "home": "Accueil",
-    "products": "Produits",
-    "sustainability": "Durabilité",
-    "contact": "Contact",
-    "corporate": {
-      "title": "Entreprise",
-      "about": "À propos",
-    "description": "Yasar Textile - résumé de notre mission, vision et valeurs d'entreprise.",
-    "aboutSubtitle": "Histoire de l'entreprise, valeurs et informations mission & vision",
-      "mission": "Mission",
-      "clients": "Clients"
+  "sustainability": {
+    "title": "Durabilité",
+    "heroLead": "Nous investissons dans l'avenir grâce à des processus de production axés sur la responsabilité environnementale et sociale.",
+    "metrics": {
+      "m1": "Conforme ISO 9001",
+      "m2": "Efficacité énergétique",
+      "m3": "Traçabilité"
     },
-    "company": {
-      "paragraph1": "Sous-vêtements fabriqués en Turquie. Axés sur le confort et la qualité.",
-      "paragraph2": "Fondée en 1969, notre entreprise s'est imposée comme l'un des principaux fabricants et exportateurs du secteur, spécialisée dans les chemises de nuit, ensembles de pyjamas, pantalons de pyjama et sous-vêtements, avec plus d'un demi-siècle d'expérience.",
-      "paragraph3": "Grâce à nos exportations vers les marchés d'Europe de l'Est et du Moyen-Orient — notamment les États-Unis, la France, l'Espagne, la Grèce et Israël — nous représentons fièrement nos normes de haute qualité et notre approche axée sur le client à l'échelle internationale. Engagée en faveur de la fiabilité, de la continuité et de la qualité, notre entreprise demeure un partenaire commercial solide et apprécié à l'échelle mondiale."
-    },
-    "tagline": "Sous-vêtements fabriqués en Turquie. Axés sur le confort et la qualité.",
-    "production": {
-      "title": "Production",
-      "facilities": "Nos installations",
-      "quality": "Processus de qualité"
-    },
-    "follow": {
-      "title": "Suivez-nous",
-      "desc": "Suivez nos réseaux sociaux pour les promotions et les nouveautés."
-    },
-    "contactInfo": {
-      "title": "Contact",
-      "phone": "+90 212 000 00 00",
-      "email": "info@yasar.example",
-      "map": "Voir notre adresse sur la carte"
-    },
-    "cookie": {
-      "reset": "Réinitialiser les cookies"
-    },
-    "privacy": "Confidentialité",
-    "terms": "Conditions",
-    "copyright": "© {year} Yasar. Tous droits réservés.",
-    "backToTop": "Haut de page"
-  }
-  ,
-  "components": {
-    "productCard": {
-      "inspect": "Afficher",
-      "imageAlt": "Image du produit",
-      "categories": {
-        "ic-giyim": "Sous-vêtements",
-        "ev-giyim": "Tenue d'intérieur",
-        "corap": "Chaussettes & Accessoires",
-        "aktif": "Sport & Confort"
+    "pillars": [
+      {
+        "title": "Matériaux responsables",
+        "desc": "Privilégier les fibres et tissus issus de fournisseurs durables."
       },
-      "wishlist": {
-        "add": "Ajouter aux favoris",
-        "remove": "Retirer des favoris"
-      }
-    },
-    "productGrid": {
-      "title": "Produits en vedette",
-      "subtitle": "Nos articles populaires et recommandés sélectionnés — qualité et confort.",
-      "viewAll": "Voir tout"
-    }
-    ,
-    "categories": {
-      "ic-giyim": "Sous-vêtements",
-      "ev-giyim": "Tenue d'intérieur",
-      "corap": "Chaussettes & Accessoires",
-      "aktif": "Sport & Confort"
-    },
-    "common": {
-      "imagePlaceholder": "Image"
-    }
-    ,
-    "hero": {
-      "title": "Confort & Élégance — Tous les jours",
-      "subtitle": "Découvrez le confort avec notre collection de sous-vêtements quotidiens",
-      "ctaCollections": "Voir les collections",
-      "ctaQuote": "Demander un devis"
-    }
-    ,
-    "media": {
-      "title": "Voir, Ressentir, Découvrir",
-      "prev": "Précédent",
-      "next": "Suivant",
-      "goTo": "Aller à {n}"
-    }
-    ,
-    "whyUs": {
-      "title": "Pourquoi nous?",
-      "intro": "Depuis notre création, nous privilégions la qualité, le confort et la satisfaction client.",
-      "experience": { "title": "50+ ans d'expérience", "body": "Expertise, confiance et pratiques de production stables depuis 1969." },
-      "quality": { "title": "Tissus de haute qualité", "body": "Des tissus doux pour la peau, respirants et durables pour un confort maximal." },
-      "design": { "title": "Design moderne & confortable", "body": "Des coupes élégantes, ergonomiques et pensées pour un usage quotidien." },
-      "standards": { "title": "Normes de production fiables", "body": "Des processus de production soigneusement contrôlés à chaque étape." },
-      "counters": {
-        "monthlyCapacity": "Capacité de production mensuelle",
-        "facilityArea": "m² d'installation de production",
-        "employees": "Employés",
-        "exportCountries": "Pays exportés"
-      }
-    }
-    ,
-    "contact": {
-      "title": "Contactez-nous",
-      "intro": "Envoyez-nous un message pour des questions, des partenariats ou des demandes de gros. Temps de réponse moyen",
-      "avgResponse": "24 heures",
-      "replyApprox": "Réponse : ~24s",
-      "emailLabel": "E-mail",
-      "phoneLabel": "Téléphone",
-      "hoursLabel": "Horaires",
-      "hours": "Jours ouvrables 09:00 – 18:00",
-      "sendEmail": "Envoyer un e-mail",
-      "callUs": "Appelez-nous",
-      "sending": "Envoi…",
-      "sendMessage": "Envoyer le message",
-      "success": "Votre message a été envoyé avec succès ✅",
-      "errors": {
-        "nameRequired": "Le nom est requis",
-        "emailRequired": "L'e-mail est requis",
-        "emailInvalid": "E-mail invalide",
-        "messageRequired": "Le message ne peut pas être vide"
+      {
+        "title": "Gestion environnementale",
+        "desc": "Réduire l'impact environnemental par la réduction des déchets et l'optimisation énergétique."
       },
-      "form": { "name": "Nom", "email": "E-mail", "message": "Message" }
+      {
+        "title": "Responsabilité sociale",
+        "desc": "Assurer la santé des travailleurs, une rémunération équitable et des conditions de travail sûres."
+      }
+    ],
+    "how": {
+      "title": "Comment nous travaillons",
+      "lead": "Transparence, qualité et amélioration continue guident nos processus.",
+      "bullets": [
+        "Approvisionnement en matières premières durables",
+        "Projets d'efficacité énergétique et d'économie d'eau",
+        "Gestion des déchets et pratiques de recyclage",
+        "Audits réguliers et rapports transparents"
+      ]
+    },
+    "cards": [
+      {
+        "title": "Production traçable",
+        "text": "Nous conservons des enregistrements pour toutes les étapes de production."
+      },
+      {
+        "title": "Qualité & Assurance",
+        "text": "Des contrôles qualité stricts sont appliqués pour chaque lot."
+      },
+      {
+        "title": "Initiatives énergétiques",
+        "text": "Nous réduisons la consommation grâce à des projets d'efficacité énergétique."
+      }
+    ],
+    "imageAlt2": "Image durabilité",
+    "footerNote": "Contactez-nous pour en savoir plus sur notre approche de durabilité."
+  },
+  "uretim": {
+    "tesis": {
+      "title": "Nos installations de production",
+      "lead": "Nous offrons une infrastructure de production moderne, sûre et durable. Dans nos installations, la qualité, la sécurité des travailleurs et la responsabilité environnementale sont gérées simultanément ; les processus sont suivis par des enregistrements numériques.",
+      "tags": {
+        "iso": "Conforme ISO 9001",
+        "energy": "Efficacité énergétique",
+        "spc": "SPC & traçabilité"
+      },
+      "features": {
+        "modernLines": {
+          "title": "Lignes modernes",
+          "desc": "Production efficace avec des lignes automatiques de découpe et de couture."
+        },
+        "qualityLab": {
+          "title": "Laboratoire qualité",
+          "desc": "Laboratoires avancés d'essais et de mesure."
+        },
+        "environment": {
+          "title": "Mesures environnementales",
+          "desc": "Gestion des déchets et pratiques d'efficacité énergétique."
+        },
+        "training": {
+          "title": "Formation & Sécurité",
+          "desc": "Formations continues et mesures de santé au travail."
+        }
+      },
+      "how": {
+        "title": "Comment nous travaillons",
+        "lead": "Dans nos installations, nous conjuguons production efficace, sécurité des travailleurs et responsabilité environnementale. La traçabilité est assurée par des enregistrements numériques et les processus sont continuellement améliorés."
+      },
+      "infrastructure": {
+        "title": "Infrastructure & Machines",
+        "items": [
+          "Lignes automatiques de découpe et de couture",
+          "Contrôle de processus basé sur SPC",
+          "Machines économes en énergie"
+        ]
+      },
+      "training": {
+        "title": "Formation & Sécurité",
+        "heading": "Formation du personnel",
+        "lead": "Les formations du personnel et les protocoles de sécurité sont régulièrement mis à jour et suivis.",
+        "items": [
+          "Formations régulières du personnel",
+          "Protocoles de santé et sécurité au travail",
+          "Mécanismes de retour d'information"
+        ],
+        "body": "Les formations du personnel suivent les meilleures pratiques du secteur et les protocoles locaux. Nous renforçons la culture de sécurité et faisons évoluer les programmes grâce aux retours des participants."
+      },
+      "quality": {
+        "title": "Assurance qualité",
+        "lead": "L'assurance qualité est assurée grâce à une surveillance continue, des enregistrements de données et des mécanismes de retour d'information.",
+        "bullets": [
+          "Processus conformes à ISO 9001",
+          "SPC et reporting"
+        ]
+      },
+      "applications": {
+        "title": "Pratiques dans les installations",
+        "lead": "Les principales pratiques mises en œuvre dans nos installations et les points auxquels nous prêtons attention sont listés ci-dessous.",
+        "items": [
+          "Suivi automatisé de la découpe et de la qualité",
+          "Contrôle des processus avec SPC",
+          "Gestion des déchets et économie d'eau"
+        ],
+        "summary": "Notre infrastructure est conçue pour l'efficacité, la santé au travail et l'impact environnemental. Nous réduisons la consommation d'énergie et gérons les déchets selon des objectifs mesurables."
+      },
+      "energy": {
+        "title": "Énergie & Environnement",
+        "lead": "Les projets d'efficacité énergétique et les programmes de réduction des déchets font partie de nos opérations.",
+        "body": "Des projets d'efficacité énergétique et d'économie d'eau sont en place ; des mesures sont prises dans l'ensemble de l'installation et les progrès sont suivis par des rapports réguliers."
+      }
     }
-  }
-  ,
+  },
   "pages": {
     "products": {
       "title": "Produits — Yasar",
@@ -187,14 +175,39 @@
       "preview": "Aperçu",
       "requestInfo": "Demander des infos",
       "requestInfoAria": "Demander des infos -"
-    }
-    ,
+    },
     "about": {
       "title": "Entreprise - Yasar",
       "description": "À propos de Yasar Textile : notre mission, vision et capacités de production.",
       "hero": {
         "title": "Entreprise",
         "desc": "Chez Yasar, nous mettons l'accent sur la qualité, la durabilité et le bien-être des travailleurs. Nos installations en Turquie utilisent des techniques de production modernes pour offrir des produits conformes aux normes internationales."
+      },
+      "intro": {
+        "p1": "Nous sommes un fabricant familial opérant des installations modernes en Turquie. De la conception à la livraison, nous appliquons des contrôles qualité et une traçabilité rigoureuse.",
+        "p2": "Le choix de matières premières durables, l'efficacité énergétique et la réduction des déchets sont au cœur de nos activités.",
+        "p3": "Notre équipe est expérimentée, disciplinée et en amélioration continue. Avec une approche de gestion centrée sur l'humain, nous sommes un partenaire commercial fiable."
+      },
+      "mission": "Offrir à nos clients des solutions de lingerie confortables, durables et produites de manière éthique ; créer une valeur durable pour nos partenaires.",
+      "vision": "Être l'un des premiers noms qui vient à l'esprit lorsque la qualité et la confiance sont évoquées sur les marchés nationaux et internationaux.",
+      "stats": {
+        "production": "Production annuelle (unités)",
+        "exports": "Pays d'exportation",
+        "facilities": "Installations"
+      },
+      "milestones": {
+        "1992": "Fondation et début de la production locale.",
+        "2005": "Modernisation de la ligne de production et création d'un laboratoire qualité.",
+        "2017": "Lancement du programme de matières premières durables.",
+        "2023": "Renforcement des partenariats internationaux."
+      },
+      "headings": {
+        "mission": "Notre mission",
+        "vision": "Notre vision",
+        "values": "Nos valeurs",
+        "milestones": "Étapes clés",
+        "global": "Notre présence mondiale",
+        "countries": "Pays dans lesquels nous opérons"
       },
       "cta": {
         "facilities": "Nos installations",
@@ -209,20 +222,303 @@
         }
       },
       "values": {
-        "design": { "title": "Design & Confort", "body": "Bon design, durabilité et confort d'utilisation." },
-        "facilities": { "title": "Installations modernes", "body": "Infrastructure de production économe en énergie et traçable." },
-        "responsibility": { "title": "Responsabilité sociale", "body": "Santé des travailleurs, salaires équitables et mesures environnementales." }
+        "design": {
+          "title": "Design & Confort",
+          "body": "Bon design, durabilité et confort d'utilisation."
+        },
+        "facilities": {
+          "title": "Installations modernes",
+          "body": "Infrastructure de production économe en énergie et traçable."
+        },
+        "responsibility": {
+          "title": "Responsabilité sociale",
+          "body": "Santé des travailleurs, salaires équitables et mesures environnementales."
+        },
+        "human": {
+          "title": "Priorité aux personnes",
+          "body": "Nous privilégions la sécurité et le développement des employés."
+        }
       },
       "quick": {
         "title": "Aperçu rapide",
-        "labels": { "experience": "Années d'expérience", "audits": "Audits / an", "reducedWaste": "Déchets réduits" }
+        "labels": {
+          "experience": "Années d'expérience",
+          "audits": "Audits / an",
+          "reducedWaste": "Déchets réduits",
+          "foundation": "Fondation",
+          "location": "Emplacement",
+          "certificates": "Certificats"
+        }
       },
       "contactPrompt": "Pour plus d'informations ou des demandes de partenariat, veuillez nous contacter.",
-      "collab": { "title": "Partenariats & Demandes", "body": "Pour des visites sur site, des questions techniques ou des commandes en gros, contactez-nous directement.", "cta": "Contactez-nous" }
+      "collab": {
+        "title": "Partenariats & Demandes",
+        "body": "Pour des visites sur site, des questions techniques ou des commandes en gros, contactez-nous directement.",
+        "cta": "Contactez-nous"
+      }
+    },
+    "production": {
+      "quality": {
+        "title": "Processus de contrôle qualité",
+        "heroLead": "Nous appliquons des inspections qualité strictes à chaque étape de la production afin d'offrir des produits cohérents, traçables et fiables. De l'échantillonnage à l'emballage, chaque étape est enregistrée et soutenue par une amélioration continue.",
+        "imageAlt": {
+          "hero": "Image qualité",
+          "sample": "Échantillon"
+        },
+        "badges": {
+          "iso": "Conforme ISO 9001",
+          "spc": "Traçabilité / SPC",
+          "experience": "Plus de 30 ans d'expérience en production"
+        },
+        "features": {
+          "sample": {
+            "title": "Échantillon",
+            "desc": "Évaluations des mesures, de la couture et du lavage au stade de l'échantillon."
+          },
+          "production": {
+            "title": "Production",
+            "desc": "Contrôles continus lors des opérations de coupe et de couture."
+          },
+          "packing": {
+            "title": "Emballage",
+            "desc": "Contrôles finaux et étiquetage avant l'emballage."
+          },
+          "assurance": {
+            "title": "Assurance qualité",
+            "desc": "Nous assurons la qualité grâce à une surveillance continue, l'enregistrement des données et des mécanismes de retour d'information ; des procédures de rappel et d'actions correctives sont mises en œuvre si nécessaire.",
+            "bullets": [
+              "Processus conformes à la norme ISO 9001",
+              "Procédures de rappel et actions correctives",
+              "SPC et reporting"
+            ]
+          }
+        },
+        "sections": {
+          "how": {
+            "title": "Comment nous travaillons",
+            "lead": "Vous trouverez ci‑dessous les principaux volets de nos processus de contrôle qualité et des exemples d'application. Des procédures opératoires standard (SOP) sont appliquées et consignées à chaque étape."
+          },
+          "sample": {
+            "title": "Phase d'échantillonnage",
+            "desc": "Les éléments suivants sont examinés en détail lors de la phase d'échantillonnage :"
+          },
+          "production": {
+            "title": "Phase de production",
+            "desc": "Pendant la production, des contrôles particuliers sont effectués aux étapes de la planification, de la coupe et de la couture pour garantir la qualité :"
+          },
+          "packing": {
+            "title": "Phase d'emballage",
+            "desc": "Contrôles appliqués avant et pendant l'emballage :"
+          }
+        },
+        "sampleChecks": [
+          "Contrôles d'assurance",
+          "Contrôles des patrons",
+          "Inspections en cours et après couture",
+          "Contrôles lors du lavage",
+          "Contrôles avant emballage"
+        ],
+        "productionChecks": [
+          "Contrôles d'acceptation des accessoires et tissus",
+          "Vérification des mesures et du retrait des patrons",
+          "Inspection du marqueur et du tissu",
+          "Tri des défauts après coupe",
+          "Rapports qualité pendant et après la couture"
+        ],
+        "packingChecks": [
+          "Contrôle du nettoyage des fils",
+          "Contrôles qualité du repassage",
+          "Contrôle des mesures",
+          "Contrôle des couleurs",
+          "Contrôle optique de la qualité"
+        ],
+        "sample": {
+          "detail": "Les mesures, les tests de lavage et les contrôles de couture effectués lors de la phase d'échantillonnage nous aident à nous assurer que le produit est prêt pour la production en série. Nos échantillons sont généralement rapportés sous 3 jours ouvrables et les corrections nécessaires sont appliquées rapidement."
+        },
+        "stats": {
+          "firstPass": "98%",
+          "sampleReportTime": "3 jours"
+        }
+      }
     }
-  }
-
-  ,
+  },
+  "wishlist": {
+    "title": "Favoris",
+    "clear": "Tout supprimer",
+    "emptyTitle": "Votre liste de favoris est vide",
+    "emptyBody": "Appuyez sur le cœur des produits pour les ajouter à vos favoris.",
+    "viewProducts": "Voir les produits",
+    "added": "Produit ajouté aux favoris ❤️",
+    "remove": "Supprimer"
+  },
+  "footer": {
+    "tagline": "Sous-vêtements fabriqués en Turquie. Axés sur le confort et la qualité.",
+    "links": "Liens",
+    "home": "Accueil",
+    "products": "Produits",
+    "contact": "Contact",
+    "corporate": {
+      "title": "Entreprise",
+      "about": "À propos",
+      "aboutDetail": "Informations sur l'entreprise",
+      "vision": "Vision",
+      "mission": "Mission",
+      "clients": "Clients",
+      "description": "Yasar Textile - résumé de notre mission, vision et valeurs d'entreprise.",
+      "aboutSubtitle": "Histoire de l'entreprise, valeurs et informations mission & vision"
+    },
+    "production": {
+      "title": "Production",
+      "facilities": "Nos installations",
+      "quality": "Processus de qualité"
+    },
+    "follow": {
+      "title": "Suivez-nous",
+      "desc": "Suivez nos réseaux sociaux pour les promotions et les nouveautés."
+    },
+    "contactInfo": {
+      "title": "Contact",
+      "phone": "+90 212 520 92 99",
+      "email": "info@yasarunderwear.com",
+      "map": "Voir notre adresse sur la carte"
+    },
+    "company": {
+      "paragraph1": "Sous-vêtements fabriqués en Turquie. Axés sur le confort et la qualité.",
+      "paragraph2": "Fondée en 1969, notre entreprise s'est imposée comme l'un des principaux fabricants et exportateurs du secteur, spécialisée dans les chemises de nuit, ensembles de pyjamas, pantalons de pyjama et sous-vêtements, avec plus d'un demi-siècle d'expérience.",
+      "paragraph3": "Grâce à nos exportations vers les marchés d'Europe de l'Est et du Moyen-Orient — notamment les États-Unis, la France, l'Espagne, la Grèce et Israël — nous représentons fièrement nos normes de haute qualité et notre approche axée sur le client à l'échelle internationale. Engagée en faveur de la fiabilité, de la continuité et de la qualité, notre entreprise demeure un partenaire commercial solide et apprécié à l'échelle mondiale."
+    },
+    "cookie": {
+      "reset": "Réinitialiser les cookies"
+    },
+    "privacy": "Confidentialité",
+    "terms": "Conditions",
+    "copyright": "© {year} Yasar. Tous droits réservés.",
+    "backToTop": "Haut de page"
+  },
+  "components": {
+    "productCard": {
+      "inspect": "Afficher",
+      "imageAlt": "Image du produit",
+      "categories": {
+        "ic-giyim": "Sous-vêtements",
+        "ev-giyim": "Tenue d'intérieur",
+        "corap": "Chaussettes & Accessoires",
+        "aktif": "Sport & Confort"
+      },
+      "wishlist": {
+        "add": "Ajouter aux favoris",
+        "remove": "Retirer des favoris"
+      }
+    },
+    "productGrid": {
+      "title": "Produits en vedette",
+      "subtitle": "Nos articles populaires et recommandés sélectionnés — qualité et confort.",
+      "viewAll": "Voir tout"
+    },
+    "categories": {
+      "ic-giyim": "Sous-vêtements",
+      "ev-giyim": "Tenue d'intérieur",
+      "corap": "Chaussettes & Accessoires",
+      "aktif": "Sport & Confort"
+    },
+    "common": {
+      "imagePlaceholder": "Image",
+      "close": "Fermer"
+    },
+    "cookieBanner": {
+      "ariaLabel": "Çerez tercihleri",
+      "title": "Çerez tercihleri",
+      "body": "Sitemiz deneyimi iyileştirmek için çerezler kullanır. Analitik ve pazarlama çerezlerini kabul edip etmemek size bağlıdır.",
+      "privacyLink": "Gizlilik Politikası",
+      "acceptAll": "Tümünü kabul et",
+      "settings": "Ayarlar",
+      "reject": "Reddet",
+      "settingsTitle": "Çerez ayarları",
+      "settingsBody": "Hangi çerezleri kabul etmek istediğinizi seçin.",
+      "required": {
+        "title": "Zorunlu",
+        "body": "Site çalışması için gerekli çerezler (devre dışı bırakılamaz)."
+      },
+      "analytics": {
+        "title": "Analitik",
+        "body": "Site kullanımını anlamamıza yardımcı olur."
+      },
+      "marketing": {
+        "title": "Pazarlama",
+        "body": "Reklam ve hedefleme çerezleri."
+      },
+      "cancel": "Vazgeç",
+      "save": "Kaydet"
+    },
+    "hero": {
+      "title": "Confort & Élégance — Tous les jours",
+      "subtitle": "Découvrez le confort avec notre collection de sous-vêtements quotidiens",
+      "ctaCollections": "Voir les collections",
+      "ctaQuote": "Demander un devis"
+    },
+    "contact": {
+      "title": "Contactez-nous",
+      "intro": "Envoyez-nous un message pour des questions, des partenariats ou des demandes de gros. Temps de réponse moyen",
+      "avgResponse": "24 heures",
+      "replyApprox": "Réponse : ~24s",
+      "emailLabel": "E-mail",
+      "phoneLabel": "Téléphone",
+      "hoursLabel": "Horaires",
+      "hours": "Jours ouvrables 09:00 – 18:00",
+      "sendEmail": "Envoyer un e-mail",
+      "callUs": "Appelez-nous",
+      "sending": "Envoi…",
+      "sendMessage": "Envoyer le message",
+      "success": "Votre message a été envoyé avec succès ✅",
+      "errors": {
+        "nameRequired": "Le nom est requis",
+        "emailRequired": "L'e-mail est requis",
+        "emailInvalid": "E-mail invalide",
+        "messageRequired": "Le message ne peut pas être vide"
+      },
+      "form": {
+        "name": "Nom",
+        "email": "E-mail",
+        "message": "Message"
+      }
+    },
+    "media": {
+      "title": "Voir, Ressentir, Découvrir",
+      "prev": "Précédent",
+      "next": "Suivant",
+      "goTo": "Aller à {n}"
+    },
+    "whyUs": {
+      "title": "Pourquoi nous?",
+      "intro": "Depuis notre création, nous privilégions la qualité, le confort et la satisfaction client.",
+      "experience": {
+        "title": "50+ ans d'expérience",
+        "body": "Expertise, confiance et pratiques de production stables depuis 1969."
+      },
+      "quality": {
+        "title": "Tissus de haute qualité",
+        "body": "Des tissus doux pour la peau, respirants et durables pour un confort maximal."
+      },
+      "design": {
+        "title": "Design moderne & confortable",
+        "body": "Des coupes élégantes, ergonomiques et pensées pour un usage quotidien."
+      },
+      "standards": {
+        "title": "Normes de production fiables",
+        "body": "Des processus de production soigneusement contrôlés à chaque étape."
+      },
+      "counters": {
+        "monthlyCapacity": "Capacité de production mensuelle",
+        "facilityArea": "m² d'installation de production",
+        "employees": "Employés",
+        "exportCountries": "Pays exportés"
+      }
+    },
+    "whatsApp": {
+      "open": "WhatsApp uygulamasında aç",
+      "sr": "WhatsApp"
+    }
+  },
   "locations": {
     "tr": "Turquie",
     "uk": "Royaume-Uni",
