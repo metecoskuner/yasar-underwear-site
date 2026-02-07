@@ -321,3 +321,52 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .pop-heart { animation: none !important; }
 }
+
+/* Ensure Leaflet map panes don't float above the fixed header. Leaflet's
+   internal pane stacking can produce high z-index values which cause the
+   map (tiles/markers/popups) to overlap fixed UI like the site header.
+   Force map panes to sit below the header (header uses z-40). */
+.leaflet-container { z-index: 0; }
+.leaflet-pane { z-index: 0 !important; }
+
+/* Skeleton overlay while map tiles load */
+#yasar-map-skeleton {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(250,250,250,0.6));
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 40;
+}
+.skeleton-spinner {
+  width: 56px;
+  height: 56px;
+  border-radius: 9999px;
+  background: linear-gradient(90deg,#f3f4f6 0%, #e5e7eb 50%, #f3f4f6 100%);
+  animation: skeleton-shimmer 1.1s linear infinite;
+}
+@keyframes skeleton-shimmer { 0% { transform: translateX(-6px); } 50% { transform: translateX(6px); } 100% { transform: translateX(-6px); } }
+
+/* Glassmorphism popup */
+.yasar-glass-popup .leaflet-popup-content-wrapper {
+  background: rgba(255,255,255,0.75);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+  padding: 10px 12px;
+}
+.yasar-popup { font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; }
+.yasar-popup-title { font-weight: 700; color: #111827; margin-bottom: 6px; }
+.yasar-popup-addr { font-size: 0.875rem; color: #374151; margin-bottom: 8px; }
+.yasar-popup-directions { display:inline-block; padding:6px 10px; background:rgba(0,0,0,0.85); color:#fff; border-radius:8px; text-decoration:none; font-size:0.85rem; }
+.yasar-popup-directions:hover { opacity:0.95 }
+
+/* Pulsing primary marker */
+.yasar-pulse-icon { background: transparent; }
+.yasar-pulse { display:inline-block; width:18px; height:18px; margin-left:3px; margin-top:3px; border-radius:9999px; background:#ef4444; position:relative; box-shadow:0 0 0 4px rgba(239,68,68,0.12); }
+.yasar-pulse::after { content:''; position:absolute; left:0; top:0; width:100%; height:100%; border-radius:9999px; background:rgba(239,68,68,0.35); animation: pulse 1.6s infinite ease-out; }
+@keyframes pulse { 0% { transform: scale(1); opacity: 0.9 } 70% { transform: scale(2.6); opacity: 0 } 100% { transform: scale(2.6); opacity: 0 } }

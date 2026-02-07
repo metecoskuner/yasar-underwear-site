@@ -1,0 +1,32 @@
+[
+  {
+    "id": "p_ml1aqr9z_fekv",
+    "title": "asdasd",
+    "productCode": "asdas",
+    "price": 12,
+    "description": "as",
+    "images": [],
+    "sizes": [],
+    "stock": null,
+    "gender": "",
+    "category": "asdas"
+  },
+  {
+    "id": "p_ml1aozfd_tzmj",
+    "title": "asdadsads",
+    "productCode": "",
+    "price": null,
+    "description": "",
+    "images": [],
+    "sizes": [],
+    "stock": null,
+    "gender": "",
+    "category": ""
+  },
+  {
+    "id": "",
+    "title": "",
+    "productCode": "",
+    "image": ""
+  }
+]

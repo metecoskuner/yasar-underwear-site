@@ -6,7 +6,7 @@ import Link from 'next/link';
 // Layout wrapper is provided by `src/pages/_app.tsx`; do not double-wrap pages.
 import ProductCard from '@/components/ProductCard';
 import CategoryTiles from '@/components/CategoryTiles';
-import { products as demoProducts, Product } from '@/data/demoProducts';
+import { getProducts, Product as ProductType } from '@/data/demoProducts';
 import { useRouter } from 'next/router';
 import { useLanguage } from '@/contexts/LanguageContext';
 
@@ -28,10 +28,11 @@ export default function UrunlerPage() {
   };
   const router = useRouter();
   const [gender, setGender] = useState<'all' | 'male' | 'female'>('all');
-  // keep category value but omit the setter to avoid an unused variable lint warning
-  const [category] = useState('all');
+  const [products, setProducts] = useState<ProductType[]>([]);
+  // category state — can be set via query param (?category=ic-giyim)
+  const [category, setCategory] = useState('all');
   const [query, setQuery] = useState('');
-  const [activeProduct, setActiveProduct] = useState<Product | null>(null);
+  const [activeProduct, setActiveProduct] = useState<ProductType | null>(null);
   const [modalIndex, setModalIndex] = useState(0);
   const [allowHoverZoom, setAllowHoverZoom] = useState(false);
   const [hasHoveredOnce, setHasHoveredOnce] = useState(false);
@@ -40,7 +41,7 @@ export default function UrunlerPage() {
   const closeBtnRef = useRef<HTMLButtonElement | null>(null);
   const [copiedCode, setCopiedCode] = useState(false);
 
-  function openProductModal(product: Product, preview?: number | string) {
+  function openProductModal(product: ProductType, preview?: number | string) {
     let index = 0;
     if (typeof preview === 'number') index = preview;
     else if (typeof preview === 'string') {
@@ -51,15 +52,39 @@ export default function UrunlerPage() {
     setActiveProduct(product);
   }
 
+  const activeTitle = React.useMemo(() => {
+    if (!activeProduct) return ''
+    // Product titles are dynamic and should come from product data, not locale files.
+    return activeProduct.i18nTitle?.[lang] ?? activeProduct.title ?? ''
+  }, [activeProduct, t, lang])
+
+  useEffect(() => {
+    setProducts(getProducts());
+    function onProductsChange() {
+      setProducts(getProducts());
+    }
+    // storage event for other tabs, custom event for same-tab updates
+    window.addEventListener('storage', onProductsChange);
+    window.addEventListener('yasar:products:changed', onProductsChange as EventListener);
+    return () => {
+      window.removeEventListener('storage', onProductsChange);
+      window.removeEventListener('yasar:products:changed', onProductsChange as EventListener);
+    };
+  }, []);
+
   const filtered = useMemo(() => {
-    return demoProducts.filter((p) => {
+    return products.filter((p) => {
       if (gender !== 'all' && p.gender !== gender) return false;
       if (category !== 'all' && p.category !== category) return false;
-      if (query.trim() && !p.title.toLowerCase().includes(query.toLowerCase()) && !p.productCode.toLowerCase().includes(query.toLowerCase()))
-        return false;
+      if (query.trim()) {
+        const qc = query.toLowerCase();
+        const title = (p.title || '').toLowerCase();
+        const code = (p.productCode || '').toLowerCase();
+        if (!title.includes(qc) && !code.includes(qc)) return false;
+      }
       return true;
     });
-  }, [gender, category, query]);
+  }, [products, gender, category, query]);
 
   useEffect(() => {
     let allowTimer: number | undefined;
@@ -81,8 +106,8 @@ export default function UrunlerPage() {
   useEffect(() => {
     if (!router) return;
     const pid = router.query.product as string | undefined;
-    if (!pid) return;
-    const p = demoProducts.find((x) => x.id === pid);
+  if (!pid) return;
+  const p = products.find((x) => x.id === pid);
     if (!p) return;
     // open modal
     openProductModal(p);
@@ -95,6 +120,23 @@ export default function UrunlerPage() {
     void router.replace(router.pathname, undefined, { shallow: true });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.query.product]);
+
+  // If the page is opened with a ?category=<slug> query (from homepage tiles),
+  // set the category filter and remove the query param to avoid re-triggering on back/forward.
+  useEffect(() => {
+    if (!router) return;
+    const cat = router.query.category as string | undefined;
+    if (!cat) return;
+    setCategory(cat);
+    // remove category query param shallowly
+    try {
+      const { pathname, query } = router;
+      const nextQuery = { ...(query as Record<string, string>) };
+      delete nextQuery.category;
+      void router.replace({ pathname, query: nextQuery }, undefined, { shallow: true });
+    } catch {}
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.query.category]);
 
   const modalSrc = activeProduct?.images?.[modalIndex] ?? activeProduct?.image ?? '/photos/placeholder.png';
 
@@ -229,7 +271,7 @@ export default function UrunlerPage() {
 
                 <div className="p-6 flex flex-col">
                     <div className="flex justify-between items-start">
-                    <h3 className="text-2xl font-semibold">{activeProduct?.i18nTitle?.[lang] ?? activeProduct?.title}</h3>
+                    <h3 className="text-2xl font-semibold">{activeTitle}</h3>
                     <button
                       ref={closeBtnRef}
                       onClick={() => setActiveProduct(null)}
@@ -242,7 +284,7 @@ export default function UrunlerPage() {
 
                     <p className="mt-4 text-gray-600 flex items-center gap-3">
                     <span>{tr('pages.products.productCode','Ürün kodu:')}</span>
-                    <span className="font-mono">{activeProduct.productCode}</span>
+                    <span className="font-mono">{activeProduct.productCode ?? ''}</span>
                     <button
                       type="button"
                       onClick={async () => {
@@ -252,7 +294,7 @@ export default function UrunlerPage() {
                           } else {
                             // fallback
                             const el = document.createElement('textarea');
-                            el.value = activeProduct.productCode;
+                            el.value = activeProduct.productCode ?? '';
                             document.body.appendChild(el);
                             el.select();
                             document.execCommand('copy');
@@ -267,7 +309,7 @@ export default function UrunlerPage() {
                         }
                       }}
                       className="ml-2 inline-flex items-center gap-2 px-3 py-1.5 bg-gray-100 rounded-md text-sm hover:bg-gray-200 transition"
-                      aria-label={`${tr('pages.products.copyCodeAria','Ürün kodunu kopyala')} ${activeProduct.productCode}`}
+                      aria-label={`${tr('pages.products.copyCodeAria','Ürün kodunu kopyala')} ${activeProduct.productCode ?? ''}`}
                     >
                       {tr('pages.products.copy','Kopyala')}
                     </button>
@@ -289,9 +331,9 @@ export default function UrunlerPage() {
 
                   <div className="mt-auto pt-6 flex gap-3 justify-end">
                     <Link
-                      href={`/contact?product=${encodeURIComponent(activeProduct?.i18nTitle?.[lang] ?? activeProduct?.title ?? '')}`}
+                      href={`/contact?product=${encodeURIComponent(activeTitle ?? '')}`}
                       className="px-6 py-3 bg-amber-400 text-black rounded-full font-semibold shadow-sm hover:bg-amber-500 transition-colors duration-150 cursor-pointer min-w-[160px] text-center"
-                      aria-label={`${tr('pages.products.requestInfoAria','Bilgi Al -')} ${activeProduct?.i18nTitle?.[lang] ?? activeProduct?.title ?? ''}`}
+                      aria-label={`${tr('pages.products.requestInfoAria','Bilgi Al -')} ${activeTitle ?? ''}`}
                     >
                       {tr('pages.products.requestInfo','Bilgi Al')}
                     </Link>

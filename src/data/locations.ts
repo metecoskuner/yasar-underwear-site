@@ -27,7 +27,7 @@ export type Location = {
 const LOCATIONS: Location[] = [
   {
     id: 'tr',
-    name: 'Türkiye',
+    name: 'Турция',
     lat: 37.08162870861236,
     lon: 34.87085251581098,
     isCenter: true,
@@ -48,7 +48,7 @@ const LOCATIONS: Location[] = [
   },
   {
     id: 'uk',
-    name: 'UK',
+    name: 'Великобритания',
     lat: 55.3781,
     lon: -3.436,
     offsetX: -3.148766896081349,
@@ -64,7 +64,7 @@ const LOCATIONS: Location[] = [
   },
   {
     id: 'de',
-    name: 'Almanya',
+    name: 'Германия',
     lat: 51.1657,
     lon: 10.4515,
     offsetX: -15.960675920758927,
@@ -84,7 +84,7 @@ const LOCATIONS: Location[] = [
   },
   {
     id: 'ro',
-    name: 'Romanya',
+    name: 'Румыния',
     lat: 45.9432,
     lon: 24.9668,
     offsetX: -22.052565801711307,
@@ -102,7 +102,7 @@ const LOCATIONS: Location[] = [
   },
   {
     id: 'kw',
-    name: 'Kuveyt',
+    name: 'Кувейт',
     lat: 29.3759,
     lon: 47.9774,
     offsetX: -20.144345238095234,
@@ -120,7 +120,7 @@ const LOCATIONS: Location[] = [
   },
   {
     id: 'ly',
-    name: 'Libya',
+    name: 'Ливия',
     lat: 26.3351,
     lon: 17.2283,
     offsetX: -14.683216155521453,
@@ -136,7 +136,7 @@ const LOCATIONS: Location[] = [
   },
   {
     id: 'nl',
-    name: 'Hollanda',
+    name: 'Нидерланды',
     lat: 52.1326,
     lon: 5.2913,
     offsetX: -19.541470966641864,
@@ -154,7 +154,7 @@ const LOCATIONS: Location[] = [
   },
   {
     id: 'fr',
-    name: 'Fransa',
+    name: 'Франция',
     lat: 46.2276,
     lon: 2.2137,
     offsetX: -20.570089673239085,
@@ -170,7 +170,7 @@ const LOCATIONS: Location[] = [
   },
   {
     id: 'us',
-    name: 'ABD',
+    name: 'США',
     lat: 37.0902,
     lon: -95.7129,
     offsetX: -10.423842657180058,

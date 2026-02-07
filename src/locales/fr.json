@@ -10,8 +10,8 @@
     "corporate": {
       "title": "Entreprise",
       "about": "À propos",
-      "description": "Yasar Tekstil - misyonumuz, vizyonumuz ve kurumsal değerlerimiz hakkında özet bilgiler.",
-      "aboutSubtitle": "Şirket geçmişi, değerler ve misyon & vizyon bilgileri"
+      "description": "Yasar Tekstil — résumé de notre mission, de notre vision et de nos valeurs d'entreprise.",
+      "aboutSubtitle": "Histoire de l'entreprise, valeurs et informations sur la mission et la vision"
     },
     "production": {
       "title": "Production",
@@ -152,6 +152,32 @@
     }
   },
   "pages": {
+    "contact": {
+      "seo": {
+        "title": "Contact - Yasar",
+        "description": "Envoyez-nous un message pour vos demandes, suggestions ou requêtes."
+      },
+      "breadcrumb": {
+        "home": "Accueil",
+        "title": "Contact"
+      },
+      "header": {
+        "title": "Écrivez-nous",
+        "intro": "Envoyez-nous un message pour toute demande, suggestion ou requête."
+      },
+      "map": {
+        "goto": "Aller à l'emplacement",
+        "showLocation": "Afficher l'emplacement"
+      },
+      "locationsTitle": "Siège & Production",
+      "quickInfoTitle": "Informations rapides",
+      "noteTitle": "Remarque",
+      "noteText": "En soumettant le formulaire ",
+      "noteTextSuffix": " vous acceptez le traitement de vos données conformément à la",
+      "privacyPolicy": "Politique de confidentialité",
+      "phoneLabel": "Téléphone:",
+      "emailLabel": "E-mail:"
+    },
     "products": {
       "title": "Produits — Yasar",
       "description": "Collection de produits Yasar",
@@ -390,15 +416,39 @@
     "cookie": {
       "reset": "Réinitialiser les cookies"
     },
-    "privacy": "Confidentialité",
+    "privacy": {
+      "title": "Politique de confidentialité",
+      "seoTitle": "Politique de confidentialité - Yasar",
+      "headerTitle": "Politique de confidentialité Yasar",
+      "intro": "Chez Yasar, nous attachons de l'importance à la confidentialité de vos données personnelles. Vous trouverez ci-dessous un résumé des données que nous collectons, de leur utilisation et de vos droits. Contactez-nous pour plus de détails.",
+      "rawLead1": ">Chez Yasar, nous attachons de l'importance à la confidentialité de vos données personnelles. Vous trouverez ci-dessous un résumé des données que nous collectons, de leur utilisation et de vos droits. Pour plus de détails, veuillez <Link href=",
+      "rawLead2": ">Nous mettons en œuvre des mesures techniques et administratives raisonnables pour protéger vos données. Pour toute question, demande ou réclamation relative à la confidentialité, veuillez <Link href=",
+      "rawLead1Alt": ">Chez Yasar, nous attachons de l'importance à la confidentialité de vos données personnelles. Vous trouverez ci-dessous un résumé des données que nous collectons, de leur utilisation et de vos droits. Pour plus de détails, veuillez <Link href=",
+      "sections": {
+        "lead1": "Chez Yasar, nous attachons de l'importance à la confidentialité de vos données personnelles. Vous trouverez ci-dessous un résumé des données que nous collectons, de leur utilisation et de vos droits. Contactez-nous pour plus de détails",
+        "lead2": "Nous mettons en œuvre des mesures techniques et administratives raisonnables pour protéger vos données. Pour toute question, demande ou réclamation relative à la confidentialité, veuillez nous contacter.",
+        "personalData": "Votre nom, adresse e‑mail, numéro de téléphone et autres informations saisies dans les formulaires de contact. Nous pouvons également collecter des données techniques et des cookies liés à l'utilisation du site (adresse IP, informations du navigateur, pages vues, etc.).",
+        "whyUse": "Les données que nous collectons sont utilisées pour répondre à vos demandes, fournir et améliorer nos services, gérer les processus de commande/de devis et respecter nos obligations légales.",
+        "sharing": "Vos données ne seront pas partagées avec des tiers sauf si vous y consentez ou si la loi l'exige. Des partages limités et nécessaires avec des sous-traitants (par ex. transporteurs, prestataires de paiement) peuvent avoir lieu afin de fournir les services ; ces transferts sont effectués en toute sécurité.",
+        "rights": "Droit d'accéder et de corriger vos données, droit de demander la suppression ou la limitation du traitement, droit d'opposition au traitement et droit à la portabilité des données. Vous pouvez soumettre votre demande via le formulaire de contact.",
+        "cookies": "Le site peut utiliser des cookies de performance et d'analyse. Vous pouvez gérer ou désactiver les cookies depuis les paramètres de votre navigateur ; certaines fonctionnalités peuvent ne pas fonctionner correctement si les cookies sont désactivés.",
+        "securityContact": "Nous appliquons des mesures techniques et administratives raisonnables pour protéger vos données. Pour toute question, demande ou réclamation relative à la confidentialité, veuillez nous contacter."
+      }
+    },
     "terms": "Conditions",
     "copyright": "© {year} Yasar. Tous droits réservés.",
-    "backToTop": "Haut de page"
+    "copyrightRaw": "© ${new Date().getFullYear()} Yasar. Tous droits réservés.",
+    "backToTop": "Haut de page",
+    "sustainability": "Durabilité"
   },
   "components": {
     "productCard": {
       "inspect": "Afficher",
+      "inspectWithTitle": "{label} : {title}",
       "imageAlt": "Image du produit",
+      "codeLabelLower": "code produit : {code}",
+      "rawInspect": "${tr('components.productCard.inspect', 'Afficher')}: ${product.title}",
+      "rawCode": "code produit: ${product.productCode}",
       "categories": {
         "ic-giyim": "Sous-vêtements",
         "ev-giyim": "Tenue d'intérieur",
@@ -423,32 +473,33 @@
     },
     "common": {
       "imagePlaceholder": "Image",
-      "close": "Fermer"
+      "close": "Fermer",
+      "open": "Ouvrir"
     },
     "cookieBanner": {
-      "ariaLabel": "Çerez tercihleri",
-      "title": "Çerez tercihleri",
-      "body": "Sitemiz deneyimi iyileştirmek için çerezler kullanır. Analitik ve pazarlama çerezlerini kabul edip etmemek size bağlıdır.",
-      "privacyLink": "Gizlilik Politikası",
-      "acceptAll": "Tümünü kabul et",
-      "settings": "Ayarlar",
-      "reject": "Reddet",
-      "settingsTitle": "Çerez ayarları",
-      "settingsBody": "Hangi çerezleri kabul etmek istediğinizi seçin.",
+      "ariaLabel": "Préférences en matière de cookies",
+      "title": "Préférences en matière de cookies",
+      "body": "Notre site utilise des cookies pour améliorer l'expérience. Vous pouvez choisir d'accepter ou non les cookies analytiques et marketing.",
+      "privacyLink": "Politique de confidentialité",
+      "acceptAll": "Tout accepter",
+      "settings": "Paramètres",
+      "reject": "Refuser",
+      "settingsTitle": "Paramètres des cookies",
+      "settingsBody": "Sélectionnez les cookies que vous souhaitez accepter.",
       "required": {
-        "title": "Zorunlu",
-        "body": "Site çalışması için gerekli çerezler (devre dışı bırakılamaz)."
+        "title": "Requis",
+        "body": "Cookies nécessaires au fonctionnement du site (ne peuvent pas être désactivés)."
       },
       "analytics": {
-        "title": "Analitik",
-        "body": "Site kullanımını anlamamıza yardımcı olur."
+        "title": "Analytique",
+        "body": "Nous aide à comprendre l'utilisation du site."
       },
       "marketing": {
-        "title": "Pazarlama",
-        "body": "Reklam ve hedefleme çerezleri."
+        "title": "Marketing",
+        "body": "Cookies publicitaires et de ciblage."
       },
-      "cancel": "Vazgeç",
-      "save": "Kaydet"
+      "cancel": "Annuler",
+      "save": "Enregistrer"
     },
     "hero": {
       "title": "Confort & Élégance — Tous les jours",
@@ -456,9 +507,16 @@
       "ctaCollections": "Voir les collections",
       "ctaQuote": "Demander un devis"
     },
+    "heroRaw": {
+      "subtitleFragment": ", \"Collection quotidienne douce et respirante qui allie confort et élégance. \nTurquie"
+    },
+    "heroRawExact": {
+      "subtitleExact": ", \"Collection quotidienne douce et respirante qui allie confort et élégance. \nTurquie                                                                                    "
+    },
     "contact": {
       "title": "Contactez-nous",
       "intro": "Envoyez-nous un message pour des questions, des partenariats ou des demandes de gros. Temps de réponse moyen",
+      "formIntro": "Remplissez le formulaire pour vos questions ou appelez-nous",
       "avgResponse": "24 heures",
       "replyApprox": "Réponse : ~24s",
       "emailLabel": "E-mail",
@@ -480,7 +538,13 @@
         "name": "Nom",
         "email": "E-mail",
         "message": "Message"
-      }
+      },
+      "formPromptDot": "Remplissez le formulaire pour vos questions ou appelez-nous.",
+      "sendFailForm": "Échec de l'envoi. Veuillez réessayer.",
+      "networkError": "Erreur réseau. Veuillez réessayer plus tard.",
+      "consent": "J'accepte la loi sur la protection des données personnelles.",
+      "privacyFragmentExact": ", \"Loi sur la protection des données personnelles",
+      "consentEscaped": "J'accepte la loi sur la protection des données personnelles.'"
     },
     "media": {
       "title": "Voir, Ressentir, Découvrir",
@@ -514,9 +578,129 @@
         "exportCountries": "Pays exportés"
       }
     },
+    "header": {
+      "aria": {
+        "openLangMenu": "Ouvrir le menu de langue",
+        "closeLangMenu": "Fermer le menu de langue",
+        "openMenu": "Ouvrir le menu",
+        "closeMenu": "Fermer le menu"
+      }
+    },
+    "quoteModal": {
+      "title": "Demande de devis",
+      "lead": "Donnez-nous quelques détails, notre équipe de devis vous répondra.",
+      "placeholders": {
+        "name": "Votre nom complet",
+        "email": "E-mail (vous@entreprise.com)",
+        "company": "Société (optionnel)",
+        "phone": "Téléphone / WhatsApp",
+        "product": "Produit concerné (optionnel)",
+        "qty": "Quantité estimée (ex. 1000)",
+        "message": "Détails / demandes spéciales"
+      },
+      "errors": {
+        "missingFields": "Veuillez renseigner le nom, l'e-mail et la quantité.",
+        "submitFail": "Erreur lors de l'envoi"
+      },
+      "success": "Votre demande a été reçue — nous répondrons sous peu.",
+      "buttons": {
+        "cancel": "Annuler",
+        "submit": "Demander un devis",
+        "submitting": "Envoi…"
+      }
+    },
     "whatsApp": {
-      "open": "WhatsApp uygulamasında aç",
+      "open": "Ouvrir dans l'application WhatsApp",
       "sr": "WhatsApp"
+    }
+  },
+  "adminLayout": {
+    "logout": "Se déconnecter"
+  },
+  "admin": {
+    "images": {
+      "unauthorized": "Non autorisé — veuillez vous connecter",
+      "failed": "Échec",
+      "uploadedTemplate": "{name} téléchargé",
+      "uploadedFName": "${f.name} téléchargé",
+      "uploadFailed": "Échec du téléchargement",
+      "uploadError": "Erreur de téléchargement",
+      "deleteFailed": "Échec de la suppression",
+      "deleteRequestFailed": "La requête de suppression a échoué",
+      "copyFailed": "Échec de la copie",
+      "systemPhotoTitle": "Les photos système ne peuvent pas être supprimées",
+      "newPhotosInstruction": "Cliquez sur le bouton pour télécharger de nouvelles photos (multisélection supportée)",
+      "uploading": "Téléchargement…"
+    },
+    "products": {
+      "failed": "Échec",
+      "saveFailed": "Échec de l'enregistrement",
+      "confirmDelete": "Supprimer le produit ?",
+      "deleteRequestFailed": "La requête de suppression a échoué",
+      "imageUploadFailed": "Échec du téléchargement de l'image",
+      "newProduct": "Nouveau produit",
+      "edit": "Modifier",
+      "editProduct": "Modifier le produit",
+      "delete": "Supprimer",
+      "uploadImages": "Télécharger des images",
+      "optional": "(optionnel)",
+      "thumbnailsLabel": "Vignettes"
+    },
+    "common": {
+      "adminPasswordPlaceholder": "Mot de passe admin",
+      "login": "Connexion",
+      "refresh": "Actualiser",
+      "loading": "Chargement…",
+      "backToOverview": "Retour à la vue d'ensemble"
+    },
+    "content": {
+      "saveFailed": "Échec de l'enregistrement",
+      "saveError": "Erreur d'enregistrement",
+      "deleteError": "Erreur de suppression",
+      "deleteFailed": "Échec de la suppression",
+      "undoConfirm": "Êtes-vous sûr de vouloir annuler la dernière entrée ? Cela restaurera le contenu du serveur à l'état précédent.",
+      "undoFailed": "Échec de l'annulation",
+      "undoSuccess": "Annulé",
+      "undoError": "Erreur lors de l'annulation",
+      "loginFailed": "Échec de la connexion",
+      "loginRequestFailed": "La requête de connexion a échoué"
+    }
+  },
+  "api": {
+    "quote": {
+      "qtyPositive": "La quantité doit être un nombre positif.",
+      "success": "Votre demande a été reçue",
+      "emailBody": "<p><strong>Nom :</strong> {name}</p><p><strong>E-mail :</strong> {email}</p><p><strong>Société :</strong> {company}</p><p><strong>Téléphone :</strong> {phone}</p><p><strong>Produit :</strong> {product}</p><p><strong>Quantité :</strong> {qty}</p><p><strong>Message :</strong></p><div>{message}</div>",
+      "emailBodyRaw": "<p><strong>Nom :</strong> ${safeName}</p><p><strong>E-mail :</strong> ${safeEmail}</p><p><strong>Société :</strong> ${safeCompany ?? ''}</p><p><strong>Téléphone :</strong> ${safePhone ?? ''}</p><p><strong>Produit :</strong> ${safeProduct ?? ''}</p><p><strong>Quantité :</strong> ${qtyNum}</p><p><strong>Message :</strong></p><div>${safeMessage ?? ''}</div>",
+      "serverError": "Erreur serveur"
+    },
+    "contact": {
+      "newFormSubject": "Nouveau formulaire de contact : {name}",
+      "newFormSubjectRaw": "Nouveau formulaire de contact : ${safeName}",
+      "emailBody": "<p><strong>Nom :</strong> {name}</p><p><strong>E-mail :</strong> {email}</p><p><strong>Message :</strong></p><div>{message}</div>",
+      "emailBodyRaw": "<p><strong>Nom :</strong> ${safeName}</p><p><strong>E-mail :</strong> ${safeEmail}</p><p><strong>Message :</strong></p><div>${safeMessage.replace(/\\n/g, '<br/>')}</div>"
+    },
+    "admin_images": {
+      "fileNotFound": "Fichier introuvable",
+      "uploadError": "Erreur de téléchargement de fichier",
+      "fileWriteError": "Impossible d'écrire le fichier",
+      "deleteFailed": "Échec de la suppression"
+    }
+  },
+  "config": {
+    "mapPlaces": {
+      "mahmutpasa": {
+        "name": "Mosquée Mahmutpaşa",
+        "address": "Cour de la mosquée Mahmutpaşa No:12/A, Fatih/Istanbul"
+      },
+      "facility1": {
+        "name": "Production 1",
+        "location": "Küçükçekmece / Istanbul"
+      },
+      "facility2": {
+        "name": "Production 2",
+        "location": "Yenişehir / Bursa"
+      }
     }
   },
   "locations": {

@@ -8,20 +8,20 @@
     "language": "اللغة",
     "sustainability": "الاستدامة",
     "corporate": {
-      "title": "Kurumsal",
-      "about": "Hakkımızda",
-      "description": "Yasar Tekstil - misyonumuz, vizyonumuz ve kurumsal değerlerimiz hakkında özet bilgiler.",
-      "aboutSubtitle": "Şirket geçmişi, değerler ve misyon & vizyon bilgileri"
+      "title": "الشركة",
+      "about": "من نحن",
+      "description": "Yasar Tekstil - ملخص عن مهمتنا ورؤيتنا وقيمنا المؤسسية.",
+      "aboutSubtitle": "تاريخ الشركة والقيم ومعلومات الرسالة والرؤية"
     },
     "production": {
-      "title": "Üretim",
-      "facilities": "Tesislerimiz",
-      "quality": "Kalite Süreçlerimiz",
-      "description": "Tesislerimiz, kapasitemiz ve kalite süreçlerimiz hakkında detaylı bilgi.",
-      "facilitiesSubtitle": "Tesis altyapısı, kapasite ve görseller",
-      "qualitySubtitle": "Kalite kontrolleri, testler ve sertifikasyon"
+      "title": "الإنتاج",
+      "facilities": "منشآتنا",
+      "quality": "عمليات الجودة",
+      "description": "معلومات تفصيلية عن منشآتنا وسعاتنا وعمليات الجودة.",
+      "facilitiesSubtitle": "البنية التحتية للمرافق والسعة والصور",
+      "qualitySubtitle": "ضوابط الجودة والاختبارات والشهادات"
     },
-    "products": "Ürünler"
+    "products": "المنتجات"
   },
   "hero": {
     "title": "الراحة والأناقة",
@@ -78,80 +78,109 @@
   },
   "uretim": {
     "tesis": {
-      "title": "Üretim Tesislerimiz",
-      "lead": "Modern, güvenli ve sürdürülebilir bir üretim altyapısı sunuyoruz. Tesislerimizde kalite, çalışan güvenliği ve çevresel sorumluluk eş zamanlı olarak yönetilir; süreçler dijital kayıtlarla izlenir.",
+      "title": "منشآتنا الإنتاجية",
+      "lead": "نقدّم بنية تحتية للإنتاج حديثة، آمنة ومستدامة. في منشآتنا تُدار الجودة وسلامة العاملين والمسؤولية البيئية بالتوازي؛ وتُراقَب العمليات عبر سجلات رقمية.",
       "tags": {
-        "iso": "ISO 9001 uyumlu",
-        "energy": "Enerji verimliliği",
-        "spc": "SPC & izlenebilirlik"
+        "iso": "متوافق مع ISO 9001",
+        "energy": "كفاءة الطاقة",
+        "spc": "SPC و إمكانية التتبع"
       },
       "features": {
         "modernLines": {
-          "title": "Modern Hatlar",
-          "desc": "Otomatik kesim ve dikim hatları ile verimli üretim."
+          "title": "خطوط حديثة",
+          "desc": "إنتاج فعّال باستخدام خطوط قص وخياطة آلية."
         },
         "qualityLab": {
-          "title": "Kalite Laboratuvarı",
-          "desc": "Gelişmiş test ve ölçüm laboratuvarları."
+          "title": "مختبر الجودة",
+          "desc": "مختبرات متقدمة للاختبارات والقياسات."
         },
         "environment": {
-          "title": "Çevresel Tedbirler",
-          "desc": "Atık yönetimi ve enerji verimliliği uygulamaları."
+          "title": "تدابير بيئية",
+          "desc": "ممارسات إدارة النفايات وبرامج كفاءة الطاقة."
         },
         "training": {
-          "title": "Eğitim & Güvenlik",
-          "desc": "Sürekli eğitim ve iş sağlığı önlemleri."
+          "title": "التدريب والسلامة",
+          "desc": "برامج تدريب مستمرة وتدابير للصحة والسلامة المهنية."
         }
       },
       "how": {
-        "title": "Nasıl Çalışıyoruz",
-        "lead": "Tesislerimizde verimli üretim, çalışan güvenliği ve çevresel sorumluluk bir arada yürütülür. Dijital kayıtlarla izlenebilirlik sağlanır ve süreçler sürekli iyileştirilir."
+        "title": "كيف نعمل",
+        "lead": "في منشآتنا تسير الإنتاجية وسلامة العاملين والمسؤولية البيئية معًا. نوفر القابلية للتتبع عبر سجلات رقمية وتعمل عملياتنا ضمن دورة تحسين مستمر."
       },
       "infrastructure": {
-        "title": "Altyapı & Makine",
+        "title": "البنية التحتية & الآلات",
         "items": [
-          "Otomatik kesim ve dikim hatları",
-          "SPC tabanlı süreç kontrolü",
-          "Enerji verimli makineler"
+          "خطوط قص وخياطة آلية",
+          "رقابة عمليات قائمة على SPC",
+          "آلات موفرة للطاقة"
         ]
       },
       "training": {
-        "title": "Eğitim & Güvenlik",
-        "heading": "Çalışan Eğitimi",
-        "lead": "Personel eğitimleri ve güvenlik protokolleri düzenli olarak güncellenir ve takip edilir.",
+        "title": "التدريب & السلامة",
+        "heading": "تدريب الموظفين",
+        "lead": "تُحدّث دورات الموظفين وبروتوكولات السلامة بانتظام وتُتابع نتائجها.",
         "items": [
-          "Düzenli personel eğitimleri",
-          "İş sağlığı ve güvenliği protokolleri",
-          "Geri bildirim mekanizmaları"
+          "تدريبات منتظمة للموظفين",
+          "بروتوكولات الصحة والسلامة المهنية",
+          "آليات التغذية الراجعة"
         ],
-        "body": "Personel eğitimleri sektörel en iyi uygulamalar ve yerel protokoller çerçevesinde düzenli olarak yapılır. Güvenlik kültürünü güçlendiriyoruz ve katılımcı geri bildirimleriyle programları geliştiriyoruz."
+        "body": "تُجرى برامج التدريب وفقًا لأفضل الممارسات الصناعية والبروتوكولات المحلية. نعمل على تعزيز ثقافة السلامة وتحسين البرامج اعتمادًا على ملاحظات المشاركين."
       },
       "quality": {
-        "title": "Kalite Güvencesi",
-        "lead": "Sürekli izleme, veri kayıtları ve geri bildirim mekanizmaları ile kalite güvencesi sağlanır.",
+        "title": "ضمان الجودة",
+        "lead": "يُضمن الجودة من خلال المراقبة المستمرة، سجلات البيانات وآليات التغذية الراجعة.",
         "bullets": [
-          "ISO 9001 uyumlu süreçler",
-          "SPC ve raporlama"
+          "عمليات متوافقة مع ISO 9001",
+          "SPC والتقارير"
         ]
       },
       "applications": {
-        "title": "Tesislerde Uygulamalar",
-        "lead": "Tesislerimizde yürütülen başlıca uygulamalar ve dikkat ettiğimiz noktalar aşağıdaki gibidir.",
+        "title": "تطبيقات في المنشآت",
+        "lead": "الإجراءات الرئيسية والممارسات المتبعة في منشآتنا موضّحة أدناه.",
         "items": [
-          "Otomatik kesim ve kalite takibi",
-          "SPC ile proses kontrolü",
-          "Atık yönetimi ve su tasarrufu"
+          "قص آلي ومتابعة الجودة",
+          "التحكم في العمليات عبر SPC",
+          "إدارة النفايات وترشيد المياه"
         ],
-        "summary": "Tesis altyapımız verimlilik, iş sağlığı ve çevresel etki odağında tasarlanmıştır. Ölçülebilir hedeflerle enerji tüketimimizi azaltıyor ve atıklarımızı yönetiyoruz."
+        "summary": "تم تصميم بنية منشآتنا لتراعي الكفاءة، صحة وسلامة العاملين والأثر البيئي. نخفض استهلاك الطاقة وندير النفايات بأهداف قابلة للقياس."
       },
       "energy": {
-        "title": "Enerji & Çevre",
-        "lead": "Enerji verimliliği projeleri ve atık azaltma programları tesis operasyonlarımızın parçasıdır.",
-        "body": "Enerji verimliliği ve su tasarrufu projeleri mevcut; tesis genelinde ölçümler yapılıyor ve düzenli raporlama ile ilerleme izleniyor."
-      }
+        "title": "الطاقة & البيئة",
+        "lead": "مشروعات كفاءة الطاقة وبرامج تقليل النفايات جزء من عملياتنا التشغيلية.",
+        "body": "تُطبق برامج لكفاءة الطاقة وترشيد استهلاك المياه؛ تُجرى قياسات عامة على مستوى المنشأة وتُتابَع التقدّم بتقارير دورية."
+      },
+      "imageLabel": "صورة المنشأة",
+      "shortLead": "منشآت إنتاج Yasar تركز على الجودة واستدامة الإنتاج."
     }
   },
   "pages": {
+    "contact": {
+      "seo": {
+        "title": "اتصل بنا - Yasar",
+        "description": "أرسل لنا رسالة للاستفسارات أو الاقتراحات أو الطلبات."
+      },
+      "breadcrumb": {
+        "home": "الرئيسية",
+        "title": "اتصل بنا"
+      },
+      "header": {
+        "title": "راسلنا",
+        "intro": "أرسل لنا رسالة للاستفسارات أو الاقتراحات أو الطلبات."
+      },
+      "map": {
+        "goto": "اذهب إلى الموقع",
+        "showLocation": "عرض الموقع"
+      },
+      "locationsTitle": "المقر الرئيسي والإنتاج",
+      "quickInfoTitle": "معلومات سريعة",
+      "noteTitle": "ملاحظة",
+      "noteText": "بإرسال النموذج، أنت توافق على معالجة بياناتك وفقًا لـ ",
+      "noteTextSuffix": "",
+      "privacyPolicy": "سياسة الخصوصية",
+      "consent": "أوافق على قانون حماية بيانات المستخدمين.",
+      "phoneLabel": "هاتف:",
+      "emailLabel": "البريد الإلكتروني:"
+    },
     "products": {
       "title": "Ürünler — Yasar",
       "description": "Yasar ürün koleksiyonu",
@@ -174,172 +203,251 @@
       "copyCodeAria": "Ürün kodunu kopyala",
       "preview": "Önizleme",
       "requestInfo": "Bilgi Al",
-      "requestInfoAria": "Bilgi Al -"
+      "requestInfoAria": "Bilgi Al -",
+      "copyCodeRaw": "${tr('pages.products.copyCodeAria','Ürün kodunu kopyala')} ${activeProduct.productCode ?? ''}",
+      "previewRaw": "${tr('pages.products.preview','Önizleme')} ${i + 1}"
     },
     "about": {
-      "title": "Kurumsal - Yasar",
-      "description": "Yasar Tekstil hakkında, misyonumuz, vizyonumuz ve üretim altyapımız.",
+      "title": "معلومات الشركة - Yasar",
+      "description": "معلومات عن Yasar Tekstil، مهمتنا، رؤيتنا وبنية الإنتاج لدينا.",
       "hero": {
-        "title": "Kurumsal",
-        "desc": "Yasar olarak kalite, sürdürülebilirlik ve çalışan refahını merkeze alan üretim süreçleri ile iç giyim sektöründe öne çıkıyoruz. Türkiye’deki tesislerimizde modern üretim teknikleriyle dünya standartlarında ürünler geliştiriyoruz."
+        "title": "معلومات الشركة",
+        "desc": "Yasar تبرز في قطاع الملابس الداخلية بفضل عمليات إنتاج تضع الجودة والاستدامة ورفاهية العاملين في المركز. نطور منتجات وفق معايير عالمية في منشآتنا الحديثة في تركيا."
       },
       "intro": {
-        "p1": "Türkiye’de modern tesislerde üretim yapan bir aile şirketiyiz. Tasarımdan teslimata kadar tüm süreçlerde kalite ve izlenebilirlik ilkelerini uygularız.",
-        "p2": "Sürdürülebilir hammadde seçimi, enerji verimliliği ve atık azaltma uygulamaları iş süreçlerimizin merkezindedir.",
-        "p3": "Takımımız; deneyimli, disiplinli ve sürekli gelişime açık profesyonellerden oluşur. İnsan odaklı yönetim anlayışımız ile güvenilir iş ortaklarıyız."
+        "p1": "نحن شركة عائلية تنتج في منشآت حديثة في تركيا. نطبق مبادئ الجودة وإمكانية التتبع في جميع المراحل، من التصميم حتى التسليم.",
+        "p2": "اختيار المواد الخام المستدامة، كفاءة الطاقة ومبادرات تقليل النفايات هي جزء أساسي من عملياتنا.",
+        "p3": "يتألف فريقنا من محترفين ذوي خبرة وانضباط ويسعون لتطوير مستمر. بنهج إداري يركز على الإنسان، نحن شريك تجاري موثوق."
       },
-      "mission": "Müşterilerimize konforlu, dayanıklı ve etik üretimle hazırlanmış iç giyim çözümleri sunmak; iş ortaklarımıza sürdürülebilir değer üretmektir.",
-      "vision": "Ulusal ve uluslararası pazarlarda kalite ve güven denildiğinde ilk akla gelen üreticilerden biri olmak.",
+      "mission": "تقديم حلول ملابس داخلية مريحة ومتينة ومنتَجة بشكل أخلاقي لعملائنا؛ وخلق قيمة مستدامة لشركائنا.",
+      "vision": "أن نكون من أوائل الشركات التي تتبادر إلى الذهن عندما يُذكر الجودة والثقة في الأسواق المحلية والدولية.",
       "stats": {
-        "production": "Yıllık Üretim (adet)",
-        "exports": "İhracat Ülkeleri",
-        "facilities": "Tesis"
+        "production": "الإنتاج السنوي (قطعة)",
+        "exports": "دول التصدير",
+        "facilities": "المنشآت"
       },
       "milestones": {
-        "1992": "Kuruluş ve yerel üretime başlama.",
-        "2005": "Modernize edilmiş üretim hattı ve kalite laboratuvarı.",
-        "2017": "Sürdürülebilir ham madde programının başlatılması.",
-        "2023": "Uluslararası iş ortaklıklarının güçlendirilmesi."
+        "1992": "التأسيس وبدء الإنتاج المحلي.",
+        "2005": "تحديث خط الإنتاج ومختبر الجودة.",
+        "2017": "إطلاق برنامج المواد الخام المستدامة.",
+        "2023": "تعزيز الشراكات الدولية."
       },
       "headings": {
-        "mission": "Misyonumuz",
-        "vision": "Vizyonumuz",
-        "values": "Değerlerimiz",
-        "milestones": "Kilometre Taşlarımız",
-        "global": "Global Varlığımız",
-        "countries": "İş yaptığımız ülkeler"
+        "mission": "مهمتنا",
+        "vision": "رؤيتنا",
+        "values": "قيمنا",
+        "milestones": "المعالم الرئيسية",
+        "global": "وجودنا العالمي",
+        "countries": "الدول التي نتعامل معها"
       },
       "cta": {
-        "facilities": "Tesislerimiz",
-        "quality": "Kalite Süreçleri"
+        "facilities": "منشآتنا",
+        "quality": "عمليات الجودة"
       },
-      "imageAlt": "Üretim Tesisleri",
-      "isoLines": "ISO uyumlu üretim hatları",
+      "imageAlt": "منشآت الإنتاج",
+      "isoLines": "خطوط إنتاج متوافقة مع ISO",
       "sections": {
         "about": {
-          "title": "Hakkımızda",
-          "desc": "Şirket geçmişimiz, üretim felsefemiz, misyon ve vizyonumuz hakkında detaylı bilgi alın."
+          "title": "عن الشركة",
+          "desc": "تعرف على تاريخ شركتنا وفلسفة الإنتاج والمهمة والرؤية الخاصة بنا."
         }
       },
       "values": {
         "design": {
-          "title": "Tasarım & Konfor",
-          "body": "İyi tasarım, dayanıklılık ve kullanım rahatlığı bir arada."
+          "title": "التصميم والراحة",
+          "body": "تصميم جيد، متانة وراحة في الاستخدام معًا."
         },
         "facilities": {
-          "title": "Modern Tesisler",
-          "body": "Enerji verimli, izlenebilir üretim altyapısı."
+          "title": "منشآت حديثة",
+          "body": "بنية إنتاج موفرة للطاقة وقابلة للتتبع."
         },
         "responsibility": {
-          "title": "Sosyal Sorumluluk",
-          "body": "Çalışan sağlığı, adil ücretlendirme ve çevresel önlemler."
+          "title": "المسؤولية الاجتماعية",
+          "body": "صحة العاملين، أجور عادلة وإجراءات بيئية."
         },
         "human": {
-          "title": "İnsan Odaklılık",
-          "body": "Çalışan güvenliği ve gelişimini ön planda tutmak."
+          "title": "الأولوية للإنسان",
+          "body": "نضع سلامة العاملين وتطويرهم في المقام الأول."
         }
       },
       "quick": {
-        "title": "Hızlı Bakış",
+        "title": "نظرة سريعة",
         "labels": {
-          "experience": "Yıllık tecrübe",
-          "audits": "Denetim / yıl",
-          "reducedWaste": "Azaltılmış atık",
-          "foundation": "Kuruluş",
-          "location": "Konum",
-          "certificates": "Sertifikalar"
+          "experience": "سنوات الخبرة",
+          "audits": "تدقيق / السنة",
+          "reducedWaste": "نفايات مُنخفضة",
+          "foundation": "التأسيس",
+          "location": "الموقع",
+          "certificates": "الشهادات"
         }
       },
-      "contactPrompt": "Daha fazla bilgi veya kurumsal iş birliği talepleri için bizimle iletişime geçin.",
+      "contactPrompt": "للمزيد من المعلومات أو طلبات التعاون المؤسسي، يرجى الاتصال بنا.",
       "collab": {
-        "title": "İş Birliği & Talepler",
-        "body": "Saha ziyaretleri, teknik sorular veya büyük hacimli sipariş talepleri için doğrudan iletişime geçebilirsiniz.",
-        "cta": "İletişime Geç"
-      }
+        "title": "التعاون والطلبات",
+        "body": "لزيارات المصانع، الأسئلة التقنية أو طلبات الكميات الكبيرة، يمكنك الاتصال بنا مباشرة.",
+        "cta": "اتصل بنا"
+      },
+      "foundedLabel": "التأسيس:",
+      "contactHeading": "عرض / تواصل",
+      "missionLead": "مهمة ورؤية Yasar: الجودة، الاستدامة والأهداف الدولية.",
+      "imageAltSnippet": " alt={tr('pages.about.imageAlt','Üretim Tesisleri')} fill className="
     },
     "production": {
       "quality": {
-        "title": "Kalite Kontrol Süreçlerimiz",
-        "heroLead": "Üretimin her aşamasında uyguladığımız sıkı kalite denetimleriyle tutarlı, izlenebilir ve güvenilir ürünler sunuyoruz. Numuneden paketlemeye kadar her adım, kayıt altına alınır ve sürekli iyileştirme ile desteklenir.",
+        "title": "إجراءات مراقبة الجودة",
+        "heroLead": "نقدم منتجات متسقة، قابلة للتتبع وموثوقة بفضل ضوابط جودة صارمة مطبقة في كل مرحلة من مراحل الإنتاج. يتم توثيق كل خطوة من العينة إلى التغليف وتدعمها عملية تحسين مستمرة.",
         "imageAlt": {
-          "hero": "Kalite görseli",
-          "sample": "Numune"
+          "hero": "صورة الجودة",
+          "sample": "عينة"
         },
         "badges": {
-          "iso": "ISO 9001 uyumlu",
-          "spc": "İzlenebilirlik / SPC",
-          "experience": "30+ yıllık üretim tecrübesi"
+          "iso": "متوافق مع ISO 9001",
+          "spc": "إمكانية التتبع / SPC",
+          "experience": "أكثر من 30 سنة خبرة في الإنتاج"
         },
         "features": {
           "sample": {
-            "title": "Numune",
-            "desc": "Numune aşamasında ölçü, dikiş ve yıkama değerlendirmeleri."
+            "title": "العينة",
+            "desc": "في مرحلة العينة تُجرى تقييمات الأبعاد والخياطة والغسيل."
           },
           "production": {
-            "title": "Üretim",
-            "desc": "Kesim ve dikim süreçlerinde sürekli kontroller."
+            "title": "الإنتاج",
+            "desc": "عمليات تفتيش مستمرة في عمليات القص والخياطة."
           },
           "packing": {
-            "title": "Paketleme",
-            "desc": "Ambalaj öncesi son kontroller ve etiketleme."
+            "title": "التغليف",
+            "desc": "فحوصات نهائية قبل التغليف ووضع العلامات."
           },
           "assurance": {
-            "title": "Kalite Güvencesi",
-            "desc": "Sürekli izleme, veri kayıtları ve geri bildirim mekanizmaları ile kalite güvencesini sağlar; gerektiğinde geri çağırma ve düzeltici faaliyet prosedürleri uygulanır.",
+            "title": "ضمان الجودة",
+            "desc": "يتم ضمان الجودة من خلال المراقبة المستمرة، سجلات البيانات وآليات التغذية الراجعة؛ عند الحاجة تُطبق إجراءات الاستدعاء والإجراءات التصحيحية.",
             "bullets": [
-              "ISO 9001 uyumlu süreçler",
-              "Geri çağırma & düzeltici faaliyet prosedürleri",
-              "SPC ve raporlama"
+              "عمليات متوافقة مع ISO 9001",
+              "إجراءات الاستدعاء والإجراءات التصحيحية",
+              "SPC والتقارير"
             ]
           }
         },
         "sections": {
           "how": {
-            "title": "Nasıl Çalışıyoruz",
-            "lead": "Aşağıda kalite kontrol süreçlerimizin ana başlıklarını ve uygulama örneklerini bulabilirsiniz. Her adımda standart prosedürler (SOP) uygulanır ve kayıt altına alınır."
+            "title": "كيف نعمل",
+            "lead": "أدناه تجدون العناوين الرئيسية لعمليات مراقبة الجودة وأمثلة تطبيقية. في كل خطوة تُطبّق إجراءات تشغيل قياسية (SOP) ويتم توثيقها."
           },
           "sample": {
-            "title": "Numune Aşaması",
-            "desc": "Numune aşamasında aşağıdaki maddeler en ince detayına kadar incelenir:"
+            "title": "مرحلة العينة",
+            "desc": "في مرحلة العينة تُفحص البنود التالية بأدق التفاصيل:"
           },
           "production": {
-            "title": "Üretim Aşaması",
-            "desc": "Üretim boyunca kaliteyi sağlamak için planlama, kesim ve dikim adımlarında özel kontroller yürütülür:"
+            "title": "مرحلة الإنتاج",
+            "desc": "أثناء الإنتاج، تُجرى مراقبات خاصة في مراحل التخطيط والقص والخياطة لضمان الجودة:"
           },
           "packing": {
-            "title": "Paketleme Aşaması",
-            "desc": "Son aşamada ambalaj öncesi ve ambalaj sırasında uyguladığımız kontroller:"
+            "title": "مرحلة التغليف",
+            "desc": "الفحوصات التي نطبقها في المرحلة النهائية قبل وأثناء التغليف:"
           }
         },
         "sampleChecks": [
-          "Güvence kontrolü",
-          "Kalıp kontrolü",
-          "Dikim içi ve sonrası kontrolü",
-          "Yıkama aşamasında kontroller",
-          "Paketleme aşamasındaki kontroller"
+          "فحوصات الضمان",
+          "فحص القوالب/القصات",
+          "التحقق أثناء وبعد الخياطة",
+          "فحوصات أثناء مرحلة الغسيل",
+          "فحوصات في مرحلة التغليف"
         ],
         "productionChecks": [
-          "Aksesuar ve kumaş kabul kontrolleri",
-          "Kalıp ölçü ve çekme değerlerinin kontrolü",
-          "Pastal ve kumaş kontrolü",
-          "Kesim sonrası defo ayıklama",
-          "Dikim anı ve sonrası kalite raporlaması"
+          "فحوص قبول الإكسسوارات والأقمشة",
+          "فحص مقاسات القالب وقيم الاسترخاء/الشد",
+          "فحص الباترون والأقمشة",
+          "كشف العيوب بعد القص",
+          "تقرير جودة أثناء وبعد الخياطة"
         ],
         "packingChecks": [
-          "İplik temizleme kontrolü",
-          "Ütü kalite kontrolü",
-          "Ölçü kontrolü",
-          "Renk kontrolü",
-          "Optik kalite kontrol"
+          "فحص تنظيف الخيوط",
+          "فحص جودة الكي",
+          "فحص الأبعاد",
+          "فحص اللون",
+          "فحص الجودة البصرية"
         ],
         "sample": {
-          "detail": "Numune aşamasında yapılan ölçümler, yıkama testleri ve dikiş kontrolleri ürünün seri üretime hazır olduğundan emin olmamıza yardımcı olur. Numunelerimiz genellikle 3 iş günü içinde raporlanır ve gerekli düzeltmeler hızlıca uygulanır."
+          "detail": "تساعدنا القياسات، اختبارات الغسيل وفحوص الخياطة في مرحلة العينة على التأكد من جاهزية المنتج للتصنيع بالجملة. عادةً ما تُسجَّل تقارير العينات خلال 3 أيام عمل وتُطبق التصحيحات اللازمة بسرعة."
         },
         "stats": {
           "firstPass": "98%",
-          "sampleReportTime": "3 gün"
+          "sampleReportTime": "3 أيام"
         }
       }
+    },
+    "contact_rewrite": {
+      "title": "Bize Ulaşın",
+      "intro": "Her türlü soru, teklif veya iş birliği için aşağıdaki formu doldurun ya da doğrudan iletişim bilgilerini kullanın.",
+      "button": {
+        "send": "Gönder",
+        "sending": "Gönderiliyor...",
+        "sent": "Gönderildi"
+      },
+      "errors": {
+        "fillAll": "Lütfen tüm alanları doldurun.",
+        "serverError": "Sunucu hatası",
+        "sendFail": "Mesaj gönderilemedi. Lütfen tekrar deneyin."
+      },
+      "labels": {
+        "name": "İsim"
+      }
+    },
+    "privacy": {
+      "title": "سياسة الخصوصية",
+      "seoTitle": "سياسة الخصوصية - Yasar",
+      "headerTitle": "سياسة الخصوصية — Yasar",
+      "intro": "في Yasar نولي أهمية لخصوصية بياناتك الشخصية. فيما يلي ملخص للبيانات التي نجمعها، وكيف نستخدمها، وحقوقك. يرجى التواصل معنا للمزيد من التفاصيل.",
+      "rawLead1": ">في Yasar نولي أهمية لخصوصية بياناتك الشخصية. فيما يلي ملخص للبيانات التي نجمعها، وكيف نستخدمها، وحقوقك. للمزيد من التفاصيل، يرجى <Link href=",
+      "rawLead2": ">نطبق تدابير تقنية وإدارية معقولة لحماية بياناتك. لأسئلة أو طلبات أو شكاوى تتعلق بالخصوصية، يرجى <Link href=",
+      "rawLead1Alt": ">في Yasar نولي أهمية لخصوصية بياناتك الشخصية. فيما يلي ملخص للبيانات التي نجمعها، وكيف نستخدمها، وحقوقك. للمزيد من التفاصيل، يرجى <Link href=",
+      "sections": {
+        "lead1": "في Yasar نولي أهمية لخصوصية بياناتك الشخصية. فيما يلي ملخص للبيانات التي نجمعها، وكيف نستخدمها، وحقوقك. يرجى التواصل معنا للمزيد من التفاصيل",
+        "lead2": "نطبق تدابير تقنية وإدارية معقولة لحماية بياناتك. لأسئلة أو طلبات أو شكاوى تتعلق بالخصوصية، يرجى التواصل معنا.",
+        "personalData": "اسمك، عنوان بريدك الإلكتروني، رقم هاتفك وغيرها من المعلومات التي تدخلها في نماذج الاتصال. قد نقوم أيضًا بجمع بيانات ملفات تعريف الارتباط والبيانات التقنية المتعلقة باستخدام الموقع (عنوان IP، معلومات المتصفح، عدد الزيارات للصفحات، إلخ).",
+        "whyUse": "نستخدم البيانات التي نجمعها للرد على طلباتك، تقديم خدماتنا وتحسينها، إدارة عمليات الطلب/العطاء والامتثال لالتزاماتنا القانونية.",
+        "sharing": "لن تتم مشاركة بياناتك مع أطراف ثالثة ما لم تقدم موافقتك الصريحة أو إذا تطلب القانون ذلك. قد يتم مشاركة محدودة وضرورية مع المتعاقدين من الباطن (مثل شركات الشحن، مزودي الدفع) لتقديم الخدمات؛ تتم هذه التحويلات بشكل آمن.",
+        "rights": "الحق في الوصول إلى بياناتك وتصحيحها، الحق في طلب حذف البيانات أو تقييد معالجتها، الحق في الاعتراض على المعالجة وحق نقل البيانات. يمكنك تقديم طلب الحقوق من خلال نموذج الاتصال.",
+        "cookies": "قد يستخدم الموقع ملفات تعريف الارتباط لأغراض الأداء والتحليلات. يمكنك إدارة أو تعطيل ملفات تعريف الارتباط من إعدادات المتصفح؛ قد لا تعمل بعض الميزات بشكل صحيح إذا تم تعطيلها.",
+        "securityContact": "نطبق تدابير تقنية وإدارية معقولة لحماية بياناتك. لأسئلة أو طلبات أو شكاوى تتعلق بالخصوصية، يرجى التواصل معنا."
+      }
+    },
+    "terms": {
+      "title": "Kullanım Şartları",
+      "seoTitle": "Kullanım Şartları - Yasar",
+      "headerTitle": "Yasar Kullanım Şartları",
+      "comingSoon": "Bu sayfa yakında eklenecek. Daha fazla bilgi için iletişime geçin.",
+      "rawComingSoon": ">Bu sayfa yakında eklenecek. Daha fazla bilgi için <Link href="
+    },
+    "uretim_index": {
+      "title": "Üretim",
+      "lead": "Tesislerimiz ve kalite süreçlerimiz hakkında bilgi almak için aşağıdaki bağlantılara göz atın.",
+      "pageDescription": "Üretim sayfası - tesisler ve kalite süreçleri",
+      "cards": {
+        "facilities": {
+          "title": "Üretim Tesislerimiz",
+          "desc": "Tesis altyapımız, kapasitelerimiz ve kalite odaklı üretim yaklaşımımız hakkında bilgi."
+        },
+        "quality": {
+          "title": "Kalite Süreçlerimiz",
+          "desc": "Kalite kontrol, test ve sertifikasyon süreçlerimiz ile ilgili detaylar."
+        }
+      }
+    },
+    "uretim_index_seoTitle": "Üretim - Yasar",
+    "account": {
+      "title": "Hesabım",
+      "seoTitle": "Hesabım - Yasar",
+      "description": "Hesabınızla ilgili işlemler.",
+      "demoNote": "Hesap bölümü henüz demo aşamasında. Aşağıdaki bağlantılarla siteyi keşfedebilirsiniz veya hesap detayları için bizimle iletişime geçin.",
+      "links": {
+        "viewProducts": "Ürünleri Gör",
+        "contact": "İletişime Geç",
+        "about": "Kurumsal Bilgi"
+      }
+    },
+    "about_misyon_vizyon": {
+      "contactCTA": "Kurumsal iş birlikleri, saha ziyaretleri veya teknik talepler için iletişime geçebilirsiniz"
     }
   },
   "wishlist": {
@@ -352,180 +460,347 @@
     "remove": "Kaldır"
   },
   "footer": {
-    "tagline": "Kaliteli üretim, sürdürülebilir gelecek",
-    "links": "Bağlantılar",
-    "home": "Ana sayfa",
-    "products": "Ürünlerimiz",
-    "contact": "İletişim",
+    "tagline": "إنتاج عالي الجودة، مستقبل مستدام",
+    "links": "روابط",
+    "home": "الرئيسية",
+    "products": "المنتجات",
+    "contact": "اتصل",
     "corporate": {
-      "title": "Kurumsal",
-      "about": "Hakkımızda",
-      "aboutDetail": "Şirket Bilgileri",
-      "vision": "Vizyon",
-      "mission": "Misyon",
-      "clients": "Müşterilerimiz"
+      "title": "الشركة",
+      "about": "من نحن",
+      "aboutDetail": "تفاصيل الشركة",
+      "vision": "الرؤية",
+      "mission": "الرسالة",
+      "clients": "العملاء",
+      "description": "Yasar Textile - ملخص عن مهمتنا ورؤيتنا وقيمنا المؤسسية.",
+      "aboutSubtitle": "تاريخ الشركة والقيم ومعلومات المهمة والرؤية"
     },
     "production": {
-      "title": "Üretim",
-      "facilities": "Üretim Tesislerimiz",
-      "quality": "Kalite Süreçlerimiz"
+      "title": "الإنتاج",
+      "facilities": "منشآتنا",
+      "quality": "عمليات الجودة"
     },
     "follow": {
-      "title": "Bizi takip et",
-      "desc": "Sosyal kanallarımızdan kampanyaları ve yenilikleri takip edebilirsiniz."
+      "title": "تابعنا",
+      "desc": "تابع قنواتنا الاجتماعية للاطلاع على العروض والأخبار."
     },
     "contactInfo": {
-      "title": "İletişim",
+      "title": "التواصل",
       "phone": "+90 212 520 92 99",
       "email": "info@yasarunderwear.com",
-      "map": "Adresimizi haritada gör"
+      "map": "شاهد عنواننا على الخريطة"
     },
     "company": {
-      "paragraph1": "Türkiye yapımı iç giyim. Konfor ve kalite odaklı.",
-      "paragraph2": "1969 yılında kurulan firmamız, yarım asrı aşan köklü tecrübesiyle gecelik, pijama takımı, paçalı pijama altı ve iç giyim üretiminde uzmanlaşmış, sektörün önde gelen üretici ve ihracatçıları arasında yer almaktadır.",
-      "paragraph3": "Amerika, Fransa, İspanya, Yunanistan, İsrail başta olmak üzere Doğu Avrupa ve Orta Doğu pazarlarına gerçekleştirdiğimiz ihracatlarla, yüksek kalite standartlarımızı ve müşteri odaklı yaklaşımımızı uluslararası arenada başarıyla temsil ediyoruz. Güvenilirliği, sürekliliği ve kaliteyi esas alan firmamız, global ölçekte tercih edilen güçlü bir iş ortağı olmayı sürdürmektedir."
+      "paragraph1": "ملابس داخلية مصنوعة في تركيا. نركز على الراحة والجودة.",
+      "paragraph2": "تأسست شركتنا عام 1969 وأصبحت إحدى الشركات الرائدة في القطاع، متخصصة في ملابس النوم وملابس البجامة والملابس الداخلية مع أكثر من نصف قرن من الخبرة.",
+      "paragraph3": "بفضل صادراتنا إلى أوروبا الشرقية والشرق الأوسط — بما في ذلك الولايات المتحدة وفرنسا وإسبانيا واليونان وإسرائيل — نمثل بفخر معايير الجودة العالية لدينا على المستوى الدولي. ملتزمون بالموثوقية والاستمرارية والجودة، ونظل شريكًا عالميًا موثوقًا."
     },
     "cookie": {
-      "reset": "Çerezleri sıfırla"
+      "reset": "إعادة تعيين ملفات تعريف الارتباط"
     },
-    "privacy": "Gizlilik",
-    "terms": "Kullanım Şartları",
-    "copyright": "© {year} Yasar. Tüm hakları saklıdır.",
-    "backToTop": "Sayfanın başına dön"
+    "privacy": "الخصوصية",
+    "terms": "الشروط",
+    "copyright": "© {year} Yasar. جميع الحقوق محفوظة.",
+    "copyrightRaw": "© ${new Date().getFullYear()} Yasar. جميع الحقوق محفوظة.",
+    "backToTop": "العودة للأعلى",
+    "sustainability": "الاستدامة"
   },
   "components": {
     "productCard": {
-      "inspect": "İncele",
-      "imageAlt": "Ürün görseli",
+      "inspect": "عرض التفاصيل",
+      "imageAlt": "صورة المنتج",
+      "inspectWithTitle": "{label}: {title}",
+      "codeLabelLower": "رمز المنتج: {code}",
+      "rawInspect": "${tr('components.productCard.inspect', 'عرض التفاصيل')}: ${product.title}",
+      "rawCode": "رمز المنتج: ${product.productCode}",
       "categories": {
-        "ic-giyim": "İç Giyim",
-        "ev-giyim": "Ev Giyimi",
-        "corap": "Çorap & Aksesuar",
-        "aktif": "Aktif & Rahat"
+        "ic-giyim": "ملابس داخلية",
+        "ev-giyim": "ملابس منزلية",
+        "corap": "جوارب وإكسسوارات",
+        "aktif": "رياضي & مريح"
       },
       "wishlist": {
-        "add": "Favorilere ekle",
-        "remove": "Favorilerden çıkar"
+        "add": "أضف إلى المفضلة",
+        "remove": "إزالة من المفضلة"
       }
     },
     "productGrid": {
-      "title": "Öne Çıkan Ürünler",
-      "subtitle": "Seçtiğimiz popüler ve önerilen ürünler — kalite ve konfor bir arada.",
-      "viewAll": "Tümünü Gör"
+      "title": "منتجات مميزة",
+      "subtitle": "منتجاتنا المميزة والشائعة — جودة وراحة في آنٍ واحد.",
+      "viewAll": "عرض الكل"
     },
     "categories": {
-      "ic-giyim": "İç Giyim",
-      "ev-giyim": "Ev Giyimi",
-      "corap": "Çorap & Aksesuar",
-      "aktif": "Aktif & Rahat"
+      "ic-giyim": "ملابس داخلية",
+      "ev-giyim": "ملابس منزلية",
+      "corap": "جوارب وإكسسوارات",
+      "aktif": "رياضي & مريح"
     },
     "common": {
-      "imagePlaceholder": "Resim",
-      "close": "Kapat"
+      "imagePlaceholder": "صورة",
+      "close": "إغلاق",
+      "open": "فتح"
     },
     "cookieBanner": {
-      "ariaLabel": "Çerez tercihleri",
-      "title": "Çerez tercihleri",
-      "body": "Sitemiz deneyimi iyileştirmek için çerezler kullanır. Analitik ve pazarlama çerezlerini kabul edip etmemek size bağlıdır.",
-      "privacyLink": "Gizlilik Politikası",
-      "acceptAll": "Tümünü kabul et",
-      "settings": "Ayarlar",
-      "reject": "Reddet",
-      "settingsTitle": "Çerez ayarları",
-      "settingsBody": "Hangi çerezleri kabul etmek istediğinizi seçin.",
+      "ariaLabel": "تفضيلات ملفات تعريف الارتباط",
+      "title": "تفضيلات ملفات تعريف الارتباط",
+      "body": "يستخدم موقعنا ملفات تعريف الارتباط لتحسين التجربة. يمكنك اختيار قبول ملفات تعريف الارتباط التحليلية والتسويقية أو رفضها.",
+      "privacyLink": "سياسة الخصوصية",
+      "acceptAll": "الموافقة على الكل",
+      "settings": "الإعدادات",
+      "reject": "رفض",
+      "settingsTitle": "إعدادات ملفات تعريف الارتباط",
+      "settingsBody": "اختر ملفات تعريف الارتباط التي تريد قبولها.",
       "required": {
-        "title": "Zorunlu",
-        "body": "Site çalışması için gerekli çerezler (devre dışı bırakılamaz)."
+        "title": "ضرورية",
+        "body": "ملفات تعريف الارتباط اللازمة لعمل الموقع (لا يمكن تعطيلها)."
       },
       "analytics": {
-        "title": "Analitik",
-        "body": "Site kullanımını anlamamıza yardımcı olur."
+        "title": "التحليلات",
+        "body": "تساعدنا على فهم استخدام الموقع."
       },
       "marketing": {
-        "title": "Pazarlama",
-        "body": "Reklam ve hedefleme çerezleri."
+        "title": "التسويق",
+        "body": "ملفات تعريف الارتباط الإعلانية وملفات الاستهداف."
       },
-      "cancel": "Vazgeç",
-      "save": "Kaydet"
+      "cancel": "إلغاء",
+      "save": "حفظ"
     },
     "hero": {
-      "title": "Konfor & Şıklık — Her Gün",
-      "subtitle": "Yumuşak, nefes alan iç giyim koleksiyonumuzla rahatlığı ve zarafeti keşfedin. Türkiye'de tasarlandı.",
-      "ctaCollections": "Koleksiyonları Gör",
-      "ctaQuote": "Teklif Al"
+      "title": "راحة وأناقة — كل يوم",
+      "subtitle": "اكتشف الراحة والأناقة مع مجموعتنا من الملابس الداخلية اليومية. مصممة في تركيا.",
+      "ctaCollections": "عرض المجموعات",
+      "ctaQuote": "اطلب عرض سعر"
+    },
+    "heroRaw": {
+      "subtitleFragment": ", \"مجموعة يومية ناعمة وقابلة للتنفس تجمع بين الراحة والأناقة. \nتركيا"
+    },
+    "heroRawExact": {
+      "subtitleExact": ", \"مجموعة يومية ناعمة وقابلة للتنفس تجمع بين الراحة والأناقة. \nتركيا                                                                                    "
     },
     "contact": {
-      "title": "İletişime Geç",
-      "intro": "Sorularınız, iş birlikleri veya toptan talepler için bize yazabilirsiniz. Ortalama dönüş süresi",
-      "avgResponse": "24 saat",
-      "replyApprox": "Yanıt: ~24s",
-      "emailLabel": "E-posta",
-      "phoneLabel": "Telefon",
-      "hoursLabel": "Saatler",
-      "hours": "Hafta içi 09:00 – 18:00",
-      "sendEmail": "E-posta Gönder",
-      "callUs": "Bizi Ara",
-      "sending": "Gönderiliyor…",
-      "sendMessage": "Mesaj Gönder",
-      "success": "Mesajınız başarıyla gönderildi ✅",
+      "title": "اتصل بنا",
+      "intro": "املأ النموذج أو تواصل معنا للاستفسارات أو الاقتراحات أو الطلبات.",
+      "formIntro": "املأ النموذج لأسئلتك أو اتصل بنا",
+      "avgResponse": "24 ساعة",
+      "replyApprox": "الرد: ~24س",
+      "emailLabel": "البريد الإلكتروني",
+      "phoneLabel": "الهاتف",
+      "hoursLabel": "أوقات العمل",
+      "hours": "أيام الأسبوع 09:00 – 18:00",
+      "sendEmail": "إرسال بريد إلكتروني",
+      "callUs": "اتصل بنا",
+      "sending": "جاري الإرسال…",
+      "sendMessage": "إرسال الرسالة",
+      "success": "تم إرسال رسالتك بنجاح ✅",
       "errors": {
-        "nameRequired": "İsim zorunlu",
-        "emailRequired": "E-posta zorunlu",
-        "emailInvalid": "Geçersiz e-posta",
-        "messageRequired": "Mesaj boş olamaz"
+        "nameRequired": "الاسم مطلوب",
+        "emailRequired": "البريد الإلكتروني مطلوب",
+        "emailInvalid": "بريد إلكتروني غير صالح",
+        "messageRequired": "لا يمكن أن تكون الرسالة فارغة",
+        "consentRequired": "يجب الموافقة على قانون حماية بيانات المستخدمين."
       },
       "form": {
-        "name": "İsim",
-        "email": "E-posta",
-        "message": "Mesaj"
-      }
+        "name": "الاسم",
+        "email": "البريد الإلكتروني",
+        "message": "الرسالة"
+      },
+      "formPromptDot": "املأ النموذج لأسئلتك أو اتصل بنا.",
+      "sendFailForm": "فشل الإرسال. يرجى المحاولة مرة أخرى.",
+      "networkError": "خطأ في الشبكة. يرجى المحاولة لاحقًا.",
+      "consent": "أوافق على قانون حماية بيانات المستخدمين.",
+      "privacyFragmentExact": ", \"قانون حماية بيانات المستخدمين",
+      "consentEscaped": "أوافق على قانون حماية بيانات المستخدمين.'"
     },
     "media": {
-      "title": "Gör, Hisset, Keşfet",
-      "prev": "Önceki",
-      "next": "Sonraki",
-      "goTo": "Git {n}"
+      "title": "شاهده، اشعر به، استكشف",
+      "prev": "السابق",
+      "next": "التالي",
+      "goTo": "اذهب إلى {n}"
     },
     "whyUs": {
-      "title": "Neden Biz?",
-      "intro": "Kurulduğumuz günden bu yana kaliteyi, konforu ve müşteri memnuniyetini merkeze alıyoruz.",
+      "title": "لماذا نحن؟",
+      "intro": "منذ تأسيسنا نضع الجودة والراحة ورضا العملاء في صميم عملنا.",
       "experience": {
-        "title": "50+ Yıllık Tecrübe",
-        "body": "1969'dan bu yana iç giyim sektöründe uzmanlık, güven ve istikrarlı üretim anlayışı."
+        "title": "أكثر من 50 سنة خبرة",
+        "body": "خبرة وموثوقية وممارسات إنتاج مستقرة منذ عام 1969."
       },
       "quality": {
-        "title": "Yüksek Kalite Kumaş",
-        "body": "Cilde dost, nefes alabilir ve uzun ömürlü kumaşlar ile maksimum konfor."
+        "title": "أقمشة عالية الجودة",
+        "body": "أقمشة لطيفة على الجلد، قابلة للتنفس وطويلة الأمد لراحة قصوى."
       },
       "design": {
-        "title": "Modern & Konforlu Tasarım",
-        "body": "Günlük kullanıma uygun, şık, ergonomik ve kullanıcı odaklı kesimler."
+        "title": "تصميم عصري ومريح",
+        "body": "قصات أنيقة ومريحة مناسبة للاستخدام اليومي."
       },
       "standards": {
-        "title": "Güvenilir Üretim Standartları",
-        "body": "Her aşamada kontrol edilen dikkatli üretim süreçleri."
+        "title": "معايير إنتاج موثوقة",
+        "body": "عمليات إنتاج مُراقبة بعناية في كل مرحلة."
       },
       "counters": {
-        "monthlyCapacity": "Aylık Üretim Kapasitesi",
-        "facilityArea": "m² Üretim Tesisi",
-        "employees": "Çalışan",
-        "exportCountries": "Ülkeye İhracat"
+        "monthlyCapacity": "القدرة الإنتاجية الشهرية",
+        "facilityArea": "م² مساحة المنشأة",
+        "employees": "الموظفون",
+        "exportCountries": "دول التصدير"
+      }
+    },
+    "header": {
+      "aria": {
+        "openLangMenu": "افتح قائمة اللغة",
+        "closeLangMenu": "أغلق قائمة اللغة",
+        "openMenu": "افتح القائمة",
+        "closeMenu": "أغلق القائمة"
+      }
+    },
+    "quoteModal": {
+      "title": "طلب عرض سعر",
+      "lead": "أرسل لنا ملخصًا قصيرًا وسيرد عليك فريق العروض لدينا.",
+      "placeholders": {
+        "name": "الاسم الكامل",
+        "email": "البريد الإلكتروني (you@company.com)",
+        "company": "الشركة (اختياري)",
+        "phone": "الهاتف / WhatsApp",
+        "product": "المنتج المعني (اختياري)",
+        "qty": "الكمية المتوقعة (مثال: 1000)",
+        "message": "تفاصيل / طلبات خاصة"
+      },
+      "errors": {
+        "missingFields": "يرجى ملء الاسم والبريد الإلكتروني والكمية.",
+        "submitFail": "حدث خطأ أثناء الإرسال"
+      },
+      "success": "تم استلام طلبك — سنرد في أقرب وقت ممكن.",
+      "buttons": {
+        "cancel": "إلغاء",
+        "submit": "طلب عرض سعر",
+        "submitting": "جاري الإرسال…"
       }
     },
     "whatsApp": {
-      "open": "WhatsApp uygulamasında aç",
+      "open": "افتح في تطبيق WhatsApp",
       "sr": "WhatsApp"
+    },
+    "adminLayout": {
+      "logout": "Çıkış yap"
+    },
+    "headerLang": {
+      "tr": "Türkçe",
+      "fr": "Français",
+      "removeItem": "Kaldır {title}"
+    },
+    "headerLangRaw": {
+      "removePTitle": "Kaldır ${p.title}"
+    },
+    "adminImagePicker": {
+      "dialogLabel": "Resim seçici",
+      "title": "Resim Seç",
+      "close": "Kapat",
+      "chooseInstruction": "Var olan resimler arasından seçin veya yeni bir resim yükleyin."
+    },
+    "seo": {
+      "homeDescription": "Yasar - Günlük kullanım için konforlu iç çamaşırları, Türkiye'de tasarlandı.",
+      "siteDescription": "Yasar — konforlu iç çamaşırları. Türkiye'de tasarlandı."
+    }
+  },
+  "adminLayout": {
+    "logout": "تسجيل خروج"
+  },
+  "admin": {
+    "images": {
+      "unauthorized": "غير مصرح - الرجاء تسجيل الدخول أولاً",
+      "failed": "فشل",
+      "uploadedTemplate": "{name} تم تحميله",
+      "uploadedFName": "${f.name} تم تحميله",
+      "uploadFailed": "فشل التحميل",
+      "uploadError": "خطأ في التحميل",
+      "deleteFailed": "فشل الحذف",
+      "deleteRequestFailed": "فشل طلب الحذف",
+      "copyFailed": "فشل النسخ",
+      "systemPhotoTitle": "لا يمكن حذف صور النظام",
+      "newPhotosInstruction": "انقر فوق الزر لتحميل صور جديدة (يدعم التعدد)",
+      "uploading": "جاري التحميل…"
+    },
+    "products": {
+      "failed": "فشل",
+      "saveFailed": "فشل الحفظ",
+      "confirmDelete": "هل تريد حذف المنتج؟",
+      "deleteRequestFailed": "فشل طلب الحذف",
+      "imageUploadFailed": "فشل تحميل الصورة",
+      "newProduct": "منتج جديد",
+      "edit": "تعديل",
+      "editProduct": "تعديل المنتج",
+      "delete": "حذف",
+      "uploadImages": "تحميل الصور",
+      "optional": "(اختياري)",
+      "thumbnailsLabel": "صور مصغرة"
+    },
+    "common": {
+      "adminPasswordPlaceholder": "كلمة مرور المشرف",
+      "login": "تسجيل الدخول",
+      "refresh": "تحديث",
+      "loading": "جارٍ التحميل…",
+      "backToOverview": "الرجوع إلى النظرة العامة"
+    },
+    "content": {
+      "saveFailed": "فشل الحفظ",
+      "saveError": "خطأ في الحفظ",
+      "deleteError": "خطأ في الحذف",
+      "deleteFailed": "فشل الحذف",
+      "undoConfirm": "هل أنت متأكد أنك تريد التراجع عن آخر إدخال؟ سيعيد ذلك المحتوى على الخادم إلى الحالة السابقة.",
+      "undoFailed": "فشل التراجع",
+      "undoSuccess": "تم التراجع",
+      "undoError": "خطأ في التراجع",
+      "loginFailed": "فشل تسجيل الدخول",
+      "loginRequestFailed": "فشل طلب تسجيل الدخول"
+    }
+  },
+  "api": {
+    "quote": {
+      "qtyPositive": "يجب أن تكون الكمية رقماً موجباً.",
+      "success": "تم استلام طلبك",
+      "emailBody": "<p><strong>الاسم:</strong> {name}</p><p><strong>البريد الإلكتروني:</strong> {email}</p><p><strong>الشركة:</strong> {company}</p><p><strong>الهاتف:</strong> {phone}</p><p><strong>المنتج:</strong> {product}</p><p><strong>الكمية:</strong> {qty}</p><p><strong>الرسالة:</strong></p><div>{message}</div>",
+      "emailBodyRaw": "<p><strong>الاسم:</strong> ${safeName}</p><p><strong>البريد الإلكتروني:</strong> ${safeEmail}</p><p><strong>الشركة:</strong> ${safeCompany ?? ''}</p><p><strong>الهاتف:</strong> ${safePhone ?? ''}</p><p><strong>المنتج:</strong> ${safeProduct ?? ''}</p><p><strong>الكمية:</strong> ${qtyNum}</p><p><strong>الرسالة:</strong></p><div>${safeMessage ?? ''}</div>",
+      "serverError": "خطأ في الخادم"
+    },
+    "contact": {
+      "newFormSubject": "نموذج تواصل جديد: {name}",
+      "newFormSubjectRaw": "نموذج تواصل جديد: ${safeName}",
+      "emailBody": "<p><strong>الاسم:</strong> {name}</p><p><strong>البريد الإلكتروني:</strong> {email}</p><p><strong>الرسالة:</strong></p><div>{message}</div>",
+      "emailBodyRaw": "<p><strong>الاسم:</strong> ${safeName}</p><p><strong>البريد الإلكتروني:</strong> ${safeEmail}</p><p><strong>الرسالة:</strong></p><div>${safeMessage.replace(/\\n/g, '<br/>')}</div>"
+    },
+    "admin_images": {
+      "fileNotFound": "الملف غير موجود",
+      "uploadError": "خطأ في تحميل الملف",
+      "fileWriteError": "يتعذر كتابة الملف",
+      "deleteFailed": "فشل الحذف"
+    }
+  },
+  "config": {
+    "mapPlaces": {
+      "mahmutpasa": {
+        "name": "مسجد محمود باشا",
+        "address": "فناء مسجد محمود باشا رقم:12/A، فاتح/اسطنبول"
+      },
+      "facility1": {
+        "name": "الإنتاج 1",
+        "location": "كوتشوك تشكمجة / إسطنبول"
+      },
+      "facility2": {
+        "name": "الإنتاج 2",
+        "location": "يني شهر / بورصة"
+      }
     }
   },
   "locations": {
-    "tr": "Türkiye",
-    "uk": "Birleşik Krallık",
-    "de": "Almanya",
-    "ro": "Romanya",
-    "kw": "Kuveyt",
-    "ly": "Libya",
-    "nl": "Hollanda",
-    "fr": "Fransa",
-    "us": "ABD"
+    "tr": "تركيا",
+    "uk": "المملكة المتحدة",
+    "de": "ألمانيا",
+    "ro": "رومانيا",
+    "kw": "الكويت",
+    "ly": "ليبيا",
+    "nl": "هولندا",
+    "fr": "فرنسا",
+    "us": "الولايات المتحدة"
+  },
+  "worldMap": {
+    "title": "Dünya haritası"
   }
 }

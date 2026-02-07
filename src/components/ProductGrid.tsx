@@ -14,7 +14,8 @@ function useTr() {
     }
   };
 }
-import { products } from '../data/demoProducts';
+import { getProducts } from '../data/demoProducts';
+import { useEffect, useState } from 'react';
 import { useInView } from '../hooks/useInView';
 
 function SlideCard({ id, side = 'left', children }: { id?: string; side?: 'left' | 'right'; children: React.ReactNode }) {
@@ -28,9 +29,24 @@ function SlideCard({ id, side = 'left', children }: { id?: string; side?: 'left'
 
 export default function ProductGrid() {
   const tr = useTr();
+  const [products, setProducts] = useState<any[]>([]);
+
+  useEffect(() => {
+    setProducts(getProducts());
+    function onProductsChange() {
+      setProducts(getProducts());
+    }
+    window.addEventListener('storage', onProductsChange);
+    window.addEventListener('yasar:products:changed', onProductsChange as EventListener);
+    return () => {
+      window.removeEventListener('storage', onProductsChange);
+      window.removeEventListener('yasar:products:changed', onProductsChange as EventListener);
+    };
+  }, []);
+
   return (
-  <section className="max-w-6xl mx-auto px-4 py-6 md:py-12">
-        <div className="flex items-center justify-between mb-6">
+    <section className="max-w-6xl mx-auto px-4 py-6 md:py-12">
+      <div className="flex items-center justify-between mb-6">
         <div>
           <h2 className="text-xl font-semibold">{tr('components.productGrid.title','Öne Çıkan Ürünler')}</h2>
           <p className="text-sm text-gray-500 mt-1">{tr('components.productGrid.subtitle','Seçtiğimiz popüler ve önerilen ürünler — kalite ve konfor bir arada.')}</p>

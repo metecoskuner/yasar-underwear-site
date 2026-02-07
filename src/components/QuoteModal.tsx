@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import FocusLock from 'react-focus-lock';
+import { useLanguage } from '../contexts/LanguageContext';
 
 export default function QuoteModal({
   open,
@@ -20,6 +21,7 @@ export default function QuoteModal({
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const { t } = useLanguage();
 
   React.useEffect(() => {
     if (open) {
@@ -34,7 +36,7 @@ export default function QuoteModal({
     e.preventDefault();
     setError(null);
     if (!name || !email || !qty) {
-      setError('Lütfen isim, e-posta ve adet bilgisini doldurun.');
+      setError(t('components.quoteModal.errors.missingFields'));
       return;
     }
 
@@ -47,7 +49,7 @@ export default function QuoteModal({
       });
       const json = await res.json();
       if (!res.ok) throw new Error(json?.message || 'Sunucu hatası');
-      setSuccess('Talebiniz alındı — en kısa sürede dönüş yapılacaktır.');
+  setSuccess(t('components.quoteModal.success'));
       // clear form except product
       setName('');
       setEmail('');
@@ -57,7 +59,7 @@ export default function QuoteModal({
       setMessage('');
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);
-      setError(msg || 'Gönderilirken hata oluştu');
+      setError(msg || t('components.quoteModal.errors.submitFail'));
     } finally {
       setSubmitting(false);
     }
@@ -80,21 +82,21 @@ export default function QuoteModal({
           >
             ✕
           </button>
-          <h3 className="text-lg font-semibold mb-2">Teklif Talebi Gönder</h3>
-          <p className="text-sm text-gray-600 mb-4">Kısa bilgi verin, teklif ekibimiz size dönüş yapsın.</p>
+          <h3 className="text-lg font-semibold mb-2">{t('components.quoteModal.title')}</h3>
+          <p className="text-sm text-gray-600 mb-4">{t('components.quoteModal.lead')}</p>
 
           <form onSubmit={handleSubmit} className="space-y-3">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <input
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Adınız ve Soyadınız"
+                placeholder={t('components.quoteModal.placeholders.name')}
                 className="border rounded px-3 py-2 w-full focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-300 transition"
               />
               <input
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="E-posta (you@firma.com)"
+                placeholder={t('components.quoteModal.placeholders.email')}
                 type="email"
                 className="border rounded px-3 py-2 w-full focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-300 transition"
               />
@@ -104,13 +106,13 @@ export default function QuoteModal({
               <input
                 value={company}
                 onChange={(e) => setCompany(e.target.value)}
-                placeholder="Firma (opsiyonel)"
+                placeholder={t('components.quoteModal.placeholders.company')}
                 className="border rounded px-3 py-2 w-full focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-300 transition"
               />
               <input
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                placeholder="Telefon / WhatsApp"
+                placeholder={t('components.quoteModal.placeholders.phone')}
                 className="border rounded px-3 py-2 w-full focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-300 transition"
               />
             </div>
@@ -119,13 +121,13 @@ export default function QuoteModal({
               <input
                 value={product}
                 onChange={(e) => setProduct(e.target.value)}
-                placeholder="İlgili Ürün (opsiyonel)"
+                placeholder={t('components.quoteModal.placeholders.product')}
                 className="border rounded px-3 py-2 w-full focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-300 transition"
               />
               <input
                 value={qty}
                 onChange={(e) => setQty(e.target.value)}
-                placeholder="Tahmini Adet (ör. 1000)"
+                placeholder={t('components.quoteModal.placeholders.qty')}
                 className="border rounded px-3 py-2 w-full focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-300 transition"
               />
             </div>
@@ -133,7 +135,7 @@ export default function QuoteModal({
             <textarea
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-              placeholder="Detaylar / özel istekler"
+              placeholder={t('components.quoteModal.placeholders.message')}
               className="border rounded px-3 py-2 w-full h-24 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-300 transition"
             />
 
@@ -142,14 +144,14 @@ export default function QuoteModal({
 
             <div className="flex items-center justify-end space-x-2">
               <button type="button" onClick={onClose} className="px-4 py-2 rounded border hover:bg-gray-50 transition cursor-pointer">
-                İptal
+                {t('components.quoteModal.buttons.cancel')}
               </button>
               <button
                 type="submit"
                 disabled={submitting}
                 className="px-4 py-2 rounded-full bg-amber-400 text-black font-semibold shadow-sm hover:bg-amber-500 transition-colors duration-150 cursor-pointer disabled:opacity-60"
               >
-                {submitting ? 'Gönderiliyor...' : 'Teklif İste'}
+                {submitting ? t('components.quoteModal.buttons.submitting') : t('components.quoteModal.buttons.submit')}
               </button>
             </div>
           </form>

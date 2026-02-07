@@ -37,6 +37,7 @@ export default function ProductCard({
     }
   };
 
+  // Product titles are dynamic data; do not route through i18n keys.
   const displayTitle = product.i18nTitle?.[lang] ?? product.title;
 
   const categoryNames: Record<string, string> = {
@@ -153,6 +154,10 @@ export default function ProductCard({
 
       <div className="p-4">
   <h3 className="text-sm font-semibold text-gray-800 truncate">{displayTitle}</h3>
+  {/* Product code shown prominently on card for quick reference */}
+  {product.productCode ? (
+    <div className="text-xs text-gray-500 mt-1 font-mono">{`ürün kodu: ${product.productCode}`}</div>
+  ) : null}
       </div>
     </div>
   );

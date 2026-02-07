@@ -31,7 +31,7 @@ export default function Footer() {
   const linksInner = (
     <div className="flex flex-col space-y-2">
       <Link href="/" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{tr('footer.home','Ana sayfa')}</Link>
-      <Link href="/products" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{tr('footer.products','Ürünlerimiz')}</Link>
+      <Link href="/urunler" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{tr('footer.products','Ürünlerimiz')}</Link>
       <Link href="/surdurulebilirlik" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{tr('footer.sustainability','Sürdürülebilirlik')}</Link>
       <Link href="/contact" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{tr('footer.contact','İletişim')}</Link>
     </div>
@@ -40,12 +40,10 @@ export default function Footer() {
   const corpInner = (
     <div className="flex flex-col space-y-2">
       <Link href="/about" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{tr('footer.corporate.about','Hakkımızda')}</Link>
-      <Link href="/about#vision" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{tr('footer.corporate.vision','Vizyon')}</Link>
-      <Link href="/about#mission" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{tr('footer.corporate.mission','Misyon')}</Link>
-      <Link href="/about#clients" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{tr('footer.corporate.clients','Müşterilerimiz')}</Link>
-      <Link href="/production" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{tr('footer.production.title','Üretim')}</Link>
-      <Link href="/production#facilities" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{tr('footer.production.facilities','Üretim Tesislerimiz')}</Link>
-      <Link href="/production#quality" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{tr('footer.production.quality','Kalite Süreçlerimiz')}</Link>
+      <Link href="/about/hakkimizda" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{tr('footer.corporate.aboutDetail','Şirket Bilgileri')}</Link>
+      <Link href="/uretim" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{tr('footer.production.title','Üretim')}</Link>
+      <Link href="/uretim/tesisler" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{tr('footer.production.facilities','Üretim Tesislerimiz')}</Link>
+      <Link href="/uretim/kalite-surecleri" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{tr('footer.production.quality','Kalite Süreçlerimiz')}</Link>
     </div>
   );
 
@@ -111,7 +109,7 @@ export default function Footer() {
     contactPoint: [
       {
         "@type": "ContactPoint",
-        telephone: "+90-212-000-0000",
+        telephone: "+90-212-520-9299",
         contactType: "customer service",
         areaServed: "TR"
       }
@@ -289,8 +287,8 @@ export default function Footer() {
           <div className="mt-4 text-sm text-white flex flex-col space-y-2">
             <h4 className="text-base lg:text-lg font-semibold text-white">{tr('footer.contactInfo.title','İletişim')}</h4>
             <span className="block mt-1 h-0.5 w-12 bg-white/90 rounded" aria-hidden />
-            <a href="tel:+902120000000" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{tr('footer.contactInfo.phone','+90 212 000 00 00')}</a>
-            <a href="mailto:info@yasar.example" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{tr('footer.contactInfo.email','info@yasar.example')}</a>
+            <a href="tel:+902125209299" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{tr('footer.contactInfo.phone','+90 212 520 92 99')}</a>
+            <a href="mailto:info@yasarunderwear.com" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{tr('footer.contactInfo.email','info@yasarunderwear.com')}</a>
             <a href="https://maps.google.com?q=Yasar+Tekstil" target="_blank" rel="noopener noreferrer" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{tr('footer.contactInfo.map','Adresimizi haritada gör')}</a>
           </div>
         </div>

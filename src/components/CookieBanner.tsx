@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
+import Link from 'next/link';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 type Consent = {
@@ -63,10 +64,20 @@ export default function CookieBanner() {
   };
   const [showSettings, setShowSettings] = useState(false);
 
-  // Initialize consent synchronously from storage to avoid calling setState inside an effect
-  const [initialConsent] = useState<Consent | null>(() => readConsent());
-  const [consent, setConsent] = useState<Consent | null>(initialConsent);
-  const [show, setShow] = useState(() => !initialConsent);
+  // Start with deterministic server-friendly defaults to avoid SSR/client mismatch.
+  // We'll hydrate consent on client mount and then update visibility.
+  const [consent, setConsent] = useState<Consent | null>(null);
+  const [show, setShow] = useState(false);
+
+  React.useEffect(() => {
+    try {
+      const c = readConsent();
+      setConsent(c);
+      setShow(!c);
+    } catch {
+      // ignore
+    }
+  }, []);
 
   useEffect(() => {
     if (consent) {
@@ -106,7 +117,7 @@ export default function CookieBanner() {
           <strong className="block font-semibold">{tr('components.cookieBanner.title','Çerez tercihleri')}</strong>
           <p className="mt-1 text-xs text-gray-700 dark:text-gray-200">{tr('components.cookieBanner.body','Sitemiz deneyimi iyileştirmek için çerezler kullanır. Analitik ve pazarlama çerezlerini kabul edip etmemek size bağlıdır.')}</p>
           <p className="mt-2 text-xs">
-            <a href="/privacy" className="underline hover:opacity-90">{tr('components.cookieBanner.privacyLink','Gizlilik Politikası')}</a>
+            <Link href="/privacy" className="underline hover:opacity-90">{tr('components.cookieBanner.privacyLink','Gizlilik Politikası')}</Link>
           </p>
         </div>
 

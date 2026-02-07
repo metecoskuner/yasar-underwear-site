@@ -7,7 +7,7 @@ import { createPortal } from "react-dom";
 import { useRouter } from "next/router";
 import { useLanguage } from "../contexts/LanguageContext";
 import useWishlist from '@/hooks/useWishlist';
-import { products as demoProducts } from '@/data/demoProducts';
+import { getProducts } from '@/data/demoProducts';
 
 const NAV_ITEMS: Array<{
   href: string;
@@ -33,7 +33,7 @@ const NAV_ITEMS: Array<{
       { href: "/uretim/kalite-surecleri", label: "Kalite Süreçlerimiz", labelKey: "nav.production.quality", subtitleKey: "nav.production.qualitySubtitle" },
     ],
   },
-  { href: "/surdurulebilirlik", label: "Sürdürülebilirlik", labelKey: "nav.sustainability" },
+  { href: "/surdurulebilirlik", label: "Sustainability", labelKey: "nav.sustainability" },
   { href: "/urunler", label: "Ürünler", labelKey: "nav.products" },
 ];
 
@@ -61,6 +61,8 @@ export default function Header() {
 
   const langRef = useRef<HTMLDivElement | null>(null);
   const mobileLangRef = useRef<HTMLDivElement | null>(null);
+  const langToggleRef = useRef<HTMLButtonElement | null>(null);
+  const mobileLangToggleRef = useRef<HTMLButtonElement | null>(null);
   const mobileMenuRef = useRef<HTMLDivElement | null>(null);
   const menuButtonRef = useRef<HTMLButtonElement | null>(null);
   const firstLangButtonRef = useRef<HTMLButtonElement | null>(null);
@@ -76,6 +78,8 @@ export default function Header() {
     }
   }, [t]);
   const { favorites, toggle } = useWishlist();
+  // bump to force re-render when product list changes (storage event)
+  const [, setProductsVersion] = useState(0);
   const [wishOpen, setWishOpen] = useState(false);
   const wishRefDesktop = useRef<HTMLDivElement | null>(null);
   const wishRefMobile = useRef<HTMLDivElement | null>(null);
@@ -189,6 +193,16 @@ export default function Header() {
   }, [headerHeight]);
 
   useEffect(() => {
+    function onProductsChange() {
+      setProductsVersion(v => v + 1);
+    }
+    window.addEventListener('storage', onProductsChange);
+    window.addEventListener('yasar:products:changed', onProductsChange as EventListener);
+    return () => {
+      window.removeEventListener('storage', onProductsChange);
+      window.removeEventListener('yasar:products:changed', onProductsChange as EventListener);
+    };
+
     const onRouteChange = () => {
       setMobileOpen(false);
       setLangOpen(false);
@@ -322,6 +336,36 @@ export default function Header() {
     if (langOpen) firstLangButtonRef.current?.focus();
   }, [langOpen]);
 
+  // When language menu closes, if focus remained inside the hidden menu,
+  // move it back to the language toggle to avoid aria-hidden on a focused descendant.
+  useEffect(() => {
+    if (langOpen) return;
+    try {
+      const active = document.activeElement as HTMLElement | null;
+      if (active && langRef.current && langRef.current.contains(active)) {
+        // If we have a toggle button ref, focus it; otherwise blur the active element
+        if (langToggleRef.current) langToggleRef.current.focus();
+        else active.blur();
+      }
+    } catch (err) {
+      void err;
+    }
+  }, [langOpen]);
+
+  // Similar handling for the mobile language menu
+  useEffect(() => {
+    if (mobileLangOpen) return;
+    try {
+      const active = document.activeElement as HTMLElement | null;
+      if (active && mobileLangRef.current && mobileLangRef.current.contains(active)) {
+        if (mobileLangToggleRef.current) mobileLangToggleRef.current.focus();
+        else active.blur();
+      }
+    } catch (err) {
+      void err;
+    }
+  }, [mobileLangOpen]);
+
   // simple focus trap for mobile menu
   useEffect(() => {
     if (!mobileOpen) {
@@ -403,17 +447,22 @@ export default function Header() {
               const active = isActive(item.href);
               const highlight = active || hoveredNav === item.href;
 
-              // resolve translated label with fallback to the provided Turkish label
+              // render label using literal translation keys so t() always receives a string literal
               const resolvedLabel = (() => {
-                try {
-                  if (item.labelKey) {
-                    const tLabel = t(item.labelKey);
-                    return tLabel === item.labelKey ? item.label : tLabel;
-                  }
-                } catch (err) {
-                  void err;
+                switch (item.href) {
+                  case "/":
+                    return t("nav.home");
+                  case "/about":
+                    return t("nav.corporate.title");
+                  case "/uretim":
+                    return t("nav.production.title");
+                  case "/surdurulebilirlik":
+                    return t("nav.sustainability");
+                  case "/urunler":
+                    return t("nav.products");
+                  default:
+                    return item.label;
                 }
-                return item.label;
               })();
 
               if (item.children && item.children.length > 0) {
@@ -474,8 +523,8 @@ export default function Header() {
                       <div className="p-4">
                         <div className="grid gap-4 grid-cols-1 sm:grid-cols-3 items-start">
                           <div className="sm:col-span-1 pr-2">
-                            <div className="text-sm font-semibold text-gray-900">{item.labelKey ? (t(item.labelKey) === item.labelKey ? (PARENT_META[item.href]?.title ?? item.label) : t(item.labelKey)) : (PARENT_META[item.href]?.title ?? item.label)}</div>
-                            <div className="mt-2 text-xs text-gray-600">{item.href === '/about' ? (t('nav.corporate.description') === 'nav.corporate.description' ? (PARENT_META[item.href]?.description ?? '') : t('nav.corporate.description')) : item.href === '/uretim' ? (t('nav.production.description') === 'nav.production.description' ? (PARENT_META[item.href]?.description ?? '') : t('nav.production.description')) : (PARENT_META[item.href]?.description ?? '')}</div>
+                            <div className="text-sm font-semibold text-gray-900">{PARENT_META[item.href]?.title ?? item.label}</div>
+                            <div className="mt-2 text-xs text-gray-600">{item.href === '/about' ? t('nav.corporate.description') : item.href === '/uretim' ? t('nav.production.description') : (PARENT_META[item.href]?.description ?? '')}</div>
                           </div>
 
                           <div className="sm:col-span-2 grid gap-2">
@@ -515,8 +564,30 @@ export default function Header() {
                                   </div>
 
                                   <div className="min-w-0">
-                                    <div className="text-sm text-gray-900 transition-colors duration-150 group-hover:text-amber-600">{c.labelKey ? (t(c.labelKey) === c.labelKey ? c.label : t(c.labelKey)) : c.label}</div>
-                                    <div className="text-xs text-gray-500 mt-0.5">{c.subtitleKey ? (t(c.subtitleKey) === c.subtitleKey ? (CHILD_META[c.href]?.subtitle ?? '') : t(c.subtitleKey)) : (CHILD_META[c.href]?.subtitle ?? '')}</div>
+                                    <div className="text-sm text-gray-900 transition-colors duration-150 group-hover:text-amber-600">{(() => {
+                                      switch (c.href) {
+                                        case '/about/hakkimizda':
+                                          return t('nav.corporate.about');
+                                        case '/uretim/tesisler':
+                                          return t('nav.production.facilities');
+                                        case '/uretim/kalite-surecleri':
+                                          return t('nav.production.quality');
+                                        default:
+                                          return c.label;
+                                      }
+                                    })()}</div>
+                                    <div className="text-xs text-gray-500 mt-0.5">{(() => {
+                                      switch (c.href) {
+                                        case '/about/hakkimizda':
+                                          return t('nav.corporate.aboutSubtitle');
+                                        case '/uretim/tesisler':
+                                          return t('nav.production.facilitiesSubtitle');
+                                        case '/uretim/kalite-surecleri':
+                                          return t('nav.production.qualitySubtitle');
+                                        default:
+                                          return CHILD_META[c.href]?.subtitle ?? '';
+                                      }
+                                    })()}</div>
                                   </div>
 
                                   <div className="ml-auto text-gray-300">
@@ -563,7 +634,16 @@ export default function Header() {
           {/* CENTER - LOGO */}
           <div className="flex justify-center lg:justify-center">
             <Link href="/" className="flex items-center cursor-pointer">
-              <Image src="/photos/yasarLogo2.jpg" alt="Yasar Tekstil Logo" width={84} height={84} priority className="max-w-[100px] lg:max-w-[88px] h-auto" />
+              <Image
+                src="/photos/yasarLogo2.jpg"
+                alt="Yasar Tekstil Logo"
+                width={84}
+                height={84}
+                priority
+                loading="eager"
+                style={{ height: 'auto', width: 'auto' }}
+                className="max-w-[100px] lg:max-w-[88px] h-auto"
+              />
             </Link>
           </div>
 
@@ -648,7 +728,7 @@ export default function Header() {
                   ) : (
                     <div className="flex flex-col gap-2 max-h-60 overflow-auto pr-4">
                           {favorites.map((id) => {
-                        const p = demoProducts.find((x) => x.id === id);
+                        const p = getProducts().find((x) => x.id === id);
                         if (!p) return null;
                         return (
                           <Link
@@ -730,7 +810,7 @@ export default function Header() {
                   ) : (
                     <div className="flex flex-col gap-2 max-h-60 overflow-auto pr-2">
                       {favorites.map((id) => {
-                        const p = demoProducts.find((x) => x.id === id);
+                        const p = getProducts().find((x) => x.id === id);
                         if (!p) return null;
                         return (
                           <Link
@@ -774,10 +854,11 @@ export default function Header() {
             <div className="hidden lg:block relative" ref={langRef}>
               <button
                 type="button"
+                ref={langToggleRef}
                 onClick={() => setLangOpen((p) => !p)}
                 aria-haspopup="menu"
                 aria-expanded={langOpen}
-                aria-label={langOpen ? "Close language menu" : "Open language menu"}
+                aria-label={langOpen ? t('header.aria.closeLangMenu') : t('header.aria.openLangMenu')}
                 className="px-2 py-1 text-sm border border-gray-400 rounded flex items-center space-x-2 transition-colors duration-200 hover:bg-amber-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 cursor-pointer"
               >
                 <span className="text-lg">{FLAGS[lang]}</span>
@@ -816,17 +897,22 @@ export default function Header() {
               </div>
             </div>
 
-
-            {/* Contact button removed per request */}
+            {/* Contact button (desktop) - show on lg+ */}
+            <div className="hidden lg:block">
+              <Link href="/contact" className="ml-3 inline-flex items-center bg-white text-black px-4 py-2 rounded font-semibold hover:opacity-95">
+                {t('nav.contact')}
+              </Link>
+            </div>
 
             {/* MOBILE: language button next to hamburger */}
             <div className="lg:hidden relative" ref={mobileLangRef}>
               <button
                 type="button"
+                ref={mobileLangToggleRef}
                 onClick={() => setMobileLangOpen((p) => !p)}
                 aria-haspopup="menu"
                 aria-expanded={mobileLangOpen}
-                aria-label={mobileLangOpen ? "Close language menu" : "Open language menu"}
+                aria-label={mobileLangOpen ? t('header.aria.closeLangMenu') : t('header.aria.openLangMenu')}
                 className="px-2 py-1 text-sm rounded flex items-center space-x-1 transition-colors duration-200 hover:bg-amber-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 cursor-pointer"
               >
                 <span className="text-lg">{FLAGS[lang]}</span>
@@ -869,7 +955,7 @@ export default function Header() {
               ref={menuButtonRef}
               onClick={() => setMobileOpen((p) => !p)}
               aria-expanded={mobileOpen}
-              aria-label={mobileOpen ? "Close menu" : "Open menu"}
+              aria-label={mobileOpen ? t('header.aria.closeMenu') : t('header.aria.openMenu')}
               aria-controls="mobile-menu"
               className="lg:hidden p-2 rounded-md hover:bg-black/20 cursor-pointer"
             >
@@ -958,7 +1044,22 @@ export default function Header() {
                               <div>
                                 <div className="flex items-center justify-between px-3 py-3 rounded">
                                   <span className={`font-medium ${isActive(item.href) ? 'font-semibold' : ''}`}>
-                                    {item.labelKey ? (t(item.labelKey) === item.labelKey ? item.label : t(item.labelKey)) : item.label}
+                                    {(() => {
+                                      switch (item.href) {
+                                        case "/":
+                                          return t("nav.home");
+                                        case "/about":
+                                          return t("nav.corporate.title");
+                                        case "/uretim":
+                                          return t("nav.production.title");
+                                        case "/surdurulebilirlik":
+                                          return t("nav.sustainability");
+                                        case "/urunler":
+                                          return t("nav.products");
+                                        default:
+                                          return item.label;
+                                      }
+                                    })()}
                                   </span>
                                   <button
                                     type="button"
@@ -977,7 +1078,7 @@ export default function Header() {
                                   id={`mobile-${item.href.replace(/\//g, '-')}-panel`}
                                   className={`pl-4 mt-1 space-y-1 ${mobileOpenItems[item.href] ? '' : 'hidden'}`}
                                 >
-                                  {item.children.map((c) => (
+                                      {item.children.map((c) => (
                                     <Link
                                       key={c.href}
                                       href={c.href}
@@ -986,7 +1087,18 @@ export default function Header() {
                                       } cursor-pointer`}
                                       onClick={() => setMobileOpen(false)}
                                     >
-                                      {c.labelKey ? (t(c.labelKey) === c.labelKey ? c.label : t(c.labelKey)) : c.label}
+                                      {(() => {
+                                        switch (c.href) {
+                                          case '/about/hakkimizda':
+                                            return t('nav.corporate.about');
+                                          case '/uretim/tesisler':
+                                            return t('nav.production.facilities');
+                                          case '/uretim/kalite-surecleri':
+                                            return t('nav.production.quality');
+                                          default:
+                                            return c.label;
+                                        }
+                                      })()}
                                     </Link>
                                   ))}
                                 </div>
@@ -999,8 +1111,23 @@ export default function Header() {
                                 } cursor-pointer`}
                                 aria-current={isActive(item.href) ? 'page' : undefined}
                                 onClick={() => setMobileOpen(false)}
-                              >
-                                {item.labelKey ? (t(item.labelKey) === item.labelKey ? item.label : t(item.labelKey)) : item.label}
+                                >
+                                {(() => {
+                                  switch (item.href) {
+                                    case "/":
+                                      return t("nav.home");
+                                    case "/about":
+                                      return t("nav.corporate.title");
+                                    case "/uretim":
+                                      return t("nav.production.title");
+                                    case "/surdurulebilirlik":
+                                      return t("nav.sustainability");
+                                    case "/urunler":
+                                      return t("nav.products");
+                                    default:
+                                      return item.label;
+                                  }
+                                })()}
                               </Link>
                             )}
                           </M.div>
