@@ -1,0 +1,44 @@
+{
+  "sections": [
+    {
+      "type": "hero",
+      "title": "Konfor & Şıklık — Her Gün",
+      "description": "Yumuşak, nefes alan iç giyim koleksiyonumuzla rahatlığı ve zarafeti keşfedin. Türkiye'de tasarlandı.",
+      "primaryCtaText": "Koleksiyonları Gör",
+      "secondaryCtaText": "Teklif Al",
+      "backgroundImage": ""
+    },
+    {
+      "type": "categories",
+      "items": [
+        { "title": "İç Giyim", "image": "", "link": "/urunler?category=ic-giyim" },
+        { "title": "Ev Giyimi", "image": "", "link": "/urunler?category=ev-giyim" },
+        { "title": "Çorap & Aksesuar", "image": "", "link": "/urunler?category=corap" },
+        { "title": "Aktif & Rahat", "image": "", "link": "/urunler?category=aktif" }
+      ]
+    },
+    {
+      "type": "features",
+      "introText": "Neden bizi seçmelisiniz?",
+      "items": [
+        { "title": "Kalite", "description": "Yüksek kaliteli malzemeler ve işçilik." },
+        { "title": "Konfor", "description": "Gün boyu rahatlık için tasarlanmış ürünler." },
+        { "title": "Sürdürülebilirlik", "description": "Sürdürülebilir üretim ve tedarik zinciri." }
+      ]
+    },
+    {
+      "type": "stats",
+      "items": [
+        { "value": "30+", "label": "Yıllık Deneyim" },
+        { "value": "100k+", "label": "Mutlu Müşteri" },
+        { "value": "200+", "label": "Ürün" }
+      ]
+    },
+    {
+      "type": "contactCta",
+      "title": "İletişime Geçin",
+      "description": "İşbirliği ve toplu sipariş için bize ulaşın.",
+      "responseTimeText": "48 saat içinde dönüş"
+    }
+  ]
+}

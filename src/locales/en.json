@@ -560,6 +560,7 @@
       "form": {
         "name": "Name",
         "email": "Email",
+        "phone": "Phone",
         "message": "Message"
       },
       "formPromptDot": "Fill the form for questions or call us.",

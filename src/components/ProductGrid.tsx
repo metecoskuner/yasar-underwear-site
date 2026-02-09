@@ -14,7 +14,7 @@ function useTr() {
     }
   };
 }
-import { getProducts } from '../data/demoProducts';
+import { getProducts, Product } from '../data/demoProducts';
 import { useEffect, useState } from 'react';
 import { useInView } from '../hooks/useInView';
 
@@ -29,10 +29,11 @@ function SlideCard({ id, side = 'left', children }: { id?: string; side?: 'left'
 
 export default function ProductGrid() {
   const tr = useTr();
-  const [products, setProducts] = useState<any[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    setProducts(getProducts());
+    // avoid calling setState synchronously in the effect body
+    const id = typeof requestAnimationFrame !== 'undefined' ? requestAnimationFrame(() => setProducts(getProducts())) : setTimeout(() => setProducts(getProducts()), 0);
     function onProductsChange() {
       setProducts(getProducts());
     }
@@ -41,6 +42,10 @@ export default function ProductGrid() {
     return () => {
       window.removeEventListener('storage', onProductsChange);
       window.removeEventListener('yasar:products:changed', onProductsChange as EventListener);
+      try {
+        if (typeof cancelAnimationFrame !== 'undefined') cancelAnimationFrame(id as number);
+        else clearTimeout(id as number);
+      } catch {}
     };
   }, []);
 

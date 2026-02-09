@@ -60,8 +60,10 @@ export function seedProducts(products: Product[]) {
   return getProducts();
 }
 
-export default {
+const demoProducts = {
   getProducts,
   saveProducts,
   seedProducts,
 };
+
+export default demoProducts;

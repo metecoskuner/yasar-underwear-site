@@ -45,7 +45,8 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
       if (stored && Object.prototype.hasOwnProperty.call(locales, stored) && stored !== lang) {
         setLangState(stored);
       }
-    } catch (e) {
+    } catch (err) {
+      void err
       // ignore
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -98,7 +99,8 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     setLangState(l);
     try {
       if (typeof window !== 'undefined') window.localStorage.setItem('yasar_lang', l);
-    } catch (e) {
+    } catch (err) {
+      void err
       // ignore write errors
     }
   };
@@ -276,7 +278,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
 
     // last resort: log missing key in development for easier debugging
     if (typeof window !== 'undefined' && process.env.NODE_ENV !== 'production') {
-      // eslint-disable-next-line no-console
+       
       console.warn('[i18n] missing translation', { key, lang });
     }
 
