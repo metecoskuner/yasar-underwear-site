@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 const fs = require('fs');
 const path = require('path');
 
@@ -49,8 +50,7 @@ const re = /(["'`])((?:\\.|(?!\1).)*?[çğıöşüÇĞİÖŞÜ](?:\\.|(?!\1).)*?
 const occurrences = [];
 for (const f of files) {
   let s = '';
-  try { s = fs.readFileSync(f, 'utf8'); } catch (e) { continue; }
-  const lines = s.split(/\r?\n/);
+  try { s = fs.readFileSync(f, 'utf8'); } catch (err) { void err; continue; }
   let m;
   while ((m = re.exec(s)) !== null) {
     const literal = m[2];

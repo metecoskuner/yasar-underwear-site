@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 const fs = require('fs');
 const path = require('path');
 function isObject(v){return v && typeof v === 'object' && !Array.isArray(v);} 

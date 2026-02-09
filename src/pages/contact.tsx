@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import SEO from '../components/SEO';
 import ContactSection from '../components/ContactSection';
@@ -14,14 +14,14 @@ const LOCATIONS = MAP_PLACES;
 export default function ContactPage(): JSX.Element {
   const ContactSectionComp = ContactSection as unknown as React.ComponentType<{ showSummary?: boolean }>;
   const { t } = useLanguage();
-  const tr = (key: string, fallback: string) => {
+  const tr = useCallback((key: string, fallback: string) => {
     try {
       const v = t(key);
       return v === key ? fallback : v;
     } catch {
       return fallback;
     }
-  };
+  }, [t]);
   const mapRef = useRef<HTMLDivElement | null>(null);
   const markersRef = useRef<Record<string, unknown>>({});
   const mapInstanceRef = useRef<unknown | null>(null);
@@ -62,7 +62,7 @@ export default function ContactPage(): JSX.Element {
       return () => { mounted = false; try { map.remove(); } catch {} };
     }
     initMap();
-  }, []);
+  }, [tr]);
 
   function showPlace(id: string) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

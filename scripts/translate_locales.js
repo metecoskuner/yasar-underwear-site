@@ -28,6 +28,7 @@ Notes:
  - Review the output before committing.
 */
 
+/* eslint-disable @typescript-eslint/no-require-imports */
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
@@ -116,7 +117,7 @@ async function translateLibre(texts, target){
     const body = JSON.stringify({ q: t, source: 'tr', target: target.toLowerCase(), format: 'text', api_key: key });
     const url = new URL('/translate', base);
     const libreq = url.protocol === 'https:' ? https.request : http.request;
-    // eslint-disable-next-line no-await-in-loop
+     
     const r = await new Promise((resolve,reject)=>{
       const req = libreq(url, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(body) } }, (res)=>{
         let b=''; res.on('data',c=>b+=c); res.on('end',()=>{ try{ const j=JSON.parse(b); resolve(j.translatedText || j.translations?.[0]?.text || ''); }catch(e){ reject(new Error('Libre parse error '+e.message+' body:'+b)); } });
@@ -138,9 +139,9 @@ async function main(){
   const trFlat = flatten(tr);
 
   for(const lang of TARGET_LANGS){
-    const p = path.join(process.cwd(),'src','locales',`${lang}.json`);
-    let cur = {};
-    try { cur = readJson(p); } catch(e) { console.warn('Could not read',p,'creating new'); cur = {}; }
+  const p = path.join(process.cwd(),'src','locales',`${lang}.json`);
+  let cur = {};
+  try { cur = readJson(p); } catch(err) { void err; console.warn('Could not read',p,'creating new'); cur = {}; }
     const curFlat = flatten(cur);
 
     // build list of keys needing translation

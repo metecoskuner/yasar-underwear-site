@@ -25,7 +25,10 @@ html, body, #__next {
 /* Ensure the main content is pushed below the fixed header by default.
    Header component exposes --site-header-height; fall back to 0 if not set. */
 main#content {
-  padding-top: var(--site-header-height, 0px);
+  /* Reduce a small visual gap between fixed header and the page's first
+     section by subtracting a few pixels from the computed header height.
+     Clamp to 0 to avoid negative padding on unexpected setups. */
+  padding-top: max(0px, calc(var(--site-header-height, 0px) - 4px));
 }
 
 /* Ensure images, videos and svgs don't accidentally exceed their containers */

@@ -6,12 +6,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const M: any = motion;
 
-const features = [
-  { key: 'modernLines' },
-  { key: 'qualityLab' },
-  { key: 'environment' },
-  { key: 'training' }
-];
+
 
 export default function Tesisler() {
   const { t, g, lang } = useLanguage();

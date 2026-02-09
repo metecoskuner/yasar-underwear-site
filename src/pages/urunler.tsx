@@ -56,7 +56,7 @@ export default function UrunlerPage() {
     if (!activeProduct) return ''
     // Product titles are dynamic and should come from product data, not locale files.
     return activeProduct.i18nTitle?.[lang] ?? activeProduct.title ?? ''
-  }, [activeProduct, t, lang])
+  }, [activeProduct, lang])
 
   useEffect(() => {
     setProducts(getProducts());
