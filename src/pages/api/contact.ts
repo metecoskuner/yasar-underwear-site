@@ -16,14 +16,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     return res.status(429).json({ ok: false, message: 'Too many requests' });
   }
 
-  const { name, email, phone, message } = req.body ?? {};
+  const { name, email, message } = req.body ?? {};
   if (!name || !email || !message) {
     return res.status(400).json({ ok: false, message: 'Missing fields' });
   }
 
   const safeName = String(name).trim().slice(0, 200);
   const safeEmail = String(email).trim().slice(0, 200);
-  const safePhone = phone ? String(phone).trim().slice(0, 200) : null;
   const safeMessage = String(message).trim().slice(0, 4000);
 
   const SMTP_HOST = process.env.SMTP_HOST;
@@ -36,11 +35,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   // so we don't lose the message if sending fails.
   if (process.env.DATABASE_URL) {
     try {
-      console.log('[contact] DATABASE_URL present, attempting DB save')
-      await prisma.contactMessage.create({ data: { name: safeName, email: safeEmail, phone: safePhone ?? undefined, message: safeMessage } });
-      console.log('[contact] DB save successful')
+      await prisma.contactMessage.create({ data: { name: safeName, email: safeEmail, message: safeMessage } });
     } catch (dbErr) {
-      console.error('[contact] db save error (caught):', dbErr)
       if (process.env.NODE_ENV === 'development') console.error('[contact] db save error', dbErr);
       // continue — do not block user because of DB errors
     }
@@ -63,15 +59,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       },
     });
 
-  const subject = `Yeni iletişim formu: ${safeName}`;
-  const html = `<p><strong>İsim:</strong> ${safeName}</p><p><strong>E-posta:</strong> ${safeEmail}</p>${safePhone ? `<p><strong>Telefon:</strong> ${safePhone}</p>` : ''}<p><strong>Mesaj:</strong></p><div>${safeMessage.replace(/\n/g, '<br/>')}</div>`;
+    const subject = `Yeni iletişim formu: ${safeName}`;
+    const html = `<p><strong>İsim:</strong> ${safeName}</p><p><strong>E-posta:</strong> ${safeEmail}</p><p><strong>Mesaj:</strong></p><div>${safeMessage.replace(/\n/g, '<br/>')}</div>`;
 
     await transporter.sendMail({
       from: `"Yasar Website" <${SMTP_USER}>`,
       to: CONTACT_TO,
       replyTo: safeEmail,
       subject,
-      text: `${safeMessage}\n\nFrom: ${safeName} <${safeEmail}>${safePhone ? `\nPhone: ${safePhone}` : ''}`,
+      text: `${safeMessage}\n\nFrom: ${safeName} <${safeEmail}>`,
       html,
     });
 

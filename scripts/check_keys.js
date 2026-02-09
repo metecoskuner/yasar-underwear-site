@@ -1,17 +1,3 @@
-/* eslint-disable @typescript-eslint/no-require-imports */
-const fs = require('fs');
-const path = require('path');
-const locales = ['tr','en','fr','ar','ru'];
-const master = JSON.parse(fs.readFileSync(path.join('src','locales','tr.json'),'utf8'));
-
-function keys(obj,prefix=''){const out=[]; for(const k of Object.keys(obj)){const p=prefix?`${prefix}.${k}`:k; if(obj[k] && typeof obj[k]==='object' && !Array.isArray(obj[k])) out.push(...keys(obj[k],p)); else out.push(p)} return out}
-for(const loc of locales){
-	const data = JSON.parse(fs.readFileSync(path.join('src','locales',loc+'.json'),'utf8'));
-	const missing = keys(master).filter(k=>!keys(data).includes(k));
-	if(missing.length) console.log(`${loc} missing ${missing.length} keys`);
-}
-
-/* eslint-disable @typescript-eslint/no-require-imports */
 const fs = require('fs');
 const tr = JSON.parse(fs.readFileSync('src/locales/tr.json','utf8'));
 const keys = `components.media.title

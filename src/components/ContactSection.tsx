@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { useLanguage } from '@/contexts/LanguageContext';
 
-type FormState = { name: string; email: string; phone?: string; message: string };
+type FormState = { name: string; email: string; message: string };
 
 export default function ContactSection({ showSummary = true }: { showSummary?: boolean }): JSX.Element {
   const { t } = useLanguage();
@@ -14,7 +15,7 @@ export default function ContactSection({ showSummary = true }: { showSummary?: b
     }
   };
 
-  const [form, setForm] = useState<FormState>({ name: '', email: '', phone: '', message: '' });
+  const [form, setForm] = useState<FormState>({ name: '', email: '', message: '' });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [consent, setConsent] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -43,11 +44,11 @@ export default function ContactSection({ showSummary = true }: { showSummary?: b
     });
 
     try {
-        const resp = await fetch('/api/contact', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name: form.name, email: form.email, phone: form.phone, message: form.message }),
-        });
+      const resp = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: form.name, email: form.email, message: form.message }),
+      });
       const data = await resp.json().catch(() => null);
       if (!resp.ok) {
         const msg = data?.message || tr('components.contact.errors.submitFailed', 'Gönderim başarısız. Lütfen tekrar deneyin.');
@@ -84,13 +85,6 @@ export default function ContactSection({ showSummary = true }: { showSummary?: b
               value={form.email}
               error={errors.email}
               onChange={(v) => setForm((s) => ({ ...s, email: v }))}
-            />
-            <Field
-              label={tr('components.contact.form.phone','Telefon')}
-              type="tel"
-              value={form.phone || ''}
-              error={errors.phone}
-              onChange={(v) => setForm((s) => ({ ...s, phone: v }))}
             />
             <Field
               label={tr('components.contact.form.message','Mesaj')}

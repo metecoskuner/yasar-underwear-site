@@ -98,17 +98,17 @@ export default function SustPage() {
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-6 justify-center">
                 <M.div variants={item} className="inline-flex items-center gap-3 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm">
                 <span className="text-amber-500">✓</span>
-                <span className="text-sm font-medium">{metrics.m1}</span>
+                <span className="text-sm font-medium">{t('sustainability.metrics.m1')}</span>
               </M.div>
 
               <M.div variants={item} className="inline-flex items-center gap-3 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm">
                 <span className="text-amber-500">✓</span>
-                <span className="text-sm font-medium">{metrics.m2}</span>
+                <span className="text-sm font-medium">{t('sustainability.metrics.m2')}</span>
               </M.div>
 
               <M.div variants={item} className="inline-flex items-center gap-3 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm">
                 <span className="text-amber-500">✓</span>
-                <span className="text-sm font-medium">{metrics.m3}</span>
+                <span className="text-sm font-medium">{t('sustainability.metrics.m3')}</span>
               </M.div>
             </div>
           </div>
@@ -157,14 +157,14 @@ export default function SustPage() {
             <p className="text-gray-700">{t('sustainability.how.lead')}</p>
             <ul className="list-disc pl-5 text-gray-700 space-y-2">
               {how.bullets.map((b, i) => (
-                 
+                // eslint-disable-next-line react/no-array-index-key
                 <li key={i}>{b}</li>
               ))}
             </ul>
           </M.div>
 
             <M.div variants={item} className="rounded-lg overflow-hidden shadow-sm">
-            <Image src="/photos/sustainability-411.svg" alt={imageAlt2} width={900} height={600} className="object-cover w-full h-56 md:h-72" />
+            <Image src="/photos/sustainability-411.svg" alt={t('sustainability.imageAlt2')} width={900} height={600} className="object-cover w-full h-56 md:h-72" />
           </M.div>
   </M.div>
 
@@ -180,7 +180,7 @@ export default function SustPage() {
 
         {/* Neutral footer note (no contact CTA on this page) */}
           <M.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={item} className="text-center">
-          <p className="text-gray-700">{footerNote}</p>
+          <p className="text-gray-700">{t('sustainability.footerNote')}</p>
         </M.div>
       </main>
     </>

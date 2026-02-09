@@ -537,7 +537,6 @@
       "form": {
         "name": "Nom",
         "email": "E-mail",
-        "phone": "Téléphone",
         "message": "Message"
       },
       "formPromptDot": "Remplissez le formulaire pour vos questions ou appelez-nous.",

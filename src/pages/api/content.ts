@@ -10,7 +10,6 @@ export default async function handler(_req: NextApiRequest, res: NextApiResponse
     const obj = JSON.parse(raw)
     return res.status(200).json({ content: obj })
   } catch (err) {
-    void err
     return res.status(200).json({ content: {} })
   }
 }

@@ -623,7 +623,6 @@
       "form": {
         "name": "İsim",
         "email": "E-posta",
-        "phone": "Telefon",
         "message": "Mesaj"
       },
       "formPromptDot": "Sorularınız için formu doldurun veya bizi arayın.",
