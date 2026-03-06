@@ -2,22 +2,24 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import fs from 'fs'
 import path from 'path'
 
-function listFilesSafe(dir: string) {
-  try {
-    const files = fs.readdirSync(dir)
-    return files.filter(f => f !== '.DS_Store')
-  } catch {
-    return []
-  }
-}
+// To avoid bundling large static assets into the serverless function,
+// read a small pre-generated index file (`public/media-index.json`) that
+// lists media files. This prevents the build from including video/image
+// binaries in the function bundle (which causes Vercel size limit errors).
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  const root = process.cwd()
-  const videosDir = path.join(root, 'public', 'videos')
-  const uploadsDir = path.join(root, 'public', 'uploads')
+  try {
+    const idxPath = path.join(process.cwd(), 'public', 'media-index.json')
+    if (fs.existsSync(idxPath)) {
+      const raw = fs.readFileSync(idxPath, 'utf8')
+      const parsed = JSON.parse(raw)
+      return res.status(200).json(parsed)
+    }
+  } catch (err) {
+    // fallthrough to safe empty response
+    void err
+  }
 
-  const videos = listFilesSafe(videosDir).map(f => ({ name: f, url: `/videos/${f}` }))
-  const uploads = listFilesSafe(uploadsDir).map(f => ({ name: f, url: `/uploads/${f}` }))
-
-  res.status(200).json({ videos, uploads })
+  // If index file doesn't exist, return empty lists to be safe.
+  return res.status(200).json({ videos: [], uploads: [] })
 }
