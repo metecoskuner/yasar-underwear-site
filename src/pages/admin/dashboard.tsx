@@ -33,7 +33,7 @@ export default function DashboardPage() {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   try {
-    const authed = isAuthed(context.req)
+      const authed = await isAuthed(context.req)
     if (!authed) {
       return {
         redirect: {

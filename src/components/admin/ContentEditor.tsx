@@ -30,10 +30,11 @@ export default function ContentEditor({ initialStore, initialPage, onSave }: Pro
     setPage({ ...page, sections })
   }
 
-  function addSection() {
+  function _addSection() {
     const s: Section = { id: cryptoRandom(), type: 'text', content: {} }
     setPage({ ...page, sections: [...page.sections, s] })
   }
+
 
   function removeSection(idx: number) {
     const sections = page.sections.filter((_, i) => i !== idx)
@@ -86,7 +87,8 @@ export default function ContentEditor({ initialStore, initialPage, onSave }: Pro
         ))}
       </div>
 
-      <div className="flex items-center space-x-2">
+  <div className="flex items-center space-x-2">
+  <button className="bg-gray-200 px-3 py-1 rounded" onClick={_addSection}>Bölüm Ekle</button>
         <button className="bg-green-600 text-white px-3 py-1 rounded" onClick={doSave} disabled={saving}>{saving ? 'Kaydediliyor...' : 'Sayfayı Kaydet'}</button>
         {message && <div className="text-sm text-gray-700">{message}</div>}
       </div>

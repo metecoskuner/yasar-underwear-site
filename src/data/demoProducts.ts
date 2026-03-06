@@ -7,6 +7,7 @@ export type Gender = 'male' | 'female' | 'unisex' | 'child';
 export type Product = {
   id: string;
   title: string;
+  isFeatured?: boolean;
   productCode?: string;
   i18nTitle?: Record<string, string>;
   i18nDescription?: Record<string, string>;
@@ -26,31 +27,24 @@ const STORAGE_KEY = 'yasar:products';
 
 // Read products from localStorage. Safe to call on server — returns empty array.
 export function getProducts(): Product[] {
-  if (typeof window === 'undefined') return [];
   try {
-    const raw = window.localStorage.getItem(STORAGE_KEY);
+    if (typeof window === 'undefined') return [];
+    const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return [];
     const parsed = JSON.parse(raw);
-    if (!Array.isArray(parsed)) return [];
-    return parsed as Product[];
-  } catch {
+    return Array.isArray(parsed) ? (parsed as Product[]) : [];
+  } catch (err) {
     return [];
   }
 }
 
 // Save products array to localStorage.
 export function saveProducts(products: Product[]) {
-  if (typeof window === 'undefined') return;
   try {
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
-    try {
-      // notify other windows/tabs and local listeners
-      window.dispatchEvent(new CustomEvent('yasar:products:changed', { detail: { time: Date.now() } }))
-    } catch {
-      // ignore
-    }
-  } catch {
-    // ignore
+    if (typeof window === 'undefined') return;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(products || []));
+  } catch (err) {
+    void err;
   }
 }
 

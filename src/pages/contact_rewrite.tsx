@@ -1,14 +1,26 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import Head from 'next/head';
+import SEO from '@/components/SEO';
 import Layout from '../components/Layout';
 import { loadLeaflet } from '../hooks/useLeafletLoader';
 import { MAP_PLACES } from '../config/mapPlaces';
 import { CONTACT, SOCIAL } from '../config/contactConfig';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 
-type FormState = { name: string; email: string; message: string; sending: boolean; sent: boolean; error?: string };
+const contactSchema = z.object({
+  name: z.string().min(1, 'İsim zorunlu'),
+  email: z.string().email('Geçerli bir e-posta girin'),
+  message: z.string().min(1, 'Mesaj zorunlu'),
+  company: z.string().optional(),
+});
+
+type ContactForm = z.infer<typeof contactSchema>;
 
 export default function ContactPage(): JSX.Element {
-  const [form, setForm] = useState<FormState>({ name: '', email: '', message: '', sending: false, sent: false });
+  const { register, handleSubmit, formState, setError, reset } = useForm<ContactForm>({ resolver: zodResolver(contactSchema) });
+  const { errors, isSubmitting, isSubmitSuccessful } = formState;
   const mapRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -17,10 +29,15 @@ export default function ContactPage(): JSX.Element {
       if (typeof window === 'undefined') return;
       const L = await loadLeaflet();
       if (!mounted || !mapRef.current || !L) return;
-  // keep a loose shape for the leaflet object to avoid heavy typing here
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const leaflet: any = L;
-      const map = leaflet.map(mapRef.current, { zoomControl: true }).setView([41.0335, 28.9689], 6);
+      // Narrow the dynamic loader to a lightweight interface to avoid `any`.
+      type LeafletLite = {
+        map: (el: HTMLElement, opts?: unknown) => { setView: (c: [number, number], z: number) => void; fitBounds?: (c: [number, number][], opts?: unknown) => void };
+        tileLayer: (tile: string, opts?: unknown) => { addTo: (m: unknown) => void };
+  marker: (coords: [number, number]) => { addTo: (m: unknown) => { bindPopup?: (s: string) => void } };
+      };
+      const leaflet = L as unknown as LeafletLite;
+      const map = leaflet.map(mapRef.current as HTMLElement, { zoomControl: true }) as { setView: (c: [number, number], z: number) => void; fitBounds?: (c: [number, number][], opts?: unknown) => void };
+      map.setView([41.0335, 28.9689], 6);
       const tile = process.env.NEXT_PUBLIC_LIGHT_TILE || 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
       leaflet.tileLayer(tile, { attribution: '&copy; OpenStreetMap contributors' }).addTo(map);
         try {
@@ -44,26 +61,50 @@ export default function ContactPage(): JSX.Element {
     return () => { mounted = false; };
   }, []);
 
-  function update<K extends keyof FormState>(key: K, value: FormState[K]) { setForm((s) => ({ ...s, [key]: value })); }
+  async function onSubmit(data: ContactForm) {
+    // clear previous general error
+    const generalEl = document.getElementById('contact-form-error');
+    if (generalEl) generalEl.textContent = '';
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (!form.name || !form.email || !form.message) return update('error', 'Lütfen tüm alanları doldurun.');
-    update('sending', true);
     try {
-      const res = await fetch('/api/contact', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: form.name, email: form.email, message: form.message }) });
-      if (!res.ok) throw new Error('Sunucu hatası');
-      update('sent', true);
-      setForm({ name: '', email: '', message: '', sending: false, sent: true });
-    } catch {
-      update('error', 'Mesaj gönderilemedi. Lütfen tekrar deneyin.');
-      update('sending', false);
+      const res = await fetch('/api/contact', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+      const body = await res.json().catch(() => ({}));
+
+      if (res.status === 422 && body?.errors) {
+        // Map field errors to react-hook-form
+        const errs = body.errors as Record<string, string[]>;
+        Object.entries(errs).forEach(([field, messages]) => {
+          // join multiple messages into one
+          // cast via unknown -> keyof to avoid `any` while remaining safe at runtime
+          setError(field as unknown as keyof ContactForm, { type: 'server', message: messages.join('. ') }, { shouldFocus: true });
+        });
+        return;
+      }
+
+      if (!res.ok) {
+        // Non-validation server error
+        throw new Error(body?.message || 'Sunucu hatası');
+      }
+
+      // Success: reset form and let react-hook-form mark submission success
+      reset();
+      if (generalEl) generalEl.textContent = '';
+    } catch (err) {
+      console.error('contact submit error', err);
+      if (generalEl) generalEl.textContent = (err as Error).message || 'Mesaj gönderilemedi.';
     }
   }
 
   return (
     <Layout>
-      <Head><title>İletişim - Yasar</title></Head>
+      <SEO title="İletişim - Yasar" description="Bizimle iletişime geçin — soru, teklif veya işbirliği için formu doldurun." url="/contact" jsonLd={{
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        name: "Yasar",
+        url: process.env.NEXT_PUBLIC_SITE_URL || undefined,
+        telephone: CONTACT.PHONE_MAIN,
+        email: CONTACT.EMAIL,
+      }} />
       <main className="max-w-6xl mx-auto px-4 py-12"> 
         <h1 className="text-3xl font-semibold mb-6">Bize Ulaşın</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8"> 
@@ -75,18 +116,31 @@ export default function ContactPage(): JSX.Element {
               <h3 className="font-medium mt-3">E-posta</h3>
               <p>{CONTACT.EMAIL}</p>
             </div>
-            <form onSubmit={handleSubmit} className="space-y-4"> 
-              <div><label className="block text-sm font-medium mb-1">İsim</label>
-                <input value={form.name} onChange={(e) => update('name', e.target.value)} className="w-full border rounded px-3 py-2" />
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" aria-describedby="contact-form-error"> 
+              {/* Honeypot field - visually hidden for users, but present for bots */}
+              <div className="sr-only" aria-hidden="true">
+                <label htmlFor="company">Company</label>
+                <input id="company" autoComplete="off" tabIndex={-1} {...register('company')} />
               </div>
-              <div><label className="block text-sm font-medium mb-1">E-posta</label>
-                <input value={form.email} onChange={(e) => update('email', e.target.value)} className="w-full border rounded px-3 py-2" />
+              <div>
+                <label htmlFor="name" className="block text-sm font-medium mb-1">İsim</label>
+                <input id="name" aria-invalid={errors.name ? 'true' : 'false'} aria-describedby={errors.name ? 'error-name' : undefined} {...register('name')} className={`w-full border rounded px-3 py-2 ${errors.name ? 'border-red-500' : ''}`} />
+                {errors.name && <p id="error-name" className="text-red-600 text-sm mt-1">{errors.name.message}</p>}
               </div>
-              <div><label className="block text-sm font-medium mb-1">Mesaj</label>
-                <textarea value={form.message} onChange={(e) => update('message', e.target.value)} className="w-full border rounded px-3 py-2 h-32" />
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium mb-1">E-posta</label>
+                <input id="email" type="email" aria-invalid={errors.email ? 'true' : 'false'} aria-describedby={errors.email ? 'error-email' : undefined} {...register('email')} className={`w-full border rounded px-3 py-2 ${errors.email ? 'border-red-500' : ''}`} />
+                {errors.email && <p id="error-email" className="text-red-600 text-sm mt-1">{errors.email.message}</p>}
               </div>
-              {form.error && <div className="text-red-600">{form.error}</div>}
-              <div><button type="submit" className="bg-black text-white px-4 py-2 rounded" disabled={form.sending}>{form.sending ? 'Gönderiliyor...' : form.sent ? 'Gönderildi' : 'Gönder'}</button></div>
+              <div>
+                <label htmlFor="message" className="block text-sm font-medium mb-1">Mesaj</label>
+                <textarea id="message" aria-invalid={errors.message ? 'true' : 'false'} aria-describedby={errors.message ? 'error-message' : undefined} {...register('message')} className={`w-full border rounded px-3 py-2 h-32 ${errors.message ? 'border-red-500' : ''}`} />
+                {errors.message && <p id="error-message" className="text-red-600 text-sm mt-1">{errors.message.message}</p>}
+              </div>
+              <div id="contact-form-error" className="text-red-600" role="alert" aria-live="assertive" />
+              <div>
+                <button type="submit" className="bg-black text-white px-4 py-2 rounded" disabled={isSubmitting}>{isSubmitting ? 'Gönderiliyor...' : isSubmitSuccessful ? 'Gönderildi' : 'Gönder'}</button>
+              </div>
             </form>
           </section>
           <section>

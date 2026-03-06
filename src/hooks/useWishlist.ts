@@ -1,12 +1,35 @@
 import { useEffect, useState } from 'react';
+import type { Product } from '@/data/demoProducts';
 
 const STORAGE_KEY = 'yasar:wishlist';
 
+// Minimal product metadata we persist so UI can show title/image even when the
+// canonical product list isn't available in-memory.
+export type WishlistItem = {
+  id: string;
+  title?: string;
+  image?: string;
+  category?: string;
+  productCode?: string;
+  description?: string;
+  i18nDescription?: Record<string, string> | undefined;
+  i18nTitle?: Record<string, string> | undefined;
+};
+
 export default function useWishlist() {
-  // Start empty so server/client markup matches during SSR. We'll hydrate
-  // from localStorage on mount and merge with any in-memory changes to avoid
-  // overwriting recent toggles.
-  const [favorites, setFavorites] = useState<string[]>([]);
+  // Initialize from localStorage on the client so favorites persist across reloads
+  const [favorites, setFavorites] = useState<WishlistItem[]>(() => {
+    try {
+      if (typeof window === 'undefined') return [];
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return [];
+      const parsed = JSON.parse(raw);
+      const stored: WishlistItem[] = Array.isArray(parsed) ? parsed.map((p) => (typeof p === 'string' ? { id: p } : p)) : [];
+      return stored;
+    } catch (err) {
+      return [];
+    }
+  });
 
   useEffect(() => {
     try {
@@ -16,50 +39,18 @@ export default function useWishlist() {
     }
   }, [favorites]);
 
-  // Hydrate from localStorage on client mount and merge with current state so
-  // we don't clobber any toggles that happened before hydration finished.
-  useEffect(() => {
-    let timer: number | undefined;
-    try {
-      if (typeof window === 'undefined') return;
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (!raw) return;
-      const stored: string[] = JSON.parse(raw);
-
-      // merge stored + current favorites (preserve any user toggles that ran earlier)
-      // Defer setState to avoid calling setState synchronously inside an effect
-      timer = window.setTimeout(() => {
-        setFavorites((prev) => {
-          const merged = Array.from(new Set([...(prev || []), ...stored]));
-          // Only update if different to avoid extra renders
-          if (merged.length === (prev || []).length && merged.every((v, i) => (prev || [])[i] === v)) return prev as string[];
-          try {
-            // notify other listeners that we've hydrated from storage
-            window.dispatchEvent(new CustomEvent('yasar:wishlist:updated', { detail: { favorites: merged } }));
-          } catch (err) {
-            void err;
-          }
-          return merged;
-        });
-      }, 0);
-    } catch (err) {
-      void err;
-    }
-    return () => {
-      if (timer) window.clearTimeout(timer);
-    };
-  }, []);
-
-  // Keep multiple hook instances in-sync within the same tab by emitting an event
-  // whenever favorites change and listening for that event to update local state.
   useEffect(() => {
     function onUpdated(e: Event) {
       try {
-        const detail = (e as CustomEvent)?.detail as { favorites?: string[] } | undefined;
-        if (detail?.favorites) setFavorites(detail.favorites);
+        const detail = (e as CustomEvent)?.detail as { favorites?: WishlistItem[] } | undefined;
+        if (detail?.favorites) setFavorites(detail.favorites.map((p) => ({ ...p })));
         else {
           const raw = localStorage.getItem(STORAGE_KEY);
-          if (raw) setFavorites(JSON.parse(raw));
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            const stored: WishlistItem[] = Array.isArray(parsed) ? parsed.map((p) => (typeof p === 'string' ? { id: p } : p)) : [];
+            setFavorites(stored);
+          }
         }
       } catch (err) {
         void err;
@@ -69,50 +60,66 @@ export default function useWishlist() {
     return () => window.removeEventListener('yasar:wishlist:updated', onUpdated as EventListener);
   }, []);
 
-  function toggle(id: string) {
+  // Accept either an id or a product object. If product object provided we
+  // persist minimal metadata so header can show image/title immediately.
+  function toggle(input: string | Product | WishlistItem) {
     try {
+      const id = typeof input === 'string' ? input : input.id;
+      const asItem: WishlistItem = typeof input === 'string'
+        ? { id }
+        : {
+          id: input.id,
+          title: (input as Product).title,
+          image: (input as Product).image ?? (input as Product).images?.[0],
+          category: (input as Product).category,
+          productCode: (input as Product).productCode,
+          description: (input as Product).description,
+          i18nTitle: (input as Product).i18nTitle,
+          i18nDescription: (input as Product).i18nDescription,
+        };
+
       if (typeof window === 'undefined') {
-        // Fallback to in-memory update for non-browser environments
-        setFavorites((prev) => (prev.includes(id) ? prev.filter((p) => p !== id) : [...prev, id]));
+        setFavorites((prev) => (prev.some((p) => p.id === id) ? prev.filter((p) => p.id !== id) : [...prev, asItem]));
         return;
       }
 
-      // Read persisted list directly so we base toggles on the source of truth
       const raw = localStorage.getItem(STORAGE_KEY);
-      const stored: string[] = raw ? JSON.parse(raw) : [];
-      const next = stored.includes(id) ? stored.filter((p) => p !== id) : [...stored, id];
+      const parsed = raw ? JSON.parse(raw) : [];
+      const stored: WishlistItem[] = Array.isArray(parsed) ? parsed.map((p) => (typeof p === 'string' ? { id: p } : p)) : [];
+      const exists = stored.some((p) => p.id === id);
+      let next: WishlistItem[];
+      if (exists) {
+        next = stored.filter((p) => p.id !== id);
+      } else {
+        // if we have richer metadata prefer merging it
+        next = [...stored, asItem];
+      }
 
-      // persist synchronously so other code reading localStorage immediately sees the change
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
       } catch (err) {
         void err;
       }
 
-      // update local state and notify other hook instances
       setFavorites(next);
       try {
         window.dispatchEvent(new CustomEvent('yasar:wishlist:updated', { detail: { favorites: next } }));
-        // if item was added (not removed), notify listeners to open the wishlist UI
-        const added = !stored.includes(id) && next.includes(id);
-        const removed = stored.includes(id) && !next.includes(id);
+        const added = !exists && next.some((p) => p.id === id);
         if (added) {
           try {
-              // debug: log when open event is dispatched (development only)
-              if (process.env.NODE_ENV === 'development') console.log('[useWishlist] dispatching wishlist:open for', id);
-              window.dispatchEvent(new CustomEvent('yasar:wishlist:open', { detail: { id } }));
-            } catch (err) {
-              void err;
-            }
-        }
-        // if item was removed, notify listeners to close the wishlist UI
-        if (removed) {
-          try {
-            if (process.env.NODE_ENV === 'development') console.log('[useWishlist] dispatching wishlist:close for', id);
-            window.dispatchEvent(new CustomEvent('yasar:wishlist:close', { detail: { id } }));
+            if (process.env.NODE_ENV === 'development') console.log('[useWishlist] dispatching wishlist:open for', id);
+            window.dispatchEvent(new CustomEvent('yasar:wishlist:open', { detail: { id } }));
           } catch (err) {
             void err;
           }
+        }
+        // Notify listeners about the change and include minimal metadata so
+        // UI components can update even if they don't have the full product list.
+        try {
+          const detail = { id, title: asItem.title, added };
+          window.dispatchEvent(new CustomEvent('yasar:wishlist:changed', { detail }));
+        } catch (err) {
+          void err;
         }
       } catch (err) {
         void err;
@@ -124,8 +131,33 @@ export default function useWishlist() {
   }
 
   function isFavorite(id: string) {
-    return favorites.includes(id);
+    return favorites.some((p) => p.id === id);
   }
 
-  return { favorites, toggle, isFavorite } as const;
+  function clear() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify([]));
+    } catch (err) {
+      void err;
+    }
+    setFavorites([]);
+    try {
+      window.dispatchEvent(new CustomEvent('yasar:wishlist:updated', { detail: { favorites: [] } }));
+    } catch (err) {
+      void err;
+    }
+  }
+
+  function remove(id: string) {
+    try {
+      const next = favorites.filter((p) => p.id !== id);
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+      } catch (err) { void err; }
+      setFavorites(next);
+      try { window.dispatchEvent(new CustomEvent('yasar:wishlist:updated', { detail: { favorites: next } })); } catch (err) { void err; }
+    } catch (err) { void err; }
+  }
+
+  return { favorites, toggle, isFavorite, clear, remove } as const;
 }

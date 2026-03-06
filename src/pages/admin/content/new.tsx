@@ -10,11 +10,11 @@ export default function NewPage() {
   const [store, setStore] = useState<ContentStore | null>(null)
 
   useEffect(() => {
-    fetch('/api/content').then((r) => r.json()).then((j) => setStore(j.content || { pages: [] }))
+    fetch('/api/content', { cache: 'no-store' }).then((r) => r.json()).then((j) => setStore(j.content || { pages: [] }))
   }, [])
 
   async function doSave(nextStore: ContentStore) {
-    await fetch('/api/admin/save-content', { method: 'POST', body: JSON.stringify({ content: nextStore }), headers: { 'Content-Type': 'application/json' } })
+    await fetch('/api/admin/content', { method: 'POST', body: JSON.stringify({ content: nextStore }), headers: { 'Content-Type': 'application/json' } })
     setStore(nextStore)
   }
 
@@ -31,8 +31,8 @@ export default function NewPage() {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   try {
-    const authed = isAuthed(context.req)
-    if (!authed) return { redirect: { destination: '/admin', permanent: false } }
+  const authed = await isAuthed(context.req)
+  if (!authed) return { redirect: { destination: '/admin', permanent: false } }
   } catch (err) { void err; return { redirect: { destination: '/admin', permanent: false } } }
   return { props: {} }
 }

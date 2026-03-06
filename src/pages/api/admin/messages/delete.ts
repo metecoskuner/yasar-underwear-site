@@ -18,7 +18,7 @@ function writeData(obj: { messages?: Record<string, unknown>[] }) {
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (!isAuthed(req)) return res.status(401).json({ error: 'unauth' })
+  if (!(await isAuthed(req))) return res.status(401).json({ error: 'unauth' })
   if (req.method !== 'POST') return res.status(405).end()
   const { id } = req.body || {}
   if (!id) return res.status(400).json({ error: 'missing id' })

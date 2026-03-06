@@ -12,23 +12,11 @@ export default function App({ Component, pageProps }: AppProps) {
   const [showSplash, setShowSplash] = useState(false);
 
   useEffect(() => {
-    let defer: number | undefined;
-    try {
-      const shown = sessionStorage.getItem('splashShown');
-      if (!shown) {
-        // Mark as shown for the session so refreshes won't show it again
-        sessionStorage.setItem('splashShown', '1');
-        // Defer state change to avoid synchronous setState inside effect
-        defer = window.setTimeout(() => setShowSplash(true), 0);
-      }
-    } catch {
-      // sessionStorage may be unavailable; fall back to showing splash once
-      defer = window.setTimeout(() => setShowSplash(true), 0);
-    }
+    // Always show the splash on each page load/refresh.
+    // Keep the deferred setState to avoid SSR/client hydration mismatch.
+    const defer = window.setTimeout(() => setShowSplash(true), 0);
 
-    return () => {
-      if (defer) clearTimeout(defer);
-    };
+    return () => clearTimeout(defer);
   }, []);
 
   return (

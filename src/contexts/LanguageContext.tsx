@@ -37,10 +37,15 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   React.useEffect(() => {
     if (typeof window === 'undefined') return;
     try {
-      // Normalize stored value to uppercase to tolerate values like 'en' saved by
-      // various clients or older code paths. This keeps compatibility with the
-      // Lang union ('TR'|'EN'|'FR'|'AR'|'RU').
-      const storedRaw = window.localStorage.getItem('yasar_lang');
+      // Prefer a persisted preference in this order: localStorage -> cookie.
+      // Normalize to uppercase to tolerate values like 'en'. This keeps
+      // compatibility with the Lang union ('TR'|'EN'|'FR'|'AR'|'RU').
+      let storedRaw = window.localStorage.getItem('yasar_lang');
+      if (!storedRaw) {
+        // check cookie set by middleware or other server-side logic
+        const m = document.cookie.match(/(?:^|; )yasar_lang=([^;]+)/);
+        if (m) storedRaw = decodeURIComponent(m[1]);
+      }
       const stored = storedRaw ? (storedRaw.toUpperCase() as Lang) : null;
       if (stored && Object.prototype.hasOwnProperty.call(locales, stored) && stored !== lang) {
         setLangState(stored);
@@ -63,7 +68,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
       if (mounted) setDict(payload);
     });
     // also fetch public admin content overrides (flat dot-keys)
-    fetch('/api/content').then(r => r.json()).then((d) => {
+  fetch('/api/content', { cache: 'no-store' }).then(r => r.json()).then((d) => {
       if (!mounted) return
       const c = d?.content || {}
       // ensure values are strings

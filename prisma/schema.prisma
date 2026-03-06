@@ -3,9 +3,12 @@ generator client {
 }
 
 datasource db {
-  // Default to SQLite for local development. For production with Postgres,
-  // change `provider` to "postgresql" on the deploy environment before
-  // running migrations (Prisma does not accept an env() value for provider).
+  // Use the DATABASE_URL environment variable to choose the database.
+  // For production we use Postgres (Supabase). Ensure DATABASE_URL points
+  // to your Postgres instance and set `provider = "postgresql"` here
+  // before running migrations in that environment.
+  // Use sqlite for local development fallback. Change back to "postgresql"
+  // for production deployments where DATABASE_URL points to Postgres.
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }
@@ -34,9 +37,32 @@ model QuoteRequest {
 }
 
 model Product {
-  id          String   @id @default(cuid())
-  title       String
-  description String
-  imageUrl    String?
-  createdAt   DateTime @default(now())
+  id         String   @id @default(cuid())
+  title      String
+  description String?
+  productCode String
+  gender     String
+  // For local sqlite fallback we store images as a JSON string.
+  // In production (Postgres) you may want to use `Json` instead.
+  images     String
+  stock      Int      @default(0)
+  isActive   Boolean  @default(true)
+  isFeatured Boolean  @default(false)
+  createdAt  DateTime @default(now())
+}
+
+model SiteContent {
+  id        String @id @default(cuid())
+  key       String @unique
+  // For sqlite fallback we store site JSON as a string.
+  value     String
+  updatedAt DateTime @updatedAt
+}
+
+model HoneypotLog {
+  id             String   @id @default(cuid())
+  ip             String
+  userAgent      String?
+  submittedValue String?
+  createdAt      DateTime @default(now())
 }

@@ -31,8 +31,8 @@ export default function AdminPage() {
       if (res.ok && j.ok) {
         setAuthed(true)
         setMessage('Giriş başarılı')
-        // use full navigation to ensure cookie is applied and SSR pages see it
-        window.location.href = '/admin/dashboard'
+  // use full navigation to ensure cookie is applied and SSR pages see it
+  window.location.href = '/admin/overview'
       } else {
         setMessage('Giriş başarısız')
       }
@@ -83,9 +83,9 @@ export default function AdminPage() {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   try {
-    const authed = isAuthed(context.req)
+      const authed = await isAuthed(context.req)
     if (authed) {
-      return { redirect: { destination: '/admin/dashboard', permanent: false } }
+      return { redirect: { destination: '/admin/overview', permanent: false } }
     }
   } catch (err) {
     void err

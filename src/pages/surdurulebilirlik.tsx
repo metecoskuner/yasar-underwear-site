@@ -66,7 +66,7 @@ export default function SustPage() {
         {/* Hero */}
         <M.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.18 }} variants={item} className="relative rounded-xl overflow-hidden shadow-lg mb-10">
           <div className="relative h-64 md:h-80 lg:h-96 bg-gradient-to-br from-amber-50 to-rose-50">
-            <Image src="/photos/sustainability-410.svg" alt={t('sustainability.title')} fill className="object-cover" priority />
+            <Image src="/photos/sustainability-410.svg" alt={t('sustainability.title')} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" priority />
             <div className="absolute inset-0 bg-gradient-to-b from-transparent to-white/70" />
 
             {/* decorative accent */}

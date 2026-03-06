@@ -1,6 +1,6 @@
 import Hero from '../components/Hero';
 import SEO from '../components/SEO';
-import CategoryTiles from '../components/CategoryTiles';
+import HeroInfoCards from '../components/HeroInfoCards';
 import MediaWrap from '../components/MediaWrap';
 import WhyUs from '../components/WhyUs';
 import ProductGrid from '../components/ProductGrid';
@@ -19,7 +19,7 @@ export default function Home() {
 
       <main>
         <Hero />
-  <CategoryTiles />
+  <HeroInfoCards />
   <MediaWrap />
       <WhyUs />
       <ProductGrid />

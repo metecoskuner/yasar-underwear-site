@@ -2,8 +2,17 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import nodemailer from 'nodemailer';
 import { prisma } from '@/lib/prisma';
 import { isRateLimited } from '@/lib/rateLimiter';
+import { z } from 'zod';
 
-type Data = { ok: boolean; message?: string };
+type Data = { ok: boolean; message?: string; errors?: Record<string, string[]> };
+
+const contactSchema = z.object({
+  name: z.string().min(1, 'İsim zorunlu'),
+  email: z.string().email('Geçerli bir e-posta girin'),
+  phone: z.string().optional(),
+  company: z.string().optional(),
+  message: z.string().min(1, 'Mesaj zorunlu'),
+});
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
   if (req.method !== 'POST') {
@@ -16,9 +25,31 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     return res.status(429).json({ ok: false, message: 'Too many requests' });
   }
 
-  const { name, email, phone, message } = req.body ?? {};
-  if (!name || !email || !message) {
-    return res.status(400).json({ ok: false, message: 'Missing fields' });
+  const parsed = contactSchema.safeParse(req.body ?? {});
+  if (!parsed.success) {
+    const fieldErrors: Record<string, string[]> = {};
+    parsed.error.errors.forEach((err) => {
+      const key = err.path[0] ? String(err.path[0]) : '_';
+      fieldErrors[key] = fieldErrors[key] || [];
+      fieldErrors[key].push(err.message);
+    });
+    return res.status(422).json({ ok: false, message: 'Validation failed', errors: fieldErrors });
+  }
+
+  const { name, email, phone, message, company } = parsed.data;
+
+  // Honeypot: if the hidden 'company' field is filled, treat as spam and return success without processing
+  if (company && String(company).trim().length > 0) {
+    console.warn('[contact] honeypot triggered — logging and ignoring message', { ip, company });
+    // Log honeypot hit to DB if available
+    if (process.env.DATABASE_URL) {
+      try {
+        await prisma.honeypotLog.create({ data: { ip: String(ip), userAgent: String(req.headers['user-agent'] ?? ''), submittedValue: String(company) } });
+      } catch (logErr) {
+        console.error('[contact] failed to log honeypot hit', logErr);
+      }
+    }
+    return res.status(200).json({ ok: true, message: 'Received.' });
   }
 
   const safeName = String(name).trim().slice(0, 200);

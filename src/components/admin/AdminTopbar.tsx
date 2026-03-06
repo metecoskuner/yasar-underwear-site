@@ -16,11 +16,11 @@ export default function AdminTopbar({ onToggle, mobileOpen }: { onToggle?: () =>
       if (typeof window !== 'undefined' && window.history && window.history.length > 1) {
         router.back()
       } else {
-        router.push('/admin/dashboard')
+        router.push('/admin/overview')
       }
     } catch (err) {
       void err
-      router.push('/admin/dashboard')
+      router.push('/admin/overview')
     }
   }
 

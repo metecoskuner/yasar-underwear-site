@@ -202,6 +202,60 @@
       "requestInfo": "Demander des infos",
       "requestInfoAria": "Demander des infos -"
     },
+    "privateLabel": {
+      "seo": {
+        "title": "Marque privée & OEM — Yasar",
+        "description": "Fabrication en marque blanche et OEM — service complet du design à l'emballage. Les MOQ et délais varient selon les matériaux et les quantités."
+      },
+      "breadcrumb": { "home": "Accueil", "title": "Marque privée" },
+      "header": {
+        "title": "Marque privée & OEM",
+        "lead": "Lancez votre marque sur le marché — nous proposons la fabrication en marque privée, du design à l'emballage. Les MOQ et délais varient selon les matériaux et les quantités.",
+        "typicalMoq": "MOQ typique : 1000 pièces / modèle — contactez-nous pour une offre personnalisée.",
+        "ctaStart": "Lancer la marque privée"
+      },
+      "sections": {
+        "productionDetails": {
+          "title": "Détails de production",
+          "body": "Processus : Revue du design → Échantillonnage → Production → Contrôle qualité → Expédition. Nous fournissons un soutien à l'emballage et à l'étiquetage pour les produits prêts à la vente."
+        },
+        "samplePolicy": {
+          "title": "Politique d'échantillon",
+          "body": "Les échantillons sont fournis sur demande ; des frais d'échantillonnage peuvent s'appliquer et être remboursés sur les commandes approuvées."
+        },
+        "designPayment": {
+          "title": "Design & Paiement",
+          "body": "Envoyez vos fichiers de design au format vectoriel PDF/AI. Les conditions de paiement varient ; typiquement acompte puis solde à la livraison, ou lettre de crédit pour les grosses commandes."
+        }
+      },
+      "form": {
+        "title": "Demande de marque privée",
+        "labels": {
+          "companyName": "Nom de l'entreprise",
+          "country": "Pays",
+          "activeBrand": "Marque active (si applicable)",
+          "targetMarket": "Marché cible",
+          "modelCount": "Nombre de modèles (estimation)",
+          "colorOptions": "Options de couleur",
+          "timeline": "Calendrier",
+          "estimatedBulk": "Commande en gros estimée",
+          "contactPerson": "Personne de contact",
+          "email": "E-mail",
+          "phone": "Téléphone",
+          "message": "Message / Détails",
+          "submit": "Envoyer la demande de marque privée"
+        },
+        "validation": {
+          "companyName": "Le nom de l'entreprise est requis",
+          "country": "Le pays est requis",
+          "contactName": "La personne de contact est requise",
+          "email": "L'e-mail est requis"
+        },
+        "sending": "Envoi…",
+        "success": "Merci — nous avons reçu votre demande de marque privée. Nous vous contacterons bientôt.",
+        "submitError": "Impossible d'envoyer. Veuillez réessayer plus tard."
+      }
+    },
     "about": {
       "title": "Entreprise - Yasar",
       "description": "À propos de Yasar Textile : notre mission, vision et capacités de production.",
@@ -416,26 +470,22 @@
     "cookie": {
       "reset": "Réinitialiser les cookies"
     },
-    "privacy": {
-      "title": "Politique de confidentialité",
-      "seoTitle": "Politique de confidentialité - Yasar",
-      "headerTitle": "Politique de confidentialité Yasar",
-      "intro": "Chez Yasar, nous attachons de l'importance à la confidentialité de vos données personnelles. Vous trouverez ci-dessous un résumé des données que nous collectons, de leur utilisation et de vos droits. Contactez-nous pour plus de détails.",
-      "rawLead1": ">Chez Yasar, nous attachons de l'importance à la confidentialité de vos données personnelles. Vous trouverez ci-dessous un résumé des données que nous collectons, de leur utilisation et de vos droits. Pour plus de détails, veuillez <Link href=",
-      "rawLead2": ">Nous mettons en œuvre des mesures techniques et administratives raisonnables pour protéger vos données. Pour toute question, demande ou réclamation relative à la confidentialité, veuillez <Link href=",
-      "rawLead1Alt": ">Chez Yasar, nous attachons de l'importance à la confidentialité de vos données personnelles. Vous trouverez ci-dessous un résumé des données que nous collectons, de leur utilisation et de vos droits. Pour plus de détails, veuillez <Link href=",
-      "sections": {
-        "lead1": "Chez Yasar, nous attachons de l'importance à la confidentialité de vos données personnelles. Vous trouverez ci-dessous un résumé des données que nous collectons, de leur utilisation et de vos droits. Contactez-nous pour plus de détails",
-        "lead2": "Nous mettons en œuvre des mesures techniques et administratives raisonnables pour protéger vos données. Pour toute question, demande ou réclamation relative à la confidentialité, veuillez nous contacter.",
-        "personalData": "Votre nom, adresse e‑mail, numéro de téléphone et autres informations saisies dans les formulaires de contact. Nous pouvons également collecter des données techniques et des cookies liés à l'utilisation du site (adresse IP, informations du navigateur, pages vues, etc.).",
-        "whyUse": "Les données que nous collectons sont utilisées pour répondre à vos demandes, fournir et améliorer nos services, gérer les processus de commande/de devis et respecter nos obligations légales.",
-        "sharing": "Vos données ne seront pas partagées avec des tiers sauf si vous y consentez ou si la loi l'exige. Des partages limités et nécessaires avec des sous-traitants (par ex. transporteurs, prestataires de paiement) peuvent avoir lieu afin de fournir les services ; ces transferts sont effectués en toute sécurité.",
-        "rights": "Droit d'accéder et de corriger vos données, droit de demander la suppression ou la limitation du traitement, droit d'opposition au traitement et droit à la portabilité des données. Vous pouvez soumettre votre demande via le formulaire de contact.",
-        "cookies": "Le site peut utiliser des cookies de performance et d'analyse. Vous pouvez gérer ou désactiver les cookies depuis les paramètres de votre navigateur ; certaines fonctionnalités peuvent ne pas fonctionner correctement si les cookies sont désactivés.",
-        "securityContact": "Nous appliquons des mesures techniques et administratives raisonnables pour protéger vos données. Pour toute question, demande ou réclamation relative à la confidentialité, veuillez nous contacter."
-      }
+    "terms": {
+      "seo": {
+        "title": "Conditions d'utilisation - Yasar",
+        "description": "Cette page sera disponible bientôt. Pour plus d'informations, veuillez nous contacter : info@yasarunderwear.com"
+      },
+      "breadcrumb": {
+        "home": "Accueil",
+        "title": "Conditions d'utilisation"
+      },
+      "header": {
+        "title": "Conditions d'utilisation",
+        "intro": "Cette page sera disponible bientôt. Pour plus d'informations, veuillez nous contacter : info@yasarunderwear.com"
+      },
+      "placeholder": "Cette page sera disponible bientôt. Pour plus d'informations, veuillez nous contacter : info@yasarunderwear.com",
+      "contactLink": "Aller à la page de contact"
     },
-    "terms": "Conditions",
     "copyright": "© {year} Yasar. Tous droits réservés.",
     "copyrightRaw": "© ${new Date().getFullYear()} Yasar. Tous droits réservés.",
     "backToTop": "Haut de page",
@@ -512,6 +562,18 @@
     },
     "heroRawExact": {
       "subtitleExact": ", \"Collection quotidienne douce et respirante qui allie confort et élégance. \nTurquie                                                                                    "
+    },
+    "heroInfoCards": {
+      "wholesale": {
+        "title": "Demande de vente en gros",
+        "description": "Nous proposons des prix compétitifs, une capacité de production flexible et des livraisons rapides pour les commandes importantes. Yasar Textile fournit des solutions de production en gros durables pour les magasins, les chaînes, les distributeurs et les entreprises de commerce électronique.",
+        "cta": "Postuler pour la vente en gros"
+      },
+      "private": {
+        "title": "Créez votre propre marque",
+        "description": "Chez Yasar Textile, nous proposons des services de fabrication en marque blanche et OEM pour les marques de lingerie. Nous gérons professionnellement l'ensemble du processus, de la conception à la production, l'étiquetage et l'emballage.",
+        "cta": "Démarrer le processus de production"
+      }
     },
     "contact": {
       "title": "Contactez-nous",
@@ -590,9 +652,9 @@
     "quoteModal": {
       "title": "Demande de devis",
       "lead": "Donnez-nous quelques détails, notre équipe de devis vous répondra.",
-      "placeholders": {
-        "name": "Votre nom complet",
-        "email": "E-mail (vous@entreprise.com)",
+  "placeholders": {
+  "name": "Votre nom complet",
+  "email": "E-mail (vous@entreprise.com)",
         "company": "Société (optionnel)",
         "phone": "Téléphone / WhatsApp",
         "product": "Produit concerné (optionnel)",
@@ -703,6 +765,23 @@
         "location": "Yenişehir / Bursa"
       }
     }
+  },
+  "privacy": {
+    "title": "Politique de confidentialité",
+    "seoTitle": "Politique de confidentialité - Yasar",
+    "headerTitle": "Politique de confidentialité Yasar",
+    "intro": "La protection de vos données personnelles et leur traitement transparent et sécurisé sont importants pour nous. Cette page résume les données que nous collectons, comment nous les utilisons et vos droits.",
+    "sections": {
+      "lead1": "Nous attachons de l'importance à la protection de vos données personnelles. Ci‑dessous, nous résumons quelles données nous collectons, comment nous les utilisons et vos droits. Pour plus de détails, contactez‑nous.",
+      "lead2": "Nous appliquons des mesures techniques et administratives raisonnables pour protéger vos données. Pour toute question, demande ou réclamation relative à la confidentialité, veuillez nous contacter.",
+      "personalData": "Votre nom, adresse e‑mail, numéro de téléphone et autres informations saisies dans les formulaires de contact. Nous pouvons également collecter des cookies et des données techniques liées à l'utilisation du site (adresse IP, informations du navigateur, pages vues, etc.).",
+      "whyUse": "Nous utilisons les données collectées pour répondre à vos demandes, fournir et améliorer nos services, gérer les processus de commande/de devis et respecter nos obligations légales.",
+      "sharing": "Vos données ne sont pas partagées avec des tiers sans votre consentement explicite ou sauf si la loi l'exige. Un partage limité et ciblé avec des sous‑traitants (par ex. livraison, prestataires de paiement) peut avoir lieu ; ces transferts sont sécurisés.",
+      "rights": "Droit d'accès et de rectification de vos données ; droit de demander la suppression ou la limitation du traitement ; droit d'opposition au traitement et droit à la portabilité des données.",
+      "cookies": "Des cookies de performance et d'analyse peuvent être utilisés sur le site. Vous pouvez gérer ou désactiver les cookies via les paramètres de votre navigateur ; certaines fonctionnalités peuvent ne pas fonctionner correctement si les cookies sont désactivés.",
+      "securityContact": "Nous appliquons des mesures techniques et administratives raisonnables pour protéger vos données. Pour toute question ou réclamation concernant la confidentialité, veuillez nous contacter."
+    },
+    "quickSummary": "Résumé rapide"
   },
   "locations": {
     "tr": "Turquie",

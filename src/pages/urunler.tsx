@@ -5,10 +5,11 @@ import Head from 'next/head';
 import Link from 'next/link';
 // Layout wrapper is provided by `src/pages/_app.tsx`; do not double-wrap pages.
 import ProductCard from '@/components/ProductCard';
-import CategoryTiles from '@/components/CategoryTiles';
-import { getProducts, Product as ProductType } from '@/data/demoProducts';
+import { Product as ProductType } from '@/data/demoProducts';
 import { useRouter } from 'next/router';
 import { useLanguage } from '@/contexts/LanguageContext';
+
+export const dynamic = "force-dynamic";
 
 const GENDER_TABS = [
   { key: 'all', label: 'Tümü' },
@@ -26,6 +27,7 @@ export default function UrunlerPage() {
       return fallback;
     }
   };
+  const langKey = String(lang).toLowerCase();
   const router = useRouter();
   const [gender, setGender] = useState<'all' | 'male' | 'female'>('all');
   const [products, setProducts] = useState<ProductType[]>([]);
@@ -41,6 +43,8 @@ export default function UrunlerPage() {
   const closeBtnRef = useRef<HTMLButtonElement | null>(null);
   const [copiedCode, setCopiedCode] = useState(false);
 
+  // localStorage-based client cache disabled during debugging — rely on API
+
   function openProductModal(product: ProductType, preview?: number | string) {
     let index = 0;
     if (typeof preview === 'number') index = preview;
@@ -55,21 +59,93 @@ export default function UrunlerPage() {
   const activeTitle = React.useMemo(() => {
     if (!activeProduct) return ''
     // Product titles are dynamic and should come from product data, not locale files.
-    return activeProduct.i18nTitle?.[lang] ?? activeProduct.title ?? ''
+    const langKey = String(lang).toLowerCase();
+    const rawLocalized = activeProduct.i18nTitle?.[langKey];
+    return (rawLocalized && String(rawLocalized).trim()) ? String(rawLocalized) : (activeProduct.title ?? '');
   }, [activeProduct, lang])
 
   useEffect(() => {
-    setProducts(getProducts());
-    function onProductsChange() {
-      setProducts(getProducts());
+    let mounted = true
+    async function load() {
+      try {
+  const res = await fetch('/api/content', { cache: 'no-store' })
+        if (!res.ok) return
+  const j = await res.json()
+  try { console.log('[urunler] FRONTEND RECEIVED:', j) } catch {}
+        // Accept multiple shapes from /api/content during debugging:
+        // - legacy: { content: { products: [...] } }
+        // - debug/raw: [ ...products ]
+        const list = Array.isArray(j)
+          ? j
+          : Array.isArray(j?.content?.products)
+          ? j.content.products
+          : Array.isArray(j?.products)
+          ? j.products
+          : []
+        function mapGender(raw: unknown) {
+          if (!raw && raw !== '') return undefined
+          const s = String(raw ?? '').trim().toLowerCase()
+          if (!s) return undefined
+          if (s.startsWith('erk') || s === 'male' || s === 'm') return 'male'
+          if (s.startsWith('kad') || s === 'female' || s === 'f') return 'female'
+          return undefined
+        }
+
+        const normalized = list.map((raw: unknown) => {
+          const p = raw as Record<string, unknown>;
+          const imgs: string[] = Array.isArray(p.images)
+            ? (p.images as string[])
+            : (typeof p.images === 'string' ? JSON.parse(String(p.images)) : []);
+
+          let i18nTitle: Record<string, string> | undefined = undefined;
+          let titleFallback = '';
+          try {
+            const rawI18n = p.i18nTitle;
+            if (rawI18n && typeof rawI18n === 'object' && !Array.isArray(rawI18n)) {
+              const obj = rawI18n as Record<string, unknown>;
+              i18nTitle = Object.fromEntries(Object.entries(obj).map(([k, v]) => [k, String(v)])) as Record<string, string>;
+              titleFallback = i18nTitle.tr || i18nTitle.en || Object.values(i18nTitle).find((x) => !!x) || '';
+            } else if (typeof p.title === 'string') {
+              try {
+                const parsed = JSON.parse(p.title as string);
+                if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+                  const obj = parsed as Record<string, unknown>;
+                  i18nTitle = Object.fromEntries(Object.entries(obj).map(([k, v]) => [k, String(v)])) as Record<string, string>;
+                  titleFallback = i18nTitle.tr || i18nTitle.en || Object.values(i18nTitle).find((x) => !!x) || '';
+                } else {
+                  titleFallback = String(p.title);
+                }
+              } catch {
+                titleFallback = String(p.title);
+              }
+            }
+          } catch {
+            // ignore parsing errors
+          }
+
+          return {
+            id: String(p.id),
+            title: titleFallback || String(p.title ?? ''),
+            i18nTitle,
+            productCode: typeof p.productCode === 'string' ? p.productCode : undefined,
+            description: typeof p.description === 'string' ? p.description : undefined,
+            images: imgs,
+            stock: typeof p.stock === 'number' ? p.stock : Number(p.stock) || 0,
+            createdAt: p.createdAt ? new Date(Number(p.createdAt) || String(p.createdAt)).toISOString() : undefined,
+            gender: mapGender(p.gender),
+          } as ProductType;
+        }) as ProductType[];
+        if (mounted) {
+          const mod = await import('@/lib/normalizeProduct')
+          const normFn = mod.default as (r: Record<string, unknown>) => Record<string, unknown>
+          setProducts(normalized.map((x) => normFn(x as Record<string, unknown>) as unknown as ProductType))
+        }
+      } catch {
+        // ignore
+      }
     }
-    // storage event for other tabs, custom event for same-tab updates
-    window.addEventListener('storage', onProductsChange);
-    window.addEventListener('yasar:products:changed', onProductsChange as EventListener);
-    return () => {
-      window.removeEventListener('storage', onProductsChange);
-      window.removeEventListener('yasar:products:changed', onProductsChange as EventListener);
-    };
+    load()
+    return () => { mounted = false }
   }, []);
 
   const filtered = useMemo(() => {
@@ -85,6 +161,9 @@ export default function UrunlerPage() {
       return true;
     });
   }, [products, gender, category, query]);
+
+  // Debug: log render-data
+  try { console.log('RENDER DATA:', products) } catch {}
 
   useEffect(() => {
     let allowTimer: number | undefined;
@@ -110,7 +189,14 @@ export default function UrunlerPage() {
   const p = products.find((x) => x.id === pid);
     if (!p) return;
     // open modal
-    openProductModal(p);
+    const rawPreview = router.query.preview as string | string[] | undefined
+    let preview: number | string | undefined = undefined
+    if (typeof rawPreview === 'string') {
+      const n = Number(rawPreview)
+      if (!Number.isNaN(n)) preview = n
+      else preview = rawPreview
+    }
+    openProductModal(p, preview)
     // scroll to product card after a short delay so layout is ready
     window.setTimeout(() => {
       const el = document.getElementById(`product-${p.id}`);
@@ -168,6 +254,8 @@ export default function UrunlerPage() {
           </div>
           <div className="hidden md:block" />
         </div>
+
+        {/* Debug banner removed */}
       </section>
 
       {/* FILTERS */}
@@ -176,7 +264,12 @@ export default function UrunlerPage() {
           {GENDER_TABS.map((t) => (
             <button
               key={t.key}
-              onClick={() => setGender(t.key as 'all' | 'male' | 'female')}
+              type="button"
+              onClick={() => {
+                try { console.log('[urunler] gender button clicked:', t.key) } catch {}
+                try { document.title = `gender:${t.key}` } catch {}
+                setGender(t.key as 'all' | 'male' | 'female')
+              }}
               className={`px-4 py-1.5 rounded-full ${gender === t.key ? 'bg-black text-white' : 'bg-gray-100'}`}
             >
               {tr(`pages.products.gender.${t.key}`, t.label)}
@@ -191,6 +284,7 @@ export default function UrunlerPage() {
           />
         </div>
 
+        {/* Render filtered products via ProductCard */}
         {filtered.length === 0 ? (
           <div className="py-24 text-center text-gray-500">{tr('pages.products.noResults','Sonuç bulunamadı')}</div>
         ) : (
@@ -202,9 +296,7 @@ export default function UrunlerPage() {
         )}
       </section>
 
-      <section className="max-w-6xl mx-auto px-4 py-16">
-        <CategoryTiles />
-      </section>
+      {/* categories removed from products page as requested */}
 
       {/* MODAL */}
       {activeProduct && (
@@ -256,7 +348,12 @@ export default function UrunlerPage() {
                   >
                     <Image
                       src={modalSrc}
-                      alt={activeProduct?.i18nTitle?.[lang] ?? activeProduct?.title}
+                      alt={(() => {
+                        if (!activeProduct) return '';
+                        const lk = String(lang).toLowerCase();
+                        const raw = activeProduct.i18nTitle?.[lk];
+                        return (raw && String(raw).trim()) ? String(raw) : (activeProduct.title ?? '');
+                      })()}
                       width={1200}
                       height={900}
                       className="object-contain transition-transform duration-300 will-change-transform"
@@ -316,6 +413,13 @@ export default function UrunlerPage() {
                     {copiedCode && <span className="text-sm text-amber-600">{tr('pages.products.copied','Kopyalandı')}</span>}
                   </p>
 
+                  {/* Admin-provided description (localized if available) */}
+                  {(() => {
+                    const localizedDescription = (activeProduct?.i18nDescription && activeProduct.i18nDescription[langKey]) ?? activeProduct?.description;
+                    if (!localizedDescription) return null;
+                    return <p className="mt-4 text-gray-700">{localizedDescription}</p>;
+                  })()}
+
                   <div className="mt-6 flex gap-2">
                     {activeProduct.images?.map((img, i) => (
                       <button
@@ -332,11 +436,12 @@ export default function UrunlerPage() {
                   <div className="mt-auto pt-6 flex gap-3 justify-end">
                     <Link
                       href={`/contact?product=${encodeURIComponent(activeTitle ?? '')}`}
-                      className="px-6 py-3 bg-amber-400 text-black rounded-full font-semibold shadow-sm hover:bg-amber-500 transition-colors duration-150 cursor-pointer min-w-[160px] text-center"
+                      className="px-6 py-3 bg-amber-400 text-black rounded-full font-semibold shadow-sm hover:bg-amber-500 transition-colors duration-150 cursor-pointer min-w-[120px] sm:min-w-[160px] text-center"
                       aria-label={`${tr('pages.products.requestInfoAria','Bilgi Al -')} ${activeTitle ?? ''}`}
                     >
                       {tr('pages.products.requestInfo','Bilgi Al')}
                     </Link>
+                    {/* Product structured data moved to dedicated product detail pages (SEO component). */}
                   </div>
                 </div>
               </div>

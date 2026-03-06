@@ -32,6 +32,8 @@ export default function Footer() {
     <div className="flex flex-col space-y-2">
       <Link href="/" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{tr('footer.home','Ana sayfa')}</Link>
       <Link href="/urunler" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{tr('footer.products','Ürünlerimiz')}</Link>
+  <Link href="/wholesale" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">Toptan</Link>
+  <Link href="/private-label" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">Özel Marka</Link>
       <Link href="/surdurulebilirlik" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{tr('footer.sustainability','Sürdürülebilirlik')}</Link>
       <Link href="/contact" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{tr('footer.contact','İletişim')}</Link>
     </div>
@@ -122,17 +124,6 @@ export default function Footer() {
 
   return (
   <footer className="relative text-white mt-0 bg-[var(--brand-color)]">
-  <div aria-hidden className="absolute inset-0 pointer-events-none">
-        <Image
-          src="/photos/footerBgImage1.webp"
-          alt=""
-          fill
-          sizes="100vw"
-          className="object-cover object-center"
-        />
-      </div>
-      {/* tint the image with the brand color so footer reads like the header while keeping the image */}
-  <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: 'var(--brand-color)', opacity: 0.18 }} />
 
   <div className="relative z-10 max-w-6xl mx-auto px-4 py-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 items-start">
 
@@ -290,6 +281,7 @@ export default function Footer() {
             <a href="tel:+902125209299" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{tr('footer.contactInfo.phone','+90 212 520 92 99')}</a>
             <a href="mailto:info@yasarunderwear.com" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{tr('footer.contactInfo.email','info@yasarunderwear.com')}</a>
             <a href="https://maps.google.com?q=Yasar+Tekstil" target="_blank" rel="noopener noreferrer" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{tr('footer.contactInfo.map','Adresimizi haritada gör')}</a>
+            {/* moved developed-by link to bottom center */}
           </div>
         </div>
       </div>
@@ -297,7 +289,18 @@ export default function Footer() {
       <div className="border-t border-white/8">
         <div className="max-w-6xl mx-auto px-4 py-3 flex flex-col sm:flex-row justify-between items-center text-xs text-white/70">
           <div className="flex items-center space-x-3">
-            <span>{tr('footer.copyright', `© ${new Date().getFullYear()} Yasar. Tüm hakları saklıdır.`)}</span>
+            {/* Render copyright with current year when translations use a {year} placeholder */}
+            {(() => {
+              const raw = tr('footer.copyright', `© ${new Date().getFullYear()} Yasar. Tüm hakları saklıdır.`);
+              // Avoid constructing JSX inside try/catch. Compute the safe string first.
+              let safeText: string;
+              try {
+                safeText = String(raw).replace(/\{year\}/g, String(new Date().getFullYear()));
+              } catch {
+                safeText = String(raw);
+              }
+              return <span>{safeText}</span>;
+            })()}
             <button
               type="button"
               onClick={() => {
@@ -320,8 +323,19 @@ export default function Footer() {
             </button>
           </div>
           <div className="flex items-center space-x-4 mt-2 sm:mt-0">
-            <Link href="/privacy" className="text-sm text-white/70 hover:no-underline hover:text-white hover:font-medium transition-all duration-150">{tr('footer.privacy','Gizlilik')}</Link>
+            <Link href="/privacy" className="text-sm text-white/70 hover:no-underline hover:text-white hover:font-medium transition-all duration-150">{tr('components.cookieBanner.privacyLink','Gizlilik')}</Link>
             <Link href="/terms" className="text-sm text-white/70 hover:no-underline hover:text-white hover:font-medium transition-all duration-150">{tr('footer.terms','Kullanım Şartları')}</Link>
+          </div>
+        </div>
+      </div>
+
+      {/* developer credit overlapping the footer background image */}
+      <div className="absolute left-0 right-0 bottom-0 z-20 pointer-events-none">
+        <div className="max-w-6xl mx-auto px-4 py-3">
+          <div className="text-center">
+            <a href="https://www.linkedin.com/in/mete-coskuner-8623391a2/" target="_blank" rel="noopener noreferrer" className="inline-block text-sm text-white/90 bg-black/20 backdrop-blur-sm px-3 py-1 rounded hover:text-white transition pointer-events-auto">
+              {tr('footer.developedBy','Developed by Mete Coskuner')}
+            </a>
           </div>
         </div>
       </div>

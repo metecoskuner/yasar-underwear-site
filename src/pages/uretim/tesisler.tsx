@@ -78,7 +78,7 @@ export default function Tesisler() {
             <M.div variants={item} className="md:w-1/2 hidden md:block">
               <div className="rounded-lg overflow-hidden shadow-md">
                 <div className="relative h-64 md:h-72 lg:h-80">
-                  <Image src="/photos/deneme3.jpg" alt={tr('uretim.tesis.imageAlt','Tesis')} fill className="object-cover" />
+                  <Image src="/photos/deneme3.jpg" alt={tr('uretim.tesis.imageAlt','Tesis')} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
                 </div>
               </div>
             </M.div>
@@ -176,7 +176,7 @@ export default function Tesisler() {
 
               <div className="md:col-span-1 hidden sm:block">
                 <div className="rounded-md overflow-hidden shadow-md h-44 md:h-full">
-                  <Image src="/photos/deneme1.jpg" alt="Tesis Görsel" fill className="object-cover" />
+                  <Image src="/photos/deneme1.jpg" alt="Tesis Görsel" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
                 </div>
               </div>
             </div>
@@ -192,7 +192,7 @@ export default function Tesisler() {
               </div>
               <div className="md:col-span-1 hidden sm:block">
                 <div className="rounded-md overflow-hidden shadow-md h-44 md:h-full">
-                  <Image src="/photos/deneme3.jpg" alt="Eğitim" fill className="object-cover" />
+                  <Image src="/photos/deneme3.jpg" alt="Eğitim" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
                 </div>
               </div>
             </div>
@@ -208,7 +208,7 @@ export default function Tesisler() {
               </div>
               <div className="md:col-span-1 hidden sm:block">
                 <div className="rounded-md overflow-hidden shadow-md h-44 md:h-full">
-                  <Image src="/photos/deneme2.png" alt="Çevre" fill className="object-cover" />
+                  <Image src="/photos/deneme2.png" alt="Çevre" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
                 </div>
               </div>
             </div>

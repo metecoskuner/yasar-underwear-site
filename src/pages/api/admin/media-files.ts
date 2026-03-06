@@ -6,7 +6,7 @@ function listFilesSafe(dir: string) {
   try {
     const files = fs.readdirSync(dir)
     return files.filter(f => f !== '.DS_Store')
-  } catch (e) {
+  } catch {
     return []
   }
 }

@@ -25,7 +25,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (process.env.DATABASE_URL) {
     try {
-      await prisma.contactMessage.update({ where: { id: String(id) }, data: { read: true } as any })
+      await prisma.contactMessage.update({ where: { id: String(id) }, data: { read: true } as unknown as Record<string, unknown> })
       return res.status(200).json({ ok: true })
     } catch (err) {
       console.error(err)

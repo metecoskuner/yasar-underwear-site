@@ -12,7 +12,7 @@ const out = console.log
 const DATA_FILE = path.join(process.cwd(), 'data', 'admin-content.json')
 
 function safeRead(file) {
-  try { return JSON.parse(fs.readFileSync(file, 'utf8')) } catch (e) { return null }
+  try { return JSON.parse(fs.readFileSync(file, 'utf8')) } catch { return null }
 }
 
 function backup(file) {

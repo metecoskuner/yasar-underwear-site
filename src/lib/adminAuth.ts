@@ -1,5 +1,7 @@
 import type { NextApiResponse, NextApiRequest } from 'next'
 import crypto from 'crypto'
+import fs from 'fs'
+import path from 'path'
 
 // Minimal env-backed auth helper.
 // Environment variables expected:
@@ -62,6 +64,25 @@ export function isAuthed(req?: { headers?: Partial<Record<string, string | strin
     // optional: verify user matches ADMIN_USER
     const adminUser = process.env.ADMIN_USER
     if (adminUser && adminUser !== user) return false
+    // fallback: check data/admin-settings.json if present
+    try {
+      const DATA_FILE = path.join(process.cwd(), 'data', 'admin-settings.json')
+      if (fs.existsSync(DATA_FILE)) {
+        const raw = fs.readFileSync(DATA_FILE, 'utf8')
+        const parsed = JSON.parse(raw) as unknown
+        if (parsed && typeof parsed === 'object' && 'admin' in parsed) {
+          const admin = (parsed as Record<string, unknown>).admin
+          if (admin && typeof admin === 'object') {
+            const adm = admin as Record<string, unknown>
+            if (typeof adm.user === 'string' && adm.user.trim()) {
+              if (adm.user !== user) return false
+            }
+          }
+        }
+      }
+    } catch {
+      // ignore
+    }
     return true
   } catch (err) {
     void err

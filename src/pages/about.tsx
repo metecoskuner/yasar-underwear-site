@@ -1,4 +1,5 @@
 import SEO from '@/components/SEO';
+import { CONTACT } from '@/config/contactConfig';
 import Image from 'next/image';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
@@ -21,7 +22,14 @@ export default function About() {
   };
   return (
     <>
-      <SEO title={tr('pages.about.title','Kurumsal - Yasar')} description={tr('pages.about.description','Yasar Tekstil hakkında, misyonumuz, vizyonumuz ve üretim altyapımız.')} url="/about" />
+      <SEO title={tr('pages.about.title','Kurumsal - Yasar')} description={tr('pages.about.description','Yasar Tekstil hakkında, misyonumuz, vizyonumuz ve üretim altyapımız.')} url="/about" jsonLd={{
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        name: tr('pages.about.orgName','Yasar'),
+        url: process.env.NEXT_PUBLIC_SITE_URL || undefined,
+        telephone: CONTACT.PHONE_MAIN,
+        email: CONTACT.EMAIL,
+      }} />
 
       <main className="max-w-6xl mx-auto px-4 py-12 space-y-12">
         {/* Hero */}
@@ -37,7 +45,7 @@ export default function About() {
           </div>
 
           <div className="rounded-xl overflow-hidden shadow-lg h-60 md:h-72 lg:h-80 relative">
-            <Image src="/photos/deneme3.jpg" alt={tr('pages.about.imageAlt','Üretim Tesisleri')} fill className="object-cover" />
+            <Image src="/photos/deneme3.jpg" alt={tr('pages.about.imageAlt','Üretim Tesisleri')} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
             <div className="absolute left-6 bottom-6 bg-white/85 backdrop-blur-sm rounded-lg p-3 shadow">
               <div className="text-sm text-gray-700">{tr('pages.about.isoLines','ISO uyumlu üretim hatları')}</div>
             </div>

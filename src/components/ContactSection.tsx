@@ -54,7 +54,7 @@ export default function ContactSection({ showSummary = true }: { showSummary?: b
         setErrors((p) => ({ ...p, form: msg }));
       } else {
         setSuccess(true);
-        setForm({ name: '', email: '', message: '' });
+        setForm({ name: '', email: '', phone: '', message: '' });
         setTimeout(() => setSuccess(false), 4000);
       }
     } catch (err) {
@@ -114,7 +114,7 @@ export default function ContactSection({ showSummary = true }: { showSummary?: b
             <button
               type="submit"
               disabled={loading}
-              className="w-full rounded-xl bg-black text-white py-3 font-semibold transition hover:bg-neutral-800 disabled:opacity-60 hover:cursor-pointer active:scale-95"
+              className="w-full inline-flex items-center justify-center rounded-xl py-3 font-semibold transition transform bg-gradient-to-r from-amber-400 to-amber-600 text-black hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-300 disabled:opacity-60"
             >
               {loading ? tr('components.contact.sending','Gönderiliyor…') : tr('components.contact.sendMessage','Mesaj Gönder')}
             </button>
@@ -176,7 +176,7 @@ export default function ContactSection({ showSummary = true }: { showSummary?: b
 
               <div className="mt-6 flex flex-wrap gap-3">
                 <a href="mailto:info@yasarunderwear.com" className="inline-flex items-center gap-2 rounded-md bg-white border border-slate-200 px-3 py-2 text-sm text-slate-700 hover:bg-slate-50">{tr('components.contact.sendEmail','E-posta Gönder')}</a>
-                <a href="tel:+902125209299" className="inline-flex items-center gap-2 rounded-md bg-black text-white px-3 py-2 text-sm font-medium hover:bg-neutral-800">{tr('components.contact.callUs','Bizi Ara')}</a>
+                <a href="tel:+902125209299" className="inline-flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium bg-gradient-to-r from-amber-400 to-amber-600 text-black hover:scale-105">{tr('components.contact.callUs','Bizi Ara')}</a>
               </div>
             </div>
           </div>
@@ -197,6 +197,13 @@ export default function ContactSection({ showSummary = true }: { showSummary?: b
               value={form.email}
               error={errors.email}
               onChange={(v) => setForm((s) => ({ ...s, email: v }))}
+            />
+            <Field
+              label={tr('components.contact.form.phone','Telefon')}
+              type="tel"
+              value={form.phone || ''}
+              error={errors.phone}
+              onChange={(v) => setForm((s) => ({ ...s, phone: v }))}
             />
             <Field
               label={tr('components.contact.form.message','Mesaj')}
@@ -220,7 +227,7 @@ export default function ContactSection({ showSummary = true }: { showSummary?: b
             <button
               type="submit"
               disabled={loading}
-              className="w-full rounded-xl bg-black text-white py-3 font-semibold transition hover:bg-neutral-800 disabled:opacity-60 hover:cursor-pointer active:scale-95"
+              className="w-full inline-flex items-center justify-center rounded-xl py-3 font-semibold transition transform bg-gradient-to-r from-amber-400 to-amber-600 text-black hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-300 disabled:opacity-60"
             >
               {loading ? tr('components.contact.sending','Gönderiliyor…') : tr('components.contact.sendMessage','Mesaj Gönder')}
             </button>

@@ -8,8 +8,8 @@ export default function HomepageAdminRedirect() {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   try {
-    const authed = isAuthed(context.req)
-    if (!authed) return { redirect: { destination: '/admin', permanent: false } }
+  const authed = await isAuthed(context.req)
+  if (!authed) return { redirect: { destination: '/admin', permanent: false } }
   } catch (err) {
     void err
     return { redirect: { destination: '/admin', permanent: false } }

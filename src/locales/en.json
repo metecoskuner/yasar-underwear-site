@@ -202,6 +202,132 @@
       "requestInfo": "Request info",
       "requestInfoAria": "Request info -"
     },
+    "wholesale": {
+      "seo": {
+        "title": "Wholesale — Yasar",
+        "description": "Wholesale inquiries — distributors and wholesalers can apply for pricing and terms."
+      },
+      "breadcrumb": {
+        "home": "Home",
+        "title": "Wholesale"
+      },
+      "header": {
+        "title": "Wholesale Partnerships",
+        "lead": "We work with distributors and retailers worldwide. We offer competitive prices, reliable lead times and flexible MOQ options.",
+        "contact": "Contact",
+        "apply": "Apply"
+      },
+      "sections": {
+        "whoCanApply": {
+          "title": "Who can apply",
+          "body": "Distributors, wholesalers, online retailers and commercially registered multi-brand stores may apply."
+        },
+        "howItWorks": {
+          "title": "How it works",
+          "body": "Send your company information and order estimates. Our sales team will return with pricing and lead time information."
+        },
+        "policies": {
+          "title": "Policies",
+          "body": "Minimum order, exclusivity and cancellation policies will be shared during negotiation depending on region and volume."
+        }
+      },
+      "form": {
+        "title": "Apply for Wholesale",
+        "labels": {
+          "companyName": "Company name",
+          "country": "Country",
+          "website": "Website / Social",
+          "businessType": "Business type",
+          "interestedProducts": "Products of interest",
+          "estimatedFirstOrder": "Estimated first order",
+          "annualVolume": "Annual volume (estimate)",
+          "contactPerson": "Contact person",
+          "email": "Email",
+          "phone": "Phone",
+          "message": "Message / Details",
+          "submit": "Submit request"
+        },
+        "validation": {
+          "companyName": "Company name is required",
+          "country": "Country is required",
+          "contactName": "Contact person is required",
+          "email": "Email is required"
+        },
+        "sending": "Sending…",
+        "success": "Thank you — we received your request. We'll reply shortly.",
+        "submitError": "Unable to submit. Please try again later."
+      }
+      },
+    "privateLabel": {
+      "seo": {
+        "title": "Private Label & OEM — Yasar",
+        "description": "Private label and OEM manufacturing — full-service from design to packaging. MOQ and lead times vary by material and quantities."
+      },
+      "breadcrumb": { "home": "Home", "title": "Private Label" },
+      "header": {
+        "title": "Private Label & OEM",
+        "lead": "Take your brand to market — we offer full-service private label manufacturing from design to packaging. MOQ and lead times vary by materials and quantities.",
+        "typicalMoq": "Typical MOQ: 1000 pcs / style — contact us for a custom quote.",
+        "ctaStart": "Start private label"
+      },
+      "sections": {
+        "productionDetails": {
+          "title": "Production details",
+          "body": "Process: Design review → Sampling → Production → Quality control → Shipment. We provide packaging and labeling support for retail-ready products."
+        },
+        "samplePolicy": {
+          "title": "Sample policy",
+          "body": "Samples are provided upon request; sample fees may apply and can be refunded on approved orders."
+        },
+        "designPayment": {
+          "title": "Design & Payment",
+          "body": "Send your design files in vector PDF/AI format. Payment terms vary; typically deposit with balance on delivery, or letter of credit for large orders."
+        }
+      },
+      "form": {
+        "title": "Private label request",
+        "labels": {
+          "companyName": "Company name",
+          "country": "Country",
+          "activeBrand": "Active brand (if any)",
+          "targetMarket": "Target market",
+          "modelCount": "Model count (estimate)",
+          "colorOptions": "Color options",
+          "timeline": "Timeline",
+          "estimatedBulk": "Estimated bulk order",
+          "contactPerson": "Contact person",
+          "email": "Email",
+          "phone": "Phone",
+          "message": "Message / Details",
+          "submit": "Send private label request"
+        },
+        "validation": {
+          "companyName": "Company name is required",
+          "country": "Country is required",
+          "contactName": "Contact person is required",
+          "email": "Email is required"
+        },
+        "sending": "Sending…",
+        "success": "Thank you — we received your private label request. We'll be in touch shortly.",
+        "submitError": "Unable to submit. Please try again later."
+      }
+    },
+      "terms": {
+        "seo": {
+          "title": "Terms of Use - Yasar",
+          "description": "Terms of Use will be added soon. Contact us for more information."
+        },
+        "breadcrumb": {
+          "home": "Home",
+          "title": "Terms of Use"
+        },
+        "header": {
+          "title": "Terms of Use",
+          "intro": "This page will be available soon. For more information, please contact us: info@yasarunderwear.com"
+        },
+        "placeholder": "This page will be available soon. For more information, please contact us: info@yasarunderwear.com",
+        "contactLink": "Go to contact page"
+      },
     "about": {
       "title": "Corporate - Yasar",
       "description": "About Yasar Textile: our mission, vision and production capabilities.",
@@ -417,25 +543,6 @@
     "cookie": {
       "reset": "Reset cookies"
     },
-    "privacy": {
-      "title": "Privacy Policy",
-      "seoTitle": "Privacy Policy - Yasar",
-      "headerTitle": "Yasar Privacy Policy",
-      "intro": "At Yasar we respect the privacy of your personal data. Below we summarize what data we collect, how we use it, and your rights. Please contact us for details.",
-      "rawLead1": ">At Yasar we respect the privacy of your personal data. Below we summarize what data we collect, how we use it, and your rights. For details please <Link href=",
-      "rawLead2": ">We implement reasonable technical and administrative measures to protect your data. For privacy questions, requests or complaints please <Link href=",
-      "rawLead1Alt": ">At Yasar we respect the privacy of your personal data. Below we summarize what data we collect, how we use it, and your rights. For details please <Link href=",
-      "sections": {
-        "lead1": "At Yasar we respect the privacy of your personal data. Below we summarize what data we collect, how we use it, and your rights. Please contact us for details",
-        "lead2": "We implement reasonable technical and administrative measures to protect your data. For privacy questions, requests or complaints please contact us.",
-        "personalData": "Your name, email address, phone number and other information entered in contact forms. We may also collect cookie and technical data related to site usage (IP address, browser information, page views, etc.).",
-        "whyUse": "The data we collect is used to respond to your requests, provide and improve our services, manage order/quotation processes and fulfill our legal obligations.",
-        "sharing": "Your data will not be shared with third parties unless you give consent or where required by law. Limited and necessary sharing with subprocessors (e.g. shipping, payment providers) may occur to deliver services; such transfers are performed securely.",
-        "rights": "Right to access and correct your data, Right to request deletion or restriction of processing, Right to object to processing and data portability. You can submit your rights request via the contact form.",
-        "cookies": "The site may use performance and analytics cookies. You can manage or disable cookies from your browser settings; some features may not work properly if cookies are disabled.",
-        "securityContact": "We apply reasonable technical and administrative measures to protect your data. For privacy-related questions, requests or complaints please contact us."
-      }
-    },
     "terms": "Terms",
   "copyright": "© {year} Yasar. All rights reserved.",
   "copyrightRaw": "© ${new Date().getFullYear()} Yasar. All rights reserved.",
@@ -610,6 +717,19 @@
         "closeMenu": "Close menu"
       }
     },
+    "heroInfoCards": {
+      "wholesale": {
+        "title": "Wholesale Sales Application",
+        "description": "We offer competitive pricing, flexible production capacity and fast delivery for large orders. Yasar Textile provides sustainable wholesale manufacturing solutions for retailers, chains, distributors and e-commerce businesses.",
+        "cta": "Apply for Wholesale"
+      }
+      ,
+      "private": {
+        "title": "Create Your Own Brand",
+        "description": "At Yasar Textile we offer private label and OEM manufacturing services for underwear brands. We professionally manage the whole process from design to production, labeling and packaging.",
+        "cta": "Start the production process"
+      }
+    },
     "whatsApp": {
       "open": "WhatsApp uygulamasında aç",
       "sr": "WhatsApp"
@@ -698,7 +818,23 @@
       "facility2": { "name": "Production 2", "location": "Yenişehir / Bursa" }
     }
   },
- 
+  "privacy": {
+    "title": "Privacy Policy",
+    "seoTitle": "Privacy Policy - Yasar",
+    "headerTitle": "Yasar Privacy Policy",
+    "intro": "We care about protecting your personal data and processing it transparently and securely. This page summarizes which data we collect, how we use it and your rights.",
+    "sections": {
+      "lead1": "We care about protecting your personal data. Below we summarize which data we collect, how we use it and your rights. For details, please contact us.",
+      "lead2": "We implement reasonable technical and administrative measures to protect your data. For privacy questions, requests or complaints, please contact us.",
+      "personalData": "Your name, email address, phone number and other information you enter into contact forms. We may also collect cookies and technical data related to site usage (IP address, browser information, page views, etc.).",
+      "whyUse": "We use collected data to respond to your requests, deliver and improve our services, manage order/quote processes and to fulfill our legal obligations.",
+      "sharing": "Your data is not shared with third parties unless you give explicit consent or when required by law. Limited, purpose-bound sharing with subcontractors (e.g., shipping, payment providers) may occur; such transfers are carried out securely.",
+      "rights": "Right to access and correct your data; right to request deletion or restriction of processing; right to object to processing and data portability.",
+      "cookies": "Performance and analytics cookies may be used on the site. You can manage or disable cookies via your browser settings; some features may not function properly if cookies are disabled.",
+      "securityContact": "We apply reasonable technical and administrative measures to protect your data. For privacy-related questions, requests or complaints, please contact us."
+    }
+    ,"quickSummary": "Quick Summary"
+  },
   "locations": {
     "tr": "Turkey",
     "uk": "United Kingdom",

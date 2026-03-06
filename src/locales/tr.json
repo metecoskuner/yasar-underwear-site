@@ -179,7 +179,7 @@
       "privacyPolicy": "Kullanıcı Verilerinin Korunması Kanunu",
       "phoneLabel": "Telefon:",
       "emailLabel": "E-posta:"
-    },
+      },
     "products": {
       "title": "Ürünler — Yasar",
       "description": "Yasar ürün koleksiyonu",
@@ -205,6 +205,116 @@
       "previewRaw": "${tr('pages.products.preview','Önizleme')} ${i + 1}",
       "requestInfo": "Bilgi Al",
       "requestInfoAria": "Bilgi Al -"
+    },
+    "wholesale": {
+      "seo": {
+        "title": "Toptan — Yasar",
+        "description": "Toptan talepleri — distribütör veya toptancılar fiyat ve şartlar için başvurabilir."
+      },
+      "breadcrumb": {
+        "home": "Anasayfa",
+        "title": "Toptan"
+      },
+      "header": {
+        "title": "Toptan İş Ortaklıkları",
+        "lead": "Dünya çapında distribütörler ve perakendecilerle çalışıyoruz. Rekabetçi fiyat, güvenilir teslimat süreleri ve esnek MOQ seçenekleri sunuyoruz.",
+        "contact": "İletişim",
+        "apply": "Başvur"
+      },
+      "sections": {
+        "whoCanApply": {
+          "title": "Kimler başvurabilir",
+          "body": "Distribütörler, toptancılar, çevrimiçi perakendeciler ve ticari kayıtlı çok markalı mağazalar başvurabilir."
+        },
+        "howItWorks": {
+          "title": "Nasıl çalışır",
+          "body": "Şirket bilgilerinizi ve sipariş tahminlerinizi gönderin. Satış ekibimiz fiyatlandırma ve teslim süresi bilgileriyle dönüş yapacaktır."
+        },
+        "policies": {
+          "title": "Politikalar",
+          "body": "Minimum sipariş, münhasırlık ve iptal politikaları bölge ve hacme göre müzakere sırasında paylaşılacaktır."
+        }
+      },
+      "form": {
+        "title": "Toptan Başvurusu",
+        "labels": {
+          "companyName": "Firma adı",
+          "country": "Ülke",
+          "website": "Web sitesi / Sosyal",
+          "businessType": "İş türü",
+          "interestedProducts": "İlgilendiğiniz ürünler",
+          "estimatedFirstOrder": "Tahmini ilk sipariş",
+          "annualVolume": "Yıllık hacim (tahmini)",
+          "contactPerson": "İrtibat kişisi",
+          "email": "E-posta",
+          "phone": "Telefon",
+          "message": "Mesaj / Detaylar",
+          "submit": "Talebi gönder"
+        },
+        "validation": {
+          "companyName": "Firma adı gerekli",
+          "country": "Ülke gerekli",
+          "contactName": "İrtibat kişisi gerekli",
+          "email": "E-posta gerekli"
+        },
+        "sending": "Gönderiliyor…",
+        "success": "Teşekkürler — talebinizi aldık. En kısa sürede dönüş yapacağız.",
+        "submitError": "Gönderilemedi. Lütfen daha sonra tekrar deneyin."
+      }
+    },
+    "privateLabel": {
+      "seo": {
+        "title": "Özel Marka & OEM — Yasar",
+        "description": "Özel marka ve OEM üretimi — tasarımdan ambalaja kadar tam hizmet. MOQ ve teslim süreleri malzeme ve adetlere göre değişir."
+      },
+      "breadcrumb": { "home": "Anasayfa", "title": "Özel Marka" },
+      "header": {
+        "title": "Özel Marka & OEM",
+        "lead": "Markanızı pazara taşıyın — tasarımdan paketlemeye kadar tam hizmet özel marka üretimi sunuyoruz. MOQ ve teslim süreleri malzeme ve adetlere göre değişir.",
+        "typicalMoq": "Tipik MOQ: 1000 adet / model — özel teklif için bizimle iletişime geçin.",
+        "ctaStart": "Özel marka başlat"
+      },
+      "sections": {
+        "productionDetails": {
+          "title": "Üretim detayları",
+          "body": "Süreç: Tasarım incelemesi → Numune → Üretim → Kalite kontrol → Sevkiyat. Perakete hazır ürünler için ambalaj ve etiketleme desteği sağlıyoruz."
+        },
+        "samplePolicy": {
+          "title": "Numune politikası",
+          "body": "Numuneler istek üzerine sağlanır; numune ücreti uygulanabilir ve onaylanan siparişlerde iade edilebilir."
+        },
+        "designPayment": {
+          "title": "Tasarım & Ödeme",
+          "body": "Tasarım dosyalarınızı vektör PDF/AI formatında gönderin. Ödeme koşulları değişkenlik gösterir; tipik olarak ön ödeme ve teslimatta bakiye veya büyük siparişlerde akreditif kullanılır."
+        }
+      },
+      "form": {
+        "title": "Özel marka talebi",
+        "labels": {
+          "companyName": "Firma adı",
+          "country": "Ülke",
+          "activeBrand": "Aktif marka (varsa)",
+          "targetMarket": "Hedef pazar",
+          "modelCount": "Model sayısı (tahmini)",
+          "colorOptions": "Renk seçenekleri",
+          "timeline": "Zaman çizelgesi",
+          "estimatedBulk": "Tahmini toplu sipariş",
+          "contactPerson": "İrtibat kişisi",
+          "email": "E-posta",
+          "phone": "Telefon",
+          "message": "Mesaj / Detaylar",
+          "submit": "Özel marka talebini gönder"
+        },
+        "validation": {
+          "companyName": "Firma adı gerekli",
+          "country": "Ülke gerekli",
+          "contactName": "İrtibat kişisi gerekli",
+          "email": "E-posta gerekli"
+        },
+        "sending": "Gönderiliyor…",
+        "success": "Teşekkürler — özel marka talebinizi aldık. En kısa sürede dönüş yapacağız.",
+        "submitError": "Gönderilemedi. Lütfen daha sonra tekrar deneyin."
+      }
     },
     "about": {
       "title": "Kurumsal - Yasar",
@@ -412,11 +522,20 @@
       }
     },
     "terms": {
-      "title": "Kullanım Şartları",
-      "seoTitle": "Kullanım Şartları - Yasar",
-      "headerTitle": "Yasar Kullanım Şartları",
-      "comingSoon": "Bu sayfa yakında eklenecek. Daha fazla bilgi için iletişime geçin.",
-      "rawComingSoon": ">Bu sayfa yakında eklenecek. Daha fazla bilgi için <Link href="
+      "seo": {
+        "title": "Kullanım Şartları - Yasar",
+        "description": "Bu sayfa yakında eklenecek. Daha fazla bilgi için lütfen bizimle iletişime geçin: info@yasarunderwear.com"
+      },
+      "breadcrumb": {
+        "home": "Anasayfa",
+        "title": "Kullanım Şartları"
+      },
+      "header": {
+        "title": "Kullanım Şartları",
+        "intro": "Bu sayfa yakında eklenecek. Daha fazla bilgi için lütfen bizimle iletişime geçin: info@yasarunderwear.com"
+      },
+      "placeholder": "Bu sayfa yakında eklenecek. Daha fazla bilgi için lütfen bizimle iletişime geçin: info@yasarunderwear.com",
+      "contactLink": "İletişim sayfasına git"
     },
     "uretim_index": {
       "title": "Üretim",
@@ -697,6 +816,18 @@
     "seo": {
       "homeDescription": "Yasar - Günlük kullanım için konforlu iç çamaşırları, Türkiye'de tasarlandı.",
       "siteDescription": "Yasar — konforlu iç çamaşırları. Türkiye'de tasarlandı."
+    },
+    "heroInfoCards": {
+      "wholesale": {
+        "title": "Toptan Satış Başvurusu",
+        "description": "Büyük siparişleriniz için rekabetçi fiyatlar, esnek üretim kapasitesi ve hızlı teslimat avantajı sunuyoruz. Yasar Tekstil olarak mağazalar, zincirler, distribütörler ve e-ticaret firmaları için sürdürülebilir toptan üretim çözümleri sağlıyoruz.",
+        "cta": "Toptan Başvurusu Yap"
+      },
+      "private": {
+        "title": "Kendi Markanı Üret",
+        "description": "Yasar Tekstil olarak iç giyim markaları için private label ve OEM üretim hizmeti sunuyoruz. Tasarım aşamasından üretime, etiketlemeden ambalajlamaya kadar tüm süreci profesyonel olarak yönetiyoruz.",
+        "cta": "Üretim Sürecini Başlat"
+      }
     }
   },
   "worldMap": {

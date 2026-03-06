@@ -13,7 +13,10 @@ export default function ProductCard({
   onInspect?: (p: Product, preview?: number | string) => void;
   showWishlist?: boolean;
 }) {
+  try { console.log('CARD PRODUCT:', product) } catch {}
   const gallery = product.images?.length ? product.images : product.image ? [product.image] : [];
+  const PLACEHOLDER = '/photos/PYJAMA-BRANDS.avif';
+  const [errored, setErrored] = useState<Record<number, boolean>>({});
   const [active, setActive] = useState(0);
   const activeResetRef = useRef<number | null>(null);
 
@@ -38,7 +41,9 @@ export default function ProductCard({
   };
 
   // Product titles are dynamic data; do not route through i18n keys.
-  const displayTitle = product.i18nTitle?.[lang] ?? product.title;
+  const langKey = String(lang).toLowerCase();
+  const rawLocalized = product.i18nTitle?.[langKey];
+  const displayTitle = (rawLocalized && String(rawLocalized).trim()) ? String(rawLocalized) : (product.title ?? '');
 
   const categoryNames: Record<string, string> = {
     'ic-giyim': tr('components.productCard.categories.ic-giyim', 'İç Giyim'),
@@ -53,7 +58,7 @@ export default function ProductCard({
     <div
       role="button"
       tabIndex={0}
-  aria-label={`${tr('components.productCard.inspect', 'İncele')}: ${product.title}`}
+  aria-label={`${tr('components.productCard.inspect', 'İncele')}: ${displayTitle}`}
       onClick={() => onInspect?.(product, active)}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
@@ -63,7 +68,7 @@ export default function ProductCard({
       }}
       className="group rounded-lg overflow-hidden transform transition-transform duration-300 ease-out hover:scale-105 hover:shadow-md bg-white cursor-pointer focus:outline-none focus:ring-2 focus:ring-amber-300"
     >
-      <div className={`relative h-[214px] sm:h-[246px] md:h-[278px] lg:h-[400px] flex items-center justify-center ${product.color ?? 'bg-gray-100'}`}>
+  <div className={`relative product-card-media h-[300px] sm:h-[340px] md:h-[380px] lg:h-[400px] flex items-center justify-center ${product.color ?? 'bg-gray-100'}`}>
         {/* category badge */}
         {product.category && (
           <div className="absolute top-3 left-3 bg-white/20 text-gray-300 text-xs px-2 py-1 rounded-md backdrop-blur-sm ring-1 ring-white/10">
@@ -75,23 +80,28 @@ export default function ProductCard({
         {showWishlist && (
           <button
             onClick={(e) => {
-              e.stopPropagation();
-              const wasFav = isFavorite(product.id);
-              toggle(product.id);
-              if (!wasFav) {
-                setPopping(true);
-                window.setTimeout(() => setPopping(false), 380);
-              }
-              if (!wasFav && typeof navigator !== 'undefined') {
-                // navigator.vibrate is not on every platform; cast to an extended Navigator
-                const nav = navigator as Navigator & { vibrate?: (pattern: number | number[]) => boolean | void };
-                nav.vibrate?.(10);
-              }
-              if (typeof window !== 'undefined') {
-                if (!wasFav) window.dispatchEvent(new CustomEvent('yasar:wishlist:open', { detail: { id: product.id } }));
-                window.dispatchEvent(new CustomEvent('yasar:wishlist:changed', { detail: { id: product.id, title: product.title, added: !wasFav } }));
-              }
-            }}
+                e.stopPropagation();
+                // If we're inside admin pages, avoid triggering client wishlist UI or
+                // dispatching events that other parts of the site listen to. Admin
+                // editors may reuse product cards for management actions and we
+                // should not modify local user wishlist or open UI in that context.
+                if (typeof window !== 'undefined' && window.location?.pathname?.startsWith('/admin')) {
+                  return;
+                }
+
+                const wasFav = isFavorite(product.id);
+                // pass the product object so the hook can persist minimal metadata
+                toggle(product);
+                if (!wasFav) {
+                  setPopping(true);
+                  window.setTimeout(() => setPopping(false), 380);
+                }
+                if (!wasFav && typeof navigator !== 'undefined') {
+                  // navigator.vibrate is not on every platform; cast to an extended Navigator
+                  const nav = navigator as Navigator & { vibrate?: (pattern: number | number[]) => boolean | void };
+                  nav.vibrate?.(10);
+                }
+              }}
               aria-pressed={isFavorite(product.id)}
             data-wishlist-button="true"
               aria-label={isFavorite(product.id) ? tr('components.productCard.wishlist.remove', 'Favorilerden çıkar') : tr('components.productCard.wishlist.add', 'Favorilere ekle')}
@@ -111,14 +121,22 @@ export default function ProductCard({
 
         {/* main image */}
         {gallery[active] ? (
-          <Image src={gallery[active]} alt={displayTitle} fill className="object-cover object-center pointer-events-none" />
+          <Image
+            key={gallery[active]}
+            src={errored[active] ? PLACEHOLDER : (gallery[active] as string)}
+            alt={displayTitle}
+            fill
+            sizes="(max-width: 768px) 100vw, 50vw"
+            onError={() => setErrored((s) => ({ ...s, [active]: true }))}
+            className="object-cover object-center pointer-events-none"
+          />
         ) : (
-          <div className="text-gray-500 text-sm">{tr('components.productCard.imageAlt', 'Ürün görseli')}</div>
+          <Image src={PLACEHOLDER} alt={tr('components.productCard.imageAlt', 'Ürün görseli')} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover object-center pointer-events-none" />
         )}
 
         {/* Desktop thumbnails */}
         <div className="absolute left-4 bottom-3 opacity-0 translate-y-3 group-hover:opacity-100 group-hover:translate-y-0 transition-all hidden md:flex gap-2">
-          {thumbs.map((t, idx) => (
+              {thumbs.map((t, idx) => (
             <button
               key={idx}
               onClick={(e) => {
@@ -129,7 +147,19 @@ export default function ProductCard({
               className="w-14 h-14 rounded-md overflow-hidden bg-white shadow border cursor-pointer"
               aria-current={active === idx}
             >
-              {gallery[idx] ? <Image src={t} alt="" width={56} height={56} className="object-cover w-full h-full" /> : <div className="w-full h-full bg-gray-200" />}
+              {gallery[idx] ? (
+                <Image
+                  key={t}
+                  src={errored[idx] ? PLACEHOLDER : (t as string)}
+                  alt=""
+                  width={56}
+                  height={56}
+                  onError={() => setErrored((s) => ({ ...s, [idx]: true }))}
+                  className="object-cover w-full h-full"
+                />
+              ) : (
+                <div className="w-full h-full bg-gray-200" />
+              )}
             </button>
           ))}
         </div>
@@ -156,7 +186,7 @@ export default function ProductCard({
   <h3 className="text-sm font-semibold text-gray-800 truncate">{displayTitle}</h3>
   {/* Product code shown prominently on card for quick reference */}
   {product.productCode ? (
-    <div className="text-xs text-gray-500 mt-1 font-mono">{`ürün kodu: ${product.productCode}`}</div>
+    <div className="text-xs text-gray-500 mt-1 font-mono">{`${tr('pages.products.productCode','ürün kodu:')} ${product.productCode}`}</div>
   ) : null}
       </div>
     </div>

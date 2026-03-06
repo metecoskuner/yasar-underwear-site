@@ -18,23 +18,6 @@ function writeData(obj: { offers?: Record<string, unknown>[] }) {
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (!isAuthed(req)) return res.status(401).json({ error: 'unauth' })
-  if (req.method !== 'POST') return res.status(405).end()
-  const { id } = req.body || {}
-  if (!id) return res.status(400).json({ error: 'missing id' })
-
-  if (process.env.DATABASE_URL) {
-    try {
-      await prisma.quoteRequest.delete({ where: { id: String(id) } })
-      return res.status(200).json({ ok: true })
-    } catch (err) {
-      console.error(err)
-      return res.status(500).json({ error: 'db_delete_failed' })
-    }
-  }
-
-  const d = readData()
-  d.offers = (d.offers || []).filter((o) => String((o as Record<string, unknown>).id) !== String(id))
-  writeData(d)
-  return res.status(200).json({ ok: true })
+  // Offers feature removed
+  return res.status(410).json({ error: 'offers feature removed' })
 }

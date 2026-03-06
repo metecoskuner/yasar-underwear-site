@@ -22,11 +22,6 @@ export default function SettingsPage() {
               <h3 className="font-medium">Kullanıcılar</h3>
               <p className="text-sm text-gray-500">Yönetici kullanıcıları görüntüle ve yetki ayarları.</p>
             </Link>
-
-            <Link href="/admin/settings/site" className="block p-4 border rounded hover:shadow-md transition">
-              <h3 className="font-medium">Site Ayarları</h3>
-              <p className="text-sm text-gray-500">Firma bilgileri, e-posta ayarları ve benzeri.</p>
-            </Link>
           </div>
         </section>
       </div>
@@ -36,8 +31,8 @@ export default function SettingsPage() {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   try {
-    const authed = isAuthed(context.req)
-    if (!authed) return { redirect: { destination: '/admin', permanent: false } }
+  const authed = await isAuthed(context.req)
+  if (!authed) return { redirect: { destination: '/admin', permanent: false } }
   } catch (err) { void err; return { redirect: { destination: '/admin', permanent: false } } }
   return { props: {} }
 }

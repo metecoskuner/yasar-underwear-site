@@ -80,6 +80,8 @@ export default function UsersPage({ adminUser, savingDisabled }: Props) {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   try { const authed = isAuthed(context.req); if (!authed) return { redirect: { destination: '/admin', permanent: false } } } catch (err) { void err; return { redirect: { destination: '/admin', permanent: false } } }
   const adminUser = process.env.ADMIN_USER || 'admin'
-  const savingDisabled = Boolean(process.env.DATABASE_URL)
+  // savingDisabled previously prevented file writes when DATABASE_URL was set.
+  // With DB support for admin credentials we enable saving when DATABASE_URL is present.
+  const savingDisabled = false
   return { props: { adminUser, savingDisabled } }
 }

@@ -6,7 +6,7 @@ import { isAuthed } from '@/lib/adminAuth'
 const DATA_FILE = path.join(process.cwd(), 'data', 'admin-settings.json')
 
 export default async function handler(_req: NextApiRequest, res: NextApiResponse) {
-  if (!isAuthed(_req)) return res.status(401).json({ ok: false })
+  if (!(await isAuthed(_req))) return res.status(401).json({ ok: false })
 
   try {
     const raw = await fs.readFile(DATA_FILE, 'utf8')

@@ -15,7 +15,7 @@ export default function EditPage() {
 
   useEffect(() => {
     if (!slug) return
-    fetch('/api/content').then((r) => r.json()).then((j) => {
+  fetch('/api/content', { cache: 'no-store' }).then((r) => r.json()).then((j) => {
       const s: ContentStore = j.content || { pages: [] }
       setStore(s)
       const found = (s.pages || []).find((p: Page) => p.slug === slug)
@@ -25,7 +25,7 @@ export default function EditPage() {
   }, [slug])
 
   async function doSave(nextStore: ContentStore) {
-    await fetch('/api/admin/save-content', { method: 'POST', body: JSON.stringify({ content: nextStore }), headers: { 'Content-Type': 'application/json' } })
+    await fetch('/api/admin/content', { method: 'POST', body: JSON.stringify({ content: nextStore }), headers: { 'Content-Type': 'application/json' } })
     // refresh
     setStore(nextStore)
   }
@@ -44,8 +44,8 @@ export default function EditPage() {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   try {
-    const authed = isAuthed(context.req)
-    if (!authed) return { redirect: { destination: '/admin', permanent: false } }
+  const authed = await isAuthed(context.req)
+  if (!authed) return { redirect: { destination: '/admin', permanent: false } }
   } catch (err) { void err; return { redirect: { destination: '/admin', permanent: false } } }
   return { props: {} }
 }

@@ -143,12 +143,21 @@ export default function ContactPage(): JSX.Element {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {LOCATIONS.map((l) => (
                   <div key={l.title} className="p-4 rounded-lg bg-slate-50 border flex flex-col">
-                    <h3 className="text-sm font-semibold mb-1">{l.title}</h3>
+                    <h3 className="text-sm font-semibold mb-1 text-amber-600">{l.title}</h3>
                     <address className="not-italic text-sm whitespace-pre-line text-slate-700 mb-2">{l.addr}</address>
-                    <div className="mt-3">
+                    <div className="mt-3 flex items-center gap-3">
                       <button type="button" onClick={() => showPlace(l.id)} className="inline-flex items-center gap-2 text-sm text-slate-700 hover:underline transition">
                         {tr('pages.contact.map.showLocation','Konumu göster')}
                       </button>
+                      {/* direct link to external map (Google Maps) */}
+                      <a
+                        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${l.lat},${l.lng}`)}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-2 text-sm text-amber-600 hover:underline transition"
+                      >
+                        {tr('pages.contact.map.goto','Konuma git')}
+                      </a>
                     </div>
                   </div>
                 ))}
@@ -195,7 +204,7 @@ export default function ContactPage(): JSX.Element {
 
             <section className="mt-0 text-sm text-slate-600">
               <h4 className="font-medium mb-2">{tr('pages.contact.noteTitle','Not')}</h4>
-              <p>{tr('pages.contact.noteText','Formu doldurarak ')}<Link href="/privacy" className="underline">{tr('pages.contact.privacyPolicy','Kullanıcı Verilerinin Korunması Kanunu')}</Link>{tr('pages.contact.noteTextSuffix',' kapsamında verilerin işlenmesini onaylamış olursunuz.')}</p>
+                <p>{tr('pages.contact.noteText','Formu doldurarak ')}<Link href="/privacy" className="underline">{tr('pages.contact.privacyPolicy','Kullanıcı Verilerinin Korunması Kanunu')}</Link>{tr('pages.contact.noteTextSuffix',' kapsamında verilerin işlenmesini onaylamış olursunuz.')}</p>
             </section>
           </aside>
         </div>

@@ -29,7 +29,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         id: m.id,
         from: m.name,
         email: m.email,
-        phone: (m as any).phone ?? null,
+        phone: ((m as Record<string, unknown>).phone as string) ?? null,
         message: m.message,
         read: m.read,
         createdAt: (m.createdAt as Date).toISOString(),
@@ -38,23 +38,26 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       // Also include any messages that were stored in the file-based fallback (migrated or pre-DB)
       try {
         const file = readData()
-        const fileMsgs = (file.messages || []) as Record<string, any>[]
-        const mappedFile = fileMsgs.map((fm) => ({
-          id: fm.id ?? `file-${fm.createdAt ?? Date.now()}`,
-          from: fm.name ?? fm.from ?? 'Anonim',
-          email: fm.email ?? null,
-          phone: fm.phone ?? null,
-          message: fm.message ?? fm.body ?? '',
-          read: fm.read ?? false,
-          createdAt: fm.createdAt ?? new Date().toISOString(),
-        }))
+        const fileMsgs = (file.messages || []) as Record<string, unknown>[]
+        const mappedFile = fileMsgs.map((fm) => {
+          const f = fm as Record<string, unknown>
+          return {
+            id: (f.id as string) ?? `file-${f.createdAt ?? Date.now()}`,
+            from: (f.name as string) ?? (f.from as string) ?? 'Anonim',
+            email: (f.email as string) ?? null,
+            phone: (f.phone as string) ?? null,
+            message: (f.message as string) ?? (f.body as string) ?? '',
+            read: (f.read as boolean) ?? false,
+            createdAt: (f.createdAt as string) ?? new Date().toISOString(),
+          }
+        })
         // merge DB + file, prefer DB items when id matches
-        const byId = new Map<string, any>()
-        for (const i of mappedFile) byId.set(i.id, i)
-        for (const i of out) byId.set(i.id, i)
-        const merged = Array.from(byId.values()).sort((a, b) => new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf())
+  const byId = new Map<string, Record<string, unknown>>()
+  for (const i of mappedFile) byId.set(String(i.id), i as Record<string, unknown>)
+  for (const i of out) byId.set(String(i.id), i as Record<string, unknown>)
+  const merged = Array.from(byId.values()).sort((a, b) => new Date(String(b.createdAt)).valueOf() - new Date(String(a.createdAt)).valueOf())
         return res.status(200).json({ messages: merged })
-      } catch (err) {
+      } catch {
         // if file read fails, just return DB items
         return res.status(200).json({ messages: out })
       }
