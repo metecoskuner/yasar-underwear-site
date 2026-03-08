@@ -9,7 +9,7 @@ datasource db {
   // before running migrations in that environment.
   // Use sqlite for local development fallback. Change back to "postgresql"
   // for production deployments where DATABASE_URL points to Postgres.
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 

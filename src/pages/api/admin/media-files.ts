@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import fs from 'fs'
 import path from 'path'
 import { v2 as cloudinary } from 'cloudinary'
+import { createClient } from '@supabase/supabase-js'
 
 // To avoid bundling large static assets into the serverless function,
 // read a small pre-generated index file (`public/media-index.json`) that
@@ -16,6 +17,34 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const cloudKey = process.env.CLOUDINARY_API_KEY
     const cloudSecret = process.env.CLOUDINARY_API_SECRET
     const isProd = process.env.NODE_ENV === 'production'
+
+    // In production, prefer Supabase Storage if configured, otherwise fall
+    // back to Cloudinary (old behavior). If neither is configured, use the
+    // local `public/media-index.json` file.
+    const supabaseUrl = process.env.SUPABASE_URL
+    const supabaseKey = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_ANON_KEY
+
+    if (isProd && supabaseUrl && supabaseKey) {
+      try {
+        const supabase = createClient(supabaseUrl, supabaseKey)
+        const bucket = 'yasar-admin'
+        const { data: list, error: listErr } = await supabase.storage.from(bucket).list('', { limit: 1000 })
+        if (listErr) throw listErr
+        const uploads = Array.isArray(list)
+          ? await Promise.all(list.map(async (item: any) => {
+              const key = item.name
+              const filePath = key
+              const { data: pub } = supabase.storage.from(bucket).getPublicUrl(filePath)
+              return { name: key, url: pub.publicUrl }
+            }))
+          : []
+
+        return res.status(200).json({ videos: [], uploads })
+      } catch (e) {
+        console.warn('supabase list failed, falling back to other sources', e)
+        // fallthrough to try Cloudinary or local index
+      }
+    }
 
     // In production, if Cloudinary credentials are available, list resources
     // from the Cloudinary folder used by admin uploads (yasar-admin) and
