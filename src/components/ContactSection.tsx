@@ -102,8 +102,8 @@ export default function ContactSection({ showSummary = true }: { showSummary?: b
 
             <div className="flex items-start gap-3">
               <label className="flex items-center gap-2 text-sm">
-                <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} className="w-4 h-4 rounded border-slate-300" />
-                <span>{tr('components.contact.consent','Kullanıcı Verilerinin Korunması Kanunu\'nu onaylıyorum.')}</span>
+                <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} className="w-4 h-4 rounded border-slate-300 bg-white" />
+                <span className="text-slate-900">{tr('components.contact.consent','Kullanıcı Verilerinin Korunması Kanunu\'nu onaylıyorum.')}</span>
               </label>
             </div>
 
@@ -114,7 +114,7 @@ export default function ContactSection({ showSummary = true }: { showSummary?: b
             <button
               type="submit"
               disabled={loading}
-              className="w-full inline-flex items-center justify-center rounded-xl py-3 font-semibold transition transform bg-gradient-to-r from-amber-400 to-amber-600 text-black hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-300 disabled:opacity-60"
+              className="w-full rounded-xl bg-black text-white py-3 font-semibold transition hover:bg-neutral-800 disabled:opacity-60 hover:cursor-pointer active:scale-95"
             >
               {loading ? tr('components.contact.sending','Gönderiliyor…') : tr('components.contact.sendMessage','Mesaj Gönder')}
             </button>
@@ -176,7 +176,7 @@ export default function ContactSection({ showSummary = true }: { showSummary?: b
 
               <div className="mt-6 flex flex-wrap gap-3">
                 <a href="mailto:info@yasarunderwear.com" className="inline-flex items-center gap-2 rounded-md bg-white border border-slate-200 px-3 py-2 text-sm text-slate-700 hover:bg-slate-50">{tr('components.contact.sendEmail','E-posta Gönder')}</a>
-                <a href="tel:+902125209299" className="inline-flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium bg-gradient-to-r from-amber-400 to-amber-600 text-black hover:scale-105">{tr('components.contact.callUs','Bizi Ara')}</a>
+                <a href="tel:+902125209299" className="inline-flex items-center gap-2 rounded-md bg-black text-white px-3 py-2 text-sm font-medium hover:bg-neutral-800">{tr('components.contact.callUs','Bizi Ara')}</a>
               </div>
             </div>
           </div>
@@ -227,7 +227,7 @@ export default function ContactSection({ showSummary = true }: { showSummary?: b
             <button
               type="submit"
               disabled={loading}
-              className="w-full inline-flex items-center justify-center rounded-xl py-3 font-semibold transition transform bg-gradient-to-r from-amber-400 to-amber-600 text-black hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-300 disabled:opacity-60"
+              className="w-full rounded-xl bg-black text-white py-3 font-semibold transition hover:bg-neutral-800 disabled:opacity-60 hover:cursor-pointer active:scale-95"
             >
               {loading ? tr('components.contact.sending','Gönderiliyor…') : tr('components.contact.sendMessage','Mesaj Gönder')}
             </button>
@@ -261,12 +261,12 @@ function Field({
 }) {
   return (
     <div className="space-y-1 group">
-      <label className="text-sm font-medium text-slate-700">{label}</label>
+      <label className="text-sm font-medium text-slate-900">{label}</label>
       {textarea ? (
         <textarea
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className={`w-full rounded-xl border px-4 py-3 bg-white transition-colors transition-shadow duration-150 outline-none ${
+          className={`w-full rounded-xl border border-gray-200 px-4 py-3 bg-white text-slate-900 placeholder:text-slate-400 transition-colors transition-shadow duration-150 outline-none ${
             error ? 'border-red-400' : 'border-slate-200 group-hover:border-slate-300'
           } focus:border-black focus:ring-2 focus:ring-black/10`}
           rows={4}
@@ -276,7 +276,7 @@ function Field({
           type={type}
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className={`w-full rounded-xl border px-4 py-3 bg-white transition-colors transition-shadow duration-150 outline-none ${
+          className={`w-full rounded-xl border border-gray-200 px-4 py-3 bg-white text-slate-900 placeholder:text-slate-400 transition-colors transition-shadow duration-150 outline-none ${
             error ? 'border-red-400' : 'border-slate-200 group-hover:border-slate-300'
           } focus:border-black focus:ring-2 focus:ring-black/10`}
         />

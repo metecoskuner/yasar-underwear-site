@@ -19,6 +19,19 @@ export default function App({ Component, pageProps }: AppProps) {
     return () => clearTimeout(defer);
   }, []);
 
+  // Add a 'js' class to <html> on mount so CSS can opt-in to JS-only
+  // animations without hiding content for no-JS users. We remove it on
+  // unmount for cleanliness (rare in Next.js but safe to do).
+  useEffect(() => {
+    try {
+      document.documentElement.classList.add('js');
+      return () => document.documentElement.classList.remove('js');
+    } catch (e) {
+      void e;
+    }
+    return undefined;
+  }, []);
+
   return (
     <LanguageProvider>
       {/* Splash shown only on initial load. Duration tuned to 0.7s by default inside the component. */}

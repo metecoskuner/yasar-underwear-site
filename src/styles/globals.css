@@ -43,24 +43,39 @@ img, picture, video, svg {
 
 /* ==============================
    Slide-in sections
-   ============================== */
+   ==============================
+   Accessibility-friendly behavior:
+   - By default (no-JS) `.slide-section` is fully visible so content isn't hidden
+     for users with JS disabled or when an observer fails to run.
+   - When JavaScript runs we add a `js` class to the <html> element. The
+     `.js .slide-section` rules enable the original hide/animate behavior and
+     `.js .slide-section.in-view` reveals the section.
+*/
 .slide-section {
+  /* visible by default for no-JS users */
+  opacity: 1;
+  transform: translateX(0);
+  transition: none;
+}
+
+/* JS-enabled animations (activated when <html> has class .js) */
+.js .slide-section {
   opacity: 0;
   transform: translateX(var(--offset, 0));
   transition: opacity 0.6s cubic-bezier(.22,.61,.36,1), transform 0.6s cubic-bezier(.22,.61,.36,1);
 }
-.slide-section[data-side='left'] { --offset: -50px; }
-.slide-section[data-side='right'] { --offset: 50px; }
-.slide-section.in-view { opacity: 1; transform: translateX(0); }
+.js .slide-section[data-side='left'] { --offset: -50px; }
+.js .slide-section[data-side='right'] { --offset: 50px; }
+.js .slide-section.in-view { opacity: 1; transform: translateX(0); }
 
 @media (max-width: 640px) {
-  .slide-section[data-side='left'] { --offset: -30px; }
-  .slide-section[data-side='right'] { --offset: 30px; }
+  .js .slide-section[data-side='left'] { --offset: -30px; }
+  .js .slide-section[data-side='right'] { --offset: 30px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .slide-section,
-  .slide-section.in-view {
+  .js .slide-section,
+  .js .slide-section.in-view {
     transition: none !important;
     transform: none !important;
     opacity: 1 !important;
