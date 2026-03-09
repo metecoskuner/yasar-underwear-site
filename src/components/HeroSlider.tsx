@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 
 const defaultSlides = [
-  '/photos/PYJAMA-BRANDS.avif',
-  '/photos/yasarLogo2.jpg',
-  '/photos/yasarLogo.png',
+  '/photos/hero1.webp',
+  '/photos/hero2.webp',
+  '/photos/hero3.webp',
 ];
 
 type Props = { slides?: string[] }

@@ -8,7 +8,8 @@ const url = process.env.DATABASE_URL
     console.error('No DATABASE_URL environment variable set')
     process.exit(2)
   }
-  const client = new Client({ connectionString: url })
+  // For diagnostics: accept self-signed certs (useful for some poolers). This is only for the test script.
+  const client = new Client({ connectionString: url, ssl: { rejectUnauthorized: false } })
   try {
     await client.connect()
     const res = await client.query('SELECT NOW() AS now')

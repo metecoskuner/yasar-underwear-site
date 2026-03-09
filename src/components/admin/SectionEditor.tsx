@@ -23,7 +23,6 @@ export default function SectionEditor({ section, onChange, onRemove }: Props) {
         <div className="flex items-center space-x-2">
           <label className="text-sm text-gray-700">Tür:</label>
           <select value={local.type} onChange={(e) => update({ type: e.target.value })} className="border rounded px-2 py-1 text-sm">
-            <option value="hero">Hero</option>
             <option value="text">Metin</option>
             <option value="gallery">Galeri</option>
             <option value="video">Video</option>

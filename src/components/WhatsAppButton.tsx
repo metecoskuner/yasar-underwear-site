@@ -40,7 +40,8 @@ export default function WhatsAppButton({ number }: { number?: string }) {
     }
   };
   const envNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
-  const raw = number || envNumber || '+905300000000';
+  // Default to the requested business number if no prop/env provided
+  const raw = number || envNumber || '+90 212 520 92 99';
   const digits = normalizeNumber(raw);
   const appUrl = `whatsapp://send?phone=${digits}`;
   const webUrl = `https://wa.me/${digits}`;

@@ -52,8 +52,7 @@ export default function AdminSidebar() {
 
       <nav className="space-y-1" aria-label="Yönetici navigasyonu">
   <Link href="/admin/overview" className="block px-3 py-2 rounded-md hover:bg-blue-50 hover:text-blue-700 text-sm font-medium text-gray-700 cursor-pointer transition-colors">Genel Bakış</Link>
-        <Link href="/admin/content" className="block px-3 py-2 rounded-md hover:bg-blue-50 hover:text-blue-700 text-sm font-medium text-gray-700 cursor-pointer transition-colors">İçerik</Link>
-        <Link href="/admin/hero" className="block px-3 py-2 rounded-md hover:bg-blue-50 hover:text-blue-700 text-sm font-medium text-gray-700 cursor-pointer transition-colors">Hero</Link>
+  <Link href="/admin/content" className="block px-3 py-2 rounded-md hover:bg-blue-50 hover:text-blue-700 text-sm font-medium text-gray-700 cursor-pointer transition-colors">İçerik</Link>
         <Link href="/admin/messages" className="flex items-center px-3 py-2 rounded-md hover:bg-blue-50 hover:text-blue-700 text-sm font-medium text-gray-700 cursor-pointer transition-colors">
           <span>Gelen Mesajlar</span>
           <Badge count={unread} />
