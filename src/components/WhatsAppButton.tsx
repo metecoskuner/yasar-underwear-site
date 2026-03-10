@@ -4,7 +4,12 @@ import React from 'react';
 // Reads number from NEXT_PUBLIC_WHATSAPP_NUMBER (e.g. +90530xxxxxxx)
 // Falls back to a placeholder — please set NEXT_PUBLIC_WHATSAPP_NUMBER in your env.
 function normalizeNumber(n: string) {
-  return (n || '').replace(/[^0-9]/g, '');
+  // Keep a leading + if present, otherwise keep only digits.
+  const raw = (n || '').toString().trim();
+  if (!raw) return '';
+  const hasPlus = raw.startsWith('+');
+  const digitsOnly = raw.replace(/[^0-9]/g, '');
+  return hasPlus ? `+${digitsOnly}` : digitsOnly;
 }
 
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -39,46 +44,56 @@ export default function WhatsAppButton({ number }: { number?: string }) {
       return fallback;
     }
   };
+  // Use NEXT_PUBLIC_WHATSAPP_NUMBER as the authoritative source for the phone number.
   const envNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
-  // Default to the requested business number if no prop/env provided
-  const raw = number || envNumber || '+90 212 520 92 99';
+  // Do not fall back to a hard-coded placeholder. If you want a different number in tests,
+  // set NEXT_PUBLIC_WHATSAPP_NUMBER or pass the `number` prop explicitly.
+  const raw = envNumber || number || '';
   const digits = normalizeNumber(raw);
 
-  // Normalize to international form expected by WhatsApp (country code + national number,
-  // no leading zeros). If user passed a local number like '05301234567' or '0212 520 92 99'
-  // we try to fix it by removing leading zeros and prepending the default country code.
-  const DEFAULT_COUNTRY = '90';
-  let normalizedDigits = digits;
-  if (normalizedDigits) {
-    // remove leading zeros (local formats)
-    normalizedDigits = normalizedDigits.replace(/^0+/, '');
-    // if it doesn't look like it contains a country code (too short), prepend default
-    if (normalizedDigits.length <= 10) {
-      normalizedDigits = DEFAULT_COUNTRY + normalizedDigits;
-    }
+  // For wa.me links we must use only digits (no leading '+').
+  const digitsForWa = typeof digits === 'string' ? digits.replace(/^\+/, '') : '';
+
+  // Warn early if the env var isn't set so devs notice in console (local & prod logs).
+  if (!envNumber) {
+    // eslint-disable-next-line no-console
+    console.warn('NEXT_PUBLIC_WHATSAPP_NUMBER is not configured');
+  }
+  // Consider configured if either the env var or a `number` prop is provided.
+  const isConfigured = Boolean(envNumber || number);
+  // If we have digits after sanitization, we can build the wa.me URL.
+  const hasDigits = digitsForWa.length > 0;
+
+  // Support an optional default message from NEXT_PUBLIC_WHATSAPP_MESSAGE
+  const envMessage = process.env.NEXT_PUBLIC_WHATSAPP_MESSAGE || '';
+  const encodedMessage = envMessage ? encodeURIComponent(envMessage) : '';
+
+  let webUrl = '#';
+  if (hasDigits) {
+    webUrl = `https://wa.me/${digitsForWa}`;
+    if (encodedMessage) webUrl += `?text=${encodedMessage}`;
   }
 
-  // Validate we have enough digits to form a whatsapp link
-  const isValid = typeof normalizedDigits === 'string' && normalizedDigits.length >= 10;
-  const appUrl = isValid ? `whatsapp://send?phone=${normalizedDigits}` : '#';
-  const webUrl = isValid ? `https://wa.me/${normalizedDigits}` : '#';
+  // Helpful debug output in development so you can confirm what number/link the component resolved.
+  if (process.env.NODE_ENV === 'development') {
+    // eslint-disable-next-line no-console
+    console.debug('WhatsAppButton resolved', { raw, digits, digitsForWa, webUrl, envNumber, envMessage });
+  }
 
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
-    if (!isValid) {
-      // friendly feedback for misconfigured number
+    // If NEXT_PUBLIC_WHATSAPP_NUMBER is not configured, show a clear alert and do nothing.
+    if (!isConfigured) {
       // eslint-disable-next-line no-alert
-      alert(tr('components.whatsApp.noNumber','WhatsApp numarası yapılandırılmamış veya geçersiz.'));
+      alert(tr('components.whatsApp.noNumber','WhatsApp numarası yapılandırılmamış.'));
       return;
     }
 
-    // Try to open the native WhatsApp app. If it doesn't open, fallback to web URL.
-    // First try the deep link
-    window.location.href = appUrl;
-    // After a short delay, open web fallback in a new tab/window
-    setTimeout(() => {
-      window.open(webUrl, '_blank', 'noopener');
-    }, 600);
+    // If configured but sanitization produced no digits, do nothing (avoid opening malformed links).
+    if (!hasDigits) return;
+
+    // Always open the wa.me link in a new tab/window. On mobile this will hand off to the app.
+    window.open(webUrl, '_blank', 'noopener,noreferrer');
   };
 
   return (

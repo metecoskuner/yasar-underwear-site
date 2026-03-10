@@ -41,6 +41,14 @@ img, picture, video, svg {
   display: block;
 }
 
+/* Make headings darker and slightly bolder for better readability on low-contrast devices */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--foreground) !important;
+  font-weight: 600 !important; /* slightly bolder */
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
 /* ==============================
    Slide-in sections
    ==============================
