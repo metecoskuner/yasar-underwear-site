@@ -4,7 +4,7 @@ import React from 'react';
 // Reads number from NEXT_PUBLIC_WHATSAPP_NUMBER (e.g. +90530xxxxxxx)
 // Falls back to a placeholder — please set NEXT_PUBLIC_WHATSAPP_NUMBER in your env.
 function normalizeNumber(n: string) {
-  return n.replace(/[^0-9]/g, '');
+  return (n || '').replace(/[^0-9]/g, '');
 }
 
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -43,12 +43,36 @@ export default function WhatsAppButton({ number }: { number?: string }) {
   // Default to the requested business number if no prop/env provided
   const raw = number || envNumber || '+90 212 520 92 99';
   const digits = normalizeNumber(raw);
-  const appUrl = `whatsapp://send?phone=${digits}`;
-  const webUrl = `https://wa.me/${digits}`;
+
+  // Normalize to international form expected by WhatsApp (country code + national number,
+  // no leading zeros). If user passed a local number like '05301234567' or '0212 520 92 99'
+  // we try to fix it by removing leading zeros and prepending the default country code.
+  const DEFAULT_COUNTRY = '90';
+  let normalizedDigits = digits;
+  if (normalizedDigits) {
+    // remove leading zeros (local formats)
+    normalizedDigits = normalizedDigits.replace(/^0+/, '');
+    // if it doesn't look like it contains a country code (too short), prepend default
+    if (normalizedDigits.length <= 10) {
+      normalizedDigits = DEFAULT_COUNTRY + normalizedDigits;
+    }
+  }
+
+  // Validate we have enough digits to form a whatsapp link
+  const isValid = typeof normalizedDigits === 'string' && normalizedDigits.length >= 10;
+  const appUrl = isValid ? `whatsapp://send?phone=${normalizedDigits}` : '#';
+  const webUrl = isValid ? `https://wa.me/${normalizedDigits}` : '#';
 
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    // Try to open the native WhatsApp app. If it doesn't open, fallback to web URL.
     e.preventDefault();
+    if (!isValid) {
+      // friendly feedback for misconfigured number
+      // eslint-disable-next-line no-alert
+      alert(tr('components.whatsApp.noNumber','WhatsApp numarası yapılandırılmamış veya geçersiz.'));
+      return;
+    }
+
+    // Try to open the native WhatsApp app. If it doesn't open, fallback to web URL.
     // First try the deep link
     window.location.href = appUrl;
     // After a short delay, open web fallback in a new tab/window
