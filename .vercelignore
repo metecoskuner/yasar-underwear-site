@@ -1,0 +1,14 @@
+# Ignore large media and storage directories so they are not bundled into Vercel serverless functions
+# See: https://vercel.com/docs/ignoring-source-files
+
+# Top-level folders
+uploads
+media
+storage
+
+# Public media
+public/uploads
+public/media
+
+# Keep the media index (small JSON) so the API can read the list without bundling binaries
+!public/media-index.json

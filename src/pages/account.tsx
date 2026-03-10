@@ -1,4 +1,5 @@
 import SEO from '../components/SEO';
+import Link from 'next/link';
 
 export default function AccountPage() {
   return (
@@ -7,7 +8,13 @@ export default function AccountPage() {
 
       <main className="max-w-4xl mx-auto px-4 py-12">
         <h1 className="text-2xl font-semibold mb-4">Hesabım</h1>
-        <p className="text-gray-600">Hesap giriş / kayıt işlemleri demo olarak burada yer alacak.</p>
+        <p className="text-gray-600">Hesap bölümü henüz demo aşamasında. Aşağıdaki bağlantılarla siteyi keşfedebilirsiniz veya hesap detayları için bizimle iletişime geçin.</p>
+
+        <div className="mt-6 flex flex-wrap gap-3">
+          <Link href="/urunler" className="inline-block px-4 py-2 bg-black text-white rounded-md">Ürünleri Gör</Link>
+          <Link href="/contact" className="inline-block px-4 py-2 border border-gray-200 rounded-md">İletişime Geç</Link>
+          <Link href="/about" className="inline-block px-4 py-2 text-amber-600">Kurumsal Bilgi</Link>
+        </div>
       </main>
     </>
   );

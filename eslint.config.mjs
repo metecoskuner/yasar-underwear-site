@@ -11,6 +11,8 @@ const eslintConfig = defineConfig([
     ".next/**",
     "out/**",
     "build/**",
+    // ignore backup copy directory used in this workspace
+    "backup/**",
     "next-env.d.ts",
   ]),
 ]);

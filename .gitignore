@@ -7,7 +7,11 @@ npm-debug.log
 yarn-error.log
 .vscode
 dist
+
 # ignore large media files
-# public/videos/  <-- videos are now tracked in the repo root
-public/photos/*.png
+public/videos/        # videolar repo'da olmasın
+
+# allow photos for template/logos
+# public/photos/*.png  # bu satır silindi, foto repo'da kalacak
+
 *.tsbuildinfo

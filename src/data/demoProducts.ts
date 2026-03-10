@@ -1,18 +1,63 @@
+// Shared product store using localStorage as the single source of truth.
+// This file intentionally avoids hardcoded demo data. The app reads/writes
+// products to localStorage under the key `yasar:products`.
+
+export type Gender = 'male' | 'female' | 'unisex' | 'child';
+
 export type Product = {
   id: string;
   title: string;
-  productCode: string; // 'Ürün kodu' field
+  isFeatured?: boolean;
+  productCode?: string;
+  i18nTitle?: Record<string, string>;
+  i18nDescription?: Record<string, string>;
   color?: string;
   image?: string;
+  gender?: Gender;
+  category?: string;
+  images?: string[];
+  price?: number | null;
+  description?: string;
+  sizes?: string[];
+  stock?: number | null;
+  createdAt?: string;
 };
 
-export const products: Product[] = [
-  { id: 'p1', title: 'Pamuklu Slip Külot', productCode: '3089', color: 'bg-pink-100' },
-  { id: 'p2', title: 'Rahat Seamless Atlet', productCode: '3090', color: 'bg-yellow-100' },
-  { id: 'p3', title: 'Modal Boxer', productCode: '3091', color: 'bg-blue-100' },
-  { id: 'p4', title: 'Dantelli Bralet', productCode: '3092', color: 'bg-purple-100' },
-  { id: 'p5', title: 'Termal Pijama Takımı', productCode: '3093', color: 'bg-green-100' },
-  { id: 'p6', title: 'Pamuklu Çorap 3lü', productCode: '3094', color: 'bg-orange-100' },
-  { id: 'p7', title: 'Seamless Boxer', productCode: '3095', color: 'bg-teal-100' },
-  { id: 'p8', title: 'Bambu Atlet', productCode: '3096', color: 'bg-gray-100' },
-];
+const STORAGE_KEY = 'yasar:products';
+
+// Read products from localStorage. Safe to call on server — returns empty array.
+export function getProducts(): Product[] {
+  try {
+    if (typeof window === 'undefined') return [];
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? (parsed as Product[]) : [];
+  } catch (err) {
+    return [];
+  }
+}
+
+// Save products array to localStorage.
+export function saveProducts(products: Product[]) {
+  try {
+    if (typeof window === 'undefined') return;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(products || []));
+  } catch (err) {
+    void err;
+  }
+}
+
+// Helper to seed products programmatically (not used by default). Returns the saved array.
+export function seedProducts(products: Product[]) {
+  saveProducts(products);
+  return getProducts();
+}
+
+const demoProducts = {
+  getProducts,
+  saveProducts,
+  seedProducts,
+};
+
+export default demoProducts;

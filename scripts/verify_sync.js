@@ -1,0 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
+const fs=require('fs'); const path=require('path'); const master=JSON.parse(fs.readFileSync('src/locales/tr.json','utf8')); const locales=['en','fr','ar','ru'].map(l=>({lang:l,data:JSON.parse(fs.readFileSync(path.join('src','locales',l+'.json'),'utf8'))})); function flatten(obj,prefix=''){let out={}; for(const k of Object.keys(obj)){const p=prefix?`${prefix}.${k}`:k; if(obj[k] && typeof obj[k]==='object' && !Array.isArray(obj[k])){Object.assign(out,flatten(obj[k],p));} else {out[p]=true}} return out}
+const masterKeys=Object.keys(flatten(master)); let ok=true; for(const loc of locales){ const locKeys=flatten(loc.data); const missing=masterKeys.filter(k=>!(k in locKeys)); if(missing.length){ ok=false; console.log(`${loc.lang} missing ${missing.length} keys:\n` + missing.join('\n') + '\n'); } }
+if(ok) console.log('All locales contain master keys.');

@@ -1,0 +1,28 @@
+{
+  "sections": [
+    
+    {
+      "type": "features",
+      "introText": "Neden bizi seçmelisiniz?",
+      "items": [
+        { "title": "Kalite", "description": "Yüksek kaliteli malzemeler ve işçilik." },
+        { "title": "Konfor", "description": "Gün boyu rahatlık için tasarlanmış ürünler." },
+        { "title": "Sürdürülebilirlik", "description": "Sürdürülebilir üretim ve tedarik zinciri." }
+      ]
+    },
+    {
+      "type": "stats",
+      "items": [
+        { "value": "30+", "label": "Yıllık Deneyim" },
+        { "value": "100k+", "label": "Mutlu Müşteri" },
+        { "value": "200+", "label": "Ürün" }
+      ]
+    },
+    {
+      "type": "contactCta",
+      "title": "İletişime Geçin",
+      "description": "İşbirliği ve toplu sipariş için bize ulaşın.",
+      "responseTimeText": "48 saat içinde dönüş"
+    }
+  ]
+}

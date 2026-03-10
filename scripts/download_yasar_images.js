@@ -37,7 +37,7 @@ function extractImgSrcs(html, baseUrl) {
     try {
       const u = new URL(src, baseUrl).toString();
       imgs.push(u);
-    } catch (e) {
+    } catch {
       // skip invalid
     }
   }

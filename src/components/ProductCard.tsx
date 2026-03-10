@@ -1,23 +1,193 @@
-import React from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import Image from 'next/image';
+import useWishlist from '@/hooks/useWishlist';
+import { useLanguage } from '../contexts/LanguageContext';
 import type { Product } from '../data/demoProducts';
 
-export default function ProductCard({ product }: { product: Product }) {
+export default function ProductCard({
+  product,
+  onInspect,
+  showWishlist = true,
+}: {
+  product: Product;
+  onInspect?: (p: Product, preview?: number | string) => void;
+  showWishlist?: boolean;
+}) {
+  try { console.log('CARD PRODUCT:', product) } catch {}
+  const gallery = product.images?.length ? product.images : product.image ? [product.image] : [];
+  const PLACEHOLDER = '/photos/PYJAMA-BRANDS.avif';
+  const [errored, setErrored] = useState<Record<number, boolean>>({});
+  const [active, setActive] = useState(0);
+  const activeResetRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    if (activeResetRef.current) window.clearTimeout(activeResetRef.current);
+    activeResetRef.current = window.setTimeout(() => setActive(0), 0);
+    return () => {
+      if (activeResetRef.current) window.clearTimeout(activeResetRef.current);
+    };
+  }, [product.id]);
+
+  const { isFavorite, toggle } = useWishlist();
+  const [popping, setPopping] = useState(false);
+  const { t, lang } = useLanguage();
+  const tr = (key: string, fallback: string) => {
+    try {
+      const v = t(key);
+      return v === key ? fallback : v;
+    } catch {
+      return fallback;
+    }
+  };
+
+  // Product titles are dynamic data; do not route through i18n keys.
+  const langKey = String(lang).toLowerCase();
+  const rawLocalized = product.i18nTitle?.[langKey];
+  const displayTitle = (rawLocalized && String(rawLocalized).trim()) ? String(rawLocalized) : (product.title ?? '');
+
+  const categoryNames: Record<string, string> = {
+    'ic-giyim': tr('components.productCard.categories.ic-giyim', 'İç Giyim'),
+    'ev-giyim': tr('components.productCard.categories.ev-giyim', 'Ev Giyimi'),
+    corap: tr('components.productCard.categories.corap', 'Çorap & Aksesuar'),
+    aktif: tr('components.productCard.categories.aktif', 'Aktif & Rahat'),
+  };
+
+  const thumbs = gallery.length ? gallery.slice(0, 3) : Array.from({ length: 3 }).map((_, i) => `placeholder-${i}`);
+
   return (
-    <div className="glass-card rounded-lg overflow-hidden">
-      <div className={`h-44 flex items-center justify-center ${product.color ?? 'bg-gray-100'}`}>
-        {product.image ? (
-          <Image src={product.image} alt={product.title} width={220} height={160} className="object-contain" />
-        ) : (
-          <div className="text-gray-600 text-sm">Ürün görseli</div>
+    <div
+      role="button"
+      tabIndex={0}
+  aria-label={`${tr('components.productCard.inspect', 'İncele')}: ${displayTitle}`}
+      onClick={() => onInspect?.(product, active)}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onInspect?.(product, active);
+        }
+      }}
+      className="group rounded-lg overflow-hidden transform transition-transform duration-300 ease-out hover:scale-105 hover:shadow-md bg-white cursor-pointer focus:outline-none focus:ring-2 focus:ring-amber-300"
+    >
+  <div className={`relative product-card-media h-[300px] sm:h-[340px] md:h-[380px] lg:h-[400px] flex items-center justify-center ${product.color ?? 'bg-gray-100'}`}>
+        {/* category badge */}
+        {product.category && (
+          <div className="absolute top-3 left-3 bg-white/20 text-gray-300 text-xs px-2 py-1 rounded-md backdrop-blur-sm ring-1 ring-white/10">
+            {categoryNames[product.category] ?? product.category}
+          </div>
         )}
-      </div>
-      <div className="p-4">
-        <h3 className="text-sm font-semibold text-gray-800 truncate">{product.title}</h3>
-        <div className="mt-3 flex items-center justify-between">
-          <div className="text-xs text-gray-600">urun kodu: <span className="font-mono text-sm text-gray-800">{product.productCode}</span></div>
-          <button className="text-sm text-white bg-black px-3 py-1 rounded-full">İncele</button>
+
+        {/* wishlist */}
+        {showWishlist && (
+          <button
+            onClick={(e) => {
+                e.stopPropagation();
+                // If we're inside admin pages, avoid triggering client wishlist UI or
+                // dispatching events that other parts of the site listen to. Admin
+                // editors may reuse product cards for management actions and we
+                // should not modify local user wishlist or open UI in that context.
+                if (typeof window !== 'undefined' && window.location?.pathname?.startsWith('/admin')) {
+                  return;
+                }
+
+                const wasFav = isFavorite(product.id);
+                // pass the product object so the hook can persist minimal metadata
+                toggle(product);
+                if (!wasFav) {
+                  setPopping(true);
+                  window.setTimeout(() => setPopping(false), 380);
+                }
+                if (!wasFav && typeof navigator !== 'undefined') {
+                  // navigator.vibrate is not on every platform; cast to an extended Navigator
+                  const nav = navigator as Navigator & { vibrate?: (pattern: number | number[]) => boolean | void };
+                  nav.vibrate?.(10);
+                }
+              }}
+              aria-pressed={isFavorite(product.id)}
+            data-wishlist-button="true"
+              aria-label={isFavorite(product.id) ? tr('components.productCard.wishlist.remove', 'Favorilerden çıkar') : tr('components.productCard.wishlist.add', 'Favorilere ekle')}
+            className="absolute top-3 right-3 p-2 rounded-full bg-white/80 hover:bg-white text-gray-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-300 z-20 cursor-pointer touch-manipulation"
+          >
+            {isFavorite(product.id) ? (
+              <svg className={`h-5 w-5 text-rose-500 ${popping ? 'pop-heart' : ''}`} viewBox="0 0 20 20" fill="currentColor">
+                <path d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 18.657l-6.828-6.829a4 4 0 010-5.656z" />
+              </svg>
+            ) : (
+              <svg className={`h-5 w-5 ${popping ? 'pop-heart' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 016.364 0L12 7.636l1.318-1.318a4.5 4.5 0 116.364 6.364L12 20.364l-7.682-7.682a4.5 4.5 0 010-6.364z" />
+              </svg>
+            )}
+          </button>
+        )}
+
+        {/* main image */}
+        {gallery[active] ? (
+          <Image
+            key={gallery[active]}
+            src={errored[active] ? PLACEHOLDER : (gallery[active] as string)}
+            alt={displayTitle}
+            fill
+            sizes="(max-width: 768px) 100vw, 50vw"
+            onError={() => setErrored((s) => ({ ...s, [active]: true }))}
+            className="object-cover object-center pointer-events-none"
+          />
+        ) : (
+          <Image src={PLACEHOLDER} alt={tr('components.productCard.imageAlt', 'Ürün görseli')} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover object-center pointer-events-none" />
+        )}
+
+        {/* Desktop thumbnails */}
+        <div className="absolute left-4 bottom-3 opacity-0 translate-y-3 group-hover:opacity-100 group-hover:translate-y-0 transition-all hidden md:flex gap-2">
+              {thumbs.map((t, idx) => (
+            <button
+              key={idx}
+              onClick={(e) => {
+                e.stopPropagation();
+                if (active === idx) onInspect?.(product, t);
+                else setActive(idx);
+              }}
+              className="w-14 h-14 rounded-md overflow-hidden bg-white shadow border cursor-pointer"
+              aria-current={active === idx}
+            >
+              {gallery[idx] ? (
+                <Image
+                  key={t}
+                  src={errored[idx] ? PLACEHOLDER : (t as string)}
+                  alt=""
+                  width={56}
+                  height={56}
+                  onError={() => setErrored((s) => ({ ...s, [idx]: true }))}
+                  className="object-cover w-full h-full"
+                />
+              ) : (
+                <div className="w-full h-full bg-gray-200" />
+              )}
+            </button>
+          ))}
         </div>
+      </div>
+
+      {/* Mobile thumbnails */}
+      <div className="md:hidden mt-3 px-4 flex gap-2">
+        {thumbs.map((t, idx) => (
+          <button
+            key={idx}
+            onClick={(e) => {
+              e.stopPropagation();
+              if (active === idx) onInspect?.(product, t);
+              else setActive(idx);
+            }}
+            className="w-12 h-12 rounded-md overflow-hidden border cursor-pointer"
+          >
+            {gallery[idx] ? <Image src={t} alt="" width={48} height={48} className="object-cover w-full h-full" /> : <div className="w-full h-full bg-gray-200" />}
+          </button>
+        ))}
+      </div>
+
+      <div className="p-4">
+  <h3 className="text-sm font-semibold text-gray-800 truncate">{displayTitle}</h3>
+  {/* Product code shown prominently on card for quick reference */}
+  {product.productCode ? (
+    <div className="text-xs text-gray-500 mt-1 font-mono">{`${tr('pages.products.productCode','ürün kodu:')} ${product.productCode}`}</div>
+  ) : null}
       </div>
     </div>
   );

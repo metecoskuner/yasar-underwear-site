@@ -1,21 +1,30 @@
-import Link from 'next/link';
 import HeroSlider from './HeroSlider';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function Hero() {
+  const { t } = useLanguage();
+
+  const tr = (key: string, fallback: string) => {
+    try {
+      const v = t(key);
+      return v === key ? fallback : v;
+    } catch {
+      return fallback;
+    }
+  };
+
+  const title = tr('components.hero.title', 'Konfor & Şıklık — Her Gün')
+  const subtitle = tr('components.hero.subtitle', "Yumuşak, nefes alan iç giyim koleksiyonumuzla rahatlığı ve zarafeti keşfedin. Türkiye'de tasarlandı.")
+
   return (
     <section className="relative overflow-hidden">
+      {/* Use HeroSlider without slides prop so it falls back to default static images in code */}
       <HeroSlider />
-      <div className="relative max-w-6xl mx-auto px-4 py-28 flex flex-col items-center text-center">
-        <h1 className="text-4xl sm:text-5xl font-extrabold mb-4">Konfor & Şıklık — Her Gün</h1>
-        <p className="text-gray-700 max-w-2xl mb-6">Yumuşak, nefes alan iç giyim koleksiyonumuzla rahatlığı ve zarafeti keşfedin. Türkiye&apos;de tasarlandı.</p>
-        <div className="flex space-x-3">
-          <Link href="/collections" legacyBehavior>
-            <a className="inline-block bg-black text-white px-6 py-3 rounded-full font-semibold shadow hover:opacity-95">Koleksiyonları Gör</a>
-          </Link>
-          <Link href="/contact" legacyBehavior>
-            <a className="inline-block border border-black text-black px-5 py-3 rounded-full font-medium hover:bg-black hover:text-white transition">İletişim</a>
-          </Link>
-        </div>
+
+      <div className="relative max-w-6xl mx-auto px-4 py-20 sm:py-32 lg:py-44 xl:py-56 2xl:py-72 flex flex-col items-center text-center">
+        <h1 className="text-4xl sm:text-5xl font-extrabold mb-4 text-white">{title}</h1>
+        <p className="text-white/90 max-w-2xl mb-6">{subtitle}</p>
+        {/* Info cards remain handled by HeroInfoCards elsewhere */}
       </div>
     </section>
   );

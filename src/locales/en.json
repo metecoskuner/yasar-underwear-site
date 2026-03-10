@@ -5,10 +5,845 @@
     "sale": "Sale",
     "about": "About",
     "contact": "Contact",
-    "language": "Language"
+    "language": "Language",
+    "sustainability": "Sustainability",
+    "corporate": {
+      "title": "Corporate",
+      "about": "About",
+      "description": "Yasar Textile - summary of our mission, vision and corporate values.",
+      "aboutSubtitle": "Company history, values and mission & vision information"
+    },
+    "production": {
+      "title": "Production",
+      "facilities": "Facilities",
+      "quality": "Quality Processes",
+      "description": "Detailed information about our facilities, capacity and quality processes.",
+      "facilitiesSubtitle": "Facilities infrastructure, capacity and images",
+      "qualitySubtitle": "Quality controls, tests and certification"
+    },
+    "products": "Products"
   },
   "hero": {
     "title": "Comfort & Style",
     "subtitle": "Experience comfort with our everyday underwear collection"
+  },
+  "sustainability": {
+    "title": "Sustainability",
+    "heroLead": "We invest in the future through production processes focused on environmental and social responsibility.",
+    "metrics": {
+      "m1": "ISO 9001 compliant",
+      "m2": "Energy efficiency",
+      "m3": "Traceability"
+    },
+    "pillars": [
+      {
+        "title": "Responsible Materials",
+        "desc": "We prioritize fibers and fabrics sourced from sustainable suppliers."
+      },
+      {
+        "title": "Environmental Management",
+        "desc": "We reduce environmental impact through waste reduction and energy optimization."
+      },
+      {
+        "title": "Social Responsibility",
+        "desc": "We ensure worker health, fair pay and safe working conditions."
+      }
+    ],
+    "how": {
+      "title": "How We Work",
+      "lead": "Transparency, quality and continuous improvement guide our processes.",
+      "bullets": [
+        "Sustainable raw material sourcing",
+        "Energy efficiency and water saving projects",
+        "Waste management and recycling practices",
+        "Regular audits and transparent reporting"
+      ]
+    },
+    "cards": [
+      {
+        "title": "Traceable Production",
+        "text": "We keep records for all stages of production."
+      },
+      {
+        "title": "Quality & Assurance",
+        "text": "Strict quality controls are applied for each batch."
+      },
+      {
+        "title": "Energy Initiatives",
+        "text": "We reduce consumption through energy efficiency projects."
+      }
+    ],
+    "imageAlt2": "Sustainability image",
+    "footerNote": "Contact us to learn more about our sustainability approach."
+  },
+  "uretim": {
+    "tesis": {
+      "title": "Our Production Facilities",
+      "lead": "We provide a modern, safe and sustainable production infrastructure.",
+      "tags": {
+        "iso": "ISO 9001 compliant",
+        "energy": "Energy efficiency",
+        "spc": "SPC & traceability"
+      },
+      "features": {
+        "modernLines": {
+          "title": "Modern Lines",
+          "desc": "Efficient production with automated cutting and sewing lines."
+        },
+        "qualityLab": {
+          "title": "Quality Laboratory",
+          "desc": "Advanced testing and measurement laboratories."
+        },
+        "environment": {
+          "title": "Environmental Measures",
+          "desc": "Waste management and energy efficiency practices."
+        },
+        "training": {
+          "title": "Training & Safety",
+          "desc": "Ongoing training and occupational health measures."
+        }
+      },
+      "how": {
+        "title": "How We Work",
+        "lead": "Our facilities combine efficient production, worker safety and environmental responsibility. Processes are tracked with digital records and continuously improved."
+      },
+      "infrastructure": {
+        "title": "Infrastructure & Machines",
+        "items": [
+          "Automated cutting and sewing lines",
+          "SPC-based process control",
+          "Energy-efficient machines"
+        ]
+      },
+      "training": {
+        "title": "Training & Safety",
+        "heading": "Employee Training",
+        "lead": "Personnel training and safety protocols are regularly updated and monitored.",
+        "items": [
+          "Regular personnel trainings",
+          "Occupational health & safety protocols",
+          "Feedback mechanisms"
+        ],
+        "body": "Personnel training follows industry best practices and local protocols. We strengthen a safety culture and evolve programs with participant feedback."
+      },
+      "quality": {
+        "title": "Quality Assurance",
+        "lead": "Quality assurance is maintained through continuous monitoring, data records and feedback mechanisms.",
+        "bullets": [
+          "ISO 9001 compliant processes",
+          "SPC and reporting"
+        ]
+      },
+      "applications": {
+        "title": "On-site Practices",
+        "lead": "Key practices implemented in our facilities and the points we focus on are listed below.",
+        "items": [
+          "Automated cutting and quality tracking",
+          "Process control with SPC",
+          "Waste management and water saving"
+        ],
+        "summary": "Our infrastructure is designed with efficiency, occupational health and environmental impact in mind. We reduce energy consumption and manage waste with measurable targets."
+      },
+      "energy": {
+        "title": "Energy & Environment",
+        "lead": "Energy efficiency projects and waste reduction programs are part of our operations.",
+        "body": "Energy efficiency and water saving projects are in place; measurements are taken across the facility and progress is tracked through regular reporting."
+      }
+    }
+  },
+  "pages": {
+    "contact": {
+      "seo": {
+        "title": "Contact - Yasar",
+        "description": "Send us a message for inquiries, suggestions or requests."
+      },
+      "breadcrumb": {
+        "home": "Home",
+        "title": "Contact"
+      },
+      "header": {
+        "title": "Write to us",
+        "intro": "Send us a message for inquiries, suggestions, requests or anything else."
+      },
+      "map": {
+        "goto": "Go to location",
+        "showLocation": "Show location"
+      },
+      "locationsTitle": "Head Office & Production",
+      "quickInfoTitle": "Quick Info",
+      "noteTitle": "Note",
+      "noteText": "By submitting the form ",
+      "noteTextSuffix": " you agree to the processing of your data under the",
+      "privacyPolicy": "Privacy Policy"
+        ,"phoneLabel": "Phone:"
+        ,"emailLabel": "Email:"
+    },
+    "products": {
+      "title": "Products — Yasar",
+      "description": "Yasar product collection",
+      "hero": {
+        "title": "Men & Women Underwear Collection",
+        "subtitle": "Discover our products made with high-quality fabrics suitable for everyday use.",
+        "ctaInspect": "View products",
+        "ctaContact": "Contact us"
+      },
+      "gender": {
+        "all": "All",
+        "male": "Male",
+        "female": "Female"
+      },
+      "searchPlaceholder": "Search products",
+      "noResults": "No results",
+      "productCode": "Product code:",
+      "copy": "Copy",
+      "copied": "Copied",
+      "copyCodeAria": "Copy product code",
+      "preview": "Preview",
+      "requestInfo": "Request info",
+      "requestInfoAria": "Request info -"
+    },
+    "wholesale": {
+      "seo": {
+        "title": "Wholesale — Yasar",
+        "description": "Wholesale inquiries — distributors and wholesalers can apply for pricing and terms."
+      },
+      "breadcrumb": {
+        "home": "Home",
+        "title": "Wholesale"
+      },
+      "header": {
+        "title": "Wholesale Partnerships",
+        "lead": "We work with distributors and retailers worldwide. We offer competitive prices, reliable lead times and flexible MOQ options.",
+        "contact": "Contact",
+        "apply": "Apply"
+      },
+      "sections": {
+        "whoCanApply": {
+          "title": "Who can apply",
+          "body": "Distributors, wholesalers, online retailers and commercially registered multi-brand stores may apply."
+        },
+        "howItWorks": {
+          "title": "How it works",
+          "body": "Send your company information and order estimates. Our sales team will return with pricing and lead time information."
+        },
+        "policies": {
+          "title": "Policies",
+          "body": "Minimum order, exclusivity and cancellation policies will be shared during negotiation depending on region and volume."
+        }
+      },
+      "form": {
+        "title": "Apply for Wholesale",
+        "labels": {
+          "companyName": "Company name",
+          "country": "Country",
+          "website": "Website / Social",
+          "businessType": "Business type",
+          "interestedProducts": "Products of interest",
+          "estimatedFirstOrder": "Estimated first order",
+          "annualVolume": "Annual volume (estimate)",
+          "contactPerson": "Contact person",
+          "email": "Email",
+          "phone": "Phone",
+          "message": "Message / Details",
+          "submit": "Submit request"
+        },
+        "validation": {
+          "companyName": "Company name is required",
+          "country": "Country is required",
+          "contactName": "Contact person is required",
+          "email": "Email is required"
+        },
+        "sending": "Sending…",
+        "success": "Thank you — we received your request. We'll reply shortly.",
+        "submitError": "Unable to submit. Please try again later."
+      }
+      },
+    "privateLabel": {
+      "seo": {
+        "title": "Private Label & OEM — Yasar",
+        "description": "Private label and OEM manufacturing — full-service from design to packaging. MOQ and lead times vary by material and quantities."
+      },
+      "breadcrumb": { "home": "Home", "title": "Private Label" },
+      "header": {
+        "title": "Private Label & OEM",
+        "lead": "Take your brand to market — we offer full-service private label manufacturing from design to packaging. MOQ and lead times vary by materials and quantities.",
+        "typicalMoq": "Typical MOQ: 1000 pcs / style — contact us for a custom quote.",
+        "ctaStart": "Start private label"
+      },
+      "sections": {
+        "productionDetails": {
+          "title": "Production details",
+          "body": "Process: Design review → Sampling → Production → Quality control → Shipment. We provide packaging and labeling support for retail-ready products."
+        },
+        "samplePolicy": {
+          "title": "Sample policy",
+          "body": "Samples are provided upon request; sample fees may apply and can be refunded on approved orders."
+        },
+        "designPayment": {
+          "title": "Design & Payment",
+          "body": "Send your design files in vector PDF/AI format. Payment terms vary; typically deposit with balance on delivery, or letter of credit for large orders."
+        }
+      },
+      "form": {
+        "title": "Private label request",
+        "labels": {
+          "companyName": "Company name",
+          "country": "Country",
+          "activeBrand": "Active brand (if any)",
+          "targetMarket": "Target market",
+          "modelCount": "Model count (estimate)",
+          "colorOptions": "Color options",
+          "timeline": "Timeline",
+          "estimatedBulk": "Estimated bulk order",
+          "contactPerson": "Contact person",
+          "email": "Email",
+          "phone": "Phone",
+          "message": "Message / Details",
+          "submit": "Send private label request"
+        },
+        "validation": {
+          "companyName": "Company name is required",
+          "country": "Country is required",
+          "contactName": "Contact person is required",
+          "email": "Email is required"
+        },
+        "sending": "Sending…",
+        "success": "Thank you — we received your private label request. We'll be in touch shortly.",
+        "submitError": "Unable to submit. Please try again later."
+      }
+    },
+      "terms": {
+        "seo": {
+          "title": "Terms of Use - Yasar",
+          "description": "Terms of Use will be added soon. Contact us for more information."
+        },
+        "breadcrumb": {
+          "home": "Home",
+          "title": "Terms of Use"
+        },
+        "header": {
+          "title": "Terms of Use",
+          "intro": "This page will be available soon. For more information, please contact us: info@yasarunderwear.com"
+        },
+        "placeholder": "This page will be available soon. For more information, please contact us: info@yasarunderwear.com",
+        "contactLink": "Go to contact page"
+      },
+    "about": {
+      "title": "Corporate - Yasar",
+      "description": "About Yasar Textile: our mission, vision and production capabilities.",
+      "hero": {
+        "title": "Corporate",
+        "desc": "At Yasar we emphasize quality, sustainability and worker welfare. Our Turkish facilities use modern production techniques to deliver products meeting international standards."
+      },
+      "intro": {
+        "p1": "We are a family-owned manufacturer operating modern facilities in Turkey. From design to delivery, we apply quality controls and traceability at every step.",
+        "p2": "Sustainable raw material selection, energy efficiency and waste reduction practices are central to our operations.",
+        "p3": "Our team is experienced, disciplined and committed to continuous improvement. With a people-first management approach we are a reliable business partner."
+      },
+      "mission": "To provide our customers with comfortable, durable and ethically produced underwear solutions and to create sustainable value for our partners.",
+      "vision": "To be one of the first names that come to mind when quality and trust are mentioned in national and international markets.",
+      "stats": {
+        "production": "Annual Production (units)",
+        "exports": "Export Countries",
+        "facilities": "Facilities"
+      },
+      "milestones": {
+        "1992": "Established and started local production.",
+        "2005": "Modernized production line and quality laboratory.",
+        "2017": "Launched sustainable raw material program.",
+        "2023": "Strengthened international partnerships."
+      },
+      "headings": {
+        "mission": "Our mission",
+        "vision": "Our vision",
+        "values": "Our values",
+        "milestones": "Milestones",
+        "global": "Our global presence",
+        "countries": "Countries we operate in"
+      },
+      "cta": {
+        "facilities": "Our facilities",
+        "quality": "Quality processes"
+      },
+      "imageAlt": "Production Facilities",
+      "isoLines": "ISO compliant production lines",
+      "sections": {
+        "about": {
+          "title": "About",
+          "desc": "Learn more about our company history, production philosophy, mission and vision."
+        }
+      },
+      "values": {
+        "design": {
+          "title": "Design & Comfort",
+          "body": "Good design, durability and wearing comfort combined."
+        },
+        "facilities": {
+          "title": "Modern Facilities",
+          "body": "Energy-efficient, traceable production infrastructure."
+        },
+        "responsibility": {
+          "title": "Social Responsibility",
+          "body": "Worker health, fair wages and environmental measures."
+        },
+        "human": {
+          "title": "People First",
+          "body": "Prioritizing worker safety and development."
+        }
+      },
+      "quick": {
+        "title": "Quick overview",
+        "labels": {
+          "experience": "Years of experience",
+          "audits": "Audits / year",
+          "reducedWaste": "Reduced waste",
+          "foundation": "Foundation",
+          "location": "Location",
+          "certificates": "Certificates"
+        }
+      },
+      "contactPrompt": "For more information or corporate partnership requests, please contact us.",
+      "collab": {
+        "title": "Partnerships & Requests",
+        "body": "For site visits, technical questions or large volume orders, contact us directly.",
+        "cta": "Contact us"
+      }
+    },
+    "production": {
+      "quality": {
+        "title": "Quality Control Processes",
+        "heroLead": "Through rigorous quality inspections at every stage of production, we deliver consistent, traceable and reliable products. From sampling to packing, each step is recorded and supported by continuous improvement.",
+        "imageAlt": {
+          "hero": "Quality visual",
+          "sample": "Sample"
+        },
+        "badges": {
+          "iso": "ISO 9001 compliant",
+          "spc": "Traceability / SPC",
+          "experience": "30+ years of manufacturing experience"
+        },
+        "features": {
+          "sample": {
+            "title": "Sample",
+            "desc": "Measurements, seam and wash evaluations are performed during the sampling stage."
+          },
+          "production": {
+            "title": "Production",
+            "desc": "Ongoing inspections during cutting and sewing processes."
+          },
+          "packing": {
+            "title": "Packing",
+            "desc": "Final checks and labeling before packaging."
+          },
+          "assurance": {
+            "title": "Quality Assurance",
+            "desc": "Quality assurance is ensured through continuous monitoring, data recording and feedback mechanisms; recall and corrective action procedures are applied when required.",
+            "bullets": [
+              "ISO 9001 compliant processes",
+              "Recall & corrective action procedures",
+              "SPC and reporting"
+            ]
+          }
+        },
+        "sections": {
+          "how": {
+            "title": "How we work",
+            "lead": "Below you can find the main headings of our quality control processes and application examples. Standard Operating Procedures (SOP) are applied and recorded at each step."
+          },
+          "sample": {
+            "title": "Sample Stage",
+            "desc": "The following items are examined in detail during the sampling stage:"
+          },
+          "production": {
+            "title": "Production Stage",
+            "desc": "During production, specific controls are carried out in planning, cutting and sewing steps to ensure quality:"
+          },
+          "packing": {
+            "title": "Packing Stage",
+            "desc": "Final checks we apply before and during packing:"
+          }
+        },
+        "sampleChecks": [
+          "Assurance checks",
+          "Pattern control",
+          "In-line and post-sew inspections",
+          "Checks during washing stage",
+          "Checks during packing stage"
+        ],
+        "productionChecks": [
+          "Accessory and fabric acceptance checks",
+          "Check of pattern measurements and shrinkage values",
+          "Marker and fabric control",
+          "Defect removal after cutting",
+          "Quality reporting during and after sewing"
+        ],
+        "packingChecks": [
+          "Thread cleaning check",
+          "Ironing quality control",
+          "Measurement control",
+          "Color control",
+          "Optical quality control"
+        ],
+        "sample": {
+          "detail": "Measurements, wash tests and seam checks carried out during the sampling stage help ensure the product is ready for mass production. Our samples are usually reported within 3 working days and necessary corrections are applied quickly."
+        },
+        "stats": {
+          "firstPass": "98%",
+          "sampleReportTime": "3 days"
+        }
+      }
+    }
+  },
+  "wishlist": {
+    "title": "Favorites",
+    "clear": "Remove all",
+    "emptyTitle": "Your favorites list is empty",
+    "emptyBody": "Tap the heart on products to add them to your favorites.",
+    "viewProducts": "View products",
+    "added": "Product added to favorites ❤️",
+    "remove": "Remove"
+  },
+  "footer": {
+    "tagline": "Underwear made in Turkey. Comfort and quality.",
+    "links": "Links",
+    "home": "Home",
+  "products": "Products",
+  "sustainability": "Sustainability",
+    "contact": "Contact",
+    "corporate": {
+      "title": "Corporate",
+      "about": "About",
+      "aboutDetail": "Company details",
+      "vision": "Vision",
+      "mission": "Mission",
+      "clients": "Clients",
+      "description": "Yasar Textile - summary of our mission, vision and corporate values.",
+      "aboutSubtitle": "Company history, values and mission & vision information"
+    },
+    "production": {
+      "title": "Production",
+      "facilities": "Facilities",
+      "quality": "Quality Processes"
+    },
+    "follow": {
+      "title": "Follow us",
+      "desc": "Follow our social channels for promotions and updates."
+    },
+    "contactInfo": {
+      "title": "Contact",
+      "phone": "+90 212 520 92 99",
+      "email": "info@yasarunderwear.com",
+      "map": "See our address on the map"
+    },
+    "company": {
+      "paragraph1": "Underwear made in Turkey. Focused on comfort and quality.",
+      "paragraph2": "Founded in 1969, our company has become one of the leading manufacturers and exporters in the sector, specializing in nightwear, pajama sets, pajama bottoms and underwear, with over half a century of experience.",
+      "paragraph3": "With exports to Eastern Europe and the Middle East — including the United States, France, Spain, Greece and Israel — we proudly represent our high quality standards internationally. Committed to reliability, continuity and quality, we remain a trusted global partner."
+    },
+    "cookie": {
+      "reset": "Reset cookies"
+    },
+    "terms": "Terms",
+  "copyright": "© {year} Yasar. All rights reserved.",
+  "copyrightRaw": "© ${new Date().getFullYear()} Yasar. All rights reserved.",
+    "backToTop": "Back to top"
+  },
+  "components": {
+    "productCard": {
+      "inspect": "Inspect",
+      "inspectWithTitle": "{label}: {title}",
+      "imageAlt": "Product image",
+      "codeLabelLower": "product code: {code}",
+      "rawInspect": "${tr('components.productCard.inspect', 'Inspect')}: ${product.title}",
+      "rawCode": "product code: ${product.productCode}",
+      "categories": {
+        "ic-giyim": "Underwear",
+        "ev-giyim": "Homewear",
+        "corap": "Socks & Accessories",
+        "aktif": "Active & Casual"
+      },
+      "wishlist": {
+        "add": "Add to favorites",
+        "remove": "Remove from favorites"
+      }
+    },
+    "productGrid": {
+      "title": "Featured Products",
+      "subtitle": "Our curated popular and recommended items — quality and comfort together.",
+      "viewAll": "View all"
+    },
+    "categories": {
+      "ic-giyim": "Underwear",
+      "ev-giyim": "Homewear",
+      "corap": "Socks & Accessories",
+      "aktif": "Active & Casual"
+    },
+    "common": {
+      "imagePlaceholder": "Image",
+      "close": "Close",
+      "open": "Open"
+    },
+    "cookieBanner": {
+      "ariaLabel": "Cookie preferences",
+      "title": "Cookie preferences",
+      "body": "Our site uses cookies to improve the experience. You can choose whether to accept analytics and marketing cookies.",
+      "privacyLink": "Privacy Policy",
+      "acceptAll": "Accept all",
+      "settings": "Settings",
+      "reject": "Reject",
+      "settingsTitle": "Cookie settings",
+      "settingsBody": "Select which cookies you want to accept.",
+      "required": {
+        "title": "Required",
+        "body": "Cookies required for the site to function (cannot be disabled)."
+      },
+      "analytics": {
+        "title": "Analytics",
+        "body": "Helps us understand site usage."
+      },
+      "marketing": {
+        "title": "Marketing",
+        "body": "Advertising and targeting cookies."
+      },
+      "cancel": "Cancel",
+      "save": "Save"
+    },
+    "hero": {
+      "title": "Trusted Turkish Pajama and Homewear Manufacturer Since 1969",
+      "subtitle": "High-quality production with a monthly capacity of 200K–500K. Private label and wholesale manufacturing solutions for global brands.",
+      "ctaCollections": "View Collections",
+      "ctaQuote": "Get a Quote"
+    },
+    "heroRaw": {
+      "subtitleFragment": ", \"Soft, breathable everyday underwear collection that brings comfort and elegance. \nTurkey"
+    },
+    "heroRawExact": {
+      "subtitleExact": ", \"Soft, breathable everyday underwear collection that brings comfort and elegance. \nTurkey                                                                                    "
+    },
+    "quoteModal": {
+      "title": "Request a Quote",
+      "lead": "Give us brief details and our quotes team will get back to you.",
+      "placeholders": {
+        "name": "Your full name",
+        "email": "Email (you@company.com)",
+        "company": "Company (optional)",
+        "phone": "Phone / WhatsApp",
+        "product": "Related product (optional)",
+        "qty": "Estimated quantity (e.g. 1000)",
+        "message": "Details / special requests"
+      },
+      "errors": {
+        "missingFields": "Please fill name, email and quantity.",
+        "submitFail": "An error occurred while sending"
+      },
+      "success": "Your request was received — we will reply shortly.",
+      "buttons": {
+        "cancel": "Cancel",
+        "submit": "Request Quote",
+        "submitting": "Sending…"
+      }
+    },
+    "contact": {
+      "title": "Contact",
+      "intro": "Write to us for questions, partnerships or wholesale requests. Average response time",
+      "formIntro": "Fill out the form for questions or call us",
+      "avgResponse": "24 hours",
+      "replyApprox": "Reply: ~24h",
+      "emailLabel": "Email",
+      "phoneLabel": "Phone",
+      "hoursLabel": "Hours",
+      "hours": "Weekdays 09:00 – 18:00",
+      "sendEmail": "Send Email",
+      "callUs": "Call Us",
+      "sending": "Sending…",
+      "sendMessage": "Send Message",
+      "success": "Your message was sent successfully ✅",
+      "errors": {
+        "nameRequired": "Name required",
+        "emailRequired": "Email required",
+        "emailInvalid": "Invalid email",
+        "messageRequired": "Message cannot be empty"
+      },
+      "form": {
+        "name": "Name",
+        "email": "Email",
+        "phone": "Phone",
+        "message": "Message"
+      },
+      "formPromptDot": "Fill the form for questions or call us.",
+      "sendFailForm": "Submission failed. Please try again.",
+      "networkError": "Network error. Please try again later.",
+      "consent": "I acknowledge and accept the Protection of Personal Data Law.",
+      "privacyFragmentExact": ", \"Protection of Personal Data Law",
+      "consentEscaped": "I acknowledge and accept the Protection of Personal Data Law.'"
+    },
+    "media": {
+      "title": "See, Feel, Explore",
+      "prev": "Previous",
+      "next": "Next",
+      "goTo": "Go {n}"
+    },
+    "whyUs": {
+      "title": "Why Us?",
+      "intro": "Since our founding we put quality, comfort and customer satisfaction at the center.",
+      "experience": {
+        "title": "50+ Years of Experience",
+        "body": "Expertise, trust and steady production practices since 1969."
+      },
+      "quality": {
+        "title": "High Quality Fabrics",
+        "body": "Skin-friendly, breathable and long-lasting fabrics for maximum comfort."
+      },
+      "design": {
+        "title": "Modern & Comfortable Design",
+        "body": "Stylish, ergonomic cuts suitable for everyday use."
+      },
+      "standards": {
+        "title": "Reliable Production Standards",
+        "body": "Carefully controlled production processes at every stage."
+      },
+      "counters": {
+        "monthlyCapacity": "Monthly Production Capacity",
+        "facilityArea": "m² Production Facility",
+        "employees": "Employees",
+        "exportCountries": "Export Countries"
+      }
+    },
+    "header": {
+      "aria": {
+        "openLangMenu": "Open language menu",
+        "closeLangMenu": "Close language menu",
+        "openMenu": "Open menu",
+        "closeMenu": "Close menu"
+      }
+    },
+    "heroInfoCards": {
+      "wholesale": {
+        "title": "Wholesale Sales Application",
+        "description": "We offer competitive pricing, flexible production capacity and fast delivery for large orders. Yasar Textile provides sustainable wholesale manufacturing solutions for retailers, chains, distributors and e-commerce businesses.",
+        "cta": "Apply for Wholesale"
+      }
+      ,
+      "private": {
+        "title": "Create Your Own Brand",
+        "description": "At Yasar Textile we offer private label and OEM manufacturing services for underwear brands. We professionally manage the whole process from design to production, labeling and packaging.",
+        "cta": "Start the production process"
+      }
+    },
+    "whatsApp": {
+      "open": "WhatsApp uygulamasında aç",
+      "sr": "WhatsApp"
+    }
+  },
+  "adminLayout": {
+    "logout": "Log out"
+  },
+  "admin": {
+    "images": {
+      "unauthorized": "Unauthorized - please login first",
+      "failed": "Failed",
+      "uploadedTemplate": "{name} uploaded",
+      "uploadedFName": "${f.name} uploaded",
+      "uploadFailed": "Upload failed",
+      "uploadError": "Upload error",
+      "deleteFailed": "Delete failed",
+      "deleteRequestFailed": "Delete request failed",
+      "copyFailed": "Copy failed",
+      "systemPhotoTitle": "System photos cannot be deleted",
+      "newPhotosInstruction": "Click the button to upload new photos (multiple supported)",
+      "uploading": "Uploading…"
+    },
+    "products": {
+      "failed": "Failed",
+      "saveFailed": "Save failed",
+      "confirmDelete": "Delete product?",
+      "deleteRequestFailed": "Delete request failed",
+      "imageUploadFailed": "Image upload failed",
+      "newProduct": "New Product",
+      "edit": "Edit",
+      "editProduct": "Edit Product",
+      "delete": "Delete",
+      "uploadImages": "Upload Images",
+      "optional": "(optional)",
+      "thumbnailsLabel": "Thumbnails"
+    },
+    "common": {
+      "adminPasswordPlaceholder": "Admin password",
+      "login": "Login",
+      "refresh": "Refresh",
+      "loading": "Loading…",
+      "backToOverview": "Back to overview"
+    },
+    "content": {
+      "saveFailed": "Save failed",
+      "saveError": "Save error",
+      "deleteError": "Delete error",
+      "deleteFailed": "Delete failed",
+      "undoConfirm": "Are you sure you want to undo the last entry? This will restore server content to the previous state.",
+      "undoFailed": "Undo failed",
+      "undoSuccess": "Undone",
+      "undoError": "Undo error",
+      "loginFailed": "Login failed",
+      "loginRequestFailed": "Login request failed"
+    }
+  },
+  "api": {
+    "quote": {
+      "qtyPositive": "Quantity must be a positive number.",
+      "success": "Your request was received",
+      "emailBody": "<p><strong>Name:</strong> {name}</p><p><strong>Email:</strong> {email}</p><p><strong>Company:</strong> {company}</p><p><strong>Phone:</strong> {phone}</p><p><strong>Product:</strong> {product}</p><p><strong>Quantity:</strong> {qty}</p><p><strong>Message:</strong></p><div>{message}</div>",
+      "emailBodyRaw": "<p><strong>Name:</strong> ${safeName}</p><p><strong>Email:</strong> ${safeEmail}</p><p><strong>Company:</strong> ${safeCompany ?? ''}</p><p><strong>Phone:</strong> ${safePhone ?? ''}</p><p><strong>Product:</strong> ${safeProduct ?? ''}</p><p><strong>Quantity:</strong> ${qtyNum}</p><p><strong>Message:</strong></p><div>${safeMessage ?? ''}</div>",
+      "serverError": "Server error"
+    },
+    "contact": {
+      "newFormSubject": "New contact form: {name}",
+      "newFormSubjectRaw": "New contact form: ${safeName}",
+      "emailBody": "<p><strong>Name:</strong> {name}</p><p><strong>Email:</strong> {email}</p><p><strong>Message:</strong></p><div>{message}</div>",
+      "emailBodyRaw": "<p><strong>Name:</strong> ${safeName}</p><p><strong>Email:</strong> ${safeEmail}</p><p><strong>Message:</strong></p><div>${safeMessage.replace(/\\n/g, '<br/>')}</div>"
+    },
+    "admin_images": {
+      "fileNotFound": "File not found",
+      "uploadError": "File upload error",
+      "fileWriteError": "File could not be written",
+      "deleteFailed": "Delete failed"
+    }
+  },
+  "config": {
+    "mapPlaces": {
+      "mahmutpasa": {
+        "name": "Mahmutpaşa Mosque",
+        "address": "Mahmutpaşa Mosque Courtyard No:12/A, Fatih/Istanbul"
+      },
+      "facility1": { "name": "Production 1", "location": "Küçükçekmece / Istanbul" },
+      "facility2": { "name": "Production 2", "location": "Yenişehir / Bursa" }
+    }
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "seoTitle": "Privacy Policy - Yasar",
+    "headerTitle": "Yasar Privacy Policy",
+    "intro": "We care about protecting your personal data and processing it transparently and securely. This page summarizes which data we collect, how we use it and your rights.",
+    "sections": {
+      "lead1": "We care about protecting your personal data. Below we summarize which data we collect, how we use it and your rights. For details, please contact us.",
+      "lead2": "We implement reasonable technical and administrative measures to protect your data. For privacy questions, requests or complaints, please contact us.",
+      "personalData": "Your name, email address, phone number and other information you enter into contact forms. We may also collect cookies and technical data related to site usage (IP address, browser information, page views, etc.).",
+      "whyUse": "We use collected data to respond to your requests, deliver and improve our services, manage order/quote processes and to fulfill our legal obligations.",
+      "sharing": "Your data is not shared with third parties unless you give explicit consent or when required by law. Limited, purpose-bound sharing with subcontractors (e.g., shipping, payment providers) may occur; such transfers are carried out securely.",
+      "rights": "Right to access and correct your data; right to request deletion or restriction of processing; right to object to processing and data portability.",
+      "cookies": "Performance and analytics cookies may be used on the site. You can manage or disable cookies via your browser settings; some features may not function properly if cookies are disabled.",
+      "securityContact": "We apply reasonable technical and administrative measures to protect your data. For privacy-related questions, requests or complaints, please contact us."
+    }
+    ,"quickSummary": "Quick Summary"
+  },
+  "locations": {
+    "tr": "Turkey",
+    "uk": "United Kingdom",
+    "de": "Germany",
+    "ro": "Romania",
+    "kw": "Kuwait",
+    "ly": "Libya",
+    "nl": "Netherlands",
+    "fr": "France",
+    "us": "United States"
   }
 }

@@ -1,8 +1,13 @@
 name: CI
 
 on:
-  push: {}
-  pull_request: {}
+  push:
+    # Run CI on main and feature branches so branch statuses are available on pushes
+    branches:
+      - main
+      - 'feat/**'
+  pull_request:
+    branches: [ main ]
 
 jobs:
   build:
@@ -16,18 +21,18 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          # Next 16 wants Node >=20.9.0; use Node 20 on CI to avoid engine warnings
+          node-version: 20
           cache: 'npm'
 
-      - name: Install root dependencies
-        run: npm ci --legacy-peer-deps
-
-      - name: Install site dependencies
-        run: npm --prefix yasar-underwear-site ci --legacy-peer-deps
+      - name: Install dependencies
+        run: |
+          # Install dependencies at repository root
+          npm install --legacy-peer-deps
 
       - name: Build site
-        run: npm --prefix yasar-underwear-site run build
+        run: npm run build
 
-      - name: Run lint (non-blocking)
+      - name: Run lint
         run: |
-          npm --prefix yasar-underwear-site run lint || true
+          npm run lint

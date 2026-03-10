@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useLanguage } from '@/contexts/LanguageContext';
 
 type VideoItem = { src: string; poster?: string; focal?: string };
 
@@ -12,8 +13,19 @@ const VIDEOS: VideoItem[] = [
 ];
 
 export default function MediaWrap() {
+  const { t, lang } = useLanguage();
+  const tr = (key: string, fallback: string) => {
+    try {
+      const v = t(key);
+      return v === key ? fallback : v;
+    } catch {
+      return fallback;
+    }
+  };
   const containerRef = useRef<HTMLDivElement | null>(null);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+  const indexRef = useRef<number>(0);
+  const skipScrollRef = useRef(false); // set when index was changed by scroll handler to avoid fighting user
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
   const visible = useRef<Set<number>>(new Set()); // hangi indeksler görünür
@@ -39,8 +51,19 @@ export default function MediaWrap() {
     const cont = containerRef.current;
     const card = videoRefs.current[index]?.parentElement as HTMLElement | undefined;
     if (!cont || !card) return;
+    // if the index was set from a user scroll, don't force-scroll and clear the flag
+    if (skipScrollRef.current) {
+      skipScrollRef.current = false;
+      return;
+    }
+
     const left = card.offsetLeft + card.clientWidth / 2 - cont.clientWidth / 2;
     cont.scrollTo({ left, behavior: "smooth" });
+  }, [index]);
+
+  // keep an up-to-date ref of index for event handlers
+  useEffect(() => {
+    indexRef.current = index;
   }, [index]);
 
   // --- keyboard navigation when the carousel has focus ---
@@ -76,7 +99,6 @@ export default function MediaWrap() {
         v.load();
       } catch {}
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // --- IntersectionObserver: lazy-load & mark visible ---
@@ -109,7 +131,6 @@ export default function MediaWrap() {
 
     videoRefs.current.forEach((v) => v && obs.observe(v));
     return () => obs.disconnect();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // --- play active video (try to play regardless of intersection visibility) ---
@@ -157,7 +178,7 @@ export default function MediaWrap() {
       if (Math.abs(pointer.current.deltaX) > 6) pointer.current.moved = true;
       // (isteğe bağlı) görsel feedback için translate eklenebilir
     }
-    function onPointerUp(e: PointerEvent) {
+    function onPointerUp() {
       if (!pointer.current.dragging) return;
       pointer.current.dragging = false;
       const dx = pointer.current.deltaX;
@@ -193,10 +214,11 @@ export default function MediaWrap() {
       const t = e.touches[0];
       pointer.current.deltaX = t.clientX - pointer.current.startX;
       if (Math.abs(pointer.current.deltaX) > 6) pointer.current.moved = true;
-      // prevent vertical page scroll when actively dragging horizontally
-      if (Math.abs(pointer.current.deltaX) > 10) e.preventDefault();
+      // We no longer call preventDefault here because the listener is passive.
+      // Rely on the container's `touch-action: pan-x` to allow horizontal swipes
+      // while preserving native scroll performance.
     }
-    function onTouchEnd(e: TouchEvent) {
+    function onTouchEnd() {
       if (!pointer.current.dragging) return;
       pointer.current.dragging = false;
       const dx = pointer.current.deltaX;
@@ -223,9 +245,9 @@ export default function MediaWrap() {
     window.addEventListener("pointermove", onPointerMove);
     window.addEventListener("pointerup", onPointerUp);
     window.addEventListener("pointercancel", onPointerCancel);
-  // touch listeners — note: touchmove is non-passive so we can call preventDefault when dragging
+  // touch listeners — keep touchmove passive so native scrolling on touch devices isn't blocked
   cont.addEventListener("touchstart", onTouchStart, { passive: true });
-  window.addEventListener("touchmove", onTouchMove, { passive: false });
+  window.addEventListener("touchmove", onTouchMove, { passive: true });
   window.addEventListener("touchend", onTouchEnd);
   window.addEventListener("touchcancel", onPointerCancel);
 
@@ -241,24 +263,79 @@ export default function MediaWrap() {
     };
   }, [index]);
 
+  // --- user scroll handling: detect which card is centered and set index so its video plays ---
+  useEffect(() => {
+    const cont = containerRef.current;
+    if (!cont) return;
+
+    let rafPending = false;
+
+    function onScroll() {
+      if (rafPending) return;
+      rafPending = true;
+      requestAnimationFrame(() => {
+        rafPending = false;
+        const current = containerRef.current;
+        if (!current) return;
+        const contRect = current.getBoundingClientRect();
+        const contCenter = (contRect.left + contRect.right) / 2;
+        let bestIdx = indexRef.current;
+        let bestDist = Infinity;
+        videoRefs.current.forEach((v, i) => {
+          if (!v || !v.parentElement) return;
+          const cardRect = (v.parentElement as HTMLElement).getBoundingClientRect();
+          const cardCenter = (cardRect.left + cardRect.right) / 2;
+          const dist = Math.abs(cardCenter - contCenter);
+          if (dist < bestDist) {
+            bestDist = dist;
+            bestIdx = i;
+          }
+        });
+
+        if (bestIdx !== indexRef.current) {
+          // mark skipScroll so the scroll-to-active effect doesn't fight this user scroll
+          skipScrollRef.current = true;
+          setPaused(true);
+          setIndex(bestIdx);
+        }
+      });
+    }
+
+    cont.addEventListener('scroll', onScroll, { passive: true });
+    return () => cont.removeEventListener('scroll', onScroll);
+  }, []);
+
   // --- resume autoplay after mouse leaves (opsiyonel) ---
   // burada istersen belirli bir süre sonra autoplay i yeniden başlatabilirsin
   useEffect(() => {
     if (!paused) return;
-    let t = setTimeout(() => {
+    const t = setTimeout(() => {
       setPaused(false);
     }, 30000); // 30s sonra otomatik geri başlat (isteğe bağlı)
     return () => clearTimeout(t);
   }, [paused]);
 
+  // debug: print current lang and resolved media title to help diagnose missing translations
+  // this runs as a side-effect and does not render anything
+  React.useEffect(() => {
+    if (typeof window === 'undefined') return;
+    try {
+      if (process.env.NODE_ENV === 'development') {
+        console.debug('[MediaWrap] lang=', lang, 'title=', t('components.media.title'));
+      }
+    } catch {
+      // ignore
+    }
+  }, [lang, t]);
+
   return (
     <section className="max-w-6xl mx-auto px-4 py-8">
-      <h3 className="text-lg font-semibold mb-4">Gör, Hisset, Keşfet</h3>
+      <h3 className="text-lg font-semibold mb-4">{tr('components.media.title','Gör, Hisset, Keşfet')}</h3>
 
       <div className="relative">
         {/* LEFT BUTTON */}
         <button
-          aria-label="Önceki"
+          aria-label={tr('components.media.prev','Önceki')}
           className="absolute left-2 top-1/2 -translate-y-1/2 z-20 p-2 bg-white/90 rounded-full shadow-md cursor-pointer"
           onClick={() => {
             setPaused(true);
@@ -270,7 +347,7 @@ export default function MediaWrap() {
 
         {/* RIGHT BUTTON */}
         <button
-          aria-label="Sonraki"
+          aria-label={tr('components.media.next','Sonraki')}
           className="absolute right-2 top-1/2 -translate-y-1/2 z-20 p-2 bg-white/90 rounded-full shadow-md cursor-pointer"
           onClick={() => {
             setPaused(true);
@@ -282,8 +359,8 @@ export default function MediaWrap() {
 
         <div
           ref={containerRef}
-          className="flex gap-6 overflow-x-hidden overflow-y-hidden no-scrollbar snap-x snap-mandatory"
-          style={{ touchAction: "pan-x" }}
+          className="flex gap-6 overflow-x-auto overflow-y-hidden no-scrollbar snap-x snap-mandatory"
+          style={{ touchAction: "pan-x", WebkitOverflowScrolling: 'touch' }}
           tabIndex={0}
           role="region"
           aria-label="Video carousel"
@@ -327,7 +404,7 @@ export default function MediaWrap() {
           {VIDEOS.map((_, i) => (
             <button
               key={i}
-              aria-label={`Go to ${i + 1}`}
+              aria-label={tr('components.media.goTo','Go to {n}').replace('{n}', String(i + 1))}
               onClick={() => {
                 setPaused(true);
                 setIndex(i);
