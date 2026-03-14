@@ -15,6 +15,9 @@ model Product {
   productCode String?  
   images      Json?    @db.Json
   stock       Int?     
+  gender      String?
+  isActive    Boolean?
+  isFeatured  Boolean?
   createdAt   DateTime @default(now())
 }
 
