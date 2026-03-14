@@ -32,16 +32,19 @@ export default function SEO({
   alternates,
   jsonLd,
   type = 'website',
-}: SEOProps) {
+}: SEOProps): JSX.Element {
+
   const site = (process.env.NEXT_PUBLIC_SITE_URL || '').replace(/\/$/, '')
   const safeUrl = url || '/'
-  const fullUrl = safeUrl.startsWith('http') ? safeUrl : (site ? `${site}${safeUrl.startsWith('/') ? '' : '/'}${safeUrl}` : safeUrl)
+
+  const fullUrl = safeUrl.startsWith('http')
+    ? safeUrl
+    : (site ? `${site}${safeUrl.startsWith('/') ? '' : '/'}${safeUrl}` : safeUrl)
+
   const canonicalHref = canonical || fullUrl
   const imageHref = image ? ensureAbsolute(site || '', image) : undefined
 
-  // build alternates automatically if none provided (best-effort)
-  const autoAlternates: Alternate[] | undefined = alternates ?? DEFAULT_LOCALES.map((l) => {
-    // assume localized pages live under /<lang>/<path> except for 'tr' which is root
+  const autoAlternates: Alternate[] = DEFAULT_LOCALES.map((l) => {
     const path = safeUrl === '/' ? '' : safeUrl
     const href = l === 'tr' ? `${site}${path}` : `${site}/${l}${path}`
     return { hrefLang: l, href }
@@ -52,22 +55,18 @@ export default function SEO({
       <title>{title}</title>
       <meta name="description" content={description} />
 
-      {/* Canonical */}
       {canonicalHref && <link rel="canonical" href={canonicalHref} />}
 
-      {/* hreflang alternates (auto or explicit) */}
-      {(alternates ?? autoAlternates)?.map((a) => (
+      {(alternates ?? autoAlternates).map((a) => (
         <link key={a.hrefLang} rel="alternate" hrefLang={a.hrefLang} href={a.href} />
       ))}
 
-      {/* Open Graph / Facebook */}
       <meta property="og:type" content={type} />
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
       {imageHref && <meta property="og:image" content={imageHref} />}
       <meta property="og:url" content={fullUrl} />
 
-      {/* Twitter */}
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
@@ -75,11 +74,9 @@ export default function SEO({
 
       <link rel="icon" href="/photos/yasarLogo2.jpg" />
 
-      {/* JSON-LD structured data */}
       {jsonLd && (
         <script
           type="application/ld+json"
-          // JSON.stringify returns string; cast safe for React
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       )}
