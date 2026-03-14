@@ -18,7 +18,7 @@ const contactSchema = z.object({
 
 type ContactForm = z.infer<typeof contactSchema>;
 
-export default function ContactPage(): JSX.Element {
+export default function ContactPage(): React.ReactElement {
   const { register, handleSubmit, formState, setError, reset } = useForm<ContactForm>({ resolver: zodResolver(contactSchema) });
   const { errors, isSubmitting, isSubmitSuccessful } = formState;
   const mapRef = useRef<HTMLDivElement | null>(null);

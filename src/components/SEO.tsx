@@ -1,3 +1,4 @@
+import React from 'react'
 import Head from 'next/head'
 
 type Alternate = { hrefLang: string; href: string }
@@ -32,7 +33,7 @@ export default function SEO({
   alternates,
   jsonLd,
   type = 'website',
-}: SEOProps): JSX.Element {
+}: SEOProps): React.ReactElement {
 
   const site = (process.env.NEXT_PUBLIC_SITE_URL || '').replace(/\/$/, '')
   const safeUrl = url || '/'

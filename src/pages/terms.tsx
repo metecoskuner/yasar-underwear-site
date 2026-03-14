@@ -3,7 +3,7 @@ import Link from 'next/link';
 import SEO from '../components/SEO';
 import { useLanguage } from '@/contexts/LanguageContext';
 
-export default function TermsPage(): JSX.Element {
+export default function TermsPage(): React.ReactElement {
   const { t } = useLanguage();
   const tr = (key: string, fallback: string) => {
     try {

@@ -12,5 +12,31 @@ model Product {
   title       String
   description String
   imageUrl    String?
+  productCode String?  
+  images      Json?    @db.Json
+  stock       Int?     
   createdAt   DateTime @default(now())
+}
+
+model SiteContent {
+  key   String @id
+  value Json?
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model HoneypotLog {
+  id             String   @id @default(cuid())
+  ip             String
+  userAgent      String?
+  submittedValue String?
+  createdAt      DateTime @default(now())
 }

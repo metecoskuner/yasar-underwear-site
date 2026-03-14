@@ -1,8 +1,9 @@
+import React from 'react'
 import SEO from '@/components/SEO'
 import Link from 'next/link'
 import { useLanguage } from '@/contexts/LanguageContext'
 
-export default function PrivacyPage(): JSX.Element {
+export default function PrivacyPage(): React.ReactElement {
   const { t } = useLanguage()
   const tr = (key: string, fallback = '') => {
     try {
