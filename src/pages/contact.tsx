@@ -14,6 +14,13 @@ const ContactPage: NextPage = () => {
   const [success, setSuccess] = useState(false)
   const [form, setForm] = useState({ name: '', email: '', phone: '', message: '' })
 
+  // Get translated title for a place
+  const getTranslatedTitle = (placeId: string): string => {
+    const key = `mapPlaces.${placeId}` as const
+    const translated = t(key)
+    return translated !== key ? (translated as string) : MAP_PLACES.find(p => p.id === placeId)?.title || ''
+  }
+
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     setForm(prev => ({ ...prev, [e.target.name]: e.target.value }))
   }
@@ -102,7 +109,7 @@ const ContactPage: NextPage = () => {
                     <div className="space-y-2">
                       {MAP_PLACES.map((place) => (
                         <div key={place.id} className="text-sm">
-                          <p className="font-medium text-slate-800">{place.title}</p>
+                          <p className="font-medium text-slate-800">{getTranslatedTitle(place.id)}</p>
                           <p className="text-slate-600 text-xs">{place.addr}</p>
                         </div>
                       ))}

@@ -838,6 +838,14 @@
     "googleMapsLink": "فتح في خرائط Google →",
     "coordinates": "📍 {lat}, {lng}"
   },
+  "mapPlaces": {
+    "toptan-magaza": "متجر الجملة",
+    "perakende-magaza": "متجر التجزئة",
+    "showroom": "صالة العرض",
+    "workshop-kemalpasa": "ورشة/مستودع",
+    "workshop-bursa-29a": "ورشة/مستودع",
+    "workshop-bursa-43-1": "ورشة/مستودع"
+  },
   "admin": {
     "images": {
       "unauthorized": "غير مصرح - الرجاء تسجيل الدخول أولاً",

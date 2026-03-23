@@ -21,6 +21,14 @@ export default function ContactMap() {
   } : null)
   const [mapLoaded, setMapLoaded] = useState(false)
 
+  // Get translated title for a place
+  const getTranslatedTitle = (placeId: string): string => {
+    const key = `mapPlaces.${placeId}` as const
+    const translated = t(key)
+    // If translation found, use it; otherwise fallback to place title
+    return translated !== key ? (translated as string) : MAP_PLACES.find(p => p.id === placeId)?.title || ''
+  }
+
   useEffect(() => {
     // Leaflet scripti yükle
     const link = document.createElement('link')
@@ -91,11 +99,11 @@ export default function ContactMap() {
       })
 
       L.marker([place.lat, place.lng], { icon: customIcon })
-        .bindPopup(`<div class="text-sm"><strong>${place.title}</strong><br/>${place.addr}</div>`)
+        .bindPopup(`<div class="text-sm"><strong>${getTranslatedTitle(place.id)}</strong><br/>${place.addr}</div>`)
         .on('click', () => {
           setSelectedPlace({
             id: place.id,
-            title: place.title,
+            title: getTranslatedTitle(place.id),
             addr: place.addr,
             lat: place.lat,
             lng: place.lng
@@ -131,7 +139,7 @@ export default function ContactMap() {
               onClick={() =>
                 setSelectedPlace({
                   id: place.id,
-                  title: place.title,
+                  title: getTranslatedTitle(place.id),
                   addr: place.addr,
                   lat: place.lat,
                   lng: place.lng
@@ -143,7 +151,7 @@ export default function ContactMap() {
                   : 'bg-slate-100 text-slate-900 hover:bg-slate-200'
               }`}
             >
-              <p className="font-medium text-sm">{place.title}</p>
+              <p className="font-medium text-sm">{getTranslatedTitle(place.id)}</p>
               <p className="text-xs mt-1 line-clamp-2 opacity-75">{place.addr}</p>
             </button>
           ))}

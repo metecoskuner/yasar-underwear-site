@@ -838,5 +838,13 @@
     "callButton": "Позвоните нам",
     "googleMapsLink": "Открыть в Google Карты →",
     "coordinates": "📍 {lat}, {lng}"
+  },
+  "mapPlaces": {
+    "toptan-magaza": "Оптовый магазин",
+    "perakende-magaza": "Розничный магазин",
+    "showroom": "Выставочный зал",
+    "workshop-kemalpasa": "Мастерская/Склад",
+    "workshop-bursa-29a": "Мастерская/Склад",
+    "workshop-bursa-43-1": "Мастерская/Склад"
   }
 }

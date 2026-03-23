@@ -961,5 +961,13 @@
     "callButton": "Bizi Ara",
     "googleMapsLink": "Google Maps'te Aç →",
     "coordinates": "📍 {lat}, {lng}"
+  },
+  "mapPlaces": {
+    "toptan-magaza": "Toptan Mağaza",
+    "perakende-magaza": "Perakende Mağaza",
+    "showroom": "Showroom",
+    "workshop-kemalpasa": "Workshop/Depo",
+    "workshop-bursa-29a": "Workshop/Depo",
+    "workshop-bursa-43-1": "Workshop/Depo"
   }
 }

@@ -767,6 +767,14 @@
     "googleMapsLink": "Open in Google Maps →",
     "coordinates": "📍 {lat}, {lng}"
   },
+  "mapPlaces": {
+    "toptan-magaza": "Wholesale Store",
+    "perakende-magaza": "Retail Store",
+    "showroom": "Showroom",
+    "workshop-kemalpasa": "Workshop/Warehouse",
+    "workshop-bursa-29a": "Workshop/Warehouse",
+    "workshop-bursa-43-1": "Workshop/Warehouse"
+  },
   "admin": {
     "images": {
       "unauthorized": "Unauthorized - please login first",
