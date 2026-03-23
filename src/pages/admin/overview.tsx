@@ -129,8 +129,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
           prisma.contactMessage.findMany({ orderBy: { createdAt: 'desc' }, take: 5 }),
           prisma.product.findMany({ orderBy: { createdAt: 'desc' }, take: 5 }),
         ])
-        recentMessages = msgs.map((m: any) => ({ id: m.id, from: m.name, createdAt: m.createdAt?.toISOString() }))
-        recentProducts = products.map((p: any) => ({ id: String(p.id), title: (p.title as unknown as string) || '', createdAt: p.createdAt ? String(p.createdAt) : undefined }))
+        recentMessages = msgs.map((m) => ({ id: m.id, from: m.name || 'Anonim', createdAt: m.createdAt?.toISOString() }))
+        recentProducts = products.map((p) => ({ id: String(p.id), title: (typeof p.title === 'string' ? p.title : JSON.stringify(p.title)) || '', createdAt: p.createdAt?.toISOString() ?? undefined }))
       } catch (err) {
         // If DB access or prisma import fails in the build environment,
         // swallow and fall back to file-based data below.

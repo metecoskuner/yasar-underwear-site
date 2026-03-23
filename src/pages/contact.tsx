@@ -29,12 +29,26 @@ const ContactPage: NextPage = () => {
     e.preventDefault()
     setSending(true)
 
-    setTimeout(() => {
-      setSuccess(true)
-      setForm({ name: '', email: '', phone: '', message: '' })
-      setSending(false)
-      setTimeout(() => setSuccess(false), 4000)
-    }, 700)
+    // Send message to API
+    fetch('/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(form),
+    })
+      .then(async (res) => {
+        const data = await res.json()
+        if (res.ok && data.ok) {
+          setSuccess(true)
+          setForm({ name: '', email: '', phone: '', message: '' })
+          setSending(false)
+          setTimeout(() => setSuccess(false), 4000)
+        } else {
+          setSending(false)
+        }
+      })
+      .catch(() => {
+        setSending(false)
+      })
   }
 
   return (
