@@ -23,21 +23,32 @@ export default function AdminPage() {
 
   async function doLogin(e?: React.FormEvent) {
     if (e) e.preventDefault()
+    if (!user || !pass) {
+      setMessage('Kullanıcı adı ve şifre gerekli')
+      return
+    }
     setLoading(true)
     setMessage(null)
     try {
-      const res = await fetch('/api/admin/login', { method: 'POST', body: JSON.stringify({ user, pass }), headers: { 'Content-Type': 'application/json' } })
+      const res = await fetch('/api/admin/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user, pass }),
+        credentials: 'include'
+      })
       const j = await res.json()
       if (res.ok && j.ok) {
         setAuthed(true)
         setMessage('Giriş başarılı')
-  // use full navigation to ensure cookie is applied and SSR pages see it
-  window.location.href = '/admin/overview'
+        // use full navigation to ensure cookie is applied and SSR pages see it
+        setTimeout(() => {
+          window.location.href = '/admin/overview'
+        }, 500)
       } else {
-        setMessage('Giriş başarısız')
+        setMessage(j.message || 'Giriş başarısız: Kullanıcı adı veya şifre hatalı')
       }
     } catch (err) {
-      void err
+      console.error('Login error:', err)
       setMessage('Ağ hatası')
     } finally {
       setLoading(false)
