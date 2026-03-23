@@ -1,7 +1,7 @@
 // create-env-files.js
-// Copilot’a talimat: "Create .env.local and .env with Supabase Session Pooler URL, Prisma DB connection, frontend keys and admin secrets"
+// Copilot'a talimat: "Create .env.local and .env with Supabase Session Pooler URL, Prisma DB connection, frontend keys and admin secrets"
 
-const fs = require('fs');
+import fs from 'fs';
 
 const envContent = `
 # Prisma / backend (Session Pooler + SSL)

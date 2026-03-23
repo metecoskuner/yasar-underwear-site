@@ -1,0 +1,34 @@
+# Dependencies
+node_modules/
+.next/
+
+# Build artifacts
+dist/
+out/
+build/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build scripts (allow require() syntax in utility scripts)
+scripts/
+check-db-and-run-dev.js
+create-env-files.js
+
+# Backup/Legacy
+backup/
+*.backup
+*.bak
+contact_corrupted_backup.tsx

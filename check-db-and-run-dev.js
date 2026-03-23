@@ -7,11 +7,12 @@
 // 5) Then runs `npm run dev`
 // 6) Logs all errors clearly and exits with appropriate codes
 
-const fs = require('fs')
-const path = require('path')
-const dns = require('dns').promises
-const { spawnSync, spawn } = require('child_process')
-const { Client } = require('pg')
+import fs from 'fs'
+import path from 'path'
+import dns from 'dns'
+import { spawnSync, spawn } from 'child_process'
+import pkg from 'pg'
+const { Client } = pkg
 
 function readDatabaseUrl() {
   const candidates = ['.env.local', '.env']
@@ -91,8 +92,8 @@ async function main() {
     console.log('Dev server exited with code', code)
     process.exit(code === null ? 0 : code)
   })
-  dev.on('error', (err) => {
-    console.error('Failed to start dev server:', err.message || err)
+  dev.on('error', (error) => {
+    console.error('Failed to start dev server:', error.message || error)
     process.exit(7)
   })
 }

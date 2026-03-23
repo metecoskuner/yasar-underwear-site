@@ -46,9 +46,10 @@ export default function B2BForm({ endpoint = '/api/b2b', initial = {} }: Props) 
     try {
       const res = await fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ type: 'wholesale', payload: form }) });
       if (!res.ok) throw new Error('submit failed');
-  setSuccess(t('pages.wholesale.form.success'));
+      setSuccess(t('pages.wholesale.form.success'));
       setForm({ companyName: '', country: '', website: '', businessType: '', interestedIn: '', estimatedFirstOrder: '', annualVolume: '', contactName: '', email: '', phone: '', message: '' });
-    } catch (err) {
+    } catch (error) {
+      console.error('B2B form error:', error);
       setErrors({ form: t('pages.wholesale.form.submitError') });
     } finally {
       setSending(false);

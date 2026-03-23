@@ -6,9 +6,7 @@ import WhyUs from '../components/WhyUs';
 import ProductGrid from '../components/ProductGrid';
 import dynamic from 'next/dynamic';
 
-// Dynamically import the WorldMap component (client-only)
-// Dynamically load the WorldMap component (client-only)
-// dynamic import type is noisy; explicitly allow the any here
+// Dynamically load the WorldMap component (client-only rendering only)
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const WorldMap = dynamic(() => import('../components/WorldMap') as Promise<any>, { ssr: false });
 

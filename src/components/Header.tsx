@@ -73,7 +73,7 @@ export default function Header() {
   useEffect(() => {
     setHydrated(true);
   }, []);
-  const langKey = String(lang).toLowerCase();
+
   // small helper to resolve translations with a Turkish fallback
   const tr = useCallback((key: string, fallback: string) => {
     try {
@@ -111,7 +111,7 @@ export default function Header() {
     };
     return map[href] ?? CHILD_META[href]?.subtitle ?? '';
   }, [t]);
-  const { favorites, toggle, clear, remove } = useWishlist();
+  const { favorites, toggle, clear } = useWishlist();
   // bump to force re-render when product list changes (storage event)
   const [, setProductsVersion] = useState(0);
   const [wishOpen, setWishOpen] = useState(false);
@@ -180,21 +180,6 @@ export default function Header() {
   const itemChild = {
     closed: { opacity: 0, x: -10, transition: { duration: 0.18, ease: "easeInOut" } },
     open: { opacity: 1, x: 0, transition: { duration: 0.2, ease: "easeInOut" } },
-  };
-
-  // Desktop mega-menu variants
-  const megaPanelVariants = {
-    closed: { opacity: 0, scale: 0.96, y: -8, transition: { duration: 0.18, ease: 'easeInOut', when: 'afterChildren' } },
-    open: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.22, ease: 'easeInOut', when: 'beforeChildren', staggerChildren: 0.06 } },
-  };
-
-  const megaItemVariants = {
-    closed: { opacity: 0, y: -6, transition: { duration: 0.18, ease: 'easeInOut' } },
-    open: { opacity: 1, y: 0, transition: { duration: 0.22, ease: 'easeInOut' } },
-  };
-
-  const PARENT_META: Record<string, { title?: string; description?: string }> = {
-    '/uretim': { title: 'Üretim', description: 'Tesislerimiz, kapasitemiz ve kalite süreçlerimiz hakkında detaylı bilgi.' },
   };
 
   // helper to avoid TS generic issues with motion.* typing in this project
@@ -297,7 +282,6 @@ export default function Header() {
 
       const ids = Array.from(favorites || []);
       for (const it of ids) {
-        // eslint-disable-next-line no-await-in-loop
         await Promise.resolve(toggle(it.id));
       }
     }, [favorites, toggle]);

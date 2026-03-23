@@ -2,102 +2,136 @@
 
 ![CI](https://github.com/metecoskuner/yasar-underwear-site/actions/workflows/ci.yml/badge.svg)
 
-Minimal Next.js (Pages Router) site used for the Yasar redesign demo.
+A modern Next.js (Pages Router) e-commerce site for Yasar brand, built with TypeScript, Tailwind CSS, and Prisma.
 
-Quick start
+## Quick Start
 
-- Install dependencies:
+### Prerequisites
+- Node.js >= 18
+- PostgreSQL database or Supabase
+
+### Installation
 
 ```bash
+# Install dependencies
 npm install
+
+# Setup environment variables
+cp .env.example .env.local
+# Edit .env.local with your database credentials and API keys
+
+# Run database migrations
+npx prisma migrate deploy
 ```
 
-- Run development server:
+### Development
 
 ```bash
 npm run dev
+# Open http://localhost:3000
 ```
 
-- Build for production:
+### Production
 
 ```bash
 npm run build
 npm run start
 ```
 
-Deploy to Vercel
+## Environment Setup
 
-1. Connect this repository to Vercel (https://vercel.com).
-2. Vercel autodetects Next.js projects. Default Build command: `npm run build` and Output Directory: (not required for Next.js).
-3. If you need specific Node.js version, this repo suggests Node >= 18 (see `package.json` -> `engines`).
-4. Add any required Environment Variables in the Vercel project settings.
+Create a `.env.local` file based on `.env.example`. Required variables:
+- `DATABASE_URL` - PostgreSQL connection string
+- `NEXT_PUBLIC_SUPABASE_URL` - Supabase URL (optional)
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY` - Supabase anon key (optional)
+- `ADMIN_USER` / `ADMIN_PASS` - Admin credentials
 
-Notes
+## Project Structure
 
-- This project uses Next.js (Pages Router), Tailwind CSS and TypeScript.
-- If CI or Vercel logs show issues, open the Actions/Deploy logs and share them so they can be fixed quickly.
-# Yasar Underwear Site
-
-Kısa kurulum ve çalışma talimatları.
-
-Gereksinimler
-# Yasar Underwear Site
-
-Bu depo Yasar markası için yeniden tasarlanmış bir Next.js ön yüzünü içerir.
-
-## Türkçe (TR)
-
-Kısa Açıklama
-: Basit bir Next.js projesi. Ürün kartları, ana sayfa, koleksiyon sayfaları ve çoklu dil (i18n) için hazırlık içerir.
-
-Gereksinimler
-- Node.js v16 veya üzeri
-- npm veya yarn
-
-
-
-Eklenecek/Öneriler
-- SEO meta tag'ları, mobil navigasyon, CI/CD workflow ve i18n iyileştirmeleri.
-
-## English (EN)
-
-Short description
-This repository contains a redesigned Next.js front-end for the Yasar brand.
-
-Requirements
-- Node.js v16+
-- npm or yarn
-
-Local setup
-```bash
-cd /Users/metecoskuner/yasar-redesign/yasar-underwear-site
-npm install
-# or
-# yarn install
+```
+src/
+├── pages/           # Next.js pages and API routes
+├── components/      # Reusable React components
+├── contexts/        # React Context providers (i18n)
+├── hooks/           # Custom React hooks
+├── lib/             # Utilities and helpers
+├── locales/         # i18n translation files (TR, EN, FR, AR, RU)
+├── styles/          # Global CSS and Tailwind
+└── types/           # TypeScript types
 ```
 
-Development
+## Features
+
+- 🌐 **Multi-language support** - Turkish, English, French, Arabic, Russian
+- 🎨 **Modern UI** - Tailwind CSS with Framer Motion animations
+- 📦 **Product management** - Admin panel for products, messages, and content
+- 🛍️ **E-commerce** - Product catalog, favorites wishlist, B2B forms
+- 📱 **Responsive design** - Mobile-first approach with full responsive support
+- 🔐 **Admin authentication** - Secure admin panel
+
+## Database
+
+This project uses Prisma ORM with PostgreSQL. Models:
+- `Product` - Product catalog
+- `ContactMessage` - Contact form submissions
+- `SiteContent` - CMS content storage
+- `HoneypotLog` - Spam protection logs
+
+Run `npx prisma studio` to browse the database.
+
+## Deployment
+
+### Vercel (Recommended)
+
+1. Connect repository to [Vercel](https://vercel.com)
+2. Set environment variables in Vercel project settings
+3. Deploy - automatic on push to `main` branch
+
+### Other Platforms
+
+- Docker: Use `npm run build && npm run start`
+- Railway, Render, Heroku: Configure buildpack for Node.js
+
+## API Routes
+
+- `POST /api/contact` - Submit contact form
+- `POST /api/b2b` - B2B inquiry
+- `POST /api/quote` - Quote request
+- `POST /api/content` - Update site content (admin)
+
+## Scripts
+
 ```bash
-npm run dev
-# then open http://localhost:3000
+npm run dev              # Start development server
+npm run build            # Build for production
+npm run start            # Start production server
+npm run lint             # Run ESLint
+npm run seed             # Seed database with demo data
+npm run capture-screenshots  # Capture UI screenshots
 ```
 
-Production
-```bash
-npm run build
-npm start
-```
+## Troubleshooting
 
-Notes
-- `.gitignore` includes common ignores (node_modules, .next, .env).
-- Images are in `/public/photos/`.
+### Database connection issues
+- Check `DATABASE_URL` in `.env.local`
+- Ensure PostgreSQL is running or Supabase is reachable
+- Run `npx prisma db push` to sync schema
 
-Deploy
-You can deploy this Next.js app to Vercel, Netlify or any Node hosting. For Vercel, connect the GitHub repository and follow Vercel setup.
+### Build errors
+- Clear `.next` folder: `rm -rf .next`
+- Reinstall dependencies: `rm -rf node_modules && npm install`
+- Check for TypeScript errors: `npx tsc --noEmit`
 
+## Contributing
 
-Contact
-Hazırlayan: Mete
+1. Create a feature branch: `git checkout -b feat/your-feature`
+2. Commit changes: `git commit -am 'Add feature'`
+3. Push branch: `git push origin feat/your-feature`
+4. Open a pull request
+
+## License
+
+© 2026 Yasar. All rights reserved.
 
 ---
 

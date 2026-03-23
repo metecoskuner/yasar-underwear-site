@@ -1,3 +1,32 @@
 {
-  "offers": []
+  "offers": [
+    {
+      "id": "quote-001",
+      "companyName": "ABC Tekstil Ltd.",
+      "email": "info@abcteksil.com",
+      "phone": "+90 555 111 2222",
+      "country": "Turkey",
+      "businessType": "Retailer",
+      "interestedIn": "Wholesale Partnership",
+      "estimatedFirstOrder": "5000-10000 units",
+      "annualVolume": "50000+ units",
+      "message": "Türkiye'de iç çamaşırı dağıtıcısı olarak çalışıyor ve toptan satın almak istiyoruz.",
+      "read": false,
+      "createdAt": "2026-03-10T11:20:00Z"
+    },
+    {
+      "id": "quote-002",
+      "companyName": "Global Fashion EU",
+      "email": "procurement@globalfashion.eu",
+      "phone": "+49 30 1234567",
+      "country": "Germany",
+      "businessType": "Distributor",
+      "interestedIn": "Private Label",
+      "estimatedFirstOrder": "10000-20000 units",
+      "annualVolume": "100000+ units",
+      "message": "Özel etiket (private label) ürünler için işbirliği yapmak istiyoruz.",
+      "read": true,
+      "createdAt": "2026-03-08T16:45:00Z"
+    }
+  ]
 }

@@ -42,10 +42,11 @@ export default function PrivateLabelForm({ endpoint = '/api/b2b', initial = {} }
     setSending(true);
     try {
       const res = await fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ type: 'private-label', payload: form }) });
-  if (!res.ok) throw new Error('submit failed');
-  setSuccess('Teşekkürler — özel marka talebinizi aldık. En kısa sürede dönüş yapacağız.');
+      if (!res.ok) throw new Error('submit failed');
+      setSuccess('Teşekkürler — özel marka talebinizi aldık. En kısa sürede dönüş yapacağız.');
       setForm({ companyName: '', country: '', activeBrand: '', targetMarket: '', modelCount: '', colorOptions: '', timeline: '', estimatedBulkOrder: '', contactName: '', email: '', phone: '', message: '' });
-    } catch (err) {
+    } catch (error) {
+      console.error('Private label form error:', error);
       setErrors({ form: 'Unable to submit. Please try again later.' });
     } finally {
       setSending(false);

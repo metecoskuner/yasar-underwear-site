@@ -56,8 +56,9 @@ export default function WhatsAppButton({ number }: { number?: string }) {
 
   // Warn early if the env var isn't set so devs notice in console (local & prod logs).
   if (!envNumber) {
-    // eslint-disable-next-line no-console
-    console.warn('NEXT_PUBLIC_WHATSAPP_NUMBER is not configured');
+    if (process.env.NODE_ENV === 'development') {
+      console.warn('NEXT_PUBLIC_WHATSAPP_NUMBER is not configured');
+    }
   }
   // Consider configured if either the env var or a `number` prop is provided.
   const isConfigured = Boolean(envNumber || number);
@@ -76,7 +77,6 @@ export default function WhatsAppButton({ number }: { number?: string }) {
 
   // Helpful debug output in development so you can confirm what number/link the component resolved.
   if (process.env.NODE_ENV === 'development') {
-    // eslint-disable-next-line no-console
     console.debug('WhatsAppButton resolved', { raw, digits, digitsForWa, webUrl, envNumber, envMessage });
   }
 
@@ -84,7 +84,6 @@ export default function WhatsAppButton({ number }: { number?: string }) {
     e.preventDefault();
     // If NEXT_PUBLIC_WHATSAPP_NUMBER is not configured, show a clear alert and do nothing.
     if (!isConfigured) {
-      // eslint-disable-next-line no-alert
       alert(tr('components.whatsApp.noNumber','WhatsApp numarası yapılandırılmamış.'));
       return;
     }
