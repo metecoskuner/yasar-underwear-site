@@ -1,6 +1,11 @@
 import { useState } from 'react'
 import type { NextPage } from 'next'
+import dynamic from 'next/dynamic'
 import SEO from '@/components/SEO'
+import { MAP_PLACES } from '@/config/mapPlaces'
+import { CONTACT } from '@/config/contactConfig'
+
+const ContactMap = dynamic(() => import('@/components/ContactMap'), { ssr: false })
 
 const ContactPage: NextPage = () => {
   const [sending, setSending] = useState(false)
@@ -58,8 +63,7 @@ const ContactPage: NextPage = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold text-slate-900">E-posta</h3>
-                    <p className="text-slate-600 mt-1">info@yasarunderwear.com</p>
-                    <p className="text-sm text-slate-500 mt-2">24 saat içinde dönüş yapılır</p>
+                    <p className="text-slate-600 mt-1">{CONTACT.EMAIL}</p>
                   </div>
                 </div>
 
@@ -74,8 +78,8 @@ const ContactPage: NextPage = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold text-slate-900">Telefon</h3>
-                    <p className="text-slate-600 mt-1">+90 212 520 92 99</p>
-                    <p className="text-sm text-slate-500 mt-2">Hafta içi 09:00 - 18:00</p>
+                    <p className="text-slate-600 mt-1">{CONTACT.PHONE_MAIN}</p>
+                    <p className="text-sm text-slate-500 mt-1">{CONTACT.PHONE_MOBILE}</p>
                   </div>
                 </div>
 
@@ -89,10 +93,16 @@ const ContactPage: NextPage = () => {
                       </svg>
                     </div>
                   </div>
-                  <div>
-                    <h3 className="font-semibold text-slate-900">Adres</h3>
-                    <p className="text-slate-600 mt-1">İstanbul, Türkiye</p>
-                    <p className="text-sm text-slate-500 mt-2">Tekstil ve iç giyim üreticisi</p>
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-slate-900 mb-3">Adreslerimiz ({MAP_PLACES.length})</h3>
+                    <div className="space-y-2">
+                      {MAP_PLACES.map((place) => (
+                        <div key={place.id} className="text-sm">
+                          <p className="font-medium text-slate-800">{place.title}</p>
+                          <p className="text-slate-600 text-xs">{place.addr}</p>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -192,6 +202,11 @@ const ContactPage: NextPage = () => {
               </form>
             </div>
           </div>
+
+          {/* Map Section */}
+          <div className="mt-16">
+            <ContactMap />
+          </div>
         </div>
       </main>
     </>
@@ -199,3 +214,4 @@ const ContactPage: NextPage = () => {
 }
 
 export default ContactPage
+
