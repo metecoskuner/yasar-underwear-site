@@ -809,6 +809,35 @@
   "adminLayout": {
     "logout": "تسجيل خروج"
   },
+  "contact": {
+    "pageTitle": "اتصل بنا - Yasar",
+    "pageDescription": "اتصل بـ Yasar. أرسل لنا أسئلتك وعروضك وطلباتك.",
+    "heading": "تواصل معنا",
+    "subheading": "أرسل لنا رسالة حول أي استفسار أو طلب أو اقتراح. سنرد عليك في أقرب وقت ممكن.",
+    "infoTitle": "معلومات الاتصال",
+    "emailLabel": "البريد الإلكتروني",
+    "phoneLabel": "الهاتف",
+    "addressLabel": "عناويننا",
+    "addressCount": "({count})",
+    "mapTitle": "عناويننا على الخريطة",
+    "locationsTitle": "المواقع",
+    "formTitle": "إرسال رسالة",
+    "nameLabel": "الاسم *",
+    "namePlaceholder": "اسمك",
+    "emailFormLabel": "البريد الإلكتروني *",
+    "emailPlaceholder": "مثال@بريد.com",
+    "phoneFormLabel": "الهاتف",
+    "phonePlaceholder": "+90 555 123 4567",
+    "messageLabel": "الرسالة *",
+    "messagePlaceholder": "اكتب رسالتك...",
+    "sendButton": "إرسال الرسالة",
+    "sendingButton": "جاري الإرسال...",
+    "successMessage": "✓ تم إرسال رسالتك بنجاح! سنرد عليك قريباً.",
+    "sendEmailButton": "إرسال بريد إلكتروني",
+    "callButton": "اتصل بنا",
+    "googleMapsLink": "فتح في خرائط Google →",
+    "coordinates": "📍 {lat}, {lng}"
+  },
   "admin": {
     "images": {
       "unauthorized": "غير مصرح - الرجاء تسجيل الدخول أولاً",

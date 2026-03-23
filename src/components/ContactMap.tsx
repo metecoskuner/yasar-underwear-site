@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useLanguage } from '@/contexts/LanguageContext'
 import { MAP_PLACES } from '@/config/mapPlaces'
 
 interface SelectedPlace {
@@ -10,6 +11,7 @@ interface SelectedPlace {
 }
 
 export default function ContactMap() {
+  const { t } = useLanguage()
   const [selectedPlace, setSelectedPlace] = useState<SelectedPlace | null>(MAP_PLACES[0] ? {
     id: MAP_PLACES[0].id,
     title: MAP_PLACES[0].title,
@@ -34,8 +36,8 @@ export default function ContactMap() {
     document.head.appendChild(script)
 
     return () => {
-      document.head.removeChild(link)
-      document.head.removeChild(script)
+      if (document.head.contains(link)) document.head.removeChild(link)
+      if (document.head.contains(script)) document.head.removeChild(script)
     }
   }, [])
 
@@ -109,7 +111,7 @@ export default function ContactMap() {
 
   return (
     <div className="w-full bg-white rounded-xl p-8 shadow-md border border-slate-200">
-      <h2 className="text-2xl font-bold mb-6 text-slate-900">Konumlarımız Haritada</h2>
+      <h2 className="text-2xl font-bold mb-6 text-slate-900">{t('contact.mapTitle')}</h2>
       
       <div className="grid lg:grid-cols-4 gap-6">
         {/* Map */}
@@ -122,7 +124,7 @@ export default function ContactMap() {
 
         {/* Sidebar */}
         <div className="lg:col-span-1 space-y-3 max-h-96 overflow-y-auto">
-          <h3 className="font-semibold text-slate-900 sticky top-0 bg-white pb-2">Lokasyonlar</h3>
+          <h3 className="font-semibold text-slate-900 sticky top-0 bg-white pb-2">{t('contact.locationsTitle')}</h3>
           {MAP_PLACES.map((place) => (
             <button
               key={place.id}
@@ -162,7 +164,7 @@ export default function ContactMap() {
             rel="noopener noreferrer"
             className="inline-block mt-3 text-sm font-medium text-blue-600 hover:text-blue-800 underline"
           >
-            Google Maps'te Aç →
+            {t('contact.googleMapsLink')}
           </a>
         </div>
       )}

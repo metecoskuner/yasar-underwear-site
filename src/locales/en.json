@@ -738,6 +738,35 @@
   "adminLayout": {
     "logout": "Log out"
   },
+  "contact": {
+    "pageTitle": "Contact - Yasar Textile",
+    "pageDescription": "Contact Yasar Textile. Send us your questions, offers and requests.",
+    "heading": "Get in Touch",
+    "subheading": "Send us a message for any questions, requests or suggestions. We'll get back to you as soon as possible.",
+    "infoTitle": "Contact Information",
+    "emailLabel": "Email",
+    "phoneLabel": "Phone",
+    "addressLabel": "Our Locations",
+    "addressCount": "({count})",
+    "mapTitle": "Our Locations on Map",
+    "locationsTitle": "Locations",
+    "formTitle": "Send Message",
+    "nameLabel": "Name *",
+    "namePlaceholder": "Your name",
+    "emailFormLabel": "Email *",
+    "emailPlaceholder": "example@email.com",
+    "phoneFormLabel": "Phone",
+    "phonePlaceholder": "+90 555 123 4567",
+    "messageLabel": "Message *",
+    "messagePlaceholder": "Write your message...",
+    "sendButton": "Send Message",
+    "sendingButton": "Sending...",
+    "successMessage": "✓ Your message was sent successfully! We'll reply shortly.",
+    "sendEmailButton": "Send Email",
+    "callButton": "Call Us",
+    "googleMapsLink": "Open in Google Maps →",
+    "coordinates": "📍 {lat}, {lng}"
+  },
   "admin": {
     "images": {
       "unauthorized": "Unauthorized - please login first",

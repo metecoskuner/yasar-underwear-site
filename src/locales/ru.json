@@ -809,5 +809,34 @@
       "securityContact": "Мы применяем разумные технические и административные меры для защиты ваших данных. По вопросам конфиденциальности, запросам или жалобам, пожалуйста, свяжитесь с нами."
     }
     ,"quickSummary": "Краткое содержание"
+  },
+  "contact": {
+    "pageTitle": "Контакты - Yasar",
+    "pageDescription": "Свяжитесь с Yasar. Отправьте нам свои вопросы, предложения и запросы.",
+    "heading": "Свяжитесь с нами",
+    "subheading": "Отправьте нам сообщение с любыми вопросами, запросами или предложениями. Мы ответим вам как можно скорее.",
+    "infoTitle": "Контактная информация",
+    "emailLabel": "Электронная почта",
+    "phoneLabel": "Телефон",
+    "addressLabel": "Наши адреса",
+    "addressCount": "({count})",
+    "mapTitle": "Наши адреса на карте",
+    "locationsTitle": "Местоположения",
+    "formTitle": "Отправить сообщение",
+    "nameLabel": "Имя *",
+    "namePlaceholder": "Ваше имя",
+    "emailFormLabel": "Электронная почта *",
+    "emailPlaceholder": "example@email.com",
+    "phoneFormLabel": "Телефон",
+    "phonePlaceholder": "+90 555 123 4567",
+    "messageLabel": "Сообщение *",
+    "messagePlaceholder": "Напишите ваше сообщение...",
+    "sendButton": "Отправить сообщение",
+    "sendingButton": "Отправка...",
+    "successMessage": "✓ Ваше сообщение отправлено успешно! Мы свяжемся с вами в ближайшее время.",
+    "sendEmailButton": "Отправить по электронной почте",
+    "callButton": "Позвоните нам",
+    "googleMapsLink": "Открыть в Google Карты →",
+    "coordinates": "📍 {lat}, {lng}"
   }
 }

@@ -932,5 +932,34 @@
   },
   "adminLayout": {
     "logout": "Log out"
+  },
+  "contact": {
+    "pageTitle": "İletişim - Yasar Tekstil",
+    "pageDescription": "Yasar Tekstil ile iletişime geçin. Sorularınız, teklifleriniz ve talepleriniz için bize yazın.",
+    "heading": "İletişime Geçin",
+    "subheading": "Sorularınız, talepleriniz veya önerileriniz için bize ulaşın. En kısa sürede dönüş yapacağız.",
+    "infoTitle": "İletişim Bilgileri",
+    "emailLabel": "E-posta",
+    "phoneLabel": "Telefon",
+    "addressLabel": "Adreslerimiz",
+    "addressCount": "({count})",
+    "mapTitle": "Konumlarımız Haritada",
+    "locationsTitle": "Lokasyonlar",
+    "formTitle": "Mesaj Gönder",
+    "nameLabel": "İsim *",
+    "namePlaceholder": "Adınız",
+    "emailFormLabel": "E-posta *",
+    "emailPlaceholder": "ornek@email.com",
+    "phoneFormLabel": "Telefon",
+    "phonePlaceholder": "+90 555 123 4567",
+    "messageLabel": "Mesaj *",
+    "messagePlaceholder": "Mesajınızı yazın...",
+    "sendButton": "Mesaj Gönder",
+    "sendingButton": "Gönderiliyor...",
+    "successMessage": "✓ Mesajınız başarıyla gönderildi! En kısa sürede size geri dönüş yapacağız.",
+    "sendEmailButton": "E-posta Gönder",
+    "callButton": "Bizi Ara",
+    "googleMapsLink": "Google Maps'te Aç →",
+    "coordinates": "📍 {lat}, {lng}"
   }
 }

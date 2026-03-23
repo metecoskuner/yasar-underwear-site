@@ -4,10 +4,12 @@ import dynamic from 'next/dynamic'
 import SEO from '@/components/SEO'
 import { MAP_PLACES } from '@/config/mapPlaces'
 import { CONTACT } from '@/config/contactConfig'
+import { useLanguage } from '@/contexts/LanguageContext'
 
 const ContactMap = dynamic(() => import('@/components/ContactMap'), { ssr: false })
 
 const ContactPage: NextPage = () => {
+  const { t } = useLanguage()
   const [sending, setSending] = useState(false)
   const [success, setSuccess] = useState(false)
   const [form, setForm] = useState({ name: '', email: '', phone: '', message: '' })
@@ -31,8 +33,8 @@ const ContactPage: NextPage = () => {
   return (
     <>
       <SEO
-        title="İletişim - Yasar Tekstil"
-        description="Yasar Tekstil ile iletişime geçin. Sorularınız, teklifleriniz ve talepleriniz için bize yazın."
+        title={t('contact.pageTitle') as string}
+        description={t('contact.pageDescription') as string}
         url="/contact"
       />
 
@@ -40,9 +42,9 @@ const ContactPage: NextPage = () => {
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           {/* Header */}
           <div className="text-center mb-12">
-            <h1 className="text-4xl sm:text-5xl font-extrabold text-slate-900 mb-4">İletişime Geçin</h1>
+            <h1 className="text-4xl sm:text-5xl font-extrabold text-slate-900 mb-4">{t('contact.heading')}</h1>
             <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-              Sorularınız, talepleriniz veya önerileriniz için bize ulaşın. En kısa sürede dönüş yapacağız.
+              {t('contact.subheading')}
             </p>
           </div>
 
@@ -50,7 +52,7 @@ const ContactPage: NextPage = () => {
             {/* Info Section */}
             <div className="space-y-8">
               <div className="bg-white rounded-xl p-8 shadow-md border border-slate-200">
-                <h2 className="text-2xl font-bold mb-6 text-slate-900">İletişim Bilgileri</h2>
+                <h2 className="text-2xl font-bold mb-6 text-slate-900">{t('contact.infoTitle')}</h2>
                 
                 {/* Email */}
                 <div className="flex items-start gap-4 mb-6">
@@ -62,7 +64,7 @@ const ContactPage: NextPage = () => {
                     </div>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-slate-900">E-posta</h3>
+                    <h3 className="font-semibold text-slate-900">{t('contact.emailLabel')}</h3>
                     <p className="text-slate-600 mt-1">{CONTACT.EMAIL}</p>
                   </div>
                 </div>
@@ -77,7 +79,7 @@ const ContactPage: NextPage = () => {
                     </div>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-slate-900">Telefon</h3>
+                    <h3 className="font-semibold text-slate-900">{t('contact.phoneLabel')}</h3>
                     <p className="text-slate-600 mt-1">{CONTACT.PHONE_MAIN}</p>
                     <p className="text-sm text-slate-500 mt-1">{CONTACT.PHONE_MOBILE}</p>
                   </div>
@@ -94,7 +96,9 @@ const ContactPage: NextPage = () => {
                     </div>
                   </div>
                   <div className="flex-1">
-                    <h3 className="font-semibold text-slate-900 mb-3">Adreslerimiz ({MAP_PLACES.length})</h3>
+                    <h3 className="font-semibold text-slate-900 mb-3">
+                      {t('contact.addressLabel')} ({MAP_PLACES.length})
+                    </h3>
                     <div className="space-y-2">
                       {MAP_PLACES.map((place) => (
                         <div key={place.id} className="text-sm">
@@ -109,23 +113,23 @@ const ContactPage: NextPage = () => {
 
               {/* Quick Links */}
               <div className="flex gap-3">
-                <a href="mailto:info@yasarunderwear.com" className="flex-1 bg-black text-white px-4 py-3 rounded-lg font-medium hover:bg-slate-800 transition text-center">
-                  E-posta Gönder
+                <a href={`mailto:${CONTACT.EMAIL}`} className="flex-1 bg-black text-white px-4 py-3 rounded-lg font-medium hover:bg-slate-800 transition text-center">
+                  {t('contact.sendEmailButton')}
                 </a>
-                <a href="tel:+902125209299" className="flex-1 border-2 border-black text-black px-4 py-3 rounded-lg font-medium hover:bg-slate-50 transition text-center">
-                  Bizi Ara
+                <a href={`tel:${CONTACT.PHONE_MAIN}`} className="flex-1 border-2 border-black text-black px-4 py-3 rounded-lg font-medium hover:bg-slate-50 transition text-center">
+                  {t('contact.callButton')}
                 </a>
               </div>
             </div>
 
             {/* Form Section */}
             <div className="bg-white rounded-xl p-8 shadow-md border border-slate-200">
-              <h2 className="text-2xl font-bold mb-6 text-slate-900">Mesaj Gönder</h2>
+              <h2 className="text-2xl font-bold mb-6 text-slate-900">{t('contact.formTitle')}</h2>
               
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium text-slate-900 mb-2">
-                    İsim *
+                    {t('contact.nameLabel')}
                   </label>
                   <input
                     id="name"
@@ -135,13 +139,13 @@ const ContactPage: NextPage = () => {
                     onChange={handleChange}
                     required
                     className="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none transition"
-                    placeholder="Adınız"
+                    placeholder={t('contact.namePlaceholder') as string}
                   />
                 </div>
 
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium text-slate-900 mb-2">
-                    E-posta *
+                    {t('contact.emailFormLabel')}
                   </label>
                   <input
                     id="email"
@@ -151,13 +155,13 @@ const ContactPage: NextPage = () => {
                     onChange={handleChange}
                     required
                     className="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none transition"
-                    placeholder="ornek@email.com"
+                    placeholder={t('contact.emailPlaceholder') as string}
                   />
                 </div>
 
                 <div>
                   <label htmlFor="phone" className="block text-sm font-medium text-slate-900 mb-2">
-                    Telefon
+                    {t('contact.phoneFormLabel')}
                   </label>
                   <input
                     id="phone"
@@ -166,13 +170,13 @@ const ContactPage: NextPage = () => {
                     value={form.phone}
                     onChange={handleChange}
                     className="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none transition"
-                    placeholder="+90 555 123 4567"
+                    placeholder={t('contact.phonePlaceholder') as string}
                   />
                 </div>
 
                 <div>
                   <label htmlFor="message" className="block text-sm font-medium text-slate-900 mb-2">
-                    Mesaj *
+                    {t('contact.messageLabel')}
                   </label>
                   <textarea
                     id="message"
@@ -182,7 +186,7 @@ const ContactPage: NextPage = () => {
                     required
                     rows={5}
                     className="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none transition resize-none"
-                    placeholder="Mesajınızı yazın..."
+                    placeholder={t('contact.messagePlaceholder') as string}
                   />
                 </div>
 
@@ -191,12 +195,12 @@ const ContactPage: NextPage = () => {
                   disabled={sending}
                   className="w-full bg-black text-white font-semibold py-3 rounded-lg hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed transition"
                 >
-                  {sending ? 'Gönderiliyor...' : 'Mesaj Gönder'}
+                  {sending ? t('contact.sendingButton') : t('contact.sendButton')}
                 </button>
 
                 {success && (
                   <div className="bg-green-50 border border-green-200 rounded-lg p-4 text-green-700 text-sm">
-                    ✓ Mesajınız başarıyla gönderildi! En kısa sürede size geri dönüş yapacağız.
+                    {t('contact.successMessage')}
                   </div>
                 )}
               </form>
