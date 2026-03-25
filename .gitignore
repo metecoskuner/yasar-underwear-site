@@ -9,8 +9,8 @@ yarn-error.log
 .vscode
 dist
 
-# ignore large media files
-public/videos/        # videolar repo'da olmasın
+# allow videos in public/videos for hero section
+# public/videos/ commented out - hero videos need to be in repo
 
 # allow photos for template/logos
 # public/photos/*.png  # bu satır silindi, foto repo'da kalacak
