@@ -14,7 +14,6 @@ export default function Home() {
   return (
     <>
   <SEO title="Yasar - Ana Sayfa" description="Yasar - Günlük kullanım için konforlu iç çamaşırları, Türkiye'de tasarlandı." url="/" />
-
       <main>
         <Hero />
   <HeroInfoCards />

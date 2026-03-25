@@ -17,13 +17,8 @@ export default function Hero() {
   const subtitle = tr('components.hero.subtitle', "Yumuşak, nefes alan iç giyim koleksiyonumuzla rahatlığı ve zarafeti keşfedin. Türkiye'de tasarlandı.")
 
   return (
-    <section className="relative overflow-hidden h-screen md:h-[600px] lg:h-[700px]">
-      {/* Use HeroSlider without slides prop so it falls back to default static images in code */}
+    <section className="relative w-full h-[70vh] sm:h-[80vh] md:h-[600px] lg:h-[700px] overflow-hidden">
       <HeroSlider />
-
-      <div className="relative max-w-6xl mx-auto px-4 py-20 sm:py-32 lg:py-44 xl:py-56 2xl:py-72 flex flex-col items-center text-center">
-        {/* Info cards remain handled by HeroInfoCards elsewhere */}
-      </div>
     </section>
   );
 }

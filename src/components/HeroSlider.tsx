@@ -20,7 +20,7 @@ export default function HeroSlider({ slides }: Props) {
   const videoSrc = mounted ? (isMobile ? '/videos/yasarheromobil.mp4' : '/videos/YasarHero1.mp4') : '/videos/YasarHero1.mp4';
 
   return (
-    <div className="absolute inset-0">
+    <div className="relative w-full h-full overflow-hidden">
       <video
         key={videoSrc}
         ref={(video) => {
@@ -30,7 +30,7 @@ export default function HeroSlider({ slides }: Props) {
         loop
         muted={isMuted}
         playsInline
-        className="absolute inset-0 w-full h-full object-cover object-top"
+        className="w-full h-full object-cover"
       >
         <source src={videoSrc} type="video/mp4" />
         Your browser does not support the video tag.
