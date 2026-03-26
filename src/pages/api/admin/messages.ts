@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import fs from 'fs'
 import path from 'path'
 import { isAuthed } from '@/lib/adminAuth'
-import { prisma } from '@/lib/prisma'
+import { createClient } from '@supabase/supabase-js'
 
 const DATA_FILE = path.join(process.cwd(), 'data', 'admin-messages.json')
 
@@ -20,54 +20,90 @@ function writeData(obj: { messages?: Record<string, unknown>[] }) {
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (!isAuthed(req)) return res.status(401).json({ error: 'unauth' })
 
-  // Use DB-backed storage when DATABASE_URL is present (production or local dev with DB)
-  if (process.env.DATABASE_URL) {
-    if (req.method === 'GET') {
-      const msgs = await prisma.contactMessage.findMany({ orderBy: { createdAt: 'desc' } })
-      // Map DB fields to the shape the admin UI expects (from/email/phone/message/read/createdAt)
-      const out = msgs.map((m) => ({
-        id: m.id,
-        from: m.name,
-        email: m.email,
-        phone: ((m as Record<string, unknown>).phone as string) ?? null,
-        message: m.message,
-        read: m.read,
-        createdAt: (m.createdAt as Date).toISOString(),
-      }))
+  // Use Supabase when env variables are present
+  if (process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_KEY) {
+    const supabase = createClient(
+      process.env.SUPABASE_URL,
+      process.env.SUPABASE_SERVICE_KEY
+    )
 
-      // Also include any messages that were stored in the file-based fallback (migrated or pre-DB)
+    if (req.method === 'GET') {
       try {
-        const file = readData()
-        const fileMsgs = (file.messages || []) as Record<string, unknown>[]
-        const mappedFile = fileMsgs.map((fm) => {
-          const f = fm as Record<string, unknown>
-          return {
-            id: (f.id as string) ?? `file-${f.createdAt ?? Date.now()}`,
-            from: (f.name as string) ?? (f.from as string) ?? 'Anonim',
-            email: (f.email as string) ?? null,
-            phone: (f.phone as string) ?? null,
-            message: (f.message as string) ?? (f.body as string) ?? '',
-            read: (f.read as boolean) ?? false,
-            createdAt: (f.createdAt as string) ?? new Date().toISOString(),
-          }
-        })
-        // merge DB + file, prefer DB items when id matches
-  const byId = new Map<string, Record<string, unknown>>()
-  for (const i of mappedFile) byId.set(String(i.id), i as Record<string, unknown>)
-  for (const i of out) byId.set(String(i.id), i as Record<string, unknown>)
-  const merged = Array.from(byId.values()).sort((a, b) => new Date(String(b.createdAt)).valueOf() - new Date(String(a.createdAt)).valueOf())
-        return res.status(200).json({ messages: merged })
-      } catch {
-        // if file read fails, just return DB items
-        return res.status(200).json({ messages: out })
+        const { data: msgs, error } = await supabase
+          .from('ContactMessage')
+          .select('*')
+          .order('createdAt', { ascending: false })
+
+        if (error) throw error
+
+        // Map Supabase fields to the shape the admin UI expects
+        const out = (msgs || []).map((m: Record<string, unknown>) => ({
+          id: m.id as string,
+          from: m.name as string,
+          email: m.email as string,
+          phone: (m.phone as string) ?? null,
+          message: m.message as string,
+          read: m.read as boolean,
+          createdAt: typeof m.createdAt === 'string' ? m.createdAt : new Date(m.createdAt as Date).toISOString(),
+        }))
+
+        // Also try to include file-based messages as fallback
+        try {
+          const file = readData()
+          const fileMsgs = (file.messages || []) as Record<string, unknown>[]
+          const mappedFile = fileMsgs.map((fm) => {
+            const f = fm as Record<string, unknown>
+            return {
+              id: (f.id as string) ?? `file-${f.createdAt ?? Date.now()}`,
+              from: (f.name as string) ?? (f.from as string) ?? 'Anonim',
+              email: (f.email as string) ?? null,
+              phone: (f.phone as string) ?? null,
+              message: (f.message as string) ?? (f.body as string) ?? '',
+              read: (f.read as boolean) ?? false,
+              createdAt: (f.createdAt as string) ?? new Date().toISOString(),
+            }
+          })
+          // merge DB + file, prefer DB items when id matches
+          const byId = new Map<string, Record<string, unknown>>()
+          for (const i of mappedFile) byId.set(String(i.id), i as Record<string, unknown>)
+          for (const i of out) byId.set(String(i.id), i as Record<string, unknown>)
+          const merged = Array.from(byId.values()).sort((a, b) => new Date(String(b.createdAt)).valueOf() - new Date(String(a.createdAt)).valueOf())
+          return res.status(200).json({ messages: merged })
+        } catch {
+          // if file read fails, just return Supabase items
+          return res.status(200).json({ messages: out })
+        }
+      } catch (err) {
+        console.error('[MESSAGES GET] Error:', err)
+        return res.status(500).json({ error: err instanceof Error ? err.message : 'Unknown error' })
       }
     }
 
     if (req.method === 'POST') {
-      const payload = req.body as { name?: string; email?: string; phone?: string; message?: string }
-      const created = await prisma.contactMessage.create({ data: { name: payload.name as string, email: payload.email as string, phone: payload.phone ?? undefined, message: payload.message as string } })
-      const item = { id: created.id, from: created.name, email: created.email, phone: created.phone ?? null, message: created.message, read: created.read, createdAt: created.createdAt.toISOString() }
-      return res.status(200).json({ ok: true, item })
+      try {
+        const payload = req.body as { name?: string; email?: string; phone?: string; message?: string }
+        const { data: created, error } = await supabase
+          .from('ContactMessage')
+          .insert([{ name: payload.name, email: payload.email, phone: payload.phone ?? null, message: payload.message }])
+          .select()
+          .single()
+
+        if (error) throw error
+
+        const item = {
+          id: created.id as string,
+          from: created.name as string,
+          email: created.email as string,
+          phone: (created.phone as string) ?? null,
+          message: created.message as string,
+          read: created.read as boolean,
+          createdAt: typeof created.createdAt === 'string' ? created.createdAt : new Date(created.createdAt as Date).toISOString(),
+        }
+        return res.status(200).json({ ok: true, item })
+      } catch (err) {
+        console.error('[MESSAGES POST] Error:', err)
+        return res.status(500).json({ error: err instanceof Error ? err.message : 'Unknown error' })
+      }
     }
 
     return res.status(405).end()
