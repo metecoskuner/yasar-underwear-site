@@ -1,25 +1,29 @@
-import { NextApiRequest, NextApiResponse } from 'next'
-import { prisma } from '@/lib/prisma'
+import { createClient } from '@supabase/supabase-js';
+import { NextApiRequest, NextApiResponse } from 'next';
+
+const supabase = createClient(
+  process.env.SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_KEY!
+);
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
-    // Try to query the database
-    const count = await prisma.contactMessage.count()
-    return res.status(200).json({
-      success: true,
-      dbConnected: true,
-      messageCount: count,
-      databaseUrl: process.env.DATABASE_URL ? '***SET***' : 'NOT SET',
-      env: process.env.NODE_ENV,
-    })
-  } catch (error) {
-    const err = error as Error
-    return res.status(500).json({
-      success: false,
-      dbConnected: false,
-      error: err.message,
-      databaseUrl: process.env.DATABASE_URL ? '***SET***' : 'NOT SET',
-      env: process.env.NODE_ENV,
-    })
+    // Product tablosundan örnek 5 ürün al
+    const { data: products, error: productError } = await supabase
+      .from('Product')
+      .select('*')
+      .limit(5);
+    if (productError) throw productError;
+
+    // ContactMessage tablosundan örnek 5 mesaj al
+    const { data: messages, error: messageError } = await supabase
+      .from('ContactMessage')
+      .select('*')
+      .limit(5);
+    if (messageError) throw messageError;
+
+    res.status(200).json({ products, messages });
+  } catch (err) {
+    res.status(500).json({ error: err instanceof Error ? err.message : 'Unknown error' });
   }
 }
