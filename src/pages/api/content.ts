@@ -163,8 +163,32 @@ export default async function handler(_req: NextApiRequest, res: NextApiResponse
     }
 
     // Debug mode: no admin content present -> return products from DB
-    const products = await prisma.product.findMany({ orderBy: { createdAt: 'desc' } })
-    try { console.log('[api/content] DB URL:', String(process.env.DATABASE_URL || '(none)')) } catch {}
+    let products: any[] = []
+    
+    // Try Prisma first
+    try {
+      products = await prisma.product.findMany({ orderBy: { createdAt: 'desc' } })
+    } catch (prismaErr) {
+      console.warn('[api/content] Prisma product fetch failed, falling back to Supabase:', prismaErr)
+      // Fallback to Supabase
+      try {
+        const supabase = createClient(
+          process.env.SUPABASE_URL || '',
+          process.env.SUPABASE_SERVICE_KEY || ''
+        )
+        const { data, error } = await supabase
+          .from('Product')
+          .select('*')
+          .order('createdAt', { ascending: false })
+        
+        if (!error && data) {
+          products = data
+        }
+      } catch (supabaseErr) {
+        console.error('[api/content] Supabase product fallback failed:', supabaseErr)
+      }
+    }
+    
     try { console.log('[api/content] DB PRODUCTS COUNT:', Array.isArray(products) ? products.length : 0) } catch {}
 
     // normalize images/titles in case they're stored as JSON string (sqlite fallback)
