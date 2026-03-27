@@ -1,6 +1,18 @@
 {
   "applications": [
     {
+      "id": "1774626249313",
+      "type": "wholesale",
+      "payload": {
+        "companyName": "Local Test Company",
+        "email": "local@test.com",
+        "phone": "5551234567",
+        "message": "Local B2B test"
+      },
+      "createdAt": "2026-03-27T15:44:09.313Z",
+      "read": false
+    },
+    {
       "id": "1772135391467",
       "type": "wholesale",
       "payload": {
