@@ -68,10 +68,13 @@ export default function UrunlerPage() {
     let mounted = true
     async function load() {
       try {
-  const res = await fetch('/api/content', { cache: 'no-store' })
-        if (!res.ok) return
-  const j = await res.json()
-  try { console.log('[urunler] FRONTEND RECEIVED:', j) } catch {}
+        const res = await fetch('/api/content', { cache: 'no-store' })
+        if (!res.ok) {
+          try { console.error('[urunler] Fetch failed:', res.status) } catch {}
+          return
+        }
+        const j = await res.json()
+        try { console.log('[urunler] FRONTEND RECEIVED:', j) } catch {}
         // Accept multiple shapes from /api/content during debugging:
         // - legacy: { content: { products: [...] } }
         // - debug/raw: [ ...products ]
@@ -82,6 +85,7 @@ export default function UrunlerPage() {
           : Array.isArray(j?.products)
           ? j.products
           : []
+        if (!mounted) return
         function mapGender(raw: unknown) {
           if (!raw && raw !== '') return undefined
           const s = String(raw ?? '').trim().toLowerCase()
@@ -135,13 +139,15 @@ export default function UrunlerPage() {
             gender: mapGender(p.gender),
           } as ProductType;
         }) as ProductType[];
+        
+        // Always set products if mounted - no additional normalization needed
+        // The API endpoint already returns normalized data
         if (mounted) {
-          const mod = await import('@/lib/normalizeProduct')
-          const normFn = mod.default as (r: Record<string, unknown>) => Record<string, unknown>
-          setProducts(normalized.map((x) => normFn(x as Record<string, unknown>) as unknown as ProductType))
+          setProducts(normalized)
         }
-      } catch {
-        // ignore
+      } catch (err) {
+        // Log any other errors but don't break the page
+        try { console.error('[urunler] Load error:', err) } catch {}
       }
     }
     load()
