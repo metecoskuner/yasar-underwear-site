@@ -14,6 +14,10 @@ const eslintConfig = defineConfig([
     // ignore backup copy directory used in this workspace
     "backup/**",
     "next-env.d.ts",
+    // ignore utility scripts (use CommonJS, not TypeScript)
+    "scripts/**",
+    "*.js",
+    "check-db-and-run-dev.js",
   ]),
 ]);
 
