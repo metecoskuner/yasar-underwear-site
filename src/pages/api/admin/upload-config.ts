@@ -1,42 +1,29 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { isAuthed } from '@/lib/adminAuth'
-import { createClient } from '@supabase/supabase-js'
 
 type Data = {
-  supabase?: { configured: boolean; error?: string }
-  cloudinary?: { configured: boolean; error?: string }
-  local?: { configured: boolean; error?: string }
-  message?: string
+  supabase?: { configured: boolean; hasServiceKey: boolean; hasAnonKey: boolean; error?: string }
+  cloudinary?: { configured: boolean }
+  local?: { configured: boolean }
 }
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  if (!isAuthed(req)) return res.status(401).json({ message: 'unauthorized' })
+  if (!isAuthed(req)) return res.status(401).json({})
 
   const result: Data = {}
 
-  // Check Supabase
+  // Check Supabase keys
   const supabaseUrl = process.env.SUPABASE_URL
-  const supabaseKey = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_ANON_KEY
+  const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY
+  const supabaseAnonKey = process.env.SUPABASE_ANON_KEY
 
   result.supabase = {
-    configured: !!(supabaseUrl && supabaseKey),
-  }
-
-  if (supabaseUrl && supabaseKey) {
-    try {
-      const supabase = createClient(supabaseUrl, supabaseKey)
-      const { data: buckets, error } = await supabase.storage.listBuckets()
-      if (error) {
-        result.supabase.error = `listBuckets error: ${error.message}`
-      } else {
-        result.supabase.error = `Buckets: ${buckets.map((b: any) => b.name).join(', ')}`
-      }
-    } catch (e) {
-      result.supabase.error = e instanceof Error ? e.message : String(e)
-    }
+    configured: !!supabaseUrl,
+    hasServiceKey: !!supabaseServiceKey,
+    hasAnonKey: !!supabaseAnonKey,
   }
 
   // Check Cloudinary
