@@ -47,21 +47,49 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         try {
           console.log('[UPLOAD] Attempting Supabase upload...')
           const supabase = createClient(supabaseUrl, supabaseKey)
-          const bucket = 'yasar-admin'
+          const bucketName = 'yasar-admin'
           const original = (file.originalFilename as string) || file.newFilename || path.basename(file.filepath)
           const safeName = `${Date.now()}-${original}`
           const buffer = fs.readFileSync(file.filepath)
 
-          console.log('[UPLOAD] Uploading to Supabase bucket:', bucket, 'as:', safeName)
-          const { data: upData, error: upErr } = await supabase.storage.from(bucket).upload(safeName, buffer, {
+          console.log('[UPLOAD] Uploading to Supabase bucket:', bucketName, 'as:', safeName)
+          
+          // Try to upload - Supabase will auto-create bucket if it doesn't exist with service role key
+          const { data: upData, error: upErr } = await supabase.storage.from(bucketName).upload(safeName, buffer, {
             contentType: (file.mimetype as string) || 'application/octet-stream',
             upsert: true,
           })
+          
           if (upErr) {
             console.error('[UPLOAD] Supabase upload error:', upErr.message || upErr)
+            // If bucket doesn't exist, try to create it first
+            if (upErr.message && upErr.message.includes('not found')) {
+              console.log('[UPLOAD] Bucket not found, attempting to create...')
+              const { data: createData, error: createErr } = await supabase.storage.createBucket(bucketName, {
+                public: true,
+              })
+              if (createErr) {
+                console.error('[UPLOAD] Failed to create bucket:', createErr)
+                throw new Error(String(createErr.message || createErr))
+              }
+              console.log('[UPLOAD] Bucket created:', createData)
+              
+              // Try upload again
+              const { data: upData2, error: upErr2 } = await supabase.storage.from(bucketName).upload(safeName, buffer, {
+                contentType: (file.mimetype as string) || 'application/octet-stream',
+                upsert: true,
+              })
+              if (upErr2) {
+                throw new Error(String(upErr2.message || upErr2))
+              }
+              const { data: pubData2 } = supabase.storage.from(bucketName).getPublicUrl(upData2.path)
+              console.log('[UPLOAD] Supabase SUCCESS:', pubData2.publicUrl)
+              try { fs.unlinkSync(file.filepath) } catch (unlinkErr) { console.warn('[UPLOAD] unlink failed', String(unlinkErr)) }
+              return res.status(200).json({ ok: true, url: pubData2.publicUrl })
+            }
             throw new Error(String(upErr.message || upErr))
           }
-          const { data: pubData } = supabase.storage.from(bucket).getPublicUrl(upData.path)
+          const { data: pubData } = supabase.storage.from(bucketName).getPublicUrl(upData.path)
           console.log('[UPLOAD] Supabase SUCCESS:', pubData.publicUrl)
           try { fs.unlinkSync(file.filepath) } catch (unlinkErr) { console.warn('[UPLOAD] unlink failed', String(unlinkErr)) }
           return res.status(200).json({ ok: true, url: pubData.publicUrl })
