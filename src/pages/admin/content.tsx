@@ -263,13 +263,17 @@ export default function ContentPage() {
                   </div>
                 </div>
                 <div className="mt-4 flex items-center space-x-2">
-                  <button className="bg-green-600 text-white px-3 py-1 rounded" onClick={async () => {
-                    if (!editing) return
+                  <button 
+                    className="bg-green-600 text-white px-3 py-1 rounded disabled:opacity-50 disabled:cursor-not-allowed" 
+                    disabled={saving}
+                    onClick={async () => {
+                    if (!editing || saving) return
+                    setSaving(true)
                     try {
                       const exists = products.find((x) => x.id === editing.id)
                       if (exists) {
                         const ed = editing as Product
-                        const bodyData = { ...ed, title: ed.i18nTitle ?? ed.title, images: (ed.images || []).filter((x) => !!x) }
+                        const bodyData = { ...ed, title: ed.i18nTitle ?? ed.title, images: ed.images || [] }
                         const res = await fetch('/api/admin/products', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(bodyData), credentials: 'same-origin' })
                         const j = await res.json()
                         if (!res.ok) {
@@ -281,7 +285,7 @@ export default function ContentPage() {
                         await loadProducts()
                       } else {
                         const ed = editing as Product
-                        const bodyData = { ...ed, title: ed.i18nTitle ?? ed.title, images: (ed.images || []).filter((x) => !!x) }
+                        const bodyData = { ...ed, title: ed.i18nTitle ?? ed.title, images: ed.images || [] }
                         const res = await fetch('/api/admin/products', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(bodyData), credentials: 'same-origin' })
                         const j = await res.json()
                         if (!res.ok) {
@@ -298,6 +302,8 @@ export default function ContentPage() {
                       console.error(err)
                       const rr = err as unknown as { message?: unknown }
                       alert(`Kaydetme başarısız: ${String(rr.message ?? err)}`)
+                    } finally {
+                      setSaving(false)
                     }
                   }}>Uygula</button>
                   <button className="px-3 py-1 rounded border" onClick={() => setEditing(null)}>İptal</button>
@@ -457,45 +463,7 @@ export default function ContentPage() {
                       </div>
                     </div>
 
-                    <div className="mt-4 flex items-center space-x-2">
-                      <button className="bg-green-600 text-white px-3 py-1 rounded" onClick={async () => {
-                        if (!editing) return
-                        try {
-                          const exists = products.find((x) => x.id === editing.id)
-                          if (exists) {
-                            const ed = editing as Product
-                            const bodyData = { ...ed, title: ed.i18nTitle ?? ed.title, images: (ed.images || []).filter((x) => !!x) }
-                            const res = await fetch('/api/admin/products', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(bodyData), credentials: 'same-origin' })
-                            const j = await res.json()
-                            if (!res.ok) {
-                              console.error('update failed', res.status, j)
-                              alert(`Kaydetme başarısız (${j?.message || res.status}${j?.detail ? `: ${j.detail}` : ''})`)
-                              return
-                            }
-                            // refresh list to reflect server state
-                            await loadProducts()
-                          } else {
-                            const ed = editing as Product
-                            const bodyData = { ...ed, title: ed.i18nTitle ?? ed.title, images: (ed.images || []).filter((x) => !!x) }
-                            const res = await fetch('/api/admin/products', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(bodyData), credentials: 'same-origin' })
-                            const j = await res.json()
-                            if (!res.ok) {
-                              console.error('create failed', res.status, j)
-                              const extra = Array.isArray(j?.errors) ? `\nHatalar: ${j.errors.join(', ')}` : ''
-                              alert(`Kaydetme başarısız (${j?.message || res.status}${j?.detail ? `: ${j.detail}` : ''})${extra}`)
-                              return
-                            }
-                            await loadProducts()
-                          }
-                          setEditing(null)
-                        } catch (err) {
-                          console.error(err)
-                          const rr = err as unknown as { message?: unknown }
-                          alert(`Kaydetme başarısız: ${String(rr.message ?? err)}`)
-                        }
-                      }}>Uygula</button>
-                      <button className="px-3 py-1 rounded border" onClick={() => setEditing(null)}>İptal</button>
-                    </div>
+                    {/* Save/Cancel buttons are handled in the first editor block above */}
                   </div>
                 )}
               </div>
