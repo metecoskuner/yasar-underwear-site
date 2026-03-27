@@ -84,7 +84,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const payload = req.body as { name?: string; email?: string; phone?: string; message?: string }
         const { data: created, error } = await supabase
           .from('ContactMessage')
-          .insert([{ name: payload.name, email: payload.email, phone: payload.phone ?? null, message: payload.message }])
+          .insert({ name: payload.name, email: payload.email, phone: payload.phone ?? null, message: payload.message })
           .select()
           .single()
 
