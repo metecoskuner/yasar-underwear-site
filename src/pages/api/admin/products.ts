@@ -153,7 +153,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     if (req.method === 'GET') {
-      let products: unknown[]
+      let products: unknown[] = []
+      let useSupabase = false
       
       // Try Prisma first
       try {
@@ -161,17 +162,27 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       } catch (prismaErr) {
         console.warn('[PRODUCTS GET] Prisma failed, falling back to Supabase:', prismaErr)
         // Fallback to Supabase
-        const supabase = createClient(
-          process.env.SUPABASE_URL || '',
-          process.env.SUPABASE_SERVICE_KEY || ''
-        )
-        const { data, error } = await supabase
-          .from('Product')
-          .select('*')
-          .order('createdAt', { ascending: false })
-        
-        if (error) throw error
-        products = data || []
+        try {
+          const supabase = createClient(
+            process.env.SUPABASE_URL || '',
+            process.env.SUPABASE_SERVICE_KEY || ''
+          )
+          const { data, error } = await supabase
+            .from('Product')
+            .select('*')
+            .order('createdAt', { ascending: false })
+          
+          if (error) {
+            console.error('[PRODUCTS GET] Supabase error:', error)
+            throw error
+          }
+          products = data || []
+          useSupabase = true
+        } catch (supabaseErr) {
+          console.error('[PRODUCTS GET] Both Prisma and Supabase failed:', supabaseErr)
+          // Return empty list instead of failing
+          products = []
+        }
       }
 
       // normalize images and localized title: if stored as JSON string (sqlite fallback), parse them
