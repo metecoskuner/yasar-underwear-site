@@ -82,21 +82,28 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (req.method === 'POST') {
       try {
         const payload = req.body as { name?: string; email?: string; phone?: string; message?: string }
-        const { data: created, error } = await supabase
+        const { data: createdArray, error } = await supabase
           .from('ContactMessage')
           .insert({ name: payload.name, email: payload.email, phone: payload.phone ?? null, message: payload.message })
           .select()
-          .single()
 
-        if (error) throw error
+        if (error) {
+          console.error('[MESSAGES POST] Supabase error:', error)
+          throw error
+        }
 
+        if (!createdArray || !Array.isArray(createdArray) || createdArray.length === 0) {
+          throw new Error('No data returned from insert')
+        }
+
+        const created = createdArray[0] as Record<string, unknown>
         const item = {
-          id: created.id as string,
-          from: created.name as string,
-          email: created.email as string,
+          id: String(created.id ?? ''),
+          from: String(created.name ?? ''),
+          email: String(created.email ?? ''),
           phone: (created.phone as string) ?? null,
-          message: created.message as string,
-          read: created.read as boolean,
+          message: String(created.message ?? ''),
+          read: !!created.read,
           createdAt: typeof created.createdAt === 'string' ? created.createdAt : new Date(created.createdAt as Date).toISOString(),
         }
         return res.status(200).json({ ok: true, item })
