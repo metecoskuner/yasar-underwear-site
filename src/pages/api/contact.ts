@@ -3,6 +3,7 @@ import nodemailer from 'nodemailer';
 import { prisma } from '@/lib/prisma';
 import { createClient } from '@supabase/supabase-js';
 import { isRateLimited } from '@/lib/rateLimiter';
+import { createId } from '@paralleldrive/cuid2';
 import { z } from 'zod';
 
 type Data = { ok: boolean; message?: string; errors?: Record<string, string[]> };
@@ -68,31 +69,35 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   // so we don't lose the message if sending fails.
   if (process.env.DATABASE_URL || process.env.SUPABASE_URL) {
     try {
-      console.log('[contact] Attempting to save message to database')
+      console.log('[contact] Attempting to save message to database', { name: safeName, email: safeEmail, hasPhone: !!safePhone })
       
       // Try Prisma first
       try {
-        await prisma.contactMessage.create({ data: { name: safeName, email: safeEmail, phone: safePhone ?? undefined, message: safeMessage } });
-        console.log('[contact] DB save successful via Prisma')
+        const created = await prisma.contactMessage.create({ data: { name: safeName, email: safeEmail, phone: safePhone ?? undefined, message: safeMessage } });
+        console.log('[contact] DB save successful via Prisma', { id: created.id })
       } catch (prismaErr) {
-        console.warn('[contact] Prisma save failed, falling back to Supabase:', prismaErr)
-        // Fallback to Supabase
+        console.warn('[contact] Prisma save failed, falling back to Supabase:', prismaErr instanceof Error ? prismaErr.message : String(prismaErr))
+        // Fallback to Supabase — generate ID manually since Supabase JS client doesn't auto-generate CUID
         const supabase = createClient(
           process.env.SUPABASE_URL || '',
           process.env.SUPABASE_SERVICE_KEY || ''
         )
-        const { error: supabaseErr } = await supabase
+        const generatedId = createId()
+        const insertData = { id: generatedId, name: safeName, email: safeEmail, phone: safePhone ?? null, message: safeMessage }
+        console.log('[contact] Supabase insert data:', JSON.stringify(insertData))
+        const { data: created, error: supabaseErr } = await supabase
           .from('ContactMessage')
-          .insert({ name: safeName, email: safeEmail, phone: safePhone, message: safeMessage })
+          .insert(insertData)
+          .select()
         
         if (supabaseErr) {
-          console.error('[contact] Supabase save failed:', supabaseErr)
+          console.error('[contact] Supabase save failed - error details:', JSON.stringify(supabaseErr, null, 2))
           throw supabaseErr
         }
-        console.log('[contact] DB save successful via Supabase')
+        console.log('[contact] DB save successful via Supabase', { created })
       }
     } catch (dbErr) {
-      console.error('[contact] db save error (caught):', dbErr)
+      console.error('[contact] db save error (caught):', dbErr instanceof Error ? dbErr.message : String(dbErr))
       if (process.env.NODE_ENV === 'development') console.error('[contact] db save error', dbErr);
       // continue — do not block user because of DB errors
     }
