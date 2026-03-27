@@ -43,3 +43,18 @@ model HoneypotLog {
   submittedValue String?
   createdAt      DateTime @default(now())
 }
+
+model B2BApplication {
+  id        String   @id @default(cuid())
+  type      String?  // 'wholesale' or 'private-label'
+  payload   Json?    // Full form data
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model Quote {
+  id        String   @id @default(cuid())
+  payload   Json?    // Full form data
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}

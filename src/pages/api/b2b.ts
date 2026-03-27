@@ -1,6 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import fs from 'fs';
 import path from 'path';
+import { prisma } from '@/lib/prisma';
+import { createClient } from '@supabase/supabase-js';
+import { createId } from '@paralleldrive/cuid2';
 
 type Body = { type?: string; payload?: Record<string, unknown> };
 
@@ -27,7 +30,45 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Log the submission server-side
     console.log('[/api/b2b] received', { body });
 
-    // Persist to admin-applications.json so submissions appear in admin panel
+    // Persist to database (with Supabase fallback)
+    if (process.env.DATABASE_URL || process.env.SUPABASE_URL) {
+      try {
+        // Try Prisma first
+        try {
+          const created = await prisma.b2BApplication.create({
+            data: {
+              type: body.type || 'unknown',
+              payload: (body.payload || {}) as any,
+            },
+          });
+          console.log('[b2b] DB save successful via Prisma', { id: created.id });
+        } catch (prismaErr) {
+          console.warn('[b2b] Prisma save failed, falling back to Supabase:', prismaErr instanceof Error ? prismaErr.message : String(prismaErr));
+          const supabase = createClient(
+            process.env.SUPABASE_URL || '',
+            process.env.SUPABASE_SERVICE_KEY || ''
+          );
+          const generatedId = createId();
+          const insertData = { id: generatedId, type: body.type || 'unknown', payload: (body.payload || {}) as any };
+          console.log('[b2b] Supabase insert data:', JSON.stringify(insertData));
+          const { data: created, error: supabaseErr } = await supabase
+            .from('B2BApplication')
+            .insert(insertData)
+            .select();
+
+          if (supabaseErr) {
+            console.error('[b2b] Supabase save failed - error details:', JSON.stringify(supabaseErr, null, 2));
+            throw supabaseErr;
+          }
+          console.log('[b2b] DB save successful via Supabase', { created });
+        }
+      } catch (dbErr) {
+        console.error('[b2b] db save error (caught):', dbErr instanceof Error ? dbErr.message : String(dbErr));
+        // continue — do not block user because of DB errors
+      }
+    }
+
+    // Also persist to admin-applications.json for backward compatibility
     try {
       const d = readData();
       const item = { id: String(Date.now()), type: body.type || 'unknown', payload: body.payload || {}, createdAt: new Date().toISOString(), read: false };
