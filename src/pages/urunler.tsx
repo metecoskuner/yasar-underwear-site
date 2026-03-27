@@ -19,7 +19,6 @@ const GENDER_TABS = [
 
 export default function UrunlerPage() {
   const { t, lang } = useLanguage();
-  const [mounted, setMounted] = useState(false);
   
   const tr = (key: string, fallback: string) => {
     try {
@@ -47,24 +46,6 @@ export default function UrunlerPage() {
   const [copiedCode, setCopiedCode] = useState(false);
 
   // localStorage-based client cache disabled during debugging — rely on API
-
-  // Only render on client-side after hydration
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-  
-  if (!mounted) {
-    // Show loading/placeholder on server
-    return (
-      <>
-        <Head>
-          <title>{tr('pages.products.title','Ürünler — Yasar')}</title>
-          <meta name="description" content={tr('pages.products.description','Yasar ürün koleksiyonu')} />
-        </Head>
-        <div className="min-h-screen" />
-      </>
-    );
-  }
 
   function openProductModal(product: ProductType, preview?: number | string) {
     let index = 0;
@@ -254,7 +235,7 @@ export default function UrunlerPage() {
   const modalSrc = activeProduct?.images?.[modalIndex] ?? activeProduct?.image ?? '/photos/placeholder.png';
 
   return (
-    <>
+    <div suppressHydrationWarning>
       <Head>
         <title>{tr('pages.products.title','Ürünler — Yasar')}</title>
         <meta name="description" content={tr('pages.products.description','Yasar ürün koleksiyonu')} />
@@ -476,6 +457,6 @@ export default function UrunlerPage() {
           </div>
         </div>
       )}
-      </>
+      </div>
   );
 }
