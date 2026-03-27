@@ -83,8 +83,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
           process.env.SUPABASE_SERVICE_KEY || ''
         )
         const generatedId = createId()
+        console.log('[contact] Generated ID for Supabase:', generatedId)
         const insertData = { id: generatedId, name: safeName, email: safeEmail, phone: safePhone ?? null, message: safeMessage }
-        console.log('[contact] Supabase insert data:', JSON.stringify(insertData))
+        console.log('[contact] Supabase insert data prepared:', JSON.stringify(insertData))
+        console.log('[contact] Supabase insert data keys:', Object.keys(insertData))
         const { data: created, error: supabaseErr } = await supabase
           .from('ContactMessage')
           .insert(insertData)
