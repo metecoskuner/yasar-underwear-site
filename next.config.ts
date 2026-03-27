@@ -4,8 +4,16 @@ const nextConfig: NextConfig = {
   /* config options here */
   reactStrictMode: true,
   images: {
-    // allow loading images from Cloudinary and Supabase
-    domains: ['res.cloudinary.com', 'weqrfanzkvvlhtoymxdn.supabase.co'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'weqrfanzkvvlhtoymxdn.supabase.co',
+      },
+    ],
   },
 };
 
