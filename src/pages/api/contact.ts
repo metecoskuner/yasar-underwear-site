@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import nodemailer from 'nodemailer';
 import { prisma } from '@/lib/prisma';
+import { createClient } from '@supabase/supabase-js';
 import { isRateLimited } from '@/lib/rateLimiter';
 import { z } from 'zod';
 
@@ -65,11 +66,31 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
   // Persist message to DB if DATABASE_URL is configured. This runs before sending email
   // so we don't lose the message if sending fails.
-  if (process.env.DATABASE_URL) {
+  if (process.env.DATABASE_URL || process.env.SUPABASE_URL) {
     try {
-      console.log('[contact] DATABASE_URL present, attempting DB save')
-      await prisma.contactMessage.create({ data: { name: safeName, email: safeEmail, phone: safePhone ?? undefined, message: safeMessage } });
-      console.log('[contact] DB save successful')
+      console.log('[contact] Attempting to save message to database')
+      
+      // Try Prisma first
+      try {
+        await prisma.contactMessage.create({ data: { name: safeName, email: safeEmail, phone: safePhone ?? undefined, message: safeMessage } });
+        console.log('[contact] DB save successful via Prisma')
+      } catch (prismaErr) {
+        console.warn('[contact] Prisma save failed, falling back to Supabase:', prismaErr)
+        // Fallback to Supabase
+        const supabase = createClient(
+          process.env.SUPABASE_URL || '',
+          process.env.SUPABASE_SERVICE_KEY || ''
+        )
+        const { error: supabaseErr } = await supabase
+          .from('ContactMessage')
+          .insert({ name: safeName, email: safeEmail, phone: safePhone, message: safeMessage })
+        
+        if (supabaseErr) {
+          console.error('[contact] Supabase save failed:', supabaseErr)
+          throw supabaseErr
+        }
+        console.log('[contact] DB save successful via Supabase')
+      }
     } catch (dbErr) {
       console.error('[contact] db save error (caught):', dbErr)
       if (process.env.NODE_ENV === 'development') console.error('[contact] db save error', dbErr);
