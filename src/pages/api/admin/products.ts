@@ -336,11 +336,31 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const existing = (await prisma.product.findUnique({ where: { id } })) as unknown as Record<string, unknown>
         if (!existing) return res.status(404).json({ ok: false, message: 'not_found' })
 
+        // Check if this is a simple feature toggle (only isFeatured field)
+        const incoming = req.body || {}
+        const incomingKeys = Object.keys(incoming).filter((k) => k !== 'id')
+        const isSimpleToggle = incomingKeys.length === 1 && incomingKeys[0] === 'isFeatured'
+
+        // If simple toggle, skip validation and just update isFeatured
+        if (isSimpleToggle) {
+          const isFeatured = !!incoming.isFeatured
+          // enforce max 8 featured products (exclude current product)
+          if (isFeatured) {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore TS: local Prisma generated types may differ from runtime schema
+            const featuredCount = await prisma.product.count({ where: { isFeatured: true, NOT: { id } } })
+            if (featuredCount >= 8) return res.status(400).json({ ok: false, message: 'featured_limit', detail: 'Maximum 8 featured products allowed' })
+          }
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore TS: local Prisma generated types may differ from runtime schema
+          const updated = await prisma.product.update({ where: { id }, data: { isFeatured } })
+          return res.status(200).json({ ok: true, product: updated })
+        }
+
         // normalize existing images (could be stored as JSON string in sqlite fallback)
         const existingImages = typeof existing.images === 'string' ? JSON.parse(String(existing.images)) : (Array.isArray(existing.images) ? (existing.images as string[]) : [])
 
         // build merged payload: incoming fields override existing
-        const incoming = req.body || {}
         const merged = {
           id,
           title: typeof incoming.title === 'string' ? incoming.title : (existing.title as string | undefined),
@@ -402,11 +422,42 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             return res.status(404).json({ ok: false, message: 'not_found' })
           }
           
+          // Check if this is a simple feature toggle
+          const incoming = req.body || {}
+          const incomingKeys = Object.keys(incoming).filter((k) => k !== 'id')
+          const isSimpleToggle = incomingKeys.length === 1 && incomingKeys[0] === 'isFeatured'
+
+          // If simple toggle, skip validation and just update isFeatured
+          if (isSimpleToggle) {
+            const isFeatured = !!incoming.isFeatured
+            // enforce max 8 featured products (exclude current product)
+            if (isFeatured) {
+              const { count } = await supabase
+                .from('Product')
+                .select('*', { count: 'exact', head: true })
+                .eq('isFeatured', true)
+                .neq('id', id)
+              if ((count || 0) >= 8) return res.status(400).json({ ok: false, message: 'featured_limit', detail: 'Maximum 8 featured products allowed' })
+            }
+            
+            const { data: updated, error: updateErr } = await supabase
+              .from('Product')
+              .update({ isFeatured })
+              .eq('id', id)
+              .select()
+              .single()
+            
+            if (updateErr || !updated) {
+              throw updateErr || new Error('No data returned from update')
+            }
+            
+            return res.status(200).json({ ok: true, product: updated })
+          }
+          
           // normalize existing images
           const existingImages = typeof existing.images === 'string' ? JSON.parse(String(existing.images)) : (Array.isArray(existing.images) ? existing.images : [])
           
           // build merged payload
-          const incoming = req.body || {}
           const merged = {
             id,
             title: typeof incoming.title === 'string' ? incoming.title : (existing.title as string | undefined),
