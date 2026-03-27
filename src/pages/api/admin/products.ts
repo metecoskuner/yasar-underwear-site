@@ -329,7 +329,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       // allow partial updates (e.g. toggling only isFeatured). To validate, fetch existing product
       const id = (req.body && (req.body.id as string)) || undefined
       if (!id) return res.status(400).json({ ok: false, message: 'missing_id' })
+      
       try {
+        // Try Prisma first
         // cast to a loose record because local generated Prisma types may not match runtime schema
         const existing = (await prisma.product.findUnique({ where: { id } })) as unknown as Record<string, unknown>
         if (!existing) return res.status(404).json({ ok: false, message: 'not_found' })
@@ -378,13 +380,89 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         // @ts-ignore TS: local Prisma generated types may differ from runtime schema
         const updated = await prisma.product.update({ where: { id }, data: updateData })
         return res.status(200).json({ ok: true, product: updated })
-      } catch (innerErr: unknown) {
-        console.error('prisma update error:', innerErr)
-        const errRec = innerErr as { message?: unknown; code?: unknown; meta?: unknown }
-        const detail = errRec && errRec.message ? String(errRec.message) : String(innerErr)
-        const code = errRec && errRec.code ? String(errRec.code) : undefined
-        const meta = errRec && errRec.meta ? errRec.meta : undefined
-        return res.status(500).json({ ok: false, message: 'update_failed', detail, code, meta })
+      } catch (prismaErr: unknown) {
+        console.error('prisma update error:', prismaErr)
+        
+        // Fallback to Supabase
+        try {
+          console.warn('[PRODUCTS PUT] Prisma failed, falling back to Supabase')
+          const supabase = createClient(
+            process.env.SUPABASE_URL || '',
+            process.env.SUPABASE_SERVICE_KEY || ''
+          )
+          
+          // First fetch existing from Supabase
+          const { data: existing, error: fetchErr } = await supabase
+            .from('Product')
+            .select('*')
+            .eq('id', id)
+            .single()
+          
+          if (fetchErr || !existing) {
+            return res.status(404).json({ ok: false, message: 'not_found' })
+          }
+          
+          // normalize existing images
+          const existingImages = typeof existing.images === 'string' ? JSON.parse(String(existing.images)) : (Array.isArray(existing.images) ? existing.images : [])
+          
+          // build merged payload
+          const incoming = req.body || {}
+          const merged = {
+            id,
+            title: typeof incoming.title === 'string' ? incoming.title : (existing.title as string | undefined),
+            productCode: typeof incoming.productCode === 'string' ? incoming.productCode : (existing.productCode as string | undefined),
+            description: typeof incoming.description === 'string' ? incoming.description : (existing.description as string | null | undefined),
+            gender: typeof incoming.gender === 'string' ? incoming.gender : (existing.gender as string | undefined),
+            images: incoming.images !== undefined ? incoming.images : existingImages,
+            stock: incoming.stock !== undefined ? Number(incoming.stock) || 0 : Number(existing.stock) || 0,
+            isActive: incoming.isActive !== undefined ? !!incoming.isActive : !!existing.isActive,
+            isFeatured: incoming.isFeatured !== undefined ? !!incoming.isFeatured : !!existing.isFeatured,
+          }
+          
+          const payload = validateProductPayload(merged as IncomingProduct)
+          if (!payload.valid) return res.status(400).json({ ok: false, message: 'validation_failed', errors: payload.errors })
+          const d = payload.data
+          
+          // enforce max 8 featured products (exclude current product)
+          if (d.isFeatured) {
+            const { count } = await supabase
+              .from('Product')
+              .select('*', { count: 'exact', head: true })
+              .eq('isFeatured', true)
+              .neq('id', id)
+            if ((count || 0) >= 8) return res.status(400).json({ ok: false, message: 'featured_limit', detail: 'Maximum 8 featured products allowed' })
+          }
+          
+          const updateData = {
+            title: JSON.stringify(normalizeIncomingTitle(d.title)),
+            description: d.description ?? null,
+            productCode: d.productCode,
+            gender: d.gender ?? '',
+            images: JSON.stringify(d.images || []),
+            stock: d.stock || 0,
+            isActive: !!d.isActive,
+            isFeatured: !!d.isFeatured,
+          }
+          
+          const { data: updated, error: updateErr } = await supabase
+            .from('Product')
+            .update(updateData)
+            .eq('id', id)
+            .select()
+            .single()
+          
+          if (updateErr || !updated) {
+            console.error('[PRODUCTS PUT] Supabase update error:', updateErr)
+            throw updateErr || new Error('No data returned from update')
+          }
+          
+          return res.status(200).json({ ok: true, product: updated })
+        } catch (supabaseErr: unknown) {
+          console.error('[PRODUCTS PUT] Both Prisma and Supabase failed:', supabaseErr)
+          const errRec = supabaseErr as { message?: unknown; code?: unknown; meta?: unknown }
+          const detail = errRec && errRec.message ? String(errRec.message) : String(supabaseErr)
+          return res.status(500).json({ ok: false, message: 'update_failed', detail })
+        }
       }
     }
 
@@ -392,10 +470,42 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const { id } = req.query
       // delete a single product by id
       if (!id || typeof id !== 'string') return res.status(400).json({ ok: false, message: 'missing_id' })
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore TS: local Prisma generated types may differ from runtime schema
-      await prisma.product.delete({ where: { id } })
-      return res.status(200).json({ ok: true })
+      
+      try {
+        // Try Prisma first
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore TS: local Prisma generated types may differ from runtime schema
+        await prisma.product.delete({ where: { id } })
+        return res.status(200).json({ ok: true })
+      } catch (prismaErr: unknown) {
+        console.error('prisma delete error:', prismaErr)
+        
+        // Fallback to Supabase
+        try {
+          console.warn('[PRODUCTS DELETE] Prisma failed, falling back to Supabase')
+          const supabase = createClient(
+            process.env.SUPABASE_URL || '',
+            process.env.SUPABASE_SERVICE_KEY || ''
+          )
+          
+          const { error } = await supabase
+            .from('Product')
+            .delete()
+            .eq('id', id)
+          
+          if (error) {
+            console.error('[PRODUCTS DELETE] Supabase delete error:', error)
+            throw error
+          }
+          
+          return res.status(200).json({ ok: true })
+        } catch (supabaseErr: unknown) {
+          console.error('[PRODUCTS DELETE] Both Prisma and Supabase failed:', supabaseErr)
+          const errRec = supabaseErr as { message?: unknown; code?: unknown }
+          const detail = errRec && errRec.message ? String(errRec.message) : String(supabaseErr)
+          return res.status(500).json({ ok: false, message: 'delete_failed', detail })
+        }
+      }
     }
 
     return res.status(405).json({ ok: false })
