@@ -1,7 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { prisma } from '@/lib/prisma'
+import { createClient } from '@supabase/supabase-js'
 import { isAuthed } from '@/lib/adminAuth'
-// avoid importing Prisma client types here because local generated types may differ from the runtime DB schema
+// Supabase fallback client for Vercel connection pool issues
 
 type IncomingProduct = {
   id?: string
@@ -152,7 +153,27 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     if (req.method === 'GET') {
-      const products = await prisma.product.findMany({ orderBy: { createdAt: 'desc' } })
+      let products: unknown[]
+      
+      // Try Prisma first
+      try {
+        products = await prisma.product.findMany({ orderBy: { createdAt: 'desc' } })
+      } catch (prismaErr) {
+        console.warn('[PRODUCTS GET] Prisma failed, falling back to Supabase:', prismaErr)
+        // Fallback to Supabase
+        const supabase = createClient(
+          process.env.SUPABASE_URL || '',
+          process.env.SUPABASE_SERVICE_KEY || ''
+        )
+        const { data, error } = await supabase
+          .from('Product')
+          .select('*')
+          .order('createdAt', { ascending: false })
+        
+        if (error) throw error
+        products = data || []
+      }
+
       // normalize images and localized title: if stored as JSON string (sqlite fallback), parse them
       const normalized = products.map((p: unknown) => {
         const rec = p as Record<string, unknown>
