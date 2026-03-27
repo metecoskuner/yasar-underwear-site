@@ -279,11 +279,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         // Fallback to Supabase
         try {
           console.warn('[PRODUCTS POST] Prisma failed, falling back to Supabase')
+          const crypto = await import('crypto')
           const supabase = createClient(
             process.env.SUPABASE_URL || '',
             process.env.SUPABASE_SERVICE_KEY || ''
           )
           const createData: Record<string, unknown> = {
+            id: crypto.randomUUID ? crypto.randomUUID() : 'id-' + Date.now(),
             title: JSON.stringify(normalizeIncomingTitle(d.title)),
             description: d.description ?? null,
             productCode: d.productCode,
