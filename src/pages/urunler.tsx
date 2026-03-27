@@ -19,6 +19,8 @@ const GENDER_TABS = [
 
 export default function UrunlerPage() {
   const { t, lang } = useLanguage();
+  const [mounted, setMounted] = useState(false);
+  
   const tr = (key: string, fallback: string) => {
     try {
       const v = t(key);
@@ -27,6 +29,24 @@ export default function UrunlerPage() {
       return fallback;
     }
   };
+  
+  // Only render on client-side
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  
+  if (!mounted) {
+    // Show loading/placeholder on server
+    return (
+      <>
+        <Head>
+          <title>{tr('pages.products.title','Ürünler — Yasar')}</title>
+          <meta name="description" content={tr('pages.products.description','Yasar ürün koleksiyonu')} />
+        </Head>
+        <div className="min-h-screen" />
+      </>
+    );
+  }
   const langKey = String(lang).toLowerCase();
   const router = useRouter();
   const [gender, setGender] = useState<'all' | 'male' | 'female'>('all');
