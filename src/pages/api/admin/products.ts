@@ -243,16 +243,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const payload = validateProductPayload(req.body || {})
       if (!payload.valid) return res.status(400).json({ ok: false, message: 'validation_failed', errors: payload.errors })
       const d = payload.data
-          try {
-            // (debug logs removed)
-            // enforce max 8 featured products
-            if (d.isFeatured) {
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore TS: local Prisma generated types may differ from runtime schema
-              const featuredCount = await prisma.product.count({ where: { isFeatured: true } })
-              if (featuredCount >= 8) return res.status(400).json({ ok: false, message: 'featured_limit', detail: 'Maximum 8 featured products allowed' })
-            }
-            const createData = {
+      
+      // Try Prisma first, fallback to Supabase if needed
+      try {
+        // enforce max 8 featured products
+        if (d.isFeatured) {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore TS: local Prisma generated types may differ from runtime schema
+          const featuredCount = await prisma.product.count({ where: { isFeatured: true } })
+          if (featuredCount >= 8) return res.status(400).json({ ok: false, message: 'featured_limit', detail: 'Maximum 8 featured products allowed' })
+        }
+        const createData = {
           // Ensure title stored in DB is a properly-structured object (stringified).
           title: JSON.stringify(normalizeIncomingTitle(d.title)),
           description: d.description ?? null,
@@ -263,24 +264,61 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           isActive: !!d.isActive,
           isFeatured: !!d.isFeatured,
         }
-            // Log DB URL to confirm environment
-            try { console.log('[admin/products] DB URL:', String(process.env.DATABASE_URL || '(none)')) } catch {}
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore TS: local Prisma generated types may differ from runtime schema
-            const created = await prisma.product.create({ data: createData })
-            // Confirm DB write by reading back all products and return the total count
-            const all = await prisma.product.findMany()
-            try { console.log('[admin/products] DB PRODUCTS COUNT:', Array.isArray(all) ? all.length : 0) } catch {}
-            // return total so we can validate writes from the admin UI
-            return res.status(200).json({ ok: true, product: created, total: Array.isArray(all) ? all.length : 0 })
-          } catch (innerErr: unknown) {
-            console.error('prisma create error:', innerErr)
-            const errRec = innerErr as { message?: unknown; code?: unknown; meta?: unknown }
-            const detail = errRec && errRec.message ? String(errRec.message) : String(innerErr)
-            const code = errRec && errRec.code ? String(errRec.code) : undefined
-            const meta = errRec && errRec.meta ? errRec.meta : undefined
-            return res.status(500).json({ ok: false, message: 'create_failed', detail, code, meta })
+        // Log DB URL to confirm environment
+        try { console.log('[admin/products] DB URL:', String(process.env.DATABASE_URL || '(none)')) } catch {}
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore TS: local Prisma generated types may differ from runtime schema
+        const created = await prisma.product.create({ data: createData })
+        // Confirm DB write by reading back all products and return the total count
+        const all = await prisma.product.findMany()
+        try { console.log('[admin/products] DB PRODUCTS COUNT:', Array.isArray(all) ? all.length : 0) } catch {}
+        // return total so we can validate writes from the admin UI
+        return res.status(200).json({ ok: true, product: created, total: Array.isArray(all) ? all.length : 0 })
+      } catch (prismaErr: unknown) {
+        console.error('prisma create error:', prismaErr)
+        // Fallback to Supabase
+        try {
+          console.warn('[PRODUCTS POST] Prisma failed, falling back to Supabase')
+          const supabase = createClient(
+            process.env.SUPABASE_URL || '',
+            process.env.SUPABASE_SERVICE_KEY || ''
+          )
+          const createData = {
+            title: JSON.stringify(normalizeIncomingTitle(d.title)),
+            description: d.description ?? null,
+            productCode: d.productCode,
+            gender: d.gender ?? '',
+            images: JSON.stringify(d.images || []),
+            stock: d.stock || 0,
+            isActive: !!d.isActive,
+            isFeatured: !!d.isFeatured,
           }
+          const { data, error } = await supabase
+            .from('Product')
+            .insert([createData])
+            .select()
+          
+          if (error) {
+            console.error('[PRODUCTS POST] Supabase insert error:', error)
+            throw error
+          }
+          
+          const created = data && data.length > 0 ? data[0] : null
+          if (!created) throw new Error('No data returned from Supabase insert')
+          
+          // Get total count
+          const { count } = await supabase
+            .from('Product')
+            .select('*', { count: 'exact', head: true })
+          
+          return res.status(200).json({ ok: true, product: created, total: count || 1 })
+        } catch (supabaseErr: unknown) {
+          console.error('[PRODUCTS POST] Both Prisma and Supabase failed:', supabaseErr)
+          const errRec = supabaseErr as { message?: unknown; code?: unknown; meta?: unknown }
+          const detail = errRec && errRec.message ? String(errRec.message) : String(supabaseErr)
+          return res.status(500).json({ ok: false, message: 'create_failed', detail })
+        }
+      }
     }
 
     if (req.method === 'PUT') {
