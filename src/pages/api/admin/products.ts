@@ -283,7 +283,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             process.env.SUPABASE_URL || '',
             process.env.SUPABASE_SERVICE_KEY || ''
           )
-          const createData = {
+          const createData: Record<string, unknown> = {
             title: JSON.stringify(normalizeIncomingTitle(d.title)),
             description: d.description ?? null,
             productCode: d.productCode,
@@ -292,7 +292,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             stock: d.stock || 0,
             isActive: !!d.isActive,
             isFeatured: !!d.isFeatured,
+            createdAt: new Date().toISOString(),
           }
+          // Supabase will generate id if not provided
           const { data, error } = await supabase
             .from('Product')
             .insert([createData])
