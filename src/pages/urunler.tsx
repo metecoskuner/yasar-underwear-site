@@ -30,23 +30,6 @@ export default function UrunlerPage() {
     }
   };
   
-  // Only render on client-side
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-  
-  if (!mounted) {
-    // Show loading/placeholder on server
-    return (
-      <>
-        <Head>
-          <title>{tr('pages.products.title','Ürünler — Yasar')}</title>
-          <meta name="description" content={tr('pages.products.description','Yasar ürün koleksiyonu')} />
-        </Head>
-        <div className="min-h-screen" />
-      </>
-    );
-  }
   const langKey = String(lang).toLowerCase();
   const router = useRouter();
   const [gender, setGender] = useState<'all' | 'male' | 'female'>('all');
@@ -64,6 +47,24 @@ export default function UrunlerPage() {
   const [copiedCode, setCopiedCode] = useState(false);
 
   // localStorage-based client cache disabled during debugging — rely on API
+
+  // Only render on client-side after hydration
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  
+  if (!mounted) {
+    // Show loading/placeholder on server
+    return (
+      <>
+        <Head>
+          <title>{tr('pages.products.title','Ürünler — Yasar')}</title>
+          <meta name="description" content={tr('pages.products.description','Yasar ürün koleksiyonu')} />
+        </Head>
+        <div className="min-h-screen" />
+      </>
+    );
+  }
 
   function openProductModal(product: ProductType, preview?: number | string) {
     let index = 0;
