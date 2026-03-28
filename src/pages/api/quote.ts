@@ -26,7 +26,8 @@ export default async function handler(
         try {
           const created = await prisma.quote.create({
             data: {
-              payload: (payload || {}) as any,
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              payload: (payload || {}) as unknown as any,
             },
           })
           console.log('[quote] DB save successful via Prisma', { id: created.id })
@@ -37,7 +38,8 @@ export default async function handler(
             process.env.SUPABASE_SERVICE_KEY || ''
           )
           const generatedId = createId()
-          const insertData = { id: generatedId, payload: (payload || {}) as any }
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const insertData = { id: generatedId, payload: (payload || {}) as unknown as any }
           console.log('[quote] Supabase insert data prepared')
           const { data: created, error: supabaseErr } = await supabase
             .from('Quote')

@@ -31,8 +31,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const { data: list, error: listErr } = await supabase.storage.from(bucket).list('', { limit: 1000 })
         if (listErr) throw listErr
         const uploads = Array.isArray(list)
-          ? await Promise.all(list.map(async (item: any) => {
-              const key = item.name
+          ? await Promise.all(list.map(async (item) => {
+              const key = (item as unknown as Record<string, unknown>).name as string
               const filePath = key
               const { data: pub } = supabase.storage.from(bucket).getPublicUrl(filePath)
               return { name: key, url: pub.publicUrl }
@@ -66,7 +66,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         })
 
         const uploads = Array.isArray(resp.resources)
-          ? resp.resources.map((r: any) => ({ name: r.public_id, url: r.secure_url }))
+          ? resp.resources.map((r: unknown) => ({ name: (r as Record<string, unknown>).public_id as string, url: (r as Record<string, unknown>).secure_url as string }))
           : []
 
         // Keep videos empty for now (could query videos separately if needed)
@@ -86,15 +86,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       if (isProd && cloudName) {
         const base = `https://res.cloudinary.com/${cloudName}/image/upload/`
 
-        const mapEntry = (e: any) => {
-          if (!e || typeof e.url !== 'string') return e
-          if (e.url.startsWith('/')) {
-            const fname = e.url.replace(/^\//, '')
+        const mapEntry = (e: unknown) => {
+          const entry = e as Record<string, unknown>
+          if (!entry || typeof entry.url !== 'string') return entry
+          if (entry.url.startsWith('/')) {
+            const fname = entry.url.replace(/^\//, '')
             const encoded = fname.split('/').map(encodeURIComponent).join('/')
             const cloudUrl = `${base}${encoded}`
-            return { ...e, url: cloudUrl }
+            return { ...entry, url: cloudUrl }
           }
-          return e
+          return entry
         }
 
         if (Array.isArray(parsed.videos)) parsed.videos = parsed.videos.map(mapEntry)

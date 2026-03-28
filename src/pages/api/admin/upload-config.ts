@@ -8,7 +8,7 @@ type Data = {
     hasServiceKey: boolean
     hasAnonKey: boolean
     keyUsed?: string
-    buckets?: any[]
+    buckets?: Record<string, unknown>[]
     error?: string
   }
   cloudinary?: { configured: boolean }
@@ -44,7 +44,7 @@ export default async function handler(
       if (error) {
         result.supabase.error = `Error: ${error.message}`
       } else {
-        result.supabase.buckets = buckets || []
+        result.supabase.buckets = (buckets || []) as unknown as Record<string, unknown>[]
       }
     } catch (e) {
       result.supabase.error = e instanceof Error ? e.message : String(e)

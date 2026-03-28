@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { createClient } from '@supabase/supabase-js'
 
 type Data = {
-  buckets?: any[]
+  buckets?: Record<string, unknown>[]
   error?: string
   configured?: boolean
 }
@@ -34,7 +34,7 @@ export default async function handler(
 
     return res.status(200).json({
       configured: true,
-      buckets: buckets || [],
+      buckets: (buckets || []) as unknown as Record<string, unknown>[],
     })
   } catch (err) {
     return res.status(500).json({

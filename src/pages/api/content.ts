@@ -15,7 +15,7 @@ function safeParse<T>(input: unknown): T | undefined {
 
 export default async function handler(_req: NextApiRequest, res: NextApiResponse) {
   try {
-    let entry: any = null
+    let entry: Record<string, unknown> | null = null
     
     // Try Prisma first
     try {
@@ -44,18 +44,18 @@ export default async function handler(_req: NextApiRequest, res: NextApiResponse
     
     if (entry && entry.value) {
       // value may be stored as JSON string in sqlite fallback
-  let content: any
+      let content: Record<string, unknown> | undefined
       if (typeof entry.value === 'string') {
         const parsed = safeParse<Record<string, unknown>>(entry.value)
         // if parsing fails, treat as no admin content so we can fall back to DB products
         content = parsed === undefined ? undefined : parsed
       } else {
-        content = entry.value
+        content = entry.value as Record<string, unknown>
       }
 
   // If admin content exists but doesn't include products (or it's an empty array), attach products from DB
   if (!content || !Array.isArray(content.products) || (Array.isArray(content.products) && content.products.length === 0)) {
-        let products: any[] = []
+        let products: Record<string, unknown>[] = []
         
         // Try Prisma first
         try {
@@ -163,7 +163,7 @@ export default async function handler(_req: NextApiRequest, res: NextApiResponse
     }
 
     // Debug mode: no admin content present -> return products from DB
-    let products: any[] = []
+    let products: Record<string, unknown>[] = []
     
     // Try Prisma first
     try {

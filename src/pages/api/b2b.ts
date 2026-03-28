@@ -38,7 +38,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           const created = await prisma.b2BApplication.create({
             data: {
               type: body.type || 'unknown',
-              payload: (body.payload || {}) as any,
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              payload: (body.payload || {}) as unknown as any,
             },
           });
           console.log('[b2b] DB save successful via Prisma', { id: created.id });
@@ -49,7 +50,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             process.env.SUPABASE_SERVICE_KEY || ''
           );
           const generatedId = createId();
-          const insertData = { id: generatedId, type: body.type || 'unknown', payload: (body.payload || {}) as any };
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const insertData = { id: generatedId, type: body.type || 'unknown', payload: (body.payload || {}) as unknown as any };
           console.log('[b2b] Supabase insert data:', JSON.stringify(insertData));
           const { data: created, error: supabaseErr } = await supabase
             .from('B2BApplication')
