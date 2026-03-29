@@ -704,7 +704,7 @@ export default function Header() {
                       {/* Gradient border */}
                       <div className="p-px rounded-xl bg-gradient-to-r from-amber-400 via-amber-300 to-pink-300">
                         {/* Inner panel */}
-                        <div className="bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm rounded-lg shadow-lg dark:shadow-xl dark:shadow-black/50 text-gray-900 dark:text-gray-100 w-56 max-w-[80vw]">
+                        <div className="bg-white/95 backdrop-blur-sm rounded-lg shadow-lg text-gray-900 w-56 max-w-[80vw]">
                           <ul className="p-1">
                             {item.children.map((c) => (
                               <li key={c.href}>
@@ -717,9 +717,9 @@ export default function Header() {
                                   {/* left accent bar appears on hover */}
                                   <span className="absolute left-0 top-1.5 bottom-1.5 w-1 rounded-l-md bg-gradient-to-b from-amber-400 to-pink-400 opacity-0 group-hover:opacity-100 transition-opacity duration-150" />
                                   <div className="ml-2">
-                                    <div className="font-medium text-gray-900 dark:text-gray-100">{getChildLabel(c.href) ?? c.label}</div>
+                                    <div className="font-medium text-gray-900">{getChildLabel(c.href) ?? c.label}</div>
                                     {getChildSubtitle(c.href) && (
-                                      <div className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{getChildSubtitle(c.href)}</div>
+                                      <div className="text-xs text-gray-500 mt-0.5">{getChildSubtitle(c.href)}</div>
                                     )}
                                   </div>
                                 </Link>
@@ -814,7 +814,7 @@ export default function Header() {
               <div
                 role="menu"
                 aria-label={tr('wishlist.title', 'Favoriler')}
-                  className={`absolute right-0 mt-2 bg-white dark:bg-gray-900 text-black dark:text-gray-100 rounded-md shadow-md dark:shadow-xl dark:shadow-black/50 w-72 z-50 transform transition-all duration-150 origin-top overflow-auto max-h-[60vh] ${wishOpen ? "opacity-100 scale-100 pointer-events-auto" : "opacity-0 scale-95 pointer-events-none"}`}
+                  className={`absolute right-0 mt-2 bg-white text-black rounded-md shadow-md w-72 z-50 transform transition-all duration-150 origin-top overflow-auto max-h-[60vh] ${wishOpen ? "opacity-100 scale-100 pointer-events-auto" : "opacity-0 scale-95 pointer-events-none"}`}
               >
                 <div className="p-3">
                   <div className="flex items-center justify-between mb-2">
@@ -846,7 +846,7 @@ export default function Header() {
             {/* MOBILE: favorites sheet (bottom) */}
             <div
               ref={wishRefMobile}
-              className={`lg:hidden fixed left-1/2 bottom-0 z-40 bg-white dark:bg-gray-900 text-black dark:text-gray-100 rounded-t-xl shadow-xl dark:shadow-2xl dark:shadow-black/60 transform transition-transform duration-200 -translate-x-1/2 w-full max-w-[680px] px-4 sm:px-6 overflow-auto max-h-[70vh] ${wishOpen ? 'translate-y-0' : 'translate-y-full pointer-events-none'}`}
+              className={`lg:hidden fixed left-1/2 bottom-0 z-40 bg-white text-black rounded-t-xl shadow-xl transform transition-transform duration-200 -translate-x-1/2 w-full max-w-[680px] px-4 sm:px-6 overflow-auto max-h-[70vh] ${wishOpen ? 'translate-y-0' : 'translate-y-full pointer-events-none'}`}
               aria-hidden={!wishOpen}
               aria-modal={wishOpen}
               role="dialog"
@@ -860,12 +860,12 @@ export default function Header() {
                         <button
                           type="button"
                           onClick={() => clear()}
-                          className="text-xs text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-gray-100 focus:outline-none cursor-pointer"
+                          className="text-xs text-gray-500 hover:text-black focus:outline-none cursor-pointer"
                         >
                           {tr('wishlist.clear','Hepsini Kaldır')}
                         </button>
                       )}
-                      <button type="button" onClick={() => setWishOpen(false)} aria-label={tr('common.close','Kapat')} className="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
+                      <button type="button" onClick={() => setWishOpen(false)} aria-label={tr('common.close','Kapat')} className="p-2 rounded-md hover:bg-gray-100">
                         ✕
                       </button>
                     </div>
@@ -892,7 +892,7 @@ export default function Header() {
                 aria-haspopup="menu"
                 aria-expanded={langOpen}
                 aria-label={langOpen ? t('header.aria.closeLangMenu') : t('header.aria.openLangMenu')}
-                className="px-2 py-1 text-sm border border-gray-400 dark:border-gray-600 rounded flex items-center space-x-2 transition-colors duration-200 hover:bg-amber-400 hover:text-white dark:hover:bg-amber-500 dark:hover:text-black focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 dark:focus:ring-offset-gray-900 cursor-pointer"
+                className="px-2 py-1 text-sm border border-gray-400 rounded flex items-center space-x-2 transition-colors duration-200 hover:bg-amber-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 cursor-pointer"
               >
                 <span className="text-lg">{FLAGS[lang]}</span>
                 <span className="font-medium">{NAMES[lang]}</span>
@@ -904,7 +904,7 @@ export default function Header() {
               <div
                 role="menu"
                 aria-label={t("nav.language")}
-                className={`absolute right-0 mt-2 bg-white dark:bg-gray-900 text-black dark:text-gray-100 rounded-md shadow-md dark:shadow-xl dark:shadow-black/50 w-40 z-50 transform transition-all duration-150 origin-top ${
+                className={`absolute right-0 mt-2 bg-white text-black rounded-md shadow-md w-40 z-50 transform transition-all duration-150 origin-top ${
                   langOpen ? "opacity-100 scale-100 pointer-events-auto" : "opacity-0 scale-95 pointer-events-none"
                 }`}
                 aria-hidden={!langOpen}
@@ -916,7 +916,7 @@ export default function Header() {
                     type="button"
                     ref={idx === 0 ? firstLangButtonRef : null}
                     className={`w-full px-3 py-2 flex items-center space-x-2 transition-colors duration-150 rounded-md ${
-                      l === lang ? "bg-amber-400 text-white" : "hover:bg-gray-100 dark:hover:bg-gray-800"
+                      l === lang ? "bg-amber-400 text-white" : "hover:bg-gray-100"
                     } cursor-pointer`}
                     onClick={() => {
                       setLang(l);
@@ -932,7 +932,7 @@ export default function Header() {
 
             {/* Contact button (desktop) - show on lg+ */}
             <div className="hidden lg:block">
-              <Link href="/contact" className="ml-3 inline-flex items-center bg-white dark:bg-gray-900 text-black dark:text-gray-100 px-4 py-2 rounded font-semibold hover:opacity-95 dark:border dark:border-gray-700">
+              <Link href="/contact" className="ml-3 inline-flex items-center bg-white text-black px-4 py-2 rounded font-semibold hover:opacity-95">
                 {t('nav.contact')}
               </Link>
             </div>
@@ -946,7 +946,7 @@ export default function Header() {
                 aria-haspopup="menu"
                 aria-expanded={mobileLangOpen}
                 aria-label={mobileLangOpen ? t('header.aria.closeLangMenu') : t('header.aria.openLangMenu')}
-                className="px-2 py-1 text-sm rounded flex items-center space-x-1 transition-colors duration-200 hover:bg-amber-400 hover:text-white dark:hover:bg-amber-500 dark:hover:text-black focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 dark:focus:ring-offset-gray-900 cursor-pointer"
+                className="px-2 py-1 text-sm rounded flex items-center space-x-1 transition-colors duration-200 hover:bg-amber-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 cursor-pointer"
               >
                 <span className="text-lg">{FLAGS[lang]}</span>
                 <svg className={`h-3 w-3 ml-1 transform transition-transform duration-200 ${mobileLangOpen ? "rotate-180" : "rotate-0"}`} viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
@@ -957,7 +957,7 @@ export default function Header() {
               <div
                 role="menu"
                 aria-label={t("nav.language")}
-                className={`absolute right-0 mt-2 bg-white dark:bg-gray-900 text-black dark:text-gray-100 rounded-md shadow-md dark:shadow-xl dark:shadow-black/50 w-36 z-50 transform transition-all duration-150 origin-top ${
+                className={`absolute right-0 mt-2 bg-white text-black rounded-md shadow-md w-36 z-50 transform transition-all duration-150 origin-top ${
                   mobileLangOpen ? "opacity-100 scale-100 pointer-events-auto" : "opacity-0 scale-95 pointer-events-none"
                 }`}
                 aria-hidden={!mobileLangOpen}
@@ -968,7 +968,7 @@ export default function Header() {
                     role="menuitem"
                     type="button"
                     className={`w-full px-3 py-2 flex items-center space-x-2 transition-colors duration-150 rounded-md ${
-                      l === lang ? "bg-amber-400 text-white" : "hover:bg-gray-100 dark:hover:bg-gray-800"
+                      l === lang ? "bg-amber-400 text-white" : "hover:bg-gray-100"
                     } cursor-pointer`}
                     onClick={() => {
                       setLang(l);

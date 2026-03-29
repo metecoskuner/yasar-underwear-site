@@ -17,45 +17,9 @@
     --foreground: #ededed;
   }
   
-  /* Dark mode support for all backgrounds */
+  /* Ensure body background adjusts to dark mode */
   html, body {
-    background: linear-gradient(180deg, #0a0a0a 0%, #1a1a1a 100%) !important;
-  }
-  
-  /* Ensure white text becomes light gray in dark mode */
-  .text-white {
-    color: #f3f4f6 !important;
-  }
-  
-  /* Ensure black text becomes light in dark mode */
-  .text-black {
-    color: #f3f4f6 !important;
-  }
-  
-  /* Gray text colors for dark mode */
-  .text-gray-500 {
-    color: #9ca3af !important;
-  }
-  
-  .text-gray-400 {
-    color: #d1d5db !important;
-  }
-  
-  .text-gray-900 {
-    color: #f3f4f6 !important;
-  }
-  
-  /* White backgrounds should become dark */
-  .bg-white {
-    background-color: #111827 !important;
-  }
-  
-  .bg-gray-100 {
-    background-color: #1f2937 !important;
-  }
-  
-  .bg-gray-50 {
-    background-color: #111827 !important;
+    background: linear-gradient(180deg, #0a0a0a 0%, #1a1a1a 100%);
   }
 }
 
@@ -270,23 +234,9 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: 0 6px 20px rgba(0,0,0,0.12);
   padding: 10px 12px;
 }
-
-@media (prefers-color-scheme: dark) {
-  .yasar-glass-popup .leaflet-popup-content-wrapper {
-    background: rgba(20,20,30,0.95);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.6);
-  }
-}
-
 .yasar-popup { font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; }
 .yasar-popup-title { font-weight: 700; color: #111827; margin-bottom: 6px; }
 .yasar-popup-addr { font-size: 0.875rem; color: #374151; margin-bottom: 8px; }
-
-@media (prefers-color-scheme: dark) {
-  .yasar-popup-title { color: #f3f4f6; }
-  .yasar-popup-addr { color: #d1d5db; }
-}
-
 .yasar-popup-directions { display:inline-block; padding:6px 10px; background:rgba(0,0,0,0.85); color:#fff; border-radius:8px; text-decoration:none; font-size:0.85rem; }
 .yasar-popup-directions:hover { opacity:0.95 }
 

@@ -278,7 +278,7 @@ export default function Footer() {
           <div className="mt-4 text-sm text-white flex flex-col space-y-2">
             <h4 className="text-base lg:text-lg font-semibold text-white">{tr('footer.contactInfo.title','İletişim')}</h4>
             <span className="block mt-1 h-0.5 w-12 bg-white/90 rounded" aria-hidden />
-            <a href="tel:+902125209299" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{tr('footer.contactInfo.phone','+90 212 520 92 99')}</a>
+            <a href="tel:+902125190149" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{tr('footer.contactInfo.phone','tel:+902125190149')}</a>
             <a href="mailto:info@yasarunderwear.com" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{tr('footer.contactInfo.email','info@yasarunderwear.com')}</a>
             <a href="https://maps.google.com?q=Yasar+Tekstil" target="_blank" rel="noopener noreferrer" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{tr('footer.contactInfo.map','Adresimizi haritada gör')}</a>
             {/* moved developed-by link to bottom center */}
