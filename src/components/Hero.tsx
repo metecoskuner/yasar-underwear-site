@@ -27,7 +27,10 @@ export default function Hero() {
   const videoSrc = (isMobile ? '/videos/yasarheromobil.mp4' : '/videos/YasarHero1.mp4');
 
   return (
-    <section className="relative w-full h-[70vh] sm:h-[80vh] md:h-[600px] lg:h-[700px] overflow-hidden pt-[120px]">
+    <section 
+      className="relative w-full overflow-hidden"
+      style={{ minHeight: 'calc(100vh - var(--site-header-height, 120px))' }}
+    >
       <video
         key={videoSrc}
         ref={(video) => {
