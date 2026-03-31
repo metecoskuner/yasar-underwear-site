@@ -29,6 +29,7 @@ export default function Hero() {
   return (
     <section 
       className="relative w-full h-screen overflow-hidden"
+      style={{ marginTop: '120px' }}
     >
       <video
         key={videoSrc}
