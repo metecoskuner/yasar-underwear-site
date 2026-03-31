@@ -28,8 +28,7 @@ export default function Hero() {
 
   return (
     <section 
-      className="relative w-full overflow-hidden"
-      style={{ minHeight: 'calc(100vh - var(--site-header-height, 120px))' }}
+      className="relative w-full h-screen overflow-hidden"
     >
       <video
         key={videoSrc}
