@@ -6,7 +6,6 @@ import { motion } from "framer-motion";
 import { createPortal } from "react-dom";
 import { useRouter } from "next/router";
 import { useLanguage } from "../contexts/LanguageContext";
-import { useHeaderHeight } from "../contexts/HeaderHeightContext";
 import useWishlist, { WishlistItem } from '@/hooks/useWishlist';
 import { getProducts } from '@/data/demoProducts';
 import type { Product } from '@/data/demoProducts';
@@ -70,7 +69,6 @@ export default function Header() {
   const firstLangButtonRef = useRef<HTMLButtonElement | null>(null);
 
   const { lang, setLang, t } = useLanguage();
-  const { headerHeight, setHeaderHeight } = useHeaderHeight();
   const [hydrated, setHydrated] = useState(false);
   useEffect(() => {
     setHydrated(true);
@@ -356,6 +354,7 @@ export default function Header() {
   const headerVisible = true;
   const headerRef = useRef<HTMLElement | null>(null);
   const headerInnerRef = useRef<HTMLDivElement | null>(null);
+  const [headerHeight, setHeaderHeight] = useState<number>(64);
 
   // measure header height to avoid overlap with page content and position mobile menu below header
   useLayoutEffect(() => {

@@ -13,8 +13,9 @@ const WorldMap = dynamic(() => import('../components/WorldMap') as Promise<any>,
 export default function Home() {
   return (
     <>
-      <SEO title="Yasar - Ana Sayfa" description="Yasar - Günlük kullanım için konforlu iç çamaşırları, Türkiye'de tasarlandı." url="/" />
-      <Hero />
+  <SEO title="Yasar - Ana Sayfa" description="Yasar - Günlük kullanım için konforlu iç çamaşırları, Türkiye'de tasarlandı." url="/" />
+      <main>
+        <Hero />
   <HeroInfoCards />
   <MediaWrap />
       <WhyUs />
@@ -32,6 +33,7 @@ export default function Home() {
   </section>
 
   {/* FlagsStrip is now rendered by the site Layout (between main content and footer) */}
+      </main>
     </>
   );
 }

@@ -2,7 +2,6 @@ import '../styles/globals.css';
 import type { AppProps } from 'next/app';
 import Layout from '../components/Layout';
 import { LanguageProvider } from '../contexts/LanguageContext';
-import { HeaderHeightProvider } from '../contexts/HeaderHeightContext';
 import CookieBanner from '../components/CookieBanner';
 import React, { useState, useEffect } from 'react';
 import Splash from '../components/Splash';
@@ -35,15 +34,13 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <LanguageProvider>
-      <HeaderHeightProvider>
-        {/* Splash shown only on initial load. Duration tuned to 0.7s by default inside the component. */}
-        {showSplash && <Splash duration={700} onFinish={() => setShowSplash(false)} />}
+      {/* Splash shown only on initial load. Duration tuned to 0.7s by default inside the component. */}
+      {showSplash && <Splash duration={700} onFinish={() => setShowSplash(false)} />}
 
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
-        <CookieBanner />
-      </HeaderHeightProvider>
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
+      <CookieBanner />
     </LanguageProvider>
   );
 }
