@@ -1,8 +1,10 @@
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useHeaderHeight } from '@/contexts/HeaderHeightContext';
 import { useState, useEffect } from 'react';
 
 export default function Hero() {
   const { t } = useLanguage();
+  const { headerHeight } = useHeaderHeight();
   const [isMuted, setIsMuted] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -28,8 +30,12 @@ export default function Hero() {
 
   return (
     <section 
-      className="relative w-full h-screen overflow-hidden"
-      style={{ marginTop: '120px' }}
+      className="relative w-full overflow-hidden"
+      style={{ 
+        height: `calc(100vh + ${headerHeight}px)`,
+        marginTop: `-${headerHeight}px`,
+        paddingTop: `${headerHeight}px`
+      }}
     >
       <video
         key={videoSrc}
