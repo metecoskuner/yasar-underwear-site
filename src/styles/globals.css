@@ -9,6 +9,7 @@
   --muted: #6b7280;
   --brand-color: #1e1e20;
   --accent: #EAB308;
+  --site-header-height: 72px;
 }
 
 @media (prefers-color-scheme: dark) {

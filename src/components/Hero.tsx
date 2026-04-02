@@ -1,48 +1,67 @@
-import { useLanguage } from '@/contexts/LanguageContext';
-import { useState, useEffect } from 'react';
+import { useState, useSyncExternalStore } from 'react';
+
+const DESKTOP_MEDIA_QUERY = '(min-width: 1024px)';
+
+function subscribe(callback: () => void) {
+  if (typeof window === 'undefined') {
+    return () => {};
+  }
+
+  const mediaQuery = window.matchMedia(DESKTOP_MEDIA_QUERY);
+  const handleChange = () => callback();
+  mediaQuery.addEventListener('change', handleChange);
+
+  return () => mediaQuery.removeEventListener('change', handleChange);
+}
+
+function getSnapshot() {
+  if (typeof window === 'undefined') {
+    return false;
+  }
+
+  return window.matchMedia(DESKTOP_MEDIA_QUERY).matches;
+}
 
 export default function Hero() {
-  const { t } = useLanguage();
   const [isMuted, setIsMuted] = useState(true);
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
-  const videoSrc = (isMobile ? '/videos/yasarheromobil.mp4' : '/videos/YasarHero1.mp4');
+  const isLargeScreen = useSyncExternalStore(subscribe, getSnapshot, () => false);
 
   return (
-    <section className="relative w-full h-[70vh] sm:h-[80vh] md:h-[600px] lg:h-[700px] overflow-hidden z-0">
+    <div
+      className="relative w-full overflow-hidden bg-black"
+      style={{
+        height: 'calc(100svh - var(--site-header-height, 72px))',
+      }}
+    >
+      {/* Single responsive video element - only one renders at a time */}
       <video
-        key={videoSrc}
-        ref={(video) => {
-          if (video) video.muted = isMuted;
-        }}
+        key={isLargeScreen ? 'desktop' : 'mobile'}
         autoPlay
         loop
         muted={isMuted}
         playsInline
-        className="w-full h-full object-cover"
+        className="absolute inset-0 w-full h-full object-cover object-top"
+        style={{ width: '100%', height: '100%' }}
       >
-        <source src={videoSrc} type="video/mp4" />
+        <source
+          src={isLargeScreen ? '/videos/YasarHero1.mp4' : '/videos/yasarheromobil.mp4'}
+          type="video/mp4"
+        />
         Your browser does not support the video tag.
       </video>
-      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/40" />
-      
-      {/* Mute/Unmute Button */}
+
+      {/* Gradient overlay - positioned above video, below controls */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-transparent to-transparent z-[5] pointer-events-none" />
+
+      {/* Mute toggle button - highest z-index */}
       <button
         onClick={() => setIsMuted(!isMuted)}
-        className="absolute bottom-4 right-4 bg-white/20 hover:bg-white/30 rounded-full p-3 transition-all duration-200 z-10 text-2xl"
-        aria-label={isMuted ? "Unmute video" : "Mute video"}
+        className="absolute bottom-4 right-4 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full p-3 z-[10] transition-all duration-200 hover:scale-110"
+        aria-label={isMuted ? 'Unmute video' : 'Mute video'}
+        title={isMuted ? 'Unmute video' : 'Mute video'}
       >
         {isMuted ? '🔇' : '🔊'}
       </button>
-    </section>
+    </div>
   );
 }

@@ -353,20 +353,32 @@ export default function Header() {
   // header always visible
   const headerVisible = true;
   const headerRef = useRef<HTMLElement | null>(null);
-  const headerInnerRef = useRef<HTMLDivElement | null>(null);
   const [headerHeight, setHeaderHeight] = useState<number>(64);
 
-  // measure header height to avoid overlap with page content and position mobile menu below header
+  // Measure the fixed header and keep a single CSS variable in sync so the rest
+  // of the layout can position itself under it without per-page hacks.
   useLayoutEffect(() => {
     if (typeof window === "undefined") return;
+    const node = headerRef.current;
+    if (!node) return;
+
     function measure() {
-      const h = headerRef.current?.offsetHeight ?? 0;
-      if (h && h !== headerHeight) setHeaderHeight(h);
+      const h = Math.round(node.getBoundingClientRect().height);
+      setHeaderHeight((prev) => (h > 0 && h !== prev ? h : prev));
     }
+
     measure();
+
+    const resizeObserver = typeof ResizeObserver !== "undefined"
+      ? new ResizeObserver(() => measure())
+      : null;
+    resizeObserver?.observe(node);
+
     window.addEventListener("resize", measure, { passive: true });
-    return () => window.removeEventListener("resize", measure as EventListener);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    return () => {
+      resizeObserver?.disconnect();
+      window.removeEventListener("resize", measure as EventListener);
+    };
   }, []);
 
   // expose header height as a CSS variable so other parts of the layout
@@ -646,9 +658,9 @@ export default function Header() {
         animate={headerVisible || mobileOpen ? { y: 0 } : { y: "-100%" }}
         transition={{ duration: 0.3, ease: "easeInOut" }}
         ref={headerRef}
-        className={`w-full shadow-sm text-white bg-[var(--brand-color)] fixed top-0 left-0 right-0 z-50`}
+        className={`w-full shadow-sm text-white bg-[var(--brand-color)] sticky top-0 left-0 right-0 z-50`}
       >
-  <div ref={headerInnerRef} className="max-w-6xl mx-auto px-4 py-4 lg:py-3 flex justify-between items-center lg:grid lg:gap-x-8 lg:[grid-template-columns:1fr_auto_1fr] relative">
+  <div className="max-w-6xl mx-auto px-4 py-4 lg:py-3 flex justify-between items-center lg:grid lg:gap-x-8 lg:[grid-template-columns:1fr_auto_1fr] relative">
       {/* LEFT - NAV */}
       {/* Use slightly smaller text and tighter gaps at the lg (≈1024px) breakpoint,
         but restore normal size on xl+ so large/4k screens keep the original look */}

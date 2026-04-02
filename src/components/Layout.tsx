@@ -25,13 +25,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   if (isAdminRoute) {
     return (
       <div className="min-h-screen">
-        <main id="content" className="">{children}</main>
+        <main id="content">{children}</main>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="flex flex-col min-h-screen">
       {/* Skip link: visible when focused for keyboard users */}
       <a
         href="#content"
@@ -40,7 +40,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         Sayfaya atla
       </a>
       <HeaderComp />
-      <main id="content" className={`flex-1 ${router.pathname === '/' ? 'pt-0' : 'pt-[80px]'}`}>{children}</main>
+      <main id="content" className="flex-1">{children}</main>
       {/* Flags strip between main content (e.g. WorldMap) and footer */}
       {/* Render flags only on the homepage to avoid visual clutter on inner pages */}
       {/* Reduce vertical padding on small screens so flags sit closer to the map */}

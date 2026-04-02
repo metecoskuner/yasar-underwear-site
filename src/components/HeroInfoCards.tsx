@@ -5,7 +5,7 @@ import { useLanguage } from '@/contexts/LanguageContext'
 export default function HeroInfoCards() {
   const { t } = useLanguage();
   return (
-    <section className="w-full mt-12 md:mt-20 mb-12">
+    <section className="w-full mt-0 mb-12">
       <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 px-4 items-stretch">
         <div className="bg-white/95 backdrop-blur-sm p-8 rounded-lg shadow-md text-left flex flex-col">
           <h3 className="text-2xl font-semibold">{t('components.heroInfoCards.wholesale.title')}</h3>
