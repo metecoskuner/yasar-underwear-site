@@ -696,7 +696,7 @@ export default function Header() {
                     <div
                       role="menu"
                       aria-label={resolvedLabel}
-                      className={`absolute left-0 top-full mt-2 z-50 transition-all duration-180 ease-out transform origin-top ${
+                      className={`absolute left-0 top-full mt-2 z-[60] transition-all duration-180 ease-out transform origin-top ${
                         hoveredNav === item.href ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-1 pointer-events-none'
                       }`}
                       aria-hidden={!(hoveredNav === item.href)}
@@ -814,7 +814,7 @@ export default function Header() {
               <div
                 role="menu"
                 aria-label={tr('wishlist.title', 'Favoriler')}
-                  className={`absolute right-0 mt-2 bg-white text-black rounded-md shadow-md w-72 z-50 transform transition-all duration-150 origin-top overflow-auto max-h-[60vh] ${wishOpen ? "opacity-100 scale-100 pointer-events-auto" : "opacity-0 scale-95 pointer-events-none"}`}
+                  className={`absolute right-0 mt-2 bg-white text-black rounded-md shadow-md w-72 z-[60] transform transition-all duration-150 origin-top overflow-auto max-h-[60vh] ${wishOpen ? "opacity-100 scale-100 pointer-events-auto" : "opacity-0 scale-95 pointer-events-none"}`}
               >
                 <div className="p-3">
                   <div className="flex items-center justify-between mb-2">
@@ -846,7 +846,7 @@ export default function Header() {
             {/* MOBILE: favorites sheet (bottom) */}
             <div
               ref={wishRefMobile}
-              className={`lg:hidden fixed left-1/2 bottom-0 z-40 bg-white text-black rounded-t-xl shadow-xl transform transition-transform duration-200 -translate-x-1/2 w-full max-w-[680px] px-4 sm:px-6 overflow-auto max-h-[70vh] ${wishOpen ? 'translate-y-0' : 'translate-y-full pointer-events-none'}`}
+              className={`lg:hidden fixed left-1/2 bottom-0 z-[51] bg-white text-black rounded-t-xl shadow-xl transform transition-transform duration-200 -translate-x-1/2 w-full max-w-[680px] px-4 sm:px-6 overflow-auto max-h-[70vh] ${wishOpen ? 'translate-y-0' : 'translate-y-full pointer-events-none'}`}
               aria-hidden={!wishOpen}
               aria-modal={wishOpen}
               role="dialog"
@@ -904,7 +904,7 @@ export default function Header() {
               <div
                 role="menu"
                 aria-label={t("nav.language")}
-                className={`absolute right-0 mt-2 bg-white text-black rounded-md shadow-md w-40 z-50 transform transition-all duration-150 origin-top ${
+                className={`absolute right-0 mt-2 bg-white text-black rounded-md shadow-md w-40 z-[60] transform transition-all duration-150 origin-top ${
                   langOpen ? "opacity-100 scale-100 pointer-events-auto" : "opacity-0 scale-95 pointer-events-none"
                 }`}
                 aria-hidden={!langOpen}
@@ -957,7 +957,7 @@ export default function Header() {
               <div
                 role="menu"
                 aria-label={t("nav.language")}
-                className={`absolute right-0 mt-2 bg-white text-black rounded-md shadow-md w-36 z-50 transform transition-all duration-150 origin-top ${
+                className={`absolute right-0 mt-2 bg-white text-black rounded-md shadow-md w-36 z-[60] transform transition-all duration-150 origin-top ${
                   mobileLangOpen ? "opacity-100 scale-100 pointer-events-auto" : "opacity-0 scale-95 pointer-events-none"
                 }`}
                 aria-hidden={!mobileLangOpen}
@@ -1052,7 +1052,7 @@ export default function Header() {
               ref={mobileMenuRef}
               role="dialog"
               aria-modal={mobileOpen}
-              className="lg:hidden fixed left-0 right-0 bg-[var(--brand-color)] text-white shadow-xl z-30 overflow-y-auto origin-top"
+              className="lg:hidden fixed left-0 right-0 bg-[var(--brand-color)] text-white shadow-xl z-[51] overflow-y-auto origin-top"
               style={{ top: 'var(--site-header-height, 64px)', maxHeight: `calc(75vh - var(--site-header-height, 64px))` }}
               initial="closed"
               animate={mobileOpen ? "open" : "closed"}
