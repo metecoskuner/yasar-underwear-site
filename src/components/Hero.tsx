@@ -15,19 +15,10 @@ export default function Hero() {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  const tr = (key: string, fallback: string) => {
-    try {
-      const v = t(key);
-      return v === key ? fallback : v;
-    } catch {
-      return fallback;
-    }
-  };
-
   const videoSrc = (isMobile ? '/videos/yasarheromobil.mp4' : '/videos/YasarHero1.mp4');
 
   return (
-    <section className="relative w-full h-[70vh] sm:h-[80vh] md:h-[600px] lg:h-[700px] overflow-hidden -mt-[80px] pt-[80px]">
+    <section className="relative w-full h-[70vh] sm:h-[80vh] md:h-[600px] lg:h-[700px] overflow-hidden z-0">
       <video
         key={videoSrc}
         ref={(video) => {

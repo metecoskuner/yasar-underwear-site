@@ -646,7 +646,7 @@ export default function Header() {
         animate={headerVisible || mobileOpen ? { y: 0 } : { y: "-100%" }}
         transition={{ duration: 0.3, ease: "easeInOut" }}
         ref={headerRef}
-        className={`w-full shadow-sm text-white bg-[var(--brand-color)] fixed top-0 left-0 right-0 z-40`}
+        className={`w-full shadow-sm text-white bg-[var(--brand-color)] fixed top-0 left-0 right-0 z-50`}
       >
   <div ref={headerInnerRef} className="max-w-6xl mx-auto px-4 py-4 lg:py-3 flex justify-between items-center lg:grid lg:gap-x-8 lg:[grid-template-columns:1fr_auto_1fr] relative">
       {/* LEFT - NAV */}
