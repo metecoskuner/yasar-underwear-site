@@ -36,10 +36,6 @@ html, body {
   padding: 0;
 }
 
-main#content {
-  padding-top: max(0px, calc(var(--site-header-height, 64px) - 1px));
-}
-
 img, picture, video, svg {
   max-width: 100%;
   height: auto;
