@@ -363,6 +363,7 @@ export default function Header() {
     if (!node) return;
 
     function measure() {
+      if (!node) return;
       const h = Math.round(node.getBoundingClientRect().height);
       setHeaderHeight((prev) => (h > 0 && h !== prev ? h : prev));
     }
