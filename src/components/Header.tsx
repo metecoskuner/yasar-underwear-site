@@ -661,11 +661,11 @@ export default function Header() {
         ref={headerRef}
         className={`w-full shadow-sm text-white bg-[var(--brand-color)] sticky top-0 left-0 right-0 z-50`}
       >
-  <div className="max-w-6xl mx-auto px-4 py-4 lg:py-3 flex justify-between items-center lg:grid lg:gap-x-8 lg:[grid-template-columns:1fr_auto_1fr] relative">
+  <div className="max-w-6xl mx-auto px-4 py-4 xl:py-3 flex justify-between items-center xl:grid xl:gap-x-8 xl:[grid-template-columns:1fr_auto_1fr] relative">
       {/* LEFT - NAV */}
       {/* Use slightly smaller text and tighter gaps at the lg (≈1024px) breakpoint,
         but restore normal size on xl+ so large/4k screens keep the original look */}
-  <div className="hidden lg:flex items-center lg:space-x-2 space-x-3 text-sm font-medium min-w-0 overflow-x-auto lg:overflow-visible lg:text-xs xl:text-sm">
+  <div className="hidden xl:flex items-center space-x-3 text-sm font-medium min-w-0">
             {NAV_ITEMS.map((item) => {
               const active = isActive(item.href);
               const highlight = active || hoveredNav === item.href;
@@ -770,7 +770,7 @@ export default function Header() {
           </div>
 
           {/* CENTER - LOGO */}
-          <div className="flex justify-center lg:justify-center">
+          <div className="flex justify-center xl:justify-center">
             <Link href="/" className="flex items-center cursor-pointer">
               <Image
                 src="/photos/yasarLogo2.jpg"
@@ -781,7 +781,7 @@ export default function Header() {
                 priority
                 loading="eager"
                 style={{ height: 'auto', width: 'auto' }}
-                className="max-w-[160px] lg:max-w-[140px] h-auto"
+                className="max-w-[144px] sm:max-w-[160px] xl:max-w-[140px] h-auto"
               />
             </Link>
           </div>
@@ -789,7 +789,7 @@ export default function Header() {
           {/* RIGHT - LANGUAGE + CONTACT + MOBILE */}
           <div className="flex items-center justify-end space-x-3">
             {/* MOBILE: favorites button (compact) */}
-            <div className="relative lg:hidden">
+            <div className="relative xl:hidden">
               <button
                   type="button"
                   data-wishlist-button="true"
@@ -806,7 +806,7 @@ export default function Header() {
               </button>
             </div>
             {/* Favorites dropdown (catalog-only site; no login) */}
-            <div className="relative hidden lg:block" ref={wishRefDesktop}>
+            <div className="relative hidden xl:block" ref={wishRefDesktop}>
               <button
                 type="button"
                 data-wishlist-button="true"
@@ -897,7 +897,7 @@ export default function Header() {
               </div>
 
             
-            <div className="hidden lg:block relative" ref={langRef}>
+            <div className="hidden xl:block relative" ref={langRef}>
               <button
                 type="button"
                 ref={langToggleRef}
@@ -944,14 +944,14 @@ export default function Header() {
             </div>
 
             {/* Contact button (desktop) - show on lg+ */}
-            <div className="hidden lg:block">
+            <div className="hidden xl:block">
               <Link href="/contact" className="ml-3 inline-flex items-center bg-white text-black px-4 py-2 rounded font-semibold hover:opacity-95">
                 {t('nav.contact')}
               </Link>
             </div>
 
             {/* MOBILE: language button next to hamburger */}
-            <div className="lg:hidden relative" ref={mobileLangRef}>
+            <div className="xl:hidden relative" ref={mobileLangRef}>
               <button
                 type="button"
                 ref={mobileLangToggleRef}
@@ -1003,7 +1003,7 @@ export default function Header() {
               aria-expanded={mobileOpen}
               aria-label={mobileOpen ? t('header.aria.closeMenu') : t('header.aria.openMenu')}
               aria-controls="mobile-menu"
-              className="lg:hidden p-2 rounded-md hover:bg-black/20 cursor-pointer"
+              className="xl:hidden p-2 rounded-md hover:bg-black/20 cursor-pointer"
             >
               {/* Animated hamburger -> X using Framer Motion */}
               <M.svg
@@ -1065,7 +1065,7 @@ export default function Header() {
               ref={mobileMenuRef}
               role="dialog"
               aria-modal={mobileOpen}
-              className="lg:hidden fixed left-0 right-0 bg-[var(--brand-color)] text-white shadow-xl z-[51] overflow-y-auto origin-top"
+              className="xl:hidden fixed left-0 right-0 bg-[var(--brand-color)] text-white shadow-xl z-[51] overflow-y-auto origin-top"
               style={{ top: 'var(--site-header-height, 64px)', maxHeight: `calc(75vh - var(--site-header-height, 64px))` }}
               initial="closed"
               animate={mobileOpen ? "open" : "closed"}

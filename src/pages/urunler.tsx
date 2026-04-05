@@ -268,7 +268,7 @@ export default function UrunlerPage() {
 
       {/* FILTERS */}
       <section id="liste" className="max-w-6xl mx-auto px-4 py-10">
-        <div className="flex flex-wrap gap-3 mb-6 sticky top-[calc(var(--site-header-height)+8px)] z-20 bg-white p-2 rounded-md">
+        <div className="flex flex-wrap gap-3 mb-6 md:sticky md:top-[calc(var(--site-header-height)+8px)] z-20 bg-white p-2 rounded-md">
           {GENDER_TABS.map((t) => (
             <button
               key={t.key}
@@ -288,7 +288,7 @@ export default function UrunlerPage() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder={tr('pages.products.searchPlaceholder','Ürün ara')}
-            className="flex-1 px-4 py-2 border rounded-lg"
+            className="w-full sm:flex-1 sm:min-w-[14rem] px-4 py-2 border rounded-lg"
           />
         </div>
 

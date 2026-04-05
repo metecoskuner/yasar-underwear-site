@@ -30,7 +30,7 @@ export default function Hero() {
     <div
       className="relative w-full overflow-hidden bg-black"
       style={{
-        height: 'calc(100svh - var(--site-header-height, 72px))',
+        minHeight: 'clamp(28rem, calc(100svh - var(--site-header-height, 72px)), 52rem)',
       }}
     >
       {/* Single responsive video element - only one renders at a time */}
@@ -56,7 +56,7 @@ export default function Hero() {
       {/* Mute toggle button - highest z-index */}
       <button
         onClick={() => setIsMuted(!isMuted)}
-        className="absolute bottom-4 right-4 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full p-3 z-[10] transition-all duration-200 hover:scale-110"
+        className="absolute bottom-3 right-3 sm:bottom-4 sm:right-4 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full p-2.5 sm:p-3 z-[10] transition-all duration-200 hover:scale-110"
         aria-label={isMuted ? 'Unmute video' : 'Mute video'}
         title={isMuted ? 'Unmute video' : 'Mute video'}
       >

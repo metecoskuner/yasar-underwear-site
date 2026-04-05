@@ -23,11 +23,14 @@ export default function MediaWrap() {
     }
   };
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const sectionRef = useRef<HTMLElement | null>(null);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
   const indexRef = useRef<number>(0);
   const skipScrollRef = useRef(false); // set when index was changed by scroll handler to avoid fighting user
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
+  const [isSectionVisible, setIsSectionVisible] = useState(false);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const visible = useRef<Set<number>>(new Set()); // hangi indeksler görünür
   const pointer = useRef({
     startX: 0,
@@ -37,14 +40,63 @@ export default function MediaWrap() {
   });
   const autoplayDelay = 8000;
 
+  function pauseAllVideos() {
+    videoRefs.current.forEach((video) => {
+      if (!video) return;
+      try {
+        video.pause();
+      } catch {}
+    });
+  }
+
+  function ensureVideoLoaded(i: number) {
+    const video = videoRefs.current[i];
+    if (!video || !video.dataset.src || video.src) return;
+
+    video.src = video.dataset.src;
+    video.removeAttribute("data-src");
+    try {
+      video.load();
+    } catch {}
+  }
+
   // --- autoplay ---
   useEffect(() => {
-    if (paused) return;
+    if (paused || !isSectionVisible || prefersReducedMotion) return;
     const id = setInterval(() => {
       setIndex((i) => (i + 1) % VIDEOS.length);
     }, autoplayDelay);
     return () => clearInterval(id);
-  }, [paused]);
+  }, [paused, isSectionVisible, prefersReducedMotion]);
+
+  // Track whether the section is actually on screen so autoplay doesn't run
+  // while the user is elsewhere on the page.
+  useEffect(() => {
+    const node = sectionRef.current;
+    if (!node) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsSectionVisible(entry.isIntersecting);
+      },
+      { threshold: 0.35 }
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+
+  // Respect reduced-motion preferences for calmer behavior.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const updatePreference = () => setPrefersReducedMotion(mediaQuery.matches);
+    updatePreference();
+    mediaQuery.addEventListener("change", updatePreference);
+
+    return () => mediaQuery.removeEventListener("change", updatePreference);
+  }, []);
 
   // --- scroll to active (smooth center) ---
   useEffect(() => {
@@ -91,14 +143,8 @@ export default function MediaWrap() {
 
   // --- ensure first video loads immediately on mount ---
   useEffect(() => {
-    const v = videoRefs.current[0];
-    if (v && !v.src && v.dataset.src) {
-      v.src = v.dataset.src;
-      v.removeAttribute("data-src");
-      try {
-        v.load();
-      } catch {}
-    }
+    ensureVideoLoaded(0);
+    ensureVideoLoaded(1);
   }, []);
 
   // --- IntersectionObserver: lazy-load & mark visible ---
@@ -109,14 +155,8 @@ export default function MediaWrap() {
           const el = entry.target as HTMLVideoElement;
           const i = Number(el.dataset.index);
           if (entry.isIntersecting) {
-            // işaretle
             visible.current.add(i);
-            // lazy-load (sadece bir kere)
-            if (!el.src && el.dataset.src) {
-              el.src = el.dataset.src;
-              el.removeAttribute("data-src");
-              try { el.load(); } catch {}
-            }
+            ensureVideoLoaded(i);
           } else {
             visible.current.delete(i);
           }
@@ -124,8 +164,8 @@ export default function MediaWrap() {
       },
       {
         root: containerRef.current ?? null,
-        rootMargin: "300px",
-        threshold: 0.5, // yarısından fazlası görünürse visible say
+        rootMargin: "120px",
+        threshold: 0.6,
       }
     );
 
@@ -135,29 +175,45 @@ export default function MediaWrap() {
 
   // --- play active video (try to play regardless of intersection visibility) ---
   useEffect(() => {
+    if (!isSectionVisible) {
+      pauseAllVideos();
+      return;
+    }
+
+    ensureVideoLoaded(index);
+    ensureVideoLoaded(index - 1);
+    ensureVideoLoaded(index + 1);
+
     videoRefs.current.forEach((v, i) => {
       if (!v) return;
       if (i === index) {
-        // ensure the active video has a src (load if it was deferred)
-        if (!v.src && v.dataset.src) {
-          v.src = v.dataset.src;
-          v.removeAttribute("data-src");
-          try {
-            v.load();
-          } catch {}
-        }
         v.muted = true;
-        try {
-          v.currentTime = 0;
-        } catch {}
-        v.play().catch(() => {});
+        if (v.readyState >= 2) {
+          try {
+            v.currentTime = 0;
+          } catch {}
+          if (!prefersReducedMotion) {
+            v.play().catch(() => {});
+          }
+        } else {
+          const handleCanPlay = () => {
+            v.removeEventListener("canplay", handleCanPlay);
+            try {
+              v.currentTime = 0;
+            } catch {}
+            if (!prefersReducedMotion) {
+              v.play().catch(() => {});
+            }
+          };
+          v.addEventListener("canplay", handleCanPlay);
+        }
       } else {
         try {
           v.pause();
         } catch {}
       }
     });
-  }, [index]);
+  }, [index, isSectionVisible, prefersReducedMotion]);
 
   // --- pointer / touch swipe handling (pointer events) ---
   useEffect(() => {
@@ -308,12 +364,12 @@ export default function MediaWrap() {
   // --- resume autoplay after mouse leaves (opsiyonel) ---
   // burada istersen belirli bir süre sonra autoplay i yeniden başlatabilirsin
   useEffect(() => {
-    if (!paused) return;
+    if (!paused || !isSectionVisible || prefersReducedMotion) return;
     const t = setTimeout(() => {
       setPaused(false);
-    }, 30000); // 30s sonra otomatik geri başlat (isteğe bağlı)
+    }, 12000);
     return () => clearTimeout(t);
-  }, [paused]);
+  }, [paused, isSectionVisible, prefersReducedMotion]);
 
   // debug: print current lang and resolved media title to help diagnose missing translations
   // this runs as a side-effect and does not render anything
@@ -329,14 +385,14 @@ export default function MediaWrap() {
   }, [lang, t]);
 
   return (
-    <section className="max-w-6xl mx-auto px-4 py-8">
+    <section ref={sectionRef} className="max-w-6xl mx-auto px-4 py-6 sm:py-8">
       <h3 className="text-lg font-semibold mb-4">{tr('components.media.title','Gör, Hisset, Keşfet')}</h3>
 
       <div className="relative">
         {/* LEFT BUTTON */}
         <button
           aria-label={tr('components.media.prev','Önceki')}
-          className="absolute left-2 top-1/2 -translate-y-1/2 z-20 p-2 bg-white/90 rounded-full shadow-md cursor-pointer"
+          className="absolute left-1 sm:left-2 top-1/2 -translate-y-1/2 z-20 p-2 sm:p-2.5 bg-white/90 rounded-full shadow-md cursor-pointer"
           onClick={() => {
             setPaused(true);
             setIndex((i) => Math.max(0, i - 1));
@@ -348,7 +404,7 @@ export default function MediaWrap() {
         {/* RIGHT BUTTON */}
         <button
           aria-label={tr('components.media.next','Sonraki')}
-          className="absolute right-2 top-1/2 -translate-y-1/2 z-20 p-2 bg-white/90 rounded-full shadow-md cursor-pointer"
+          className="absolute right-1 sm:right-2 top-1/2 -translate-y-1/2 z-20 p-2 sm:p-2.5 bg-white/90 rounded-full shadow-md cursor-pointer"
           onClick={() => {
             setPaused(true);
             setIndex((i) => Math.min(VIDEOS.length - 1, i + 1));
@@ -359,20 +415,22 @@ export default function MediaWrap() {
 
         <div
           ref={containerRef}
-          className="flex gap-6 overflow-x-auto overflow-y-hidden no-scrollbar snap-x snap-mandatory"
+          className="flex gap-4 sm:gap-6 overflow-x-auto overflow-y-hidden no-scrollbar snap-x snap-mandatory scroll-px-4 sm:scroll-px-6"
           style={{ touchAction: "pan-x", WebkitOverflowScrolling: 'touch' }}
           tabIndex={0}
           role="region"
           aria-label="Video carousel"
           onMouseEnter={() => setPaused(true)}
-          onMouseLeave={() => setPaused(false)}
+          onMouseLeave={() => {
+            if (!prefersReducedMotion) setPaused(false);
+          }}
         >
           {VIDEOS.map((it, i) => {
             const active = i === index;
             return (
               <div
                 key={i}
-                className={`flex-shrink-0 w-[min(72vw,420px)] h-96 sm:h-[32rem] md:h-[36rem] rounded-xl overflow-hidden snap-start cursor-pointer transition-all duration-500 ${
+                className={`flex-shrink-0 w-[clamp(16rem,78vw,26rem)] sm:w-[clamp(18rem,62vw,26rem)] aspect-[4/5] sm:aspect-[3/4] rounded-xl overflow-hidden snap-start cursor-pointer transition-all duration-500 ${
                   active ? "scale-105 opacity-100 z-10 shadow-2xl" : "scale-95 opacity-80 hover:scale-100 hover:opacity-100"
                 }`}
                 onClick={() => {
@@ -389,8 +447,7 @@ export default function MediaWrap() {
                   muted
                   loop
                   playsInline
-                  autoPlay
-                  preload="auto"
+                  preload={active ? "metadata" : "none"}
                   className="w-full h-full object-cover"
                   style={{ objectPosition: it.focal }}
                 />
