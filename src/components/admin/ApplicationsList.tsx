@@ -17,7 +17,7 @@ export default function ApplicationsList({ initialFilter }: { initialFilter?: st
 
   useEffect(() => {
     let mounted = true
-    fetch('/api/admin/applications')
+    fetch('/api/admin/applications', { credentials: 'include' })
       .then((r) => r.json())
       .then((j) => { if (!mounted) return; setItems((j.applications || []) as Application[]) })
       .catch((err) => { void err; if (mounted) setError('Yükleme başarısız') })
@@ -29,7 +29,7 @@ export default function ApplicationsList({ initialFilter }: { initialFilter?: st
     if (!id) return
     setError(null)
     try {
-      const resp = await fetch('/api/admin/applications/read', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id }) })
+      const resp = await fetch('/api/admin/applications/read', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id }), credentials: 'include' })
       if (!resp.ok) {
         const errData = await resp.json()
         console.error('markRead error:', resp.status, errData)
@@ -48,7 +48,7 @@ export default function ApplicationsList({ initialFilter }: { initialFilter?: st
     if (!id) return
     if (!confirm('Bu başvuruyu kalıcı olarak silmek istiyor musunuz?')) return
     setError(null)
-    const resp = await fetch('/api/admin/applications/delete', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id }) })
+    const resp = await fetch('/api/admin/applications/delete', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id }), credentials: 'include' })
     if (resp.ok) {
       setItems((s) => s.filter((m) => m.id !== id))
       notifyAdminDataChanged()

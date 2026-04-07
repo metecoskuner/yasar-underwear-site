@@ -28,7 +28,7 @@ export default function AdminSidebar({ onNavigate }: SidebarProps) {
     let mounted = true
     async function loadCounts() {
       try {
-        const mResp = await fetch('/api/admin/messages')
+        const mResp = await fetch('/api/admin/messages', { credentials: 'include' })
         if (!mounted) return
         if (mResp.ok) {
           const m = await mResp.json()
@@ -37,7 +37,7 @@ export default function AdminSidebar({ onNavigate }: SidebarProps) {
         }
         // applications - separate counts per type
         try {
-          const aResp = await fetch('/api/admin/applications')
+          const aResp = await fetch('/api/admin/applications', { credentials: 'include' })
           if (!mounted) return
           if (aResp.ok) {
             const a = await aResp.json()

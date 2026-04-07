@@ -20,7 +20,7 @@ export default function MessagesPage() {
 
   useEffect(() => {
     let mounted = true
-    fetch('/api/admin/messages')
+    fetch('/api/admin/messages', { credentials: 'include' })
       .then((r) => r.json())
       .then((j) => { if (!mounted) return; setItems(j.messages || []) })
       .catch((err) => { void err; if (mounted) setError('Yükleme başarısız') })
@@ -33,7 +33,7 @@ export default function MessagesPage() {
     if (!id) return
     setError(null)
     try {
-      const resp = await fetch('/api/admin/messages/read', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id }) })
+      const resp = await fetch('/api/admin/messages/read', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id }), credentials: 'include' })
       if (!resp.ok) {
         const errData = await resp.json()
         console.error('markRead error:', resp.status, errData)
@@ -53,7 +53,7 @@ export default function MessagesPage() {
     if (!id) return
     if (!confirm('Bu mesajı kalıcı olarak silmek istiyor musunuz?')) return
     setError(null)
-    const resp = await fetch('/api/admin/messages/delete', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id }) })
+    const resp = await fetch('/api/admin/messages/delete', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id }), credentials: 'include' })
     if (resp.ok) {
       setItems((s) => s.filter((m) => m.id !== id))
       notifyAdminDataChanged()

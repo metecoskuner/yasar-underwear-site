@@ -23,7 +23,7 @@ export default function AdminTopbar({ onToggle, mobileOpen }: { onToggle?: () =>
 
   async function doLogout() {
     try {
-      await fetch('/api/admin/logout')
+      await fetch('/api/admin/logout', { credentials: 'include' })
     } catch {}
     router.push('/admin')
   }
