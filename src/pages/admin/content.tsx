@@ -14,7 +14,7 @@ type Product = {
   productCode?: string
   description?: string
   gender?: 'Erkek' | 'Kadın' | ''
-  images?: (string | null)[] // exactly 3 slots: [main, 1, 2]
+  images?: (string | null)[] // exactly 8 slots: [main, 1, 2, 3, 4, 5, 6, 7]
   isFeatured?: boolean
 }
 
@@ -56,8 +56,8 @@ export default function ContentPage() {
   const list = Array.isArray(j.products) ? (j.products as unknown as Array<Record<string, unknown>>) : []
   const normalized = list.map((p) => {
         const imgs = Array.isArray(p.images) ? p.images : (typeof p.images === 'string' ? JSON.parse(p.images) : [])
-        // ensure exactly 3 slots
-        const images = [...imgs].slice(0, 3).concat(new Array(Math.max(0, 3 - imgs.length)).fill(null)).slice(0, 3)
+        // ensure exactly 8 slots
+        const images = [...imgs].slice(0, 8).concat(new Array(Math.max(0, 8 - imgs.length)).fill(null)).slice(0, 8)
         // normalize title: server should provide i18nTitle and title fallback, but be defensive
         let i18n: Record<string, string> | null = null
         let titleFallback = ''
@@ -218,14 +218,14 @@ export default function ContentPage() {
                   </label>
                 </div>
                 <div className="mt-3">
-                  <label className="block text-sm font-medium mb-1">Resimler (maks 3 — Main, 1, 2)</label>
-                  <div className="mt-2 grid grid-cols-3 gap-3">
-                    {[0, 1, 2].map((slot) => (
+                  <label className="block text-sm font-medium mb-1">Resimler (maks 8 — Main, 1, 2, 3, 4, 5, 6, 7)</label>
+                  <div className="mt-2 grid grid-cols-4 gap-3">
+                    {[0, 1, 2, 3, 4, 5, 6, 7].map((slot) => (
                       <div key={slot} className="text-center">
                         <div className="text-xs text-gray-600 mb-1">{slot === 0 ? 'Main' : String(slot)}</div>
                         <div className="w-28 h-28 mx-auto mb-2">
-                          {(editing.images || [null, null, null])[slot] ? (
-                            <img src={(editing.images || [null, null, null])[slot] as string} alt="Ürün resmi" className="w-28 h-28 object-cover rounded" />
+                          {(editing.images || Array(8).fill(null))[slot] ? (
+                            <img src={(editing.images || Array(8).fill(null))[slot] as string} alt="Ürün resmi" className="w-28 h-28 object-cover rounded" />
                           ) : (
                             <div className="w-28 h-28 bg-gray-100 rounded flex items-center justify-center text-xs text-gray-500">No image</div>
                           )}
@@ -246,7 +246,7 @@ export default function ContentPage() {
                             const url = j.url as string
                             setEditing((cur) => {
                               if (!cur) return cur
-                              const imgs = Array.isArray(cur.images) ? [...cur.images] : [null, null, null]
+                              const imgs = Array.isArray(cur.images) ? [...cur.images] : Array(8).fill(null)
                               imgs[slot] = url
                               return { ...cur, images: imgs }
                             })
@@ -374,7 +374,7 @@ export default function ContentPage() {
                   >
                     {p.isFeatured ? '★' : '☆'}
                   </button>
-                  <button className="text-sm text-blue-600 hover:underline cursor-pointer" onClick={() => setEditing({ ...p, images: Array.isArray(p.images) ? [...p.images].slice(0,3).concat(new Array(Math.max(0, 3 - (p.images || []).length)).fill(null)).slice(0,3) : [null, null, null] })}>Düzenle</button>
+                  <button className="text-sm text-blue-600 hover:underline cursor-pointer" onClick={() => setEditing({ ...p, images: Array.isArray(p.images) ? [...p.images].slice(0,8).concat(new Array(Math.max(0, 8 - (p.images || []).length)).fill(null)).slice(0,8) : Array(8).fill(null) })}>Düzenle</button>
                   <button className="text-sm text-red-600 hover:underline cursor-pointer" onClick={async () => {
                     if (!confirm('Ürünü silmek istediğinize emin misiniz?')) return
                     try {
@@ -418,14 +418,14 @@ export default function ContentPage() {
                         </label>
                     </div>
                     <div className="mt-3">
-                      <label className="block text-sm font-medium mb-1">Resimler (maks 3 — Main, 1, 2)</label>
-                      <div className="mt-2 grid grid-cols-3 gap-3">
-                        {[0, 1, 2].map((slot) => (
+                      <label className="block text-sm font-medium mb-1">Resimler (maks 8 — Main, 1, 2, 3, 4, 5, 6, 7)</label>
+                      <div className="mt-2 grid grid-cols-4 gap-3">
+                        {[0, 1, 2, 3, 4, 5, 6, 7].map((slot) => (
                           <div key={slot} className="text-center">
                             <div className="text-xs text-gray-600 mb-1">{slot === 0 ? 'Main' : String(slot)}</div>
                             <div className="w-28 h-28 mx-auto mb-2">
-                              {(editing.images || [null, null, null])[slot] ? (
-                                <img src={(editing.images || [null, null, null])[slot] as string} alt="Ürün resmi" className="w-28 h-28 object-cover rounded" />
+                              {(editing.images || Array(8).fill(null))[slot] ? (
+                                <img src={(editing.images || Array(8).fill(null))[slot] as string} alt="Ürün resmi" className="w-28 h-28 object-cover rounded" />
                               ) : (
                                 <div className="w-28 h-28 bg-gray-100 rounded flex items-center justify-center text-xs text-gray-500">No image</div>
                               )}
