@@ -42,7 +42,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
   // Honeypot: if the hidden 'company' field is filled, treat as spam and return success without processing
   if (company && String(company).trim().length > 0) {
-    console.warn('[contact] honeypot triggered — logging and ignoring message', { ip, company });
     // Log honeypot hit to DB if available
     if (process.env.DATABASE_URL) {
       try {
@@ -69,34 +68,27 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   // so we don't lose the message if sending fails.
   if (process.env.DATABASE_URL || process.env.SUPABASE_URL) {
     try {
-      console.log('[contact] Attempting to save message to database', { name: safeName, email: safeEmail, hasPhone: !!safePhone })
-      
       // Try Prisma first
       try {
-        const created = await prisma.contactMessage.create({ data: { name: safeName, email: safeEmail, phone: safePhone ?? undefined, message: safeMessage } });
-        console.log('[contact] DB save successful via Prisma', { id: created.id })
-      } catch (prismaErr) {
-        console.warn('[contact] Prisma save failed, falling back to Supabase:', prismaErr instanceof Error ? prismaErr.message : String(prismaErr))
+        await prisma.contactMessage.create({ data: { name: safeName, email: safeEmail, phone: safePhone ?? undefined, message: safeMessage } });
+      } catch {
+        console.warn('[contact] Prisma save failed, falling back to Supabase')
         // Fallback to Supabase — generate ID manually since Supabase JS client doesn't auto-generate CUID
         const supabase = createClient(
           process.env.SUPABASE_URL || '',
           process.env.SUPABASE_SERVICE_KEY || ''
         )
         const generatedId = createId()
-        console.log('[contact] Generated ID for Supabase:', generatedId)
         const insertData = { id: generatedId, name: safeName, email: safeEmail, phone: safePhone ?? null, message: safeMessage }
-        console.log('[contact] Supabase insert data prepared:', JSON.stringify(insertData))
-        console.log('[contact] Supabase insert data keys:', Object.keys(insertData))
-        const { data: created, error: supabaseErr } = await supabase
+        const { error: supabaseErr } = await supabase
           .from('ContactMessage')
           .insert(insertData)
           .select()
         
         if (supabaseErr) {
-          console.error('[contact] Supabase save failed - error details:', JSON.stringify(supabaseErr, null, 2))
+          console.error('[contact] Supabase save failed')
           throw supabaseErr
         }
-        console.log('[contact] DB save successful via Supabase', { created })
       }
     } catch (dbErr) {
       console.error('[contact] db save error (caught):', dbErr instanceof Error ? dbErr.message : String(dbErr))
@@ -107,7 +99,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
   // If SMTP not configured, log and return success so the UX behaves as delivered.
   if (!SMTP_HOST || !SMTP_PORT || !SMTP_USER || !SMTP_PASS) {
-    console.warn('[contact] SMTP not configured — message logged only', { safeName, safeEmail, safeMessage });
+    console.warn('[contact] SMTP not configured — message logged only');
     return res.status(200).json({ ok: true, message: 'Received (no SMTP configured).' });
   }
 

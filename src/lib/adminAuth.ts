@@ -10,13 +10,23 @@ import path from 'path'
 
 const COOKIE_NAME = 'yasar_admin'
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 7 // 7 days
+const IS_PRODUCTION = process.env.NODE_ENV === 'production'
 
 function signPayload(payload: string, secret: string) {
   return crypto.createHmac('sha256', secret).update(payload).digest('hex')
 }
 
+function getAdminSecret() {
+  return process.env.ADMIN_SECRET || (!IS_PRODUCTION ? 'dev-secret' : '')
+}
+
+function getExpectedAdminUser() {
+  return process.env.ADMIN_USER || (!IS_PRODUCTION ? 'admin' : '')
+}
+
 export function setAuthCookie(res: NextApiResponse, user: string) {
-  const secret = process.env.ADMIN_SECRET || 'dev-secret'
+  const secret = getAdminSecret()
+  if (!secret) throw new Error('ADMIN_SECRET is not configured')
   const expires = Date.now() + COOKIE_MAX_AGE * 1000
   const payload = `${user}:${expires}`
   const sig = signPayload(payload, secret)
@@ -57,12 +67,13 @@ export function isAuthed(req?: { headers?: Partial<Record<string, string | strin
     const expires = Number(parts[1])
     const sig = parts.slice(2).join(':')
     if (Number.isNaN(expires) || Date.now() > expires) return false
-    const secret = process.env.ADMIN_SECRET || 'dev-secret'
+    const secret = getAdminSecret()
+    if (!secret) return false
     const payload = `${user}:${expires}`
     const expected = signPayload(payload, secret)
     if (!crypto.timingSafeEqual(Buffer.from(expected), Buffer.from(sig))) return false
     // optional: verify user matches ADMIN_USER
-    const adminUser = process.env.ADMIN_USER
+    const adminUser = getExpectedAdminUser()
     if (adminUser && adminUser !== user) return false
     // fallback: check data/admin-settings.json if present
     try {

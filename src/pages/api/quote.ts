@@ -17,22 +17,19 @@ export default async function handler(
   const payload = req.body || {}
 
   try {
-    console.log('[quote] received submission', { hasPayload: !!payload })
-
     // Persist to database (with Supabase fallback)
     if (process.env.DATABASE_URL || process.env.SUPABASE_URL) {
       try {
         // Try Prisma first
         try {
-          const created = await prisma.quote.create({
+          await prisma.quote.create({
             data: {
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
               payload: (payload || {}) as unknown as any,
             },
           })
-          console.log('[quote] DB save successful via Prisma', { id: created.id })
-        } catch (prismaErr) {
-          console.warn('[quote] Prisma save failed, falling back to Supabase:', prismaErr instanceof Error ? prismaErr.message : String(prismaErr))
+        } catch {
+          console.warn('[quote] Prisma save failed, falling back to Supabase')
           const supabase = createClient(
             process.env.SUPABASE_URL || '',
             process.env.SUPABASE_SERVICE_KEY || ''
@@ -40,17 +37,15 @@ export default async function handler(
           const generatedId = createId()
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const insertData = { id: generatedId, payload: (payload || {}) as unknown as any }
-          console.log('[quote] Supabase insert data prepared')
-          const { data: created, error: supabaseErr } = await supabase
+          const { error: supabaseErr } = await supabase
             .from('Quote')
             .insert(insertData)
             .select()
 
           if (supabaseErr) {
-            console.error('[quote] Supabase save failed - error details:', JSON.stringify(supabaseErr, null, 2))
+            console.error('[quote] Supabase save failed')
             throw supabaseErr
           }
-          console.log('[quote] DB save successful via Supabase', { created })
         }
       } catch (dbErr) {
         console.error('[quote] db save error (caught):', dbErr instanceof Error ? dbErr.message : String(dbErr))

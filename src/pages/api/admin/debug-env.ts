@@ -1,6 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
+  if (process.env.NODE_ENV === 'production') {
+    return res.status(404).end()
+  }
+
   // Return env values so we can debug
   return res.status(200).json({
     ADMIN_USER: process.env.ADMIN_USER || '(not set)',

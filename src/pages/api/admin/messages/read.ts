@@ -3,6 +3,7 @@ import fs from 'fs'
 import path from 'path'
 import { isAuthed } from '@/lib/adminAuth'
 import { prisma } from '@/lib/prisma'
+import { createClient } from '@supabase/supabase-js'
 
 const DATA_FILE = path.join(process.cwd(), 'data', 'admin-messages.json')
 
@@ -22,6 +23,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (req.method !== 'POST') return res.status(405).end()
   const { id } = req.body || {}
   if (!id) return res.status(400).json({ error: 'missing id' })
+
+  if (process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_KEY) {
+    try {
+      const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY)
+      const { error } = await supabase.from('ContactMessage').update({ read: true }).eq('id', String(id))
+      if (error) throw error
+      return res.status(200).json({ ok: true })
+    } catch (err) {
+      console.error(err)
+      return res.status(500).json({ error: 'db_update_failed' })
+    }
+  }
 
   if (process.env.DATABASE_URL) {
     try {

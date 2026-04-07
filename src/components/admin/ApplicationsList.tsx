@@ -21,16 +21,22 @@ export default function ApplicationsList({ initialFilter }: { initialFilter?: st
 
   async function markRead(id?: string) {
     if (!id) return
-    await fetch('/api/admin/applications/read', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id }) })
+    setError(null)
+    const resp = await fetch('/api/admin/applications/read', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id }) })
+    if (!resp.ok) {
+      setError('Başvuru okundu olarak işaretlenemedi')
+      return
+    }
     setItems((s) => s.map((m) => (m.id === id ? { ...m, read: true } : m)))
   }
 
   async function remove(id?: string) {
     if (!id) return
     if (!confirm('Bu başvuruyu kalıcı olarak silmek istiyor musunuz?')) return
+    setError(null)
     const resp = await fetch('/api/admin/applications/delete', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id }) })
     if (resp.ok) setItems((s) => s.filter((m) => m.id !== id))
-    else alert('Silme başarısız oldu')
+    else setError('Başvuru silinemedi')
   }
 
   const filtered = items.filter((it) => filter === 'all' ? true : it.type === filter)

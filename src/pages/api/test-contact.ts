@@ -14,6 +14,10 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
+  if (process.env.NODE_ENV === 'production') {
+    return res.status(404).end()
+  }
+
   // Test both database methods
   const testData = {
     name: `TEST_${Date.now()}`,
@@ -34,23 +38,17 @@ export default async function handler(
     supabase: { success: false },
   }
 
-  // Test Prisma
   try {
-    console.log('[test-contact] Testing Prisma...')
     const created = await prisma.contactMessage.create({
       data: testData,
     })
     result.prisma = { success: true, id: created.id }
-    console.log('[test-contact] Prisma success:', created.id)
   } catch (err) {
     const errMsg = err instanceof Error ? err.message : String(err)
     result.prisma = { success: false, error: errMsg }
-    console.error('[test-contact] Prisma failed:', errMsg)
   }
 
-  // Test Supabase
   try {
-    console.log('[test-contact] Testing Supabase...')
     const supabase = createClient(
       process.env.SUPABASE_URL || '',
       process.env.SUPABASE_SERVICE_KEY || ''
@@ -62,16 +60,13 @@ export default async function handler(
 
     if (error) {
       result.supabase = { success: false, error: JSON.stringify(error) }
-      console.error('[test-contact] Supabase error:', error)
     } else {
       const id = Array.isArray(created) && created[0]?.id ? created[0].id : 'unknown'
       result.supabase = { success: true, id }
-      console.log('[test-contact] Supabase success:', id)
     }
   } catch (err) {
     const errMsg = err instanceof Error ? err.message : String(err)
     result.supabase = { success: false, error: errMsg }
-    console.error('[test-contact] Supabase catch:', errMsg)
   }
 
   result.ok = !!(result.prisma?.success || result.supabase?.success)

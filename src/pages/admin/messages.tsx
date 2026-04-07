@@ -25,7 +25,12 @@ export default function MessagesPage() {
   async function markRead(id?: string, e?: React.MouseEvent) {
     if (e) e.stopPropagation()
     if (!id) return
-    await fetch('/api/admin/messages/read', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id }) })
+    setError(null)
+    const resp = await fetch('/api/admin/messages/read', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id }) })
+    if (!resp.ok) {
+      setError('Mesaj okundu olarak işaretlenemedi')
+      return
+    }
     setItems((s) => s.map((m) => (m.id === id ? { ...m, read: true } : m)))
   }
 
@@ -33,13 +38,14 @@ export default function MessagesPage() {
     if (e) e.stopPropagation()
     if (!id) return
     if (!confirm('Bu mesajı kalıcı olarak silmek istiyor musunuz?')) return
+    setError(null)
     const resp = await fetch('/api/admin/messages/delete', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id }) })
     if (resp.ok) {
       setItems((s) => s.filter((m) => m.id !== id))
       // reload to ensure sidebar badges and counts are updated
       setTimeout(() => { if (typeof window !== 'undefined') window.location.reload() }, 150)
     }
-    else alert('Silme başarısız oldu')
+    else setError('Mesaj silinemedi')
   }
 
   return (

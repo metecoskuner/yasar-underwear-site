@@ -27,24 +27,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const body = req.body as Body;
 
   try {
-    // Log the submission server-side
-    console.log('[/api/b2b] received', { body });
-
     // Persist to database (with Supabase fallback)
     if (process.env.DATABASE_URL || process.env.SUPABASE_URL) {
       try {
         // Try Prisma first
         try {
-          const created = await prisma.b2BApplication.create({
+          await prisma.b2BApplication.create({
             data: {
               type: body.type || 'unknown',
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
               payload: (body.payload || {}) as unknown as any,
             },
           });
-          console.log('[b2b] DB save successful via Prisma', { id: created.id });
-        } catch (prismaErr) {
-          console.warn('[b2b] Prisma save failed, falling back to Supabase:', prismaErr instanceof Error ? prismaErr.message : String(prismaErr));
+        } catch {
+          console.warn('[b2b] Prisma save failed, falling back to Supabase');
           const supabase = createClient(
             process.env.SUPABASE_URL || '',
             process.env.SUPABASE_SERVICE_KEY || ''
@@ -52,17 +48,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           const generatedId = createId();
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const insertData = { id: generatedId, type: body.type || 'unknown', payload: (body.payload || {}) as unknown as any };
-          console.log('[b2b] Supabase insert data:', JSON.stringify(insertData));
-          const { data: created, error: supabaseErr } = await supabase
+          const { error: supabaseErr } = await supabase
             .from('B2BApplication')
             .insert(insertData)
             .select();
 
           if (supabaseErr) {
-            console.error('[b2b] Supabase save failed - error details:', JSON.stringify(supabaseErr, null, 2));
+            console.error('[b2b] Supabase save failed');
             throw supabaseErr;
           }
-          console.log('[b2b] DB save successful via Supabase', { created });
         }
       } catch (dbErr) {
         console.error('[b2b] db save error (caught):', dbErr instanceof Error ? dbErr.message : String(dbErr));

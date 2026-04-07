@@ -11,6 +11,10 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
+  if (process.env.NODE_ENV === 'production') {
+    return res.status(404).end()
+  }
+
   try {
     const supabase = createClient(
       process.env.SUPABASE_URL || '',

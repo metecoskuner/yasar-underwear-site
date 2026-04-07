@@ -8,11 +8,17 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') return res.status(405).json({ ok: false, message: 'Method not allowed' })
 
   const { user, pass } = req.body || {}
-  const ADMIN_USER = process.env.ADMIN_USER || 'admin'
-  const ADMIN_PASS = process.env.ADMIN_PASS || 'password'
+  const isProduction = process.env.NODE_ENV === 'production'
+  const ADMIN_USER = process.env.ADMIN_USER || (!isProduction ? 'admin' : '')
+  const ADMIN_PASS = process.env.ADMIN_PASS || (!isProduction ? 'password' : '')
+  const ADMIN_SECRET = process.env.ADMIN_SECRET || (!isProduction ? 'dev-secret' : '')
 
   if (typeof user !== 'string' || typeof pass !== 'string') {
     return res.status(400).json({ ok: false, message: 'Kullanıcı adı ve şifre gerekli' })
+  }
+
+  if (!ADMIN_USER || !ADMIN_PASS || !ADMIN_SECRET) {
+    return res.status(503).json({ ok: false, message: 'Admin yapılandırması eksik' })
   }
 
   // Trim whitespace

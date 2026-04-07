@@ -1,5 +1,6 @@
 import { GetServerSideProps } from 'next'
 import React from 'react'
+import Image from 'next/image'
 import SEO from '@/components/SEO'
 import Layout from '@/components/Layout'
 import { prisma } from '@/lib/prisma'
@@ -53,7 +54,19 @@ export default function ProductPage({ product }: { product: Product }) {
 
       <main className="max-w-4xl mx-auto px-4 py-12">
         <h1 className="text-2xl font-semibold mb-4">{product.title}</h1>
-        {image && <img src={fullImage || image} alt={product.title} className="w-full max-h-96 object-contain" />}
+        {image && (
+          <div className="relative w-full h-[24rem] max-h-96">
+            <Image
+              loader={({ src }) => src}
+              unoptimized
+              src={fullImage || image}
+              alt={product.title}
+              fill
+              sizes="(max-width: 768px) 100vw, 896px"
+              className="object-contain"
+            />
+          </div>
+        )}
         <p className="mt-4 text-gray-700">{product.description}</p>
         <div className="mt-6">
           <div>SKU: <span className="font-mono">{product.productCode}</span></div>
@@ -118,7 +131,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
         return { props: { product } }
       }
     }
-  } catch (err) {
+  } catch {
     // ignore
   }
 
