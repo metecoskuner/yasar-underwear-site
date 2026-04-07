@@ -87,6 +87,7 @@ export default function WorldMap(): JSX.Element {
   const dragState = useRef<null | { id: string; kind: 'pin' | 'label'; startX: number; startY: number; origX: number; origY: number }>(null);
   const [selected, setSelected] = useState<null | { id: string; kind: 'pin' | 'label' }>(null);
   const [hovered, setHovered] = useState<string | null>(null);
+  const [activePin, setActivePin] = useState<string | null>(null);
 
   const getSVGPoint = (clientX: number, clientY: number) => {
     const svg = svgRef.current;
@@ -101,6 +102,18 @@ export default function WorldMap(): JSX.Element {
       return null;
     }
   };
+
+  useEffect(() => {
+    function handlePointerDown(event: PointerEvent) {
+      const target = event.target as HTMLElement | null;
+      if (!target?.closest('[data-worldmap-pin="true"]')) {
+        setActivePin(null);
+      }
+    }
+
+    document.addEventListener('pointerdown', handlePointerDown);
+    return () => document.removeEventListener('pointerdown', handlePointerDown);
+  }, []);
 
   // resetEdits removed — editingOffsets is preserved in-memory. If a
   // restore/reset control is added later we can reintroduce this helper.
@@ -196,9 +209,28 @@ export default function WorldMap(): JSX.Element {
     return { projection: p, pathGenerator: geoPath().projection(p as any) };
   }, [countries]);
 
-  // Mobile labels visible on small screens; make pins larger on mobile so they're easier to see.
-  const mobileLabelsVisible = isMobile;
-  const pinScale = mobileLabelsVisible ? 0.85 : 1;
+  const pinScale = isMobile ? 1.1 : isTablet ? 1.02 : 1;
+
+  const getLabelOffset = useCallback((loc: (typeof LOCATIONS)[number]) => {
+    if (isMobile) {
+      return {
+        x: loc.mobileLabelOffsetX ?? 10,
+        y: loc.mobileLabelOffsetY ?? -14,
+      };
+    }
+
+    if (isTablet) {
+      return {
+        x: loc.tabletLabelOffsetX ?? 12,
+        y: loc.tabletLabelOffsetY ?? -16,
+      };
+    }
+
+    return {
+      x: loc.desktopLabelOffsetX ?? 12,
+      y: loc.desktopLabelOffsetY ?? -16,
+    };
+  }, [isMobile, isTablet]);
 
   // We always render the D3-generated SVG now; there is no separate mobile SVG.
 
@@ -215,7 +247,6 @@ export default function WorldMap(): JSX.Element {
           desktop rendering quality and responsive projection math. */}
       <svg ref={svgRef} width="100%" viewBox={`0 0 ${BASE_WIDTH} ${BASE_HEIGHT}`} style={{ height: 'auto' }} className="worldmap-svg block w-full mx-auto" role="img" aria-label="Dünya haritası" preserveAspectRatio="xMidYMin meet">
         <rect width={BASE_WIDTH} height={BASE_HEIGHT} fill="#ffffff" />
-
         <g className="countries">
           {countries
             ? countries.features.map((f: any, i: number) => (
@@ -235,17 +266,15 @@ export default function WorldMap(): JSX.Element {
         <g className="pins">
           {LOCATIONS.map((loc) => {
             const [x, y] = projection([loc.lon, loc.lat]) as [number, number];
-            const mobileYOffset = isMobile ? (loc.mobileOffsetY ?? 0) : 0;
-            const tabletYOffset = isTablet ? (loc.tabletOffsetY ?? 0) : 0;
-            const mobileXOffset = isMobile ? (loc.mobileOffsetX ?? 0) : 0;
-            const tabletXOffset = isTablet ? (loc.tabletOffsetX ?? 0) : 0;
-
             const runtime = isMobile ? editingOffsets.mobile[loc.id] : isTablet ? editingOffsets.tablet[loc.id] : editingOffsets.desktop[loc.id];
             const runtimePin = runtime ? runtime.pin : undefined;
-            const appliedYOffset = runtimePin ? runtimePin.y : isMobile ? mobileYOffset : isTablet ? tabletYOffset : 0;
-            const appliedXOffset = runtimePin ? runtimePin.x : isMobile ? mobileXOffset : isTablet ? tabletXOffset : 0;
+            const appliedYOffset = runtimePin ? runtimePin.y : (loc.desktopOffsetY ?? 0);
+            const appliedXOffset = runtimePin ? runtimePin.x : (loc.desktopOffsetX ?? 0);
             const isCenter = !!loc.isCenter;
             const tipOffset = isCenter ? 11 : 12;
+            const labelOffset = getLabelOffset(loc);
+            const label = tr(`locations.${loc.id}`, loc.name);
+            const isLabelVisible = hovered === loc.id || activePin === loc.id;
 
             const onPointerDown = (e: React.PointerEvent) => {
               if (!editPins) return;
@@ -260,6 +289,10 @@ export default function WorldMap(): JSX.Element {
 
             const onPointerEnter = () => setHovered(loc.id);
             const onPointerLeave = () => setHovered((cur) => (cur === loc.id ? null : cur));
+            const onPinActivate = () => {
+              setActivePin((cur) => (cur === loc.id ? null : loc.id));
+              setHovered(loc.id);
+            };
 
             const onPointerMove = (e: React.PointerEvent) => {
               if (!editPins || !dragState.current || dragState.current.id !== loc.id) return;
@@ -288,18 +321,34 @@ export default function WorldMap(): JSX.Element {
               <g
                 key={loc.id}
                 transform={`translate(${x + appliedXOffset},${y + appliedYOffset})`}
+                data-worldmap-pin="true"
                 tabIndex={0}
                 onFocus={() => setSelected({ id: loc.id, kind: 'pin' })}
+                onBlur={() => {
+                  setSelected((current) => (current?.id === loc.id ? null : current));
+                  setHovered((current) => (current === loc.id ? null : current));
+                }}
                 // Allow pointer events on pins so hover tooltip works even when
                 // edit mode is off. Dragging still requires editPins to be true
                 // (onPointerDown checks editPins).
-                className="pointer-events-auto"
-                aria-hidden
+                className="pointer-events-auto cursor-pointer"
+                role="button"
+                aria-label={label}
                 onPointerDown={onPointerDown}
                 onPointerMove={onPointerMove}
                 onPointerUp={onPointerUp}
                 onPointerEnter={onPointerEnter}
                 onPointerLeave={onPointerLeave}
+                onMouseEnter={onPointerEnter}
+                onMouseLeave={onPointerLeave}
+                onTouchStart={() => setActivePin((cur) => (cur === loc.id ? null : loc.id))}
+                onClick={onPinActivate}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    onPinActivate();
+                  }
+                }}
               >
                 <g className="pin-icon" transform={`translate(0,${-tipOffset}) scale(${pinScale})`} aria-hidden>
                   {isCenter ? (
@@ -314,21 +363,22 @@ export default function WorldMap(): JSX.Element {
                     </>
                   )}
                 </g>
-                {/* show name only on hover */}
-                {hovered === loc.id ? (
-                  <text
-                    x={12}
-                    y={-tipOffset - 2}
-                    fontSize={11}
-                    fill="#ffffff"
-                    stroke="#000000"
-                    strokeWidth={0.8}
-                    strokeLinejoin="round"
-                    fontWeight={600}
-                    style={{ pointerEvents: 'none', userSelect: 'none', paintOrder: 'stroke' }}
-                  >
-                    {tr(`locations.${loc.id}`, loc.name)}
-                  </text>
+                {isLabelVisible ? (
+                  <g transform={`translate(${labelOffset.x},${labelOffset.y})`} style={{ pointerEvents: 'none', userSelect: 'none' }}>
+                    <text
+                      x={0}
+                      y={-2}
+                      fontSize={11}
+                      fill="#ffffff"
+                      stroke="#0f172a"
+                      strokeWidth={1.2}
+                      strokeLinejoin="round"
+                      fontWeight={600}
+                      paintOrder="stroke"
+                    >
+                      {label}
+                    </text>
+                  </g>
                 ) : null}
               </g>
             );

@@ -12,6 +12,8 @@ const VIDEOS: VideoItem[] = [
   { src: "/videos/DSCF7651.mp4", poster: "/photos/PYJAMA-BRANDS.avif", focal: "center 50%" },
 ];
 
+const AUTO_PLAY_COUNT = 3;
+
 export default function MediaWrap() {
   const { t, lang } = useLanguage();
   const tr = (key: string, fallback: string) => {
@@ -145,6 +147,7 @@ export default function MediaWrap() {
   useEffect(() => {
     ensureVideoLoaded(0);
     ensureVideoLoaded(1);
+    ensureVideoLoaded(2);
   }, []);
 
   // --- IntersectionObserver: lazy-load & mark visible ---
@@ -186,21 +189,27 @@ export default function MediaWrap() {
 
     videoRefs.current.forEach((v, i) => {
       if (!v) return;
-      if (i === index) {
+      const shouldPlay = i < AUTO_PLAY_COUNT || i === index;
+
+      if (shouldPlay) {
         v.muted = true;
         if (v.readyState >= 2) {
-          try {
-            v.currentTime = 0;
-          } catch {}
+          if (i === index) {
+            try {
+              v.currentTime = 0;
+            } catch {}
+          }
           if (!prefersReducedMotion) {
             v.play().catch(() => {});
           }
         } else {
           const handleCanPlay = () => {
             v.removeEventListener("canplay", handleCanPlay);
-            try {
-              v.currentTime = 0;
-            } catch {}
+            if (i === index) {
+              try {
+                v.currentTime = 0;
+              } catch {}
+            }
             if (!prefersReducedMotion) {
               v.play().catch(() => {});
             }
@@ -447,7 +456,7 @@ export default function MediaWrap() {
                   muted
                   loop
                   playsInline
-                  preload={active ? "metadata" : "none"}
+                  preload={i < AUTO_PLAY_COUNT || active ? "metadata" : "none"}
                   className="w-full h-full object-cover"
                   style={{ objectPosition: it.focal }}
                 />
