@@ -24,10 +24,10 @@ export default function ApplicationCard({ application, onMarkRead, onDelete }: P
   const createdDisplay = created ? created.toLocaleString('tr-TR', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : ''
 
   return (
-    <article className={`w-full rounded-lg shadow-sm p-4 bg-white ${application.read ? 'opacity-80' : ''}`} aria-labelledby={`app-${application.id}`}>
-      <header className="flex items-start justify-between gap-4">
-        <div className="flex items-start gap-4">
-          <div className="flex flex-col">
+    <article className={`w-full rounded-xl border p-4 shadow-sm transition-colors ${application.read ? 'border-slate-200 bg-slate-50' : 'border-blue-100 bg-white'}`} aria-labelledby={`app-${application.id}`}>
+      <header className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+        <div className="min-w-0 flex items-start gap-4">
+          <div className="flex min-w-0 flex-col">
             <h3 id={`app-${application.id}`} className="text-lg font-semibold text-gray-900 leading-tight">
               {company || '—'}
             </h3>
@@ -35,18 +35,19 @@ export default function ApplicationCard({ application, onMarkRead, onDelete }: P
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
-          {country && <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">{country}</span>}
-          <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
+          {country && <span className="inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-800">{country}</span>}
+          <div className="flex flex-wrap items-center gap-2">
+            {application.read && <span className="inline-flex items-center rounded-full bg-slate-200 px-2.5 py-1 text-xs font-medium text-slate-600">Okundu</span>}
             {!application.read && (
-              <button onClick={() => onMarkRead?.(application.id)} className="px-3 py-1 rounded-full bg-amber-50 text-amber-700 text-sm">Okundu</button>
+              <button onClick={() => onMarkRead?.(application.id)} className="rounded-full bg-amber-50 px-3 py-1.5 text-sm font-medium text-amber-700">Okundu</button>
             )}
-            <button onClick={() => onDelete?.(application.id)} className="px-3 py-1 rounded-full bg-red-50 text-red-700 text-sm">Sil</button>
+            <button onClick={() => onDelete?.(application.id)} className="rounded-full bg-red-50 px-3 py-1.5 text-sm font-medium text-red-700">Sil</button>
           </div>
         </div>
       </header>
 
-      <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-3">
         <section aria-labelledby={`company-${application.id}`} className="md:col-span-1">
           <h4 id={`company-${application.id}`} className="text-sm text-gray-500">Company Info</h4>
           <dl className="mt-2 text-sm text-gray-700 space-y-1">
@@ -60,7 +61,7 @@ export default function ApplicationCard({ application, onMarkRead, onDelete }: P
             </div>
             <div>
               <dt className="text-xs text-gray-500">Website</dt>
-              <dd className="font-medium break-words">{payload['website'] ? <a className="text-amber-600 hover:underline" href={String(payload['website'])} target="_blank" rel="noreferrer">{String(payload['website'])}</a> : '—'}</dd>
+              <dd className="break-words font-medium">{payload['website'] ? <a className="text-amber-600 hover:underline break-all" href={String(payload['website'])} target="_blank" rel="noreferrer">{String(payload['website'])}</a> : '—'}</dd>
             </div>
           </dl>
         </section>
@@ -100,7 +101,7 @@ export default function ApplicationCard({ application, onMarkRead, onDelete }: P
             </div>
             <div>
               <dt className="text-xs text-gray-500">E-posta</dt>
-              <dd className="font-medium break-words">{email ? <a className="text-amber-600 hover:underline" href={`mailto:${email}`}>{email}</a> : '—'}</dd>
+              <dd className="font-medium break-words">{email ? <a className="text-amber-600 hover:underline break-all" href={`mailto:${email}`}>{email}</a> : '—'}</dd>
             </div>
             <div>
               <dt className="text-xs text-gray-500">Telefon</dt>

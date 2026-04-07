@@ -26,17 +26,17 @@ export default function OverviewPage({ stats, recentMessages, recentProducts }: 
         <title>Yönetici - Genel Bakış</title>
       </Head>
 
-      <div className="max-w-6xl mx-auto p-6">
-        <div className="bg-gradient-to-r from-indigo-600 via-pink-600 to-yellow-500 text-white p-6 rounded-lg shadow-lg mb-6">
-          <h1 className="text-3xl font-semibold">Genel Bakış</h1>
-          <p className="mt-1 text-sm opacity-90">Kısa istatistikler, son aktiviteler ve hızlı yönetim bağlantılarını buradan takip edebilirsiniz.</p>
+      <div className="mx-auto max-w-6xl px-0">
+        <div className="mb-6 rounded-2xl bg-gradient-to-r from-indigo-600 via-pink-600 to-yellow-500 p-5 text-white shadow-lg sm:p-6">
+          <h1 className="text-2xl font-semibold sm:text-3xl">Genel Bakış</h1>
+          <p className="mt-2 max-w-2xl text-sm leading-6 opacity-90">Kısa istatistikler, son aktiviteler ve hızlı yönetim bağlantılarını buradan takip edebilirsiniz.</p>
         </div>
 
-        <section className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-            <div className="p-4 bg-white rounded-lg shadow flex flex-col">
+        <section className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div className="flex flex-col rounded-2xl bg-white p-4 shadow-sm">
               <div className="text-sm font-medium text-gray-500">Mesajlar</div>
               <div className="mt-3 text-3xl font-extrabold text-gray-800">{stats.messages}</div>
-              <div className="mt-2 text-sm text-gray-400 flex items-center gap-3">
+              <div className="mt-2 flex flex-wrap items-center gap-3 text-sm text-gray-400">
                 <div className="flex items-center space-x-2">
                   <span className="text-gray-500">Okunmamış</span>
                   <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-red-100 text-red-700">{stats.unreadMessages ?? '-'}</span>
@@ -48,15 +48,15 @@ export default function OverviewPage({ stats, recentMessages, recentProducts }: 
                 </div>
               </div>
             </div>
-          <div className="p-4 bg-white rounded-lg shadow flex flex-col">
+          <div className="flex flex-col rounded-2xl bg-white p-4 shadow-sm">
             <div className="text-sm font-medium text-gray-500">Ürünler</div>
             <div className="mt-3 text-3xl font-extrabold text-gray-800">{stats.products}</div>
             <div className="mt-2 text-sm text-gray-400">Katalogta kayıtlı ürün sayısı</div>
           </div>
         </section>
 
-        <section className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-          <div className="p-4 bg-white rounded-lg shadow">
+        <section className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-2">
+          <div className="rounded-2xl bg-white p-4 shadow-sm">
             <h3 className="font-medium text-gray-800">Son Mesajlar</h3>
             <ul className="mt-3 text-sm text-gray-600 space-y-3">
               {recentMessages.length === 0 ? <li className="text-gray-400">Mesaj bulunamadı.</li> : recentMessages.map((m) => (
@@ -73,8 +73,8 @@ export default function OverviewPage({ stats, recentMessages, recentProducts }: 
           {/* recent offers removed as quote/offer feature has been removed */}
         </section>
 
-        <section className="bg-white p-4 rounded-lg shadow">
-          <div className="flex items-center justify-between mb-4">
+        <section className="rounded-2xl bg-white p-4 shadow-sm">
+          <div className="mb-4 flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
             <h3 className="text-lg font-semibold text-gray-800">Yeni Ürünler</h3>
             <div className="text-sm text-gray-500">Son eklenen 5 ürün</div>
           </div>
@@ -82,12 +82,12 @@ export default function OverviewPage({ stats, recentMessages, recentProducts }: 
             {recentProducts.length === 0 ? (
               <div className="text-gray-400">Yeni ürün yok.</div>
             ) : recentProducts.map((p, i) => (
-              <div key={p.id} className="p-4 border rounded hover:shadow-md transition bg-white flex items-center justify-between min-h-20">
+              <div key={p.id} className="flex min-h-20 flex-col gap-3 rounded-xl border bg-white p-4 transition hover:shadow-md sm:flex-row sm:items-center sm:justify-between">
                 <div className="flex-1">
                   <div className="font-medium text-gray-900">{p.title ?? p.id}</div>
                   <div className="text-xs text-gray-400 mt-1">{p.createdAt ?? ''}</div>
                 </div>
-                <div className={`ml-4 flex-shrink-0 h-9 w-14 rounded-full flex items-center justify-center text-white text-xs ${['bg-indigo-500','bg-pink-500','bg-yellow-500','bg-green-500','bg-sky-500'][i % 5]}`}>
+                <div className={`flex h-9 w-14 shrink-0 items-center justify-center rounded-full text-xs text-white sm:ml-4 ${['bg-indigo-500','bg-pink-500','bg-yellow-500','bg-green-500','bg-sky-500'][i % 5]}`}>
                   Yeni
                 </div>
               </div>

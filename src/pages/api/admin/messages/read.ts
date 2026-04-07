@@ -24,33 +24,40 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const { id } = req.body || {}
   if (!id) return res.status(400).json({ error: 'missing id' })
 
+  let updated = false
+
   if (process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_KEY) {
     try {
       const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY)
       const { error } = await supabase.from('ContactMessage').update({ read: true }).eq('id', String(id))
       if (error) throw error
-      return res.status(200).json({ ok: true })
     } catch (err) {
       console.error(err)
-      return res.status(500).json({ error: 'db_update_failed' })
     }
+    updated = true
   }
 
   if (process.env.DATABASE_URL) {
     try {
       await prisma.contactMessage.update({ where: { id: String(id) }, data: { read: true } as unknown as Record<string, unknown> })
-      return res.status(200).json({ ok: true })
+      updated = true
     } catch (err) {
       console.error(err)
-      return res.status(500).json({ error: 'db_update_failed' })
     }
   }
 
   const d = readData()
-  d.messages = (d.messages || []).map((m) => {
+  const nextMessages = (d.messages || []).map((m) => {
     const mid = (m as Record<string, unknown>)['id']
     return String(mid) === String(id) ? { ...(m as Record<string, unknown>), read: true } : m
   })
-  writeData(d)
+  const fileChanged = nextMessages.some((m) => String((m as Record<string, unknown>).id) === String(id) && Boolean((m as Record<string, unknown>).read))
+  d.messages = nextMessages
+  if (fileChanged) {
+    writeData(d)
+    updated = true
+  }
+
+  if (!updated) return res.status(404).json({ error: 'message_not_found' })
   return res.status(200).json({ ok: true })
 }

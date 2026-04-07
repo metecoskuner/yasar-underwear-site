@@ -3,6 +3,7 @@ import fs from 'fs'
 import path from 'path'
 import { isAuthed } from '@/lib/adminAuth'
 import { createClient } from '@supabase/supabase-js'
+import { prisma } from '@/lib/prisma'
 
 const DATA_FILE = path.join(process.cwd(), 'data', 'admin-applications.json')
 
@@ -23,6 +24,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const { id } = req.body || {}
   if (!id) return res.status(400).json({ error: 'missing id' })
 
+  let updated = false
+
   if (process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_KEY) {
     const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY)
     const { error } = await supabase
@@ -32,17 +35,32 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     if (error) {
       console.error(error)
-      return res.status(500).json({ error: 'db_update_failed' })
+    } else {
+      updated = true
     }
+  }
 
-    return res.status(200).json({ ok: true })
+  if (process.env.DATABASE_URL) {
+    try {
+      await prisma.b2BApplication.update({ where: { id: String(id) }, data: { read: true } as unknown as Record<string, unknown> })
+      updated = true
+    } catch (err) {
+      console.error(err)
+    }
   }
 
   const d = readData()
-  d.applications = (d.applications || []).map((m) => {
+  const nextApplications = (d.applications || []).map((m) => {
     const mid = (m as Record<string, unknown>)['id']
     return String(mid) === String(id) ? { ...(m as Record<string, unknown>), read: true } : m
   })
-  writeData(d)
+  const fileChanged = nextApplications.some((m) => String((m as Record<string, unknown>).id) === String(id) && Boolean((m as Record<string, unknown>).read))
+  d.applications = nextApplications
+  if (fileChanged) {
+    writeData(d)
+    updated = true
+  }
+
+  if (!updated) return res.status(404).json({ error: 'application_not_found' })
   return res.status(200).json({ ok: true })
 }

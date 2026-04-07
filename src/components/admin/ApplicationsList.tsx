@@ -3,6 +3,12 @@ import ApplicationCard from './ApplicationCard'
 
 type Application = { id?: string; type?: string; payload?: Record<string, unknown>; createdAt?: string; read?: boolean }
 
+function notifyAdminDataChanged() {
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new Event('admin-data-changed'))
+  }
+}
+
 export default function ApplicationsList({ initialFilter }: { initialFilter?: string }) {
   const [items, setItems] = useState<Application[]>([])
   const [loading, setLoading] = useState(true)
@@ -28,6 +34,7 @@ export default function ApplicationsList({ initialFilter }: { initialFilter?: st
       return
     }
     setItems((s) => s.map((m) => (m.id === id ? { ...m, read: true } : m)))
+    notifyAdminDataChanged()
   }
 
   async function remove(id?: string) {
@@ -35,8 +42,10 @@ export default function ApplicationsList({ initialFilter }: { initialFilter?: st
     if (!confirm('Bu başvuruyu kalıcı olarak silmek istiyor musunuz?')) return
     setError(null)
     const resp = await fetch('/api/admin/applications/delete', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id }) })
-    if (resp.ok) setItems((s) => s.filter((m) => m.id !== id))
-    else setError('Başvuru silinemedi')
+    if (resp.ok) {
+      setItems((s) => s.filter((m) => m.id !== id))
+      notifyAdminDataChanged()
+    } else setError('Başvuru silinemedi')
   }
 
   const filtered = items.filter((it) => filter === 'all' ? true : it.type === filter)
@@ -50,7 +59,8 @@ export default function ApplicationsList({ initialFilter }: { initialFilter?: st
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-2xl font-semibold">{titleFor(filter)}</h1>
+        <h1 className="text-xl font-semibold text-slate-900 sm:text-2xl">{titleFor(filter)}</h1>
+        <p className="mt-2 text-sm leading-6 text-slate-500">Mobilde aksiyonlar alta akacak şekilde düzenlendi. Kartlar tek elde daha rahat yönetilir.</p>
       </div>
 
       {loading && <div>Yükleniyor…</div>}

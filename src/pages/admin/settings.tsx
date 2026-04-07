@@ -12,15 +12,15 @@ export default function SettingsPage() {
         <title>Yönetici - Ayarlar</title>
       </Head>
 
-      <div className="max-w-4xl mx-auto bg-white p-6 rounded shadow">
-        <h1 className="text-2xl font-semibold mb-3">Ayarlar</h1>
-        <p className="text-sm text-gray-600 mb-4">Kullanıcı yönetimi, global site ayarları ve diğer konfigürasyonlar buradan yapılacak.</p>
+      <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+        <h1 className="mb-3 text-2xl font-semibold text-slate-900">Ayarlar</h1>
+        <p className="mb-5 max-w-2xl text-sm leading-6 text-slate-600">Yönetici erişimi ve panelin temel davranışlarını buradan yönetebilirsin.</p>
 
         <section className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Link href="/admin/settings/users" className="block p-4 border rounded hover:shadow-md transition">
-              <h3 className="font-medium">Kullanıcılar</h3>
-              <p className="text-sm text-gray-500">Yönetici kullanıcıları görüntüle ve yetki ayarları.</p>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <Link href="/admin/settings/users" className="block rounded-2xl border border-slate-200 p-5 transition hover:-translate-y-0.5 hover:shadow-md">
+              <h3 className="font-medium text-slate-900">Kullanıcılar</h3>
+              <p className="mt-2 text-sm leading-6 text-slate-500">Yönetici kullanıcıları görüntüle ve giriş ayarlarını kontrol et.</p>
             </Link>
           </div>
         </section>

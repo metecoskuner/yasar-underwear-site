@@ -24,30 +24,36 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const { id } = req.body || {}
   if (!id) return res.status(400).json({ error: 'missing id' })
 
+  let deleted = false
+
   if (process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_KEY) {
     try {
       const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY)
       const { error } = await supabase.from('ContactMessage').delete().eq('id', String(id))
       if (error) throw error
-      return res.status(200).json({ ok: true })
     } catch (err) {
       console.error(err)
-      return res.status(500).json({ error: 'db_delete_failed' })
     }
+    deleted = true
   }
 
   if (process.env.DATABASE_URL) {
     try {
       await prisma.contactMessage.delete({ where: { id: String(id) } })
-      return res.status(200).json({ ok: true })
+      deleted = true
     } catch (err) {
       console.error(err)
-      return res.status(500).json({ error: 'db_delete_failed' })
     }
   }
 
   const d = readData()
+  const prevLength = (d.messages || []).length
   d.messages = (d.messages || []).filter((m) => String((m as Record<string, unknown>).id) !== String(id))
-  writeData(d)
+  if ((d.messages || []).length !== prevLength) {
+    writeData(d)
+    deleted = true
+  }
+
+  if (!deleted) return res.status(404).json({ error: 'message_not_found' })
   return res.status(200).json({ ok: true })
 }

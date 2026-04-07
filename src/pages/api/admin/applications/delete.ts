@@ -3,6 +3,7 @@ import fs from 'fs'
 import path from 'path'
 import { isAuthed } from '@/lib/adminAuth'
 import { createClient } from '@supabase/supabase-js'
+import { prisma } from '@/lib/prisma'
 
 const DATA_FILE = path.join(process.cwd(), 'data', 'admin-applications.json')
 
@@ -23,6 +24,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const { id } = req.body || {}
   if (!id) return res.status(400).json({ error: 'missing id' })
 
+  let deleted = false
+
   if (process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_KEY) {
     const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY)
     const { error } = await supabase
@@ -32,14 +35,28 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     if (error) {
       console.error(error)
-      return res.status(500).json({ error: 'db_delete_failed' })
+    } else {
+      deleted = true
     }
+  }
 
-    return res.status(200).json({ ok: true })
+  if (process.env.DATABASE_URL) {
+    try {
+      await prisma.b2BApplication.delete({ where: { id: String(id) } })
+      deleted = true
+    } catch (err) {
+      console.error(err)
+    }
   }
 
   const d = readData()
+  const prevLength = (d.applications || []).length
   d.applications = (d.applications || []).filter((m) => String((m as Record<string, unknown>).id) !== String(id))
-  writeData(d)
+  if ((d.applications || []).length !== prevLength) {
+    writeData(d)
+    deleted = true
+  }
+
+  if (!deleted) return res.status(404).json({ error: 'application_not_found' })
   return res.status(200).json({ ok: true })
 }

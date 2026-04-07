@@ -118,8 +118,8 @@ export default function ContentPage() {
         <title>Yönetici - İçerik</title>
       </Head>
 
-      <div className="bg-white p-6 rounded shadow">
-        <div className="flex items-center justify-between mb-4">
+      <div className="rounded-2xl bg-white p-4 shadow-sm sm:p-6">
+        <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <h2 className="text-lg font-semibold">İçerik Yönetimi</h2>
         </div>
 
@@ -130,7 +130,7 @@ export default function ContentPage() {
         {!loading && store && (
           <div className="space-y-3">
             {pages.map((p) => (
-              <div key={p.id} className="p-3 border rounded flex items-center justify-between hover:shadow-sm transition-bg hover:bg-slate-50">
+              <div key={p.id} className="flex flex-col gap-3 rounded-xl border p-3 hover:bg-slate-50 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <div className="font-medium">{p.slug} <span className="text-xs text-gray-500">({p.id})</span></div>
                   <div className="text-sm text-gray-500">{p.sections?.length ?? 0} bölüm</div>
@@ -145,18 +145,18 @@ export default function ContentPage() {
         )}
 
         {/* Products management section */}
-        <div className="mt-6 bg-white p-6 rounded shadow">
-          <div className="flex items-center justify-between mb-4">
+        <div className="mt-6 rounded-2xl bg-white p-4 shadow-sm sm:p-6">
+          <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <h2 className="text-lg font-semibold">Ürünler</h2>
-            <div className="flex items-center space-x-2">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:space-x-2">
               <button
-                className="inline-flex items-center gap-2 text-sm bg-green-600 hover:bg-green-700 focus:ring-2 focus:ring-green-500 text-white px-3 py-1 rounded transition"
+                className="inline-flex items-center justify-center gap-2 rounded-lg bg-green-600 px-3 py-2 text-sm text-white transition hover:bg-green-700 focus:ring-2 focus:ring-green-500"
                 onClick={() => setEditing({ id: String(Date.now()), title: '', i18nTitle: { tr: '', en: '', fr: '', ar: '', ru: '' }, productCode: '', description: '', gender: '', images: [null, null, null] } as Product)}
               >
                 Ürün Ekle
               </button>
               <button
-                className={`inline-flex items-center gap-2 text-sm bg-blue-600 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 text-white px-3 py-1 rounded transition ${saving ? 'opacity-60 cursor-wait' : ''}`}
+                className={`inline-flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-3 py-2 text-sm text-white transition hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 ${saving ? 'cursor-wait opacity-60' : ''}`}
                 onClick={async () => {
                   if (!store) return
                   setSaving(true)
@@ -191,46 +191,46 @@ export default function ContentPage() {
             {products.length === 0 && <div className="text-sm text-gray-600">Henüz ürün yok.</div>}
             {/* If editing a new product (not yet in products list), render editor here */}
             {editing && !products.some((x) => x.id === editing.id) && (
-              <div className="mt-4 border-t pt-4 w-full">
-                <h3 className="font-medium mb-2">{editing && editing.id ? 'Ürün Düzenle' : 'Yeni Ürün'}</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                  <div className="space-y-1">
-                    <input value={editing?.i18nTitle?.tr ?? ''} onChange={(e) => setEditing((cur) => cur ? { ...cur, i18nTitle: { ...(cur.i18nTitle ?? {}), tr: e.target.value } } : cur)} placeholder="Ürün adı (Türkçe)" className="border rounded px-3 py-2" />
-                    <input value={editing?.i18nTitle?.en ?? ''} onChange={(e) => setEditing((cur) => cur ? { ...cur, i18nTitle: { ...(cur.i18nTitle ?? {}), en: e.target.value } } : cur)} placeholder="Ürün adı (English)" className="border rounded px-3 py-2" />
+              <div className="mt-4 w-full rounded-2xl border border-slate-200 bg-slate-50 p-4 sm:p-5">
+                <h3 className="mb-3 text-base font-semibold text-slate-900">{editing && editing.id ? 'Ürün Düzenle' : 'Yeni Ürün'}</h3>
+                <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
+                  <div className="space-y-2">
+                    <input value={editing?.i18nTitle?.tr ?? ''} onChange={(e) => setEditing((cur) => cur ? { ...cur, i18nTitle: { ...(cur.i18nTitle ?? {}), tr: e.target.value } } : cur)} placeholder="Ürün adı (Türkçe)" className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2" />
+                    <input value={editing?.i18nTitle?.en ?? ''} onChange={(e) => setEditing((cur) => cur ? { ...cur, i18nTitle: { ...(cur.i18nTitle ?? {}), en: e.target.value } } : cur)} placeholder="Ürün adı (English)" className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2" />
                   </div>
-                  <div className="space-y-1">
-                    <input value={editing?.i18nTitle?.fr ?? ''} onChange={(e) => setEditing((cur) => cur ? { ...cur, i18nTitle: { ...(cur.i18nTitle ?? {}), fr: e.target.value } } : cur)} placeholder="Ürün adı (Français)" className="border rounded px-3 py-2" />
-                    <input value={editing?.i18nTitle?.ar ?? ''} onChange={(e) => setEditing((cur) => cur ? { ...cur, i18nTitle: { ...(cur.i18nTitle ?? {}), ar: e.target.value } } : cur)} placeholder="Ürün adı (العربية)" className="border rounded px-3 py-2" />
+                  <div className="space-y-2">
+                    <input value={editing?.i18nTitle?.fr ?? ''} onChange={(e) => setEditing((cur) => cur ? { ...cur, i18nTitle: { ...(cur.i18nTitle ?? {}), fr: e.target.value } } : cur)} placeholder="Ürün adı (Français)" className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2" />
+                    <input value={editing?.i18nTitle?.ar ?? ''} onChange={(e) => setEditing((cur) => cur ? { ...cur, i18nTitle: { ...(cur.i18nTitle ?? {}), ar: e.target.value } } : cur)} placeholder="Ürün adı (العربية)" className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2" />
                   </div>
-                  <div className="space-y-1">
-                    <input value={editing?.i18nTitle?.ru ?? ''} onChange={(e) => setEditing((cur) => cur ? { ...cur, i18nTitle: { ...(cur.i18nTitle ?? {}), ru: e.target.value } } : cur)} placeholder="Ürün adı (Русский)" className="border rounded px-3 py-2" />
-                    <input value={editing?.productCode || ''} onChange={(e) => setEditing((cur) => cur ? { ...cur, productCode: e.target.value } : cur)} placeholder="Ürün kodu" className="border rounded px-3 py-2" />
+                  <div className="space-y-2">
+                    <input value={editing?.i18nTitle?.ru ?? ''} onChange={(e) => setEditing((cur) => cur ? { ...cur, i18nTitle: { ...(cur.i18nTitle ?? {}), ru: e.target.value } } : cur)} placeholder="Ürün adı (Русский)" className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2" />
+                    <input value={editing?.productCode || ''} onChange={(e) => setEditing((cur) => cur ? { ...cur, productCode: e.target.value } : cur)} placeholder="Ürün kodu" className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2" />
                   </div>
-                  <select value={editing.gender || ''} onChange={(e) => setEditing({ ...editing, gender: e.target.value as 'Erkek' | 'Kadın' | '' })} className="border rounded px-3 py-2">
+                  <select value={editing.gender || ''} onChange={(e) => setEditing({ ...editing, gender: e.target.value as 'Erkek' | 'Kadın' | '' })} className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2">
                     <option value="">Cinsiyet</option>
                     <option value="Erkek">Erkek</option>
                     <option value="Kadın">Kadın</option>
                   </select>
-                  <input value={editing.description || ''} onChange={(e) => setEditing({ ...editing, description: e.target.value })} placeholder="Kısa açıklama" className="border rounded px-3 py-2" />
-                  <label className="flex items-center space-x-2 text-sm">
+                  <input value={editing.description || ''} onChange={(e) => setEditing({ ...editing, description: e.target.value })} placeholder="Kısa açıklama" className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2" />
+                  <label className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm">
                     <input type="checkbox" checked={!!editing.isFeatured} onChange={(e) => setEditing({ ...editing, isFeatured: e.target.checked })} />
                     <span>Öne Çıkar</span>
                   </label>
                 </div>
-                <div className="mt-3">
-                  <label className="block text-sm font-medium mb-1">Resimler (maks 8 — Main, 1, 2, 3, 4, 5, 6, 7)</label>
-                  <div className="mt-2 grid grid-cols-4 gap-3">
+                <div className="mt-4">
+                  <label className="mb-1 block text-sm font-medium">Resimler (maks 8 — Main, 1, 2, 3, 4, 5, 6, 7)</label>
+                  <div className="mt-2 grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-4">
                     {[0, 1, 2, 3, 4, 5, 6, 7].map((slot) => (
-                      <div key={slot} className="text-center">
-                        <div className="text-xs text-gray-600 mb-1">{slot === 0 ? 'Main' : String(slot)}</div>
-                        <div className="w-28 h-28 mx-auto mb-2">
+                      <div key={slot} className="rounded-xl border border-slate-200 bg-white p-3 text-center">
+                        <div className="mb-2 text-xs font-medium text-gray-600">{slot === 0 ? 'Main' : String(slot)}</div>
+                        <div className="mx-auto mb-3 flex h-28 w-28 items-center justify-center">
                           {(editing.images || Array(8).fill(null))[slot] ? (
                             <img src={(editing.images || Array(8).fill(null))[slot] as string} alt="Ürün resmi" className="w-28 h-28 object-cover rounded" />
                           ) : (
                             <div className="w-28 h-28 bg-gray-100 rounded flex items-center justify-center text-xs text-gray-500">No image</div>
                           )}
                         </div>
-                        <input type="file" accept="image/*" onChange={async (e) => {
+                        <input className="w-full text-xs" type="file" accept="image/*" onChange={async (e) => {
                           const file = e.target.files && e.target.files[0]
                           if (!file) return
                           if (file.size > MAX_IMAGE_BYTES) {
@@ -255,16 +255,16 @@ export default function ContentPage() {
                             alert('Resim yükleme başarısız')
                           }
                         }} />
-                        <div className="mt-1">
-                          <button className="text-xs text-red-600" onClick={() => setEditing((cur) => cur ? { ...cur, images: (cur.images || [null, null, null]).map((v, i) => i === slot ? null : v) } : cur)}>Kaldır</button>
+                        <div className="mt-2">
+                          <button className="rounded-full bg-red-50 px-3 py-1 text-xs font-medium text-red-600" onClick={() => setEditing((cur) => cur ? { ...cur, images: (cur.images || [null, null, null]).map((v, i) => i === slot ? null : v) } : cur)}>Kaldır</button>
                         </div>
                       </div>
                     ))}
                   </div>
                 </div>
-                <div className="mt-4 flex items-center space-x-2">
+                <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:items-center">
                   <button 
-                    className="bg-green-600 text-white px-3 py-1 rounded disabled:opacity-50 disabled:cursor-not-allowed" 
+                    className="rounded-lg bg-green-600 px-4 py-2 text-white disabled:cursor-not-allowed disabled:opacity-50" 
                     disabled={saving}
                     onClick={async () => {
                     if (!editing || saving) return
@@ -306,12 +306,13 @@ export default function ContentPage() {
                       setSaving(false)
                     }
                   }}>Uygula</button>
-                  <button className="px-3 py-1 rounded border" onClick={() => setEditing(null)}>İptal</button>
+                  <button className="rounded-lg border border-slate-300 bg-white px-4 py-2" onClick={() => setEditing(null)}>İptal</button>
                 </div>
               </div>
             )}
             {products.map((p) => (
-              <div key={p.id} className="p-3 border rounded flex items-center justify-between hover:shadow-sm transition-bg hover:bg-slate-50">
+              <div key={p.id} className="rounded-xl border p-3 hover:bg-slate-50">
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                   <div className="flex items-center space-x-3">
                     {p.images && p.images[0] ? <img src={p.images[0] as string} alt="" className="w-16 h-16 object-cover rounded" /> : <div className="w-16 h-16 bg-gray-100 rounded flex items-center justify-center text-xs text-gray-500">No image</div>}
                     <div>
@@ -319,7 +320,7 @@ export default function ContentPage() {
             <div className="text-sm text-gray-500">{p.productCode ? `${p.productCode}` : ''} {p.gender ? `· ${p.gender}` : ''}</div>
                     </div>
                   </div>
-                <div className="flex items-center space-x-2">
+                <div className="flex flex-wrap items-center gap-2">
                   <button
                     title={p.isFeatured ? 'Öne çıkan üründen çıkar' : 'Öne çıkan yap'}
                     aria-pressed={!!p.isFeatured}
@@ -374,8 +375,8 @@ export default function ContentPage() {
                   >
                     {p.isFeatured ? '★' : '☆'}
                   </button>
-                  <button className="text-sm text-blue-600 hover:underline cursor-pointer" onClick={() => setEditing({ ...p, images: Array.isArray(p.images) ? [...p.images].slice(0,8).concat(new Array(Math.max(0, 8 - (p.images || []).length)).fill(null)).slice(0,8) : Array(8).fill(null) })}>Düzenle</button>
-                  <button className="text-sm text-red-600 hover:underline cursor-pointer" onClick={async () => {
+                  <button className="rounded-full bg-blue-50 px-3 py-1.5 text-sm font-medium text-blue-700" onClick={() => setEditing({ ...p, images: Array.isArray(p.images) ? [...p.images].slice(0,8).concat(new Array(Math.max(0, 8 - (p.images || []).length)).fill(null)).slice(0,8) : Array(8).fill(null) })}>Düzenle</button>
+                  <button className="rounded-full bg-red-50 px-3 py-1.5 text-sm font-medium text-red-700" onClick={async () => {
                     if (!confirm('Ürünü silmek istediğinize emin misiniz?')) return
                     try {
                       const res = await fetch(`/api/admin/products?id=${encodeURIComponent(p.id)}`, { method: 'DELETE', credentials: 'same-origin' })
@@ -389,48 +390,49 @@ export default function ContentPage() {
                     }
                   }}>Sil</button>
                 </div>
+                </div>
                 {/* Inline editor: render directly under the product when editing that product */}
                 {editing && editing.id === p.id && (
-                  <div className="mt-4 border-t pt-4 w-full">
-                    <h3 className="font-medium mb-2">{editing && editing.id ? 'Ürün Düzenle' : 'Yeni Ürün'}</h3>
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                      <div className="space-y-1">
-                        <input value={editing?.i18nTitle?.tr ?? ''} onChange={(e) => setEditing((cur) => cur ? { ...cur, i18nTitle: { ...(cur.i18nTitle ?? {}), tr: e.target.value } } : cur)} placeholder="Ürün adı (Türkçe)" className="border rounded px-3 py-2" />
-                        <input value={editing?.i18nTitle?.en ?? ''} onChange={(e) => setEditing((cur) => cur ? { ...cur, i18nTitle: { ...(cur.i18nTitle ?? {}), en: e.target.value } } : cur)} placeholder="Ürün adı (English)" className="border rounded px-3 py-2" />
+                  <div className="mt-4 w-full rounded-2xl border border-slate-200 bg-slate-50 p-4 sm:p-5">
+                    <h3 className="mb-3 text-base font-semibold text-slate-900">{editing && editing.id ? 'Ürün Düzenle' : 'Yeni Ürün'}</h3>
+                      <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
+                      <div className="space-y-2">
+                        <input value={editing?.i18nTitle?.tr ?? ''} onChange={(e) => setEditing((cur) => cur ? { ...cur, i18nTitle: { ...(cur.i18nTitle ?? {}), tr: e.target.value } } : cur)} placeholder="Ürün adı (Türkçe)" className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2" />
+                        <input value={editing?.i18nTitle?.en ?? ''} onChange={(e) => setEditing((cur) => cur ? { ...cur, i18nTitle: { ...(cur.i18nTitle ?? {}), en: e.target.value } } : cur)} placeholder="Ürün adı (English)" className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2" />
                       </div>
-                      <div className="space-y-1">
-                        <input value={editing?.i18nTitle?.fr ?? ''} onChange={(e) => setEditing((cur) => cur ? { ...cur, i18nTitle: { ...(cur.i18nTitle ?? {}), fr: e.target.value } } : cur)} placeholder="Ürün adı (Français)" className="border rounded px-3 py-2" />
-                        <input value={editing?.i18nTitle?.ar ?? ''} onChange={(e) => setEditing((cur) => cur ? { ...cur, i18nTitle: { ...(cur.i18nTitle ?? {}), ar: e.target.value } } : cur)} placeholder="Ürün adı (العربية)" className="border rounded px-3 py-2" />
+                      <div className="space-y-2">
+                        <input value={editing?.i18nTitle?.fr ?? ''} onChange={(e) => setEditing((cur) => cur ? { ...cur, i18nTitle: { ...(cur.i18nTitle ?? {}), fr: e.target.value } } : cur)} placeholder="Ürün adı (Français)" className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2" />
+                        <input value={editing?.i18nTitle?.ar ?? ''} onChange={(e) => setEditing((cur) => cur ? { ...cur, i18nTitle: { ...(cur.i18nTitle ?? {}), ar: e.target.value } } : cur)} placeholder="Ürün adı (العربية)" className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2" />
                       </div>
-                      <div className="space-y-1">
-                        <input value={editing?.i18nTitle?.ru ?? ''} onChange={(e) => setEditing((cur) => cur ? { ...cur, i18nTitle: { ...(cur.i18nTitle ?? {}), ru: e.target.value } } : cur)} placeholder="Ürün adı (Русский)" className="border rounded px-3 py-2" />
-                        <input value={editing?.productCode || ''} onChange={(e) => setEditing((cur) => cur ? { ...cur, productCode: e.target.value } : cur)} placeholder="Ürün kodu" className="border rounded px-3 py-2" />
+                      <div className="space-y-2">
+                        <input value={editing?.i18nTitle?.ru ?? ''} onChange={(e) => setEditing((cur) => cur ? { ...cur, i18nTitle: { ...(cur.i18nTitle ?? {}), ru: e.target.value } } : cur)} placeholder="Ürün adı (Русский)" className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2" />
+                        <input value={editing?.productCode || ''} onChange={(e) => setEditing((cur) => cur ? { ...cur, productCode: e.target.value } : cur)} placeholder="Ürün kodu" className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2" />
                       </div>
-                      <select value={editing.gender || ''} onChange={(e) => setEditing({ ...editing, gender: e.target.value as 'Erkek' | 'Kadın' | '' })} className="border rounded px-3 py-2">
+                      <select value={editing.gender || ''} onChange={(e) => setEditing({ ...editing, gender: e.target.value as 'Erkek' | 'Kadın' | '' })} className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2">
                         <option value="">Cinsiyet</option>
                         <option value="Erkek">Erkek</option>
                         <option value="Kadın">Kadın</option>
                       </select>
-                        <input value={editing.description || ''} onChange={(e) => setEditing({ ...editing, description: e.target.value })} placeholder="Kısa açıklama" className="border rounded px-3 py-2" />
-                        <label className="flex items-center space-x-2 text-sm">
+                        <input value={editing.description || ''} onChange={(e) => setEditing({ ...editing, description: e.target.value })} placeholder="Kısa açıklama" className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2" />
+                        <label className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm">
                           <input type="checkbox" checked={!!editing.isFeatured} onChange={(e) => setEditing({ ...editing, isFeatured: e.target.checked })} />
                           <span>Öne Çıkar</span>
                         </label>
                     </div>
-                    <div className="mt-3">
-                      <label className="block text-sm font-medium mb-1">Resimler (maks 8 — Main, 1, 2, 3, 4, 5, 6, 7)</label>
-                      <div className="mt-2 grid grid-cols-4 gap-3">
+                    <div className="mt-4">
+                      <label className="mb-1 block text-sm font-medium">Resimler (maks 8 — Main, 1, 2, 3, 4, 5, 6, 7)</label>
+                      <div className="mt-2 grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-4">
                         {[0, 1, 2, 3, 4, 5, 6, 7].map((slot) => (
-                          <div key={slot} className="text-center">
-                            <div className="text-xs text-gray-600 mb-1">{slot === 0 ? 'Main' : String(slot)}</div>
-                            <div className="w-28 h-28 mx-auto mb-2">
+                          <div key={slot} className="rounded-xl border border-slate-200 bg-white p-3 text-center">
+                            <div className="mb-2 text-xs font-medium text-gray-600">{slot === 0 ? 'Main' : String(slot)}</div>
+                            <div className="mx-auto mb-3 flex h-28 w-28 items-center justify-center">
                               {(editing.images || Array(8).fill(null))[slot] ? (
                                 <img src={(editing.images || Array(8).fill(null))[slot] as string} alt="Ürün resmi" className="w-28 h-28 object-cover rounded" />
                               ) : (
                                 <div className="w-28 h-28 bg-gray-100 rounded flex items-center justify-center text-xs text-gray-500">No image</div>
                               )}
                             </div>
-                            <input type="file" accept="image/*" onChange={async (e) => {
+                            <input className="w-full text-xs" type="file" accept="image/*" onChange={async (e) => {
                               const file = e.target.files && e.target.files[0]
                               if (!file) return
                               if (file.size > MAX_IMAGE_BYTES) {
@@ -455,15 +457,58 @@ export default function ContentPage() {
                                 alert('Resim yükleme başarısız')
                               }
                             }} />
-                            <div className="mt-1">
-                              <button className="text-xs text-red-600" onClick={() => setEditing((cur) => cur ? { ...cur, images: (cur.images || [null, null, null]).map((v, i) => i === slot ? null : v) } : cur)}>Kaldır</button>
+                            <div className="mt-2">
+                              <button className="rounded-full bg-red-50 px-3 py-1 text-xs font-medium text-red-600" onClick={() => setEditing((cur) => cur ? { ...cur, images: (cur.images || [null, null, null]).map((v, i) => i === slot ? null : v) } : cur)}>Kaldır</button>
                             </div>
                           </div>
                         ))}
                       </div>
                     </div>
 
-                    {/* Save/Cancel buttons are handled in the first editor block above */}
+                    <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:items-center">
+                      <button 
+                        className="rounded-lg bg-green-600 px-4 py-2 text-white disabled:cursor-not-allowed disabled:opacity-50" 
+                        disabled={saving}
+                        onClick={async () => {
+                        if (!editing || saving) return
+                        setSaving(true)
+                        try {
+                          const exists = products.find((x) => x.id === editing.id)
+                          if (exists) {
+                            const ed = editing as Product
+                            const bodyData = { ...ed, title: ed.i18nTitle ?? ed.title, images: ed.images || [] }
+                            const res = await fetch('/api/admin/products', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(bodyData), credentials: 'same-origin' })
+                            const j = await res.json()
+                            if (!res.ok) {
+                              console.error('update failed', res.status, j)
+                              alert(`Kaydetme başarısız (${j?.message || res.status}${j?.detail ? `: ${j.detail}` : ''})`)
+                              return
+                            }
+                            await loadProducts()
+                          } else {
+                            const ed = editing as Product
+                            const bodyData = { ...ed, title: ed.i18nTitle ?? ed.title, images: ed.images || [] }
+                            const res = await fetch('/api/admin/products', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(bodyData), credentials: 'same-origin' })
+                            const j = await res.json()
+                            if (!res.ok) {
+                              console.error('create failed', res.status, j)
+                              const extra = Array.isArray(j?.errors) ? `\nHatalar: ${j.errors.join(', ')}` : ''
+                              alert(`Kaydetme başarısız (${j?.message || res.status}${j?.detail ? `: ${j.detail}` : ''})${extra}`)
+                              return
+                            }
+                            await loadProducts()
+                          }
+                          setEditing(null)
+                        } catch (err) {
+                          console.error(err)
+                          const rr = err as unknown as { message?: unknown }
+                          alert(`Kaydetme başarısız: ${String(rr.message ?? err)}`)
+                        } finally {
+                          setSaving(false)
+                        }
+                      }}>Uygula</button>
+                      <button className="rounded-lg border border-slate-300 bg-white px-4 py-2" onClick={() => setEditing(null)}>İptal</button>
+                    </div>
                   </div>
                 )}
               </div>
