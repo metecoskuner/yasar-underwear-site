@@ -32,13 +32,20 @@ export default function MessagesPage() {
     if (e) e.stopPropagation()
     if (!id) return
     setError(null)
-    const resp = await fetch('/api/admin/messages/read', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id }) })
-    if (!resp.ok) {
-      setError('Mesaj okundu olarak işaretlenemedi')
-      return
+    try {
+      const resp = await fetch('/api/admin/messages/read', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id }) })
+      if (!resp.ok) {
+        const errData = await resp.json()
+        console.error('markRead error:', resp.status, errData)
+        setError(`Mesaj okundu olarak işaretlenemedi (${resp.status}: ${errData?.error || 'unknown'})`)
+        return
+      }
+      setItems((s) => s.map((m) => (m.id === id ? { ...m, read: true } : m)))
+      notifyAdminDataChanged()
+    } catch (err) {
+      console.error('markRead exception:', err)
+      setError(`Hata: ${String(err)}`)
     }
-    setItems((s) => s.map((m) => (m.id === id ? { ...m, read: true } : m)))
-    notifyAdminDataChanged()
   }
 
   async function removeMessage(id?: string, e?: React.MouseEvent) {

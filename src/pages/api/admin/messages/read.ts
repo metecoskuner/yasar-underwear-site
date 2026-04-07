@@ -19,10 +19,16 @@ function writeData(obj: { messages?: Record<string, unknown>[] }) {
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (!isAuthed(req)) return res.status(401).json({ error: 'unauth' })
+  if (!isAuthed(req)) {
+    console.error('[READ] Unauthorized request')
+    return res.status(401).json({ error: 'unauth' })
+  }
   if (req.method !== 'POST') return res.status(405).end()
   const { id } = req.body || {}
-  if (!id) return res.status(400).json({ error: 'missing id' })
+  if (!id) {
+    console.error('[READ] Missing id in body:', req.body)
+    return res.status(400).json({ error: 'missing id' })
+  }
 
   let updated = false
 
@@ -32,7 +38,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const { error } = await supabase.from('ContactMessage').update({ read: true }).eq('id', String(id))
       if (error) throw error
     } catch (err) {
-      console.error(err)
+      console.error('[READ] Supabase error:', err)
     }
     updated = true
   }
@@ -42,7 +48,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       await prisma.contactMessage.update({ where: { id: String(id) }, data: { read: true } as unknown as Record<string, unknown> })
       updated = true
     } catch (err) {
-      console.error(err)
+      console.error('[READ] Prisma error:', err)
     }
   }
 
@@ -58,6 +64,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     updated = true
   }
 
-  if (!updated) return res.status(404).json({ error: 'message_not_found' })
+  if (!updated) {
+    console.error('[READ] Nothing was updated for id:', id)
+    return res.status(404).json({ error: 'message_not_found' })
+  }
+  console.log('[READ] Success for id:', id)
   return res.status(200).json({ ok: true })
 }
