@@ -780,6 +780,7 @@ export default function Header() {
                 sizes="(max-width: 640px) 72px, (max-width: 1024px) 100px, 140px"
                 priority
                 loading="eager"
+                placeholder="empty"
                 style={{ height: 'auto', width: 'auto' }}
                 className="max-w-[144px] sm:max-w-[160px] xl:max-w-[140px] h-auto"
               />
