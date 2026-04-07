@@ -7,7 +7,7 @@ export default function ApplicationsList({ initialFilter }: { initialFilter?: st
   const [items, setItems] = useState<Application[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [filter, setFilter] = useState<string>(initialFilter || 'all')
+  const filter = initialFilter || 'all'
 
   useEffect(() => {
     let mounted = true

@@ -154,7 +154,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     if (req.method === 'GET') {
       let products: unknown[] = []
-      let useSupabase = false
       
       // Try Prisma first
       try {
@@ -177,7 +176,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             throw error
           }
           products = data || []
-          useSupabase = true
         } catch (supabaseErr) {
           console.error('[PRODUCTS GET] Both Prisma and Supabase failed:', supabaseErr)
           // Return empty list instead of failing
@@ -264,14 +262,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           isActive: !!d.isActive,
           isFeatured: !!d.isFeatured,
         }
-        // Log DB URL to confirm environment
-        try { console.log('[admin/products] DB URL:', String(process.env.DATABASE_URL || '(none)')) } catch {}
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore TS: local Prisma generated types may differ from runtime schema
         const created = await prisma.product.create({ data: createData })
         // Confirm DB write by reading back all products and return the total count
         const all = await prisma.product.findMany()
-        try { console.log('[admin/products] DB PRODUCTS COUNT:', Array.isArray(all) ? all.length : 0) } catch {}
         // return total so we can validate writes from the admin UI
         return res.status(200).json({ ok: true, product: created, total: Array.isArray(all) ? all.length : 0 })
       } catch (prismaErr: unknown) {

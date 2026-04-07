@@ -37,23 +37,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(400).json({ ok: false, message: 'no_file' })
       }
       
-      console.log('[UPLOAD] File received:', { name: file.originalFilename, size: file.size, type: file.mimetype })
-      
       // Try Supabase first
       const supabaseUrl = process.env.SUPABASE_URL
       const supabaseKey = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_ANON_KEY
       
       if (supabaseUrl && supabaseKey) {
         try {
-          console.log('[UPLOAD] Attempting Supabase upload...')
           const supabase = createClient(supabaseUrl, supabaseKey)
           const bucketName = 'yasar-admin'
           const original = (file.originalFilename as string) || file.newFilename || path.basename(file.filepath)
           const safeName = `${Date.now()}-${original}`
           const buffer = fs.readFileSync(file.filepath)
 
-          console.log('[UPLOAD] Uploading to Supabase bucket:', bucketName, 'as:', safeName)
-          
           // Try to upload - Supabase will auto-create bucket if it doesn't exist with service role key
           const { data: upData, error: upErr } = await supabase.storage.from(bucketName).upload(safeName, buffer, {
             contentType: (file.mimetype as string) || 'application/octet-stream',
@@ -64,7 +59,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             console.error('[UPLOAD] Supabase upload error:', upErr.message || upErr)
             // If bucket doesn't exist, try to create it first
             if (upErr.message && upErr.message.includes('not found')) {
-              console.log('[UPLOAD] Bucket not found, attempting to create...')
               const { data: createData, error: createErr } = await supabase.storage.createBucket(bucketName, {
                 public: true,
               })
@@ -72,7 +66,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 console.error('[UPLOAD] Failed to create bucket:', createErr)
                 throw new Error(String(createErr.message || createErr))
               }
-              console.log('[UPLOAD] Bucket created:', createData)
+              void createData
               
               // Try upload again
               const { data: upData2, error: upErr2 } = await supabase.storage.from(bucketName).upload(safeName, buffer, {
@@ -83,14 +77,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 throw new Error(String(upErr2.message || upErr2))
               }
               const { data: pubData2 } = supabase.storage.from(bucketName).getPublicUrl(upData2.path)
-              console.log('[UPLOAD] Supabase SUCCESS:', pubData2.publicUrl)
               try { fs.unlinkSync(file.filepath) } catch (unlinkErr) { console.warn('[UPLOAD] unlink failed', String(unlinkErr)) }
               return res.status(200).json({ ok: true, url: pubData2.publicUrl })
             }
             throw new Error(String(upErr.message || upErr))
           }
           const { data: pubData } = supabase.storage.from(bucketName).getPublicUrl(upData.path)
-          console.log('[UPLOAD] Supabase SUCCESS:', pubData.publicUrl)
           try { fs.unlinkSync(file.filepath) } catch (unlinkErr) { console.warn('[UPLOAD] unlink failed', String(unlinkErr)) }
           return res.status(200).json({ ok: true, url: pubData.publicUrl })
         } catch (e) {
@@ -101,10 +93,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       // Try Cloudinary
       if (process.env.CLOUDINARY_CLOUD_NAME && process.env.CLOUDINARY_API_KEY && process.env.CLOUDINARY_API_SECRET) {
         try {
-          console.log('[UPLOAD] Attempting Cloudinary upload...')
           const result = await cloudinary.uploader.upload(file.filepath, { folder: 'yasar-admin' })
           try { fs.unlinkSync(file.filepath) } catch (unlinkErr) { console.warn('[UPLOAD] unlink failed', String(unlinkErr)) }
-          console.log('[UPLOAD] Cloudinary SUCCESS:', result.secure_url)
           return res.status(200).json({ ok: true, url: result.secure_url })
         } catch (e) {
           console.error('[UPLOAD] Cloudinary failed, trying local fallback:', e)
@@ -113,7 +103,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       // Fallback: Save to local public/uploads directory
       try {
-        console.log('[UPLOAD] Attempting local file fallback...')
         const uploadDir = path.join(process.cwd(), 'public', 'uploads')
         if (!fs.existsSync(uploadDir)) {
           fs.mkdirSync(uploadDir, { recursive: true })
@@ -124,7 +113,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const buffer = fs.readFileSync(file.filepath)
         fs.writeFileSync(destPath, buffer)
         const publicUrl = `/uploads/${safeName}`
-        console.log('[UPLOAD] Local save SUCCESS:', publicUrl)
         try { fs.unlinkSync(file.filepath) } catch (unlinkErr) { console.warn('[UPLOAD] unlink failed', String(unlinkErr)) }
         return res.status(200).json({ ok: true, url: publicUrl })
       } catch (localErr) {

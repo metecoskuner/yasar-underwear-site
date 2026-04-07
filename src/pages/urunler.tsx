@@ -44,8 +44,41 @@ export default function UrunlerPage() {
   const [zoomOrigin, setZoomOrigin] = useState<{ x: number; y: number }>({ x: 50, y: 50 });
   const closeBtnRef = useRef<HTMLButtonElement | null>(null);
   const [copiedCode, setCopiedCode] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   // localStorage-based client cache disabled during debugging — rely on API
+
+  function safeParseStringArray(input: unknown): string[] {
+    if (Array.isArray(input)) return input.filter((item): item is string => typeof item === 'string');
+    if (typeof input !== 'string') return [];
+    try {
+      const parsed = JSON.parse(input);
+      return Array.isArray(parsed) ? parsed.filter((item): item is string => typeof item === 'string') : [];
+    } catch {
+      return [];
+    }
+  }
+
+  function normalizeI18nMap(input: unknown): Record<string, string> | undefined {
+    if (input && typeof input === 'object' && !Array.isArray(input)) {
+      return Object.fromEntries(
+        Object.entries(input as Record<string, unknown>).map(([key, value]) => [key, String(value ?? '')])
+      );
+    }
+    if (typeof input === 'string') {
+      try {
+        const parsed = JSON.parse(input);
+        if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+          return Object.fromEntries(
+            Object.entries(parsed as Record<string, unknown>).map(([key, value]) => [key, String(value ?? '')])
+          );
+        }
+      } catch {
+        return undefined;
+      }
+    }
+    return undefined;
+  }
 
   function openProductModal(product: ProductType, preview?: number | string) {
     let index = 0;
@@ -69,14 +102,15 @@ export default function UrunlerPage() {
   useEffect(() => {
     let mounted = true
     async function load() {
+      setIsLoading(true)
       try {
         const res = await fetch('/api/content', { cache: 'no-store' })
         if (!res.ok) {
           try { console.error('[urunler] Fetch failed:', res.status) } catch {}
+          if (mounted) setIsLoading(false)
           return
         }
         const j = await res.json()
-        try { console.log('[urunler] FRONTEND RECEIVED:', j) } catch {}
         // Accept multiple shapes from /api/content during debugging:
         // - legacy: { content: { products: [...] } }
         // - debug/raw: [ ...products ]
@@ -99,29 +133,22 @@ export default function UrunlerPage() {
 
         const normalized = list.map((raw: unknown) => {
           const p = raw as Record<string, unknown>;
-          const imgs: string[] = Array.isArray(p.images)
-            ? (p.images as string[])
-            : (typeof p.images === 'string' ? JSON.parse(String(p.images)) : []);
+          const imgs = safeParseStringArray(p.images);
 
           let i18nTitle: Record<string, string> | undefined = undefined;
+          let i18nDescription: Record<string, string> | undefined = undefined;
           let titleFallback = '';
           try {
-            const rawI18n = p.i18nTitle;
-            if (rawI18n && typeof rawI18n === 'object' && !Array.isArray(rawI18n)) {
-              const obj = rawI18n as Record<string, unknown>;
-              i18nTitle = Object.fromEntries(Object.entries(obj).map(([k, v]) => [k, String(v)])) as Record<string, string>;
+            i18nTitle = normalizeI18nMap(p.i18nTitle);
+            i18nDescription = normalizeI18nMap(p.i18nDescription);
+            if (i18nTitle) {
               titleFallback = i18nTitle.tr || i18nTitle.en || Object.values(i18nTitle).find((x) => !!x) || '';
             } else if (typeof p.title === 'string') {
-              try {
-                const parsed = JSON.parse(p.title as string);
-                if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
-                  const obj = parsed as Record<string, unknown>;
-                  i18nTitle = Object.fromEntries(Object.entries(obj).map(([k, v]) => [k, String(v)])) as Record<string, string>;
-                  titleFallback = i18nTitle.tr || i18nTitle.en || Object.values(i18nTitle).find((x) => !!x) || '';
-                } else {
-                  titleFallback = String(p.title);
-                }
-              } catch {
+              const parsedTitle = normalizeI18nMap(p.title);
+              if (parsedTitle) {
+                i18nTitle = parsedTitle;
+                titleFallback = i18nTitle.tr || i18nTitle.en || Object.values(i18nTitle).find((x) => !!x) || '';
+              } else {
                 titleFallback = String(p.title);
               }
             }
@@ -133,12 +160,16 @@ export default function UrunlerPage() {
             id: String(p.id),
             title: titleFallback || String(p.title ?? ''),
             i18nTitle,
+            i18nDescription,
             productCode: typeof p.productCode === 'string' ? p.productCode : undefined,
             description: typeof p.description === 'string' ? p.description : undefined,
             images: imgs,
+            image: typeof p.image === 'string' ? p.image : imgs[0],
+            color: typeof p.color === 'string' ? p.color : undefined,
             stock: typeof p.stock === 'number' ? p.stock : Number(p.stock) || 0,
             createdAt: p.createdAt ? new Date(Number(p.createdAt) || String(p.createdAt)).toISOString() : undefined,
             gender: mapGender(p.gender),
+            category: typeof p.category === 'string' ? p.category : undefined,
           } as ProductType;
         }) as ProductType[];
         
@@ -146,10 +177,12 @@ export default function UrunlerPage() {
         // The API endpoint already returns normalized data
         if (mounted) {
           setProducts(normalized)
+          setIsLoading(false)
         }
       } catch (err) {
         // Log any other errors but don't break the page
         try { console.error('[urunler] Load error:', err) } catch {}
+        if (mounted) setIsLoading(false)
       }
     }
     load()
@@ -170,11 +203,9 @@ export default function UrunlerPage() {
     });
   }, [products, gender, category, query]);
 
-  // Debug: log render-data
-  try { console.log('RENDER DATA:', products) } catch {}
-
   useEffect(() => {
     let allowTimer: number | undefined;
+    setCopiedCode(false);
     if (activeProduct) setTimeout(() => closeBtnRef.current?.focus(), 0);
     const resetTimer = window.setTimeout(() => {
       setAllowHoverZoom(false);
@@ -185,6 +216,25 @@ export default function UrunlerPage() {
     return () => {
       if (resetTimer) window.clearTimeout(resetTimer);
       if (allowTimer) window.clearTimeout(allowTimer);
+    };
+  }, [activeProduct]);
+
+  useEffect(() => {
+    if (!activeProduct || typeof document === 'undefined') return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === 'Escape') {
+        setActiveProduct(null);
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener('keydown', handleKeyDown);
     };
   }, [activeProduct]);
 
@@ -243,7 +293,7 @@ export default function UrunlerPage() {
 
       {/* HERO */}
       <section className="bg-gradient-to-br from-amber-300 via-pink-300 to-indigo-500 text-white">
-        <div className="max-w-6xl mx-auto px-4 py-16 grid md:grid-cols-2 gap-10 items-center">
+        <div className="max-w-6xl mx-auto px-4 py-12 sm:py-16 grid lg:grid-cols-2 gap-10 items-center">
           <div>
             <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight">
               {tr('pages.products.hero.title','Erkek & Kadın İç Giyim Koleksiyonu')}
@@ -251,7 +301,7 @@ export default function UrunlerPage() {
             <p className="mt-4 max-w-md text-white/90">
               {tr('pages.products.hero.subtitle','Günlük kullanıma uygun, yüksek kaliteli kumaşlarla üretilmiş ürünlerimizi inceleyin.')}
             </p>
-            <div className="mt-8 flex gap-3">
+            <div className="mt-8 flex flex-col sm:flex-row gap-3">
               <a href="#liste" className="px-6 py-3 bg-black text-white rounded-full font-semibold cursor-pointer">
                 {tr('pages.products.hero.ctaInspect','Ürünleri İncele')}
               </a>
@@ -268,16 +318,12 @@ export default function UrunlerPage() {
 
       {/* FILTERS */}
       <section id="liste" className="max-w-6xl mx-auto px-4 py-10">
-        <div className="flex flex-wrap gap-3 mb-6 md:sticky md:top-[calc(var(--site-header-height)+8px)] z-20 bg-white p-2 rounded-md">
+        <div className="flex flex-wrap gap-3 mb-6 lg:sticky lg:top-[calc(var(--site-header-height)+8px)] z-20 bg-white/95 backdrop-blur-sm p-2 rounded-2xl shadow-sm ring-1 ring-black/5">
           {GENDER_TABS.map((t) => (
             <button
               key={t.key}
               type="button"
-              onClick={() => {
-                try { console.log('[urunler] gender button clicked:', t.key) } catch {}
-                try { document.title = `gender:${t.key}` } catch {}
-                setGender(t.key as 'all' | 'male' | 'female')
-              }}
+              onClick={() => setGender(t.key as 'all' | 'male' | 'female')}
               className={`px-4 py-1.5 rounded-full ${gender === t.key ? 'bg-black text-white' : 'bg-gray-100'}`}
             >
               {tr(`pages.products.gender.${t.key}`, t.label)}
@@ -288,12 +334,14 @@ export default function UrunlerPage() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder={tr('pages.products.searchPlaceholder','Ürün ara')}
-            className="w-full sm:flex-1 sm:min-w-[14rem] px-4 py-2 border rounded-lg"
+            className="w-full sm:flex-1 sm:min-w-[14rem] px-4 py-2 border rounded-xl"
           />
         </div>
 
         {/* Render filtered products via ProductCard */}
-        {filtered.length === 0 ? (
+        {isLoading ? (
+          <div className="py-24 text-center text-gray-500">{tr('common.loading', 'Yükleniyor...')}</div>
+        ) : filtered.length === 0 ? (
           <div className="py-24 text-center text-gray-500">{tr('pages.products.noResults','Sonuç bulunamadı')}</div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
@@ -314,11 +362,11 @@ export default function UrunlerPage() {
             className="relative bg-white rounded-3xl max-w-5xl w-full shadow-2xl overflow-hidden ring-1 ring-black/5 transform-gpu transition-all duration-300"
             role="dialog"
             aria-modal="true"
-            style={{ maxHeight: 'calc(100vh - 40px)', overflowY: 'auto' }}
+            style={{ maxHeight: 'calc(100vh - 24px)', overflowY: 'auto' }}
           >
             <FocusLock>
               <div className="grid md:grid-cols-2">
-                <div className="bg-gray-50 p-6 flex items-center justify-center overflow-hidden">
+                <div className="bg-gray-50 p-4 sm:p-6 flex items-center justify-center overflow-hidden">
                   <div
                     className="relative rounded-lg overflow-hidden bg-white/50 flex items-center justify-center"
                     style={{ width: '100%', maxWidth: 720, maxHeight: '86vh', overflow: 'hidden' }}
@@ -353,6 +401,12 @@ export default function UrunlerPage() {
                     }}
                     role="button"
                     tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        setZoom((s) => !s);
+                      }
+                    }}
                   >
                     <Image
                       src={modalSrc}
@@ -374,8 +428,8 @@ export default function UrunlerPage() {
                   </div>
                 </div>
 
-                <div className="p-6 flex flex-col">
-                    <div className="flex justify-between items-start">
+                <div className="p-4 sm:p-6 flex flex-col">
+                    <div className="flex justify-between items-start gap-4">
                     <h3 className="text-2xl font-semibold">{activeTitle}</h3>
                     <button
                       ref={closeBtnRef}
@@ -387,39 +441,40 @@ export default function UrunlerPage() {
                     </button>
                   </div>
 
-                    <p className="mt-4 text-gray-600 flex items-center gap-3">
+                    <div className="mt-4 flex flex-wrap items-center gap-3 text-gray-600">
                     <span>{tr('pages.products.productCode','Ürün kodu:')}</span>
                     <span className="font-mono">{activeProduct.productCode ?? ''}</span>
-                    <button
-                      type="button"
-                      onClick={async () => {
-                        try {
-                          if (navigator.clipboard && activeProduct.productCode) {
-                            await navigator.clipboard.writeText(activeProduct.productCode);
-                          } else {
-                            // fallback
-                            const el = document.createElement('textarea');
-                            el.value = activeProduct.productCode ?? '';
-                            document.body.appendChild(el);
-                            el.select();
-                            document.execCommand('copy');
-                            document.body.removeChild(el);
+                    {activeProduct.productCode && (
+                      <button
+                        type="button"
+                        onClick={async () => {
+                          try {
+                            if (navigator.clipboard && activeProduct.productCode) {
+                              await navigator.clipboard.writeText(activeProduct.productCode);
+                            } else {
+                              // fallback
+                              const el = document.createElement('textarea');
+                              el.value = activeProduct.productCode ?? '';
+                              document.body.appendChild(el);
+                              el.select();
+                              document.execCommand('copy');
+                              document.body.removeChild(el);
+                            }
+                            if (navigator.vibrate) navigator.vibrate?.(10);
+                            setCopiedCode(true);
+                            window.setTimeout(() => setCopiedCode(false), 1600);
+                          } catch (err) {
+                            void err;
                           }
-                          // small haptic feedback if available
-                          if (navigator.vibrate) navigator.vibrate?.(10);
-                          setCopiedCode(true);
-                          window.setTimeout(() => setCopiedCode(false), 1600);
-                        } catch (err) {
-                          void err;
-                        }
-                      }}
-                      className="ml-2 inline-flex items-center gap-2 px-3 py-1.5 bg-gray-100 rounded-md text-sm hover:bg-gray-200 transition"
-                      aria-label={`${tr('pages.products.copyCodeAria','Ürün kodunu kopyala')} ${activeProduct.productCode ?? ''}`}
-                    >
-                      {tr('pages.products.copy','Kopyala')}
-                    </button>
+                        }}
+                        className="inline-flex items-center gap-2 px-3 py-1.5 bg-gray-100 rounded-md text-sm hover:bg-gray-200 transition"
+                        aria-label={`${tr('pages.products.copyCodeAria','Ürün kodunu kopyala')} ${activeProduct.productCode ?? ''}`}
+                      >
+                        {tr('pages.products.copy','Kopyala')}
+                      </button>
+                    )}
                     {copiedCode && <span className="text-sm text-amber-600">{tr('pages.products.copied','Kopyalandı')}</span>}
-                  </p>
+                  </div>
 
                   {/* Admin-provided description (localized if available) */}
                   {(() => {
@@ -428,7 +483,7 @@ export default function UrunlerPage() {
                     return <p className="mt-4 text-gray-700">{localizedDescription}</p>;
                   })()}
 
-                  <div className="mt-6 flex gap-2">
+                  <div className="mt-6 flex flex-wrap gap-2">
                     {activeProduct.images?.map((img, i) => (
                       <button
                         key={img}
@@ -441,7 +496,7 @@ export default function UrunlerPage() {
                     ))}
                   </div>
 
-                  <div className="mt-auto pt-6 flex gap-3 justify-end">
+                  <div className="mt-auto pt-6 flex flex-col sm:flex-row gap-3 justify-end">
                     <Link
                       href={`/contact?product=${encodeURIComponent(activeTitle ?? '')}`}
                       className="px-6 py-3 bg-amber-400 text-black rounded-full font-semibold shadow-sm hover:bg-amber-500 transition-colors duration-150 cursor-pointer min-w-[120px] sm:min-w-[160px] text-center"

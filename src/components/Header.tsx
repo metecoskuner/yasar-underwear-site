@@ -218,7 +218,6 @@ export default function Header() {
       // If all candidates fail, the onError loop will exhaust and we can show the placeholder.
       // We guard by rendering the placeholder when idx becomes >= candidates.length.
       idx < candidates.length ? (
-        // eslint-disable-next-line @next/next/no-img-element -- we prefer Next/Image but keep onError
         <Image src={src} alt={p?.title ?? `Ürün ${id}`} width={48} height={48} className="rounded-md object-cover flex-shrink-0" onError={handleError} />
       ) : (
         <div className="w-12 h-12 bg-gray-100 rounded-md flex-shrink-0 flex items-center justify-center text-sm text-gray-500">
@@ -267,26 +266,6 @@ export default function Header() {
       toggle(id);
     }, [toggle, markPanelAction]);
 
-    const handleClearAll = useCallback(async () => {
-      // Use the hook's clear helper when available for a single sync update
-      try {
-        // toggle might be a prop but our outer scope can call clear via closure
-        // so prefer calling that when possible (Header passes clear in outer scope)
-        // If not available, fallback to toggling each id.
-        if (typeof clear === 'function') {
-          clear();
-          return;
-        }
-      } catch (err) {
-        void err;
-      }
-
-      const ids = Array.from(favorites || []);
-      for (const it of ids) {
-        await Promise.resolve(toggle(it.id));
-      }
-    }, [favorites, toggle]);
-
     if (!favorites || favorites.length === 0) {
       return (
         <>
@@ -311,9 +290,6 @@ export default function Header() {
           const p = map[id];
           // combine persisted metadata with canonical product data if available
           const combined = p ? ({ ...p, ...it } as Product) : (it as unknown as Product);
-          // We prefer showing the product code in the wishlist secondary line
-          // instead of the description per UX request.
-          const localizedDescription = undefined;
           return (
             <div key={id} className="flex items-center gap-3 w-full cursor-pointer px-1">
               <Link
@@ -478,13 +454,7 @@ export default function Header() {
     document.addEventListener("keydown", handleKey);
 
     // open wishlist when product heart is clicked elsewhere
-    function onOpenWishlist(e?: Event) {
-      try {
-        // debug log to verify event reception on header (development only)
-        if (process.env.NODE_ENV === 'development') console.log('[Header] onOpenWishlist event received', e && (e as CustomEvent)?.detail);
-      } catch (err) {
-        void err;
-      }
+    function onOpenWishlist() {
       // Cancel any pending close (click-away) and open immediately
       if (wishCloseTimer.current) {
         window.clearTimeout(wishCloseTimer.current);
@@ -493,19 +463,8 @@ export default function Header() {
       setWishOpen(true);
     }
     function onWishlistChanged(e: Event) {
-      // show toast when an item is added
       try {
-        const detail = (e as CustomEvent).detail as { id: string; title?: string; added?: boolean };
-        if (process.env.NODE_ENV === 'development') {
-          try {
-            // debug: log event detail and current persisted wishlist for investigation
-            const rawDebug = localStorage.getItem('yasar:wishlist');
-            // eslint-disable-next-line no-console
-            console.debug('[Header] onWishlistChanged detail=', detail, 'persisted=', rawDebug);
-          } catch (err) {
-            void err;
-          }
-        }
+        void (e as CustomEvent).detail;
         // If the change was initiated from inside the wishlist panel (user
         // clicked remove), suppress the "added" toast to avoid confusing UX.
         if (panelActionRef.current) {
@@ -513,24 +472,11 @@ export default function Header() {
           if (panelActionTimer.current) window.clearTimeout(panelActionTimer.current);
           panelActionTimer.current = window.setTimeout(() => { panelActionRef.current = false; panelActionTimer.current = null; }, 800);
         }
-
-        // Only show "added" toast when an item was actually added and the
-        // wishlist panel is not currently open. Also suppress when the change
-        // originated from inside the panel (panelActionRef).
-        if (detail?.added && !wishOpen && !panelActionRef.current) {
-          // Toast suppressed: user requested no "Ürün favorilere eklendi" messages.
-          // Previously we double-checked persisted state and set a short toast.
-        }
       } catch (err) {
         void err;
       }
     }
-    function onCloseWishlist(e: Event) {
-      try {
-        if (process.env.NODE_ENV === 'development') console.log('[Header] onCloseWishlist event received', (e as CustomEvent)?.detail);
-      } catch (err) {
-        void err;
-      }
+    function onCloseWishlist() {
       setWishOpen(false);
     }
     window.addEventListener('yasar:wishlist:open', onOpenWishlist as EventListener);
@@ -683,11 +629,11 @@ export default function Header() {
         ref={headerRef}
         className="w-full shadow-sm text-white bg-[var(--brand-color)] fixed top-0 left-0 right-0 z-50"
       >
-  <div className="max-w-6xl mx-auto px-4 py-4 xl:py-3 flex justify-between items-center xl:grid xl:gap-x-8 xl:[grid-template-columns:1fr_auto_1fr] relative">
+  <div className="max-w-6xl mx-auto px-4 py-4 lg:py-3 flex justify-between items-center lg:grid lg:gap-x-8 lg:[grid-template-columns:1fr_auto_1fr] relative">
       {/* LEFT - NAV */}
       {/* Use slightly smaller text and tighter gaps at the lg (≈1024px) breakpoint,
         but restore normal size on xl+ so large/4k screens keep the original look */}
-  <div className="hidden xl:flex items-center space-x-3 text-sm font-medium min-w-0">
+  <div className="hidden lg:flex items-center space-x-3 text-sm font-medium min-w-0">
             {NAV_ITEMS.map((item) => {
               const active = isActive(item.href);
               const highlight = active || hoveredNav === item.href;
@@ -792,7 +738,7 @@ export default function Header() {
           </div>
 
           {/* CENTER - LOGO */}
-          <div className="flex justify-center xl:justify-center">
+          <div className="flex justify-center lg:justify-center">
             <Link href="/" className="flex items-center cursor-pointer">
               <Image
                 src="/photos/yasarLogo2.jpg"
@@ -804,7 +750,7 @@ export default function Header() {
                 loading="eager"
                 placeholder="empty"
                 style={{ height: 'auto', width: 'auto' }}
-                className="max-w-[144px] sm:max-w-[160px] xl:max-w-[140px] h-auto"
+                className="max-w-[144px] sm:max-w-[160px] lg:max-w-[140px] h-auto"
               />
             </Link>
           </div>
@@ -812,7 +758,7 @@ export default function Header() {
           {/* RIGHT - LANGUAGE + CONTACT + MOBILE */}
           <div className="flex items-center justify-end space-x-3">
             {/* MOBILE: favorites button (compact) */}
-            <div className="relative xl:hidden">
+            <div className="relative lg:hidden">
               <button
                   type="button"
                   data-wishlist-button="true"
@@ -829,7 +775,7 @@ export default function Header() {
               </button>
             </div>
             {/* Favorites dropdown (catalog-only site; no login) */}
-            <div className="relative hidden xl:block" ref={wishRefDesktop}>
+            <div className="relative hidden lg:block" ref={wishRefDesktop}>
               <button
                 type="button"
                 data-wishlist-button="true"
@@ -920,7 +866,7 @@ export default function Header() {
               </div>
 
             
-            <div className="hidden xl:block relative" ref={langRef}>
+            <div className="hidden lg:block relative" ref={langRef}>
               <button
                 type="button"
                 ref={langToggleRef}
@@ -967,14 +913,14 @@ export default function Header() {
             </div>
 
             {/* Contact button (desktop) - show on lg+ */}
-            <div className="hidden xl:block">
+            <div className="hidden lg:block">
               <Link href="/contact" className="ml-3 inline-flex items-center bg-white text-black px-4 py-2 rounded font-semibold hover:opacity-95">
                 {t('nav.contact')}
               </Link>
             </div>
 
             {/* MOBILE: language button next to hamburger */}
-            <div className="xl:hidden relative" ref={mobileLangRef}>
+            <div className="lg:hidden relative" ref={mobileLangRef}>
               <button
                 type="button"
                 ref={mobileLangToggleRef}
@@ -1026,7 +972,7 @@ export default function Header() {
               aria-expanded={mobileOpen}
               aria-label={mobileOpen ? t('header.aria.closeMenu') : t('header.aria.openMenu')}
               aria-controls="mobile-menu"
-              className="xl:hidden p-2 rounded-md hover:bg-black/20 cursor-pointer"
+              className="lg:hidden p-2 rounded-md hover:bg-black/20 cursor-pointer"
             >
               {/* Animated hamburger -> X using Framer Motion */}
               <M.svg
@@ -1088,7 +1034,7 @@ export default function Header() {
               ref={mobileMenuRef}
               role="dialog"
               aria-modal={mobileOpen}
-              className="xl:hidden fixed left-0 right-0 bg-[var(--brand-color)] text-white shadow-xl z-[51] overflow-y-auto origin-top"
+              className="lg:hidden fixed left-0 right-0 bg-[var(--brand-color)] text-white shadow-xl z-[51] overflow-y-auto origin-top"
               style={{ top: 'var(--site-header-height, 64px)', maxHeight: `calc(75vh - var(--site-header-height, 64px))` }}
               initial="closed"
               animate={mobileOpen ? "open" : "closed"}

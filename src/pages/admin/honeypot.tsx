@@ -1,6 +1,6 @@
 import AdminLayout from '@/components/admin/AdminLayout'
 import Head from 'next/head'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import type { GetServerSideProps } from 'next'
 import { isAuthed } from '@/lib/adminAuth'
 
@@ -16,11 +16,7 @@ export default function HoneypotAdminPage() {
   const [endDate, setEndDate] = useState<string | null>(null)
   const [ipFilter, setIpFilter] = useState<string>('')
 
-  useEffect(() => {
-    void load()
-  }, [page])
-
-  async function load() {
+  const load = useCallback(async () => {
     setLoading(true)
     try {
       const params = new URLSearchParams()
@@ -43,7 +39,11 @@ export default function HoneypotAdminPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [page, limit, startDate, endDate, ipFilter])
+
+  useEffect(() => {
+    void load()
+  }, [load])
 
   const pages = Math.max(1, Math.ceil(total / limit))
   const isRecent = (d: string) => {

@@ -13,7 +13,6 @@ export default function ProductCard({
   onInspect?: (p: Product, preview?: number | string) => void;
   showWishlist?: boolean;
 }) {
-  try { console.log('CARD PRODUCT:', product) } catch {}
   const gallery = product.images?.length ? product.images : product.image ? [product.image] : [];
   const PLACEHOLDER = '/photos/PYJAMA-BRANDS.avif';
   const [errored, setErrored] = useState<Record<number, boolean>>({});
@@ -66,7 +65,7 @@ export default function ProductCard({
           onInspect?.(product, active);
         }
       }}
-      className="group rounded-lg overflow-hidden transform transition-transform duration-300 ease-out hover:scale-105 hover:shadow-md bg-white cursor-pointer focus:outline-none focus:ring-2 focus:ring-amber-300"
+      className="group rounded-xl overflow-hidden bg-white cursor-pointer transition duration-300 md:hover:-translate-y-1 md:hover:shadow-md focus:outline-none focus:ring-2 focus:ring-amber-300"
     >
   <div className={`relative product-card-media h-[300px] sm:h-[340px] md:h-[380px] lg:h-[400px] flex items-center justify-center ${product.color ?? 'bg-gray-100'}`}>
         {/* category badge */}
@@ -126,12 +125,12 @@ export default function ProductCard({
             src={errored[active] ? PLACEHOLDER : (gallery[active] as string)}
             alt={displayTitle}
             fill
-            sizes="(max-width: 768px) 100vw, 50vw"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
             onError={() => setErrored((s) => ({ ...s, [active]: true }))}
             className="object-cover object-center pointer-events-none"
           />
         ) : (
-          <Image src={PLACEHOLDER} alt={tr('components.productCard.imageAlt', 'Ürün görseli')} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover object-center pointer-events-none" />
+          <Image src={PLACEHOLDER} alt={tr('components.productCard.imageAlt', 'Ürün görseli')} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw" className="object-cover object-center pointer-events-none" />
         )}
 
         {/* Desktop thumbnails */}

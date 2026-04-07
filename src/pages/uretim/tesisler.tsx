@@ -9,7 +9,7 @@ const M: any = motion;
 
 
 export default function Tesisler() {
-  const { t, g, lang } = useLanguage();
+  const { t, g } = useLanguage();
   const tr = (key: string, fallback: string) => {
     try {
       const v = t(key);
@@ -54,7 +54,7 @@ export default function Tesisler() {
     <Fragment>
   <SEO title={`${title} - Yasar`} description={tr('uretim.tesis.lead','Yasar üretim tesisleri, kalite ve sürdürülebilirlik odaklı üretim altyapısı.')} url="/uretim/tesisler" />
 
-      <main className="max-w-6xl mx-auto px-6 py-12">
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-12">
         <M.header
           initial="hidden"
           whileInView="show"
@@ -65,7 +65,6 @@ export default function Tesisler() {
           <div className="md:flex md:items-center md:gap-10">
             <M.div variants={item} className="md:flex-1 md:max-w-xl">
               <h1 className="text-3xl md:text-4xl font-extrabold leading-tight">{title}</h1>
-              <div className="mt-2 text-sm text-gray-500">DEBUG: lang = {lang}</div>
               <p className="mt-4 text-gray-600 max-w-2xl leading-relaxed">{lead}</p>
 
               <div className="mt-6 flex flex-wrap gap-3 items-center text-sm">
@@ -123,7 +122,10 @@ export default function Tesisler() {
                     'SPC tabanlı süreç kontrolü',
                     'Enerji verimli makineler'
                   ]).map((it, i) => (
-                    <li key={i}>{it}</li>
+                    <li key={i} className="flex items-start gap-2">
+                      <span className="mt-1 h-2 w-2 rounded-full bg-emerald-500 shrink-0" aria-hidden />
+                      <span>{it}</span>
+                    </li>
                   ))}
                 </ul>
               </article>
@@ -132,7 +134,10 @@ export default function Tesisler() {
                 <h3 className="font-semibold mb-2">{tr('uretim.tesis.training.title','Eğitim & Güvenlik')}</h3>
                 <ul className="list-none space-y-2 text-gray-700">
                   {getArr('uretim.tesis.training.items', ['Düzenli personel eğitimleri','İş sağlığı ve güvenliği protokolleri','Geri bildirim mekanizmaları']).map((it, i) => (
-                    <li key={i}>{it}</li>
+                    <li key={i} className="flex items-start gap-2">
+                      <span className="mt-1 h-2 w-2 rounded-full bg-sky-500 shrink-0" aria-hidden />
+                      <span>{it}</span>
+                    </li>
                   ))}
                 </ul>
               </article>
@@ -175,7 +180,7 @@ export default function Tesisler() {
               </div>
 
               <div className="md:col-span-1 hidden sm:block">
-                <div className="rounded-md overflow-hidden shadow-md h-44 md:h-full">
+                <div className="relative rounded-md overflow-hidden shadow-md h-44 md:h-full min-h-[11rem]">
                   <Image src="/photos/deneme1.jpg" alt="Tesis Görsel" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
                 </div>
               </div>
@@ -191,7 +196,7 @@ export default function Tesisler() {
                 <p className="text-sm text-slate-700">{tr('uretim.tesis.training.body','Personel eğitimleri sektörel en iyi uygulamalar ve yerel protokoller çerçevesinde düzenli olarak yapılır. Güvenlik kültürünü güçlendiriyoruz ve katılımcı geri bildirimleriyle programları geliştiriyoruz.')}</p>
               </div>
               <div className="md:col-span-1 hidden sm:block">
-                <div className="rounded-md overflow-hidden shadow-md h-44 md:h-full">
+                <div className="relative rounded-md overflow-hidden shadow-md h-44 md:h-full min-h-[11rem]">
                   <Image src="/photos/deneme3.jpg" alt="Eğitim" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
                 </div>
               </div>
@@ -207,7 +212,7 @@ export default function Tesisler() {
                 <p className="text-sm text-slate-700">{tr('uretim.tesis.energy.body','Enerji verimliliği ve su tasarrufu projeleri mevcut; tesis genelinde ölçümler yapılıyor ve düzenli raporlama ile ilerleme izleniyor.')}</p>
               </div>
               <div className="md:col-span-1 hidden sm:block">
-                <div className="rounded-md overflow-hidden shadow-md h-44 md:h-full">
+                <div className="relative rounded-md overflow-hidden shadow-md h-44 md:h-full min-h-[11rem]">
                   <Image src="/photos/deneme2.png" alt="Çevre" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
                 </div>
               </div>

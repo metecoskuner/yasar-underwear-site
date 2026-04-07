@@ -22,46 +22,62 @@ const WorldMap = dynamic(() => import('@/components/WorldMap') as Promise<any>, 
 
 export default function Hakkimizda() {
   const { t } = useLanguage();
+  const tr = (key: string, fallback: string) => {
+    try {
+      const value = t(key);
+      return value === key ? fallback : value;
+    } catch {
+      return fallback;
+    }
+  };
 
-  const title = t('pages.about.hero.title');
-  const subtitle = t('pages.about.hero.desc');
+  const title = tr('pages.about.hero.title', 'Hakkımızda');
+  const subtitle = tr(
+    'pages.about.hero.desc',
+    'Yasar olarak kalite, sürdürülebilirlik ve çalışan refahını merkeze alan üretim süreçleri ile iç giyim sektöründe öne çıkıyoruz.'
+  );
 
   const intro = [
-    t('pages.about.intro.p1'),
-    t('pages.about.intro.p2'),
-    t('pages.about.intro.p3')
+    tr('pages.about.intro.p1', 'Kuruluşumuzdan bu yana kalite, süreklilik ve güvenilirliği üretim anlayışımızın merkezinde tutuyoruz.'),
+    tr('pages.about.intro.p2', 'İç giyim alanındaki uzmanlığımızı modern üretim altyapısı ve güçlü operasyon kabiliyeti ile destekliyoruz.'),
+    tr('pages.about.intro.p3', 'Yurt içi ve yurt dışı iş ortaklarımız için uzun vadeli, istikrarlı ve ölçeklenebilir çözümler sunuyoruz.')
   ];
 
-  const mission = t('pages.about.mission');
-  const vision = t('pages.about.vision');
+  const mission = tr('pages.about.mission', 'Kaliteli üretimi sürdürülebilir ve güvenilir iş ortaklığı anlayışıyla birleştirmek.');
+  const vision = tr('pages.about.vision', 'Global pazarda tercih edilen, güçlü ve güvenilir bir üretim markası olmak.');
 
   const values = [
-    { title: t('pages.about.values.design.title'), desc: t('pages.about.values.design.body') },
-    { title: t('pages.about.values.facilities.title'), desc: t('pages.about.values.facilities.body') },
-    { title: t('pages.about.values.responsibility.title'), desc: t('pages.about.values.responsibility.body') },
-    { title: t('pages.about.values.human.title'), desc: t('pages.about.values.human.body') }
+    { title: tr('pages.about.values.design.title', 'Tasarım & Konfor'), desc: tr('pages.about.values.design.body', 'İyi tasarım, dayanıklılık ve kullanım rahatlığı bir arada.') },
+    { title: tr('pages.about.values.facilities.title', 'Modern Tesisler'), desc: tr('pages.about.values.facilities.body', 'Enerji verimli, izlenebilir üretim altyapısı.') },
+    { title: tr('pages.about.values.responsibility.title', 'Sorumluluk'), desc: tr('pages.about.values.responsibility.body', 'Çalışan sağlığı, kalite disiplini ve çevresel hassasiyet.') },
+    { title: tr('pages.about.values.human.title', 'İnsan Odaklılık'), desc: tr('pages.about.values.human.body', 'Uzun vadeli iş ilişkilerinde güven, açıklık ve istikrarı önceliklendiriyoruz.') }
   ];
 
   const milestones = [
-    { year: '1992', text: t('pages.about.milestones.1992') },
-    { year: '2005', text: t('pages.about.milestones.2005') },
-    { year: '2017', text: t('pages.about.milestones.2017') },
-    { year: '2023', text: t('pages.about.milestones.2023') }
+    { year: '1992', text: tr('pages.about.milestones.1992', 'Kurumsal üretim yolculuğumuzun temellerini attık.') },
+    { year: '2005', text: tr('pages.about.milestones.2005', 'Üretim kapasitemizi ve operasyonel kabiliyetimizi büyüttük.') },
+    { year: '2017', text: tr('pages.about.milestones.2017', 'İhracat ağımızı güçlendirip yeni pazarlara açıldık.') },
+    { year: '2023', text: tr('pages.about.milestones.2023', 'Modernizasyon ve kalite süreçlerinde yeni bir seviyeye ulaştık.') }
   ];
 
   const stats = [
-    { label: t('pages.about.stats.production'), value: '1M+' },
-    { label: t('pages.about.stats.exports'), value: '25+' },
-    { label: t('pages.about.stats.facilities'), value: '2' }
+    { label: tr('pages.about.stats.production', 'Yıllık Üretim'), value: '1M+' },
+    { label: tr('pages.about.stats.exports', 'İhracat Noktası'), value: '25+' },
+    { label: tr('pages.about.stats.facilities', 'Tesis'), value: '2' }
   ];
+
+  const getLocationLabel = (id: string, fallback: string) => {
+    const value = tr(`locations.${id}`, fallback);
+    return value.trim() || fallback;
+  };
 
   return (
     <Fragment>
-      <SEO title={`${t('pages.about.title')} | Yasar Tekstil`} description={subtitle} url="/about" />
+      <SEO title={`${tr('pages.about.title', 'Hakkımızda')} | Yasar Tekstil`} description={subtitle} url="/about/hakkimizda" />
 
-      <main className="max-w-6xl mx-auto px-6 py-12">
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-12">
         {/* Hero */}
-        <section className="rounded-xl overflow-hidden bg-gradient-to-r from-emerald-50 to-white p-8 md:p-12 shadow-sm">
+        <section className="rounded-xl overflow-hidden bg-gradient-to-r from-emerald-50 to-white p-6 sm:p-8 md:p-12 shadow-sm">
           <div className="md:flex md:items-center md:justify-between">
             <div className="md:flex-1">
               <h1 className="text-3xl md:text-4xl font-extrabold leading-snug">{title}</h1>
@@ -101,11 +117,11 @@ export default function Hakkimizda() {
           </div>
 
           <aside className="bg-white rounded-lg p-6 shadow-sm">
-            <h3 className="text-lg font-semibold">{t('pages.about.quick.title')}</h3>
+            <h3 className="text-lg font-semibold">{tr('pages.about.quick.title', 'Hızlı Bakış')}</h3>
             <ul className="mt-4 space-y-3 text-gray-700">
-              <li><strong>{t('pages.about.quick.labels.foundation') || 'Kuruluş:'}</strong> 1992</li>
-              <li><strong>{t('pages.about.quick.labels.location') || 'Konum:'}</strong> Marmara Bölgesi, Türkiye</li>
-              <li><strong>{t('pages.about.quick.labels.certificates') || 'Sertifikalar:'}</strong> ISO 9001, BSCI (örnek)</li>
+              <li><strong>{tr('pages.about.quick.labels.foundation', 'Kuruluş:')}</strong> 1992</li>
+              <li><strong>{tr('pages.about.quick.labels.location', 'Konum:')}</strong> Marmara Bölgesi, Türkiye</li>
+              <li><strong>{tr('pages.about.quick.labels.certificates', 'Sertifikalar:')}</strong> ISO 9001, BSCI</li>
             </ul>
           </aside>
         </section>
@@ -113,19 +129,19 @@ export default function Hakkimizda() {
         {/* Mission & Vision */}
         <section className="mt-12 grid md:grid-cols-2 gap-8">
           <div className="bg-white rounded-lg p-6 shadow-sm">
-            <h3 className="text-xl font-bold mb-2">{t('pages.about.headings.mission') || 'Misyonumuz'}</h3>
+            <h3 className="text-xl font-bold mb-2">{tr('pages.about.headings.mission', 'Misyonumuz')}</h3>
             <p className="text-gray-700">{mission}</p>
           </div>
 
           <div className="bg-white rounded-lg p-6 shadow-sm">
-            <h3 className="text-xl font-bold mb-2">{t('pages.about.headings.vision') || 'Vizyonumuz'}</h3>
+            <h3 className="text-xl font-bold mb-2">{tr('pages.about.headings.vision', 'Vizyonumuz')}</h3>
             <p className="text-gray-700">{vision}</p>
           </div>
         </section>
 
         {/* Values */}
         <section className="mt-12">
-          <h3 className="text-2xl font-bold mb-6">{t('pages.about.headings.values') || 'Değerlerimiz'}</h3>
+          <h3 className="text-2xl font-bold mb-6">{tr('pages.about.headings.values', 'Değerlerimiz')}</h3>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {values.map((v, idx) => (
               <article key={v.title} className="bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition flex flex-col">
@@ -140,7 +156,7 @@ export default function Hakkimizda() {
 
         {/* Timeline / Milestones */}
         <section className="mt-12">
-          <h3 className="text-2xl font-bold mb-6">{t('pages.about.headings.milestones') || 'Kilometre Taşlarımız'}</h3>
+          <h3 className="text-2xl font-bold mb-6">{tr('pages.about.headings.milestones', 'Kilometre Taşlarımız')}</h3>
           <ol className="space-y-4">
             {milestones.map((m) => (
               <li key={m.year} className="flex items-start gap-4">
@@ -156,44 +172,21 @@ export default function Hakkimizda() {
 
         {/* World map (client-only) */}
         <section className="mt-12">
-          <h3 className="text-2xl font-bold mb-6">{t('pages.about.headings.global') || 'Global Varlığımız'}</h3>
+          <h3 className="text-2xl font-bold mb-6">{tr('pages.about.headings.global', 'Global Varlığımız')}</h3>
           {/* Outer white shell removed so map sits flush with surrounding content */}
           <div className="w-full rounded-lg overflow-hidden">
-            <div className="w-full h-64">
+            <div className="w-full h-[20rem] sm:h-[24rem] lg:h-[28rem]">
               <WorldMap />
             </div>
 
             {/* Countries list with flags */}
             <div className="mt-6">
-              <h4 className="text-lg font-semibold mb-3">{t('pages.about.headings.countries') || 'İş yaptığımız ülkeler'}</h4>
+              <h4 className="text-lg font-semibold mb-3">{tr('pages.about.headings.countries', 'İş yaptığımız ülkeler')}</h4>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
                 {LOCATIONS.map((loc) => (
                   <div key={loc.id} className="flex items-center gap-3 p-3 rounded-md border border-gray-100 bg-gray-50">
                     <span className="text-2xl" aria-hidden>{flagEmoji(loc.id)}</span>
-                    <span className="font-medium text-gray-700">{(() => {
-                      switch (loc.id) {
-                        case 'tr':
-                          return t('locations.tr');
-                        case 'uk':
-                          return t('locations.uk');
-                        case 'de':
-                          return t('locations.de');
-                        case 'ro':
-                          return t('locations.ro');
-                        case 'kw':
-                          return t('locations.kw');
-                        case 'ly':
-                          return t('locations.ly');
-                        case 'nl':
-                          return t('locations.nl');
-                        case 'fr':
-                          return t('locations.fr');
-                        case 'us':
-                          return t('locations.us');
-                        default:
-                          return loc.name;
-                      }
-                    })()}</span>
+                    <span className="font-medium text-gray-700">{getLocationLabel(loc.id, loc.name)}</span>
                   </div>
                 ))}
               </div>
@@ -203,9 +196,9 @@ export default function Hakkimizda() {
 
         {/* CTA */}
         <section className="mt-12 text-center">
-          <p className="text-gray-700">{t('pages.about.contactPrompt')}</p>
+          <p className="text-gray-700">{tr('pages.about.contactPrompt', 'Daha fazla bilgi veya kurumsal iş birliği talepleri için bizimle iletişime geçin.')}</p>
           <div className="mt-6">
-            <Link href="/contact" className="inline-flex items-center px-6 py-3 bg-black text-white rounded-full font-semibold">{t('pages.about.collab.cta') || 'Teklif / İletişim'}</Link>
+            <Link href="/contact" className="inline-flex items-center px-6 py-3 bg-black text-white rounded-full font-semibold">{tr('pages.about.collab.cta', 'Teklif / İletişim')}</Link>
           </div>
         </section>
       </main>

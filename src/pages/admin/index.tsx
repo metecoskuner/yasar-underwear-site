@@ -48,7 +48,7 @@ export default function AdminPage() {
         setMessage(j.message || 'Giriş başarısız: Kullanıcı adı veya şifre hatalı')
       }
     } catch (err) {
-      console.error('Login error:', err)
+      void err
       setMessage('Ağ hatası')
     } finally {
       setLoading(false)

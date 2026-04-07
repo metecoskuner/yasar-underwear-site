@@ -32,6 +32,14 @@ const packingCheckKeys = [
 
 export default function KaliteSurecleri() {
   const { t, g, lang } = useLanguage();
+  const tr = (key: string, fallback: string) => {
+    try {
+      const value = t(key);
+      return value === key ? fallback : value;
+    } catch {
+      return fallback;
+    }
+  };
 
   // small helper to normalize g() results into an array of strings
   function ensureArray(v: unknown): string[] {
@@ -53,12 +61,16 @@ export default function KaliteSurecleri() {
 
   return (
     <>
-  <SEO title={`${t('pages.production.quality.title')} - Yasar`} description={t('pages.production.quality.heroLead')} url="/uretim/kalite-surecleri" />
+  <SEO
+        title={`${tr('pages.production.quality.title', 'Kalite Süreçlerimiz')} - Yasar`}
+        description={tr('pages.production.quality.heroLead', 'Üretimin her aşamasında uyguladığımız sıkı kalite denetimleriyle tutarlı, izlenebilir ve güvenilir ürünler sunuyoruz.')}
+        url="/uretim/kalite-surecleri"
+      />
 
       {/* remount main content when language changes so motion "whileInView" animations
           and any locale-dependent rendering are re-evaluated and do not remain
           stuck hidden after a language swap */}
-      <main key={lang} className="max-w-6xl mx-auto px-6 py-12">
+      <main key={lang} className="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-12">
         {/* Hero */}
         <M.header
           initial="hidden"
@@ -69,19 +81,19 @@ export default function KaliteSurecleri() {
         >
           <div className="md:flex md:items-center md:gap-10">
             <M.div variants={item} className="md:flex-1 md:max-w-xl">
-              <h1 className="text-3xl md:text-4xl font-extrabold leading-tight">{t('pages.production.quality.title')}</h1>
-              <p className="mt-4 text-gray-600 max-w-2xl leading-relaxed">{t('pages.production.quality.heroLead')}</p>
+              <h1 className="text-3xl md:text-4xl font-extrabold leading-tight">{tr('pages.production.quality.title', 'Kalite Süreçlerimiz')}</h1>
+              <p className="mt-4 text-gray-600 max-w-2xl leading-relaxed">{tr('pages.production.quality.heroLead', 'Üretimin her aşamasında uyguladığımız sıkı kalite denetimleriyle tutarlı, izlenebilir ve güvenilir ürünler sunuyoruz.')}</p>
 
               <div className="mt-6 flex flex-wrap gap-3 items-center text-sm">
-                <span className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-emerald-50 text-emerald-700">{t('pages.production.quality.badges.iso')}</span>
-                <span className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-slate-50 text-slate-700">{t('pages.production.quality.badges.spc')}</span>
-                <span className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-slate-50 text-slate-700">{t('pages.production.quality.badges.experience')}</span>
+                <span className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-emerald-50 text-emerald-700">{tr('pages.production.quality.badges.iso', 'ISO Uyumlu')}</span>
+                <span className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-slate-50 text-slate-700">{tr('pages.production.quality.badges.spc', 'SPC Takibi')}</span>
+                <span className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-slate-50 text-slate-700">{tr('pages.production.quality.badges.experience', 'Sürekli İyileştirme')}</span>
               </div>
             </M.div>
 
             <M.div variants={item} className="md:w-1/2 hidden md:block">
               <div className="rounded-lg overflow-hidden shadow-md"><div className="relative h-64 md:h-72 lg:h-80">
-                <Image src="/photos/PYJAMA-BRANDS.avif" alt={t('pages.production.quality.imageAlt.hero')} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
+                <Image src="/photos/PYJAMA-BRANDS.avif" alt={tr('pages.production.quality.imageAlt.hero', 'Kalite süreçleri')} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
               </div></div>
             </M.div>
           </div>
@@ -96,10 +108,10 @@ export default function KaliteSurecleri() {
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8"
         >
           {[
-            { titleKey: 'pages.production.quality.features.sample.title', descKey: 'pages.production.quality.features.sample.desc', icon: 'check' },
-            { titleKey: 'pages.production.quality.features.production.title', descKey: 'pages.production.quality.features.production.desc', icon: 'factory' },
-            { titleKey: 'pages.production.quality.features.packing.title', descKey: 'pages.production.quality.features.packing.desc', icon: 'box' },
-            { titleKey: 'pages.production.quality.features.assurance.title', descKey: 'pages.production.quality.features.assurance.desc', icon: 'chart' }
+            { titleKey: 'pages.production.quality.features.sample.title', descKey: 'pages.production.quality.features.sample.desc', icon: 'check', titleFallback: 'Numune Kontrolü', descFallback: 'İlk onay aşamasında ölçü, dikiş ve malzeme uygunluğu denetlenir.' },
+            { titleKey: 'pages.production.quality.features.production.title', descKey: 'pages.production.quality.features.production.desc', icon: 'factory', titleFallback: 'Üretim Kontrolleri', descFallback: 'Üretim akışında belirlenen kritik noktalarda düzenli kontroller yapılır.' },
+            { titleKey: 'pages.production.quality.features.packing.title', descKey: 'pages.production.quality.features.packing.desc', icon: 'box', titleFallback: 'Paketleme Kontrolü', descFallback: 'Son ürün, etiket, ambalaj ve sevkiyat hazırlığı aşamasında doğrulanır.' },
+            { titleKey: 'pages.production.quality.features.assurance.title', descKey: 'pages.production.quality.features.assurance.desc', icon: 'chart', titleFallback: 'Kalite Güvencesi', descFallback: 'Tüm bulgular kayıt altına alınır ve sürekli iyileştirme döngüsüne dahil edilir.' }
           ].map((f) => (
             <M.article
               key={f.titleKey}
@@ -130,8 +142,8 @@ export default function KaliteSurecleri() {
                 </div>
               </div>
 
-              <h4 className="font-semibold mb-2 text-slate-800">{t(f.titleKey)}</h4>
-              <p className="text-gray-600 text-sm">{t(f.descKey)}</p>
+              <h4 className="font-semibold mb-2 text-slate-800">{tr(f.titleKey, f.titleFallback)}</h4>
+              <p className="text-gray-600 text-sm">{tr(f.descKey, f.descFallback)}</p>
             </M.article>
           ))}
         </M.section>
@@ -226,8 +238,8 @@ export default function KaliteSurecleri() {
                 </div>
 
                 <div className="md:col-span-1 hidden sm:block">
-                  <div className="rounded-md overflow-hidden shadow-md h-44 md:h-full">
-                    <Image src="/photos/deneme3.jpg" alt="Numune" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
+                  <div className="relative rounded-md overflow-hidden shadow-md h-44 md:h-full min-h-[11rem]">
+                    <Image src="/photos/deneme3.jpg" alt={tr('pages.production.quality.imageAlt.sample', 'Numune kontrolü')} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
                   </div>
                 </div>
               </div>
@@ -259,8 +271,8 @@ export default function KaliteSurecleri() {
               </div>
 
               <div className="md:col-span-1 hidden sm:block">
-                <div className="rounded-md overflow-hidden shadow-md h-44 md:h-full">
-                  <Image src="/photos/deneme1.jpg" alt="Üretim" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
+                <div className="relative rounded-md overflow-hidden shadow-md h-44 md:h-full min-h-[11rem]">
+                  <Image src="/photos/deneme1.jpg" alt={tr('pages.production.quality.imageAlt.production', 'Üretim kalite kontrolü')} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
                 </div>
               </div>
             </div>
@@ -291,8 +303,8 @@ export default function KaliteSurecleri() {
               </div>
 
               <div className="md:col-span-1 hidden sm:block">
-                <div className="rounded-md overflow-hidden shadow-md h-44 md:h-full">
-                  <Image src="/photos/deneme2.png" alt="Paketleme" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
+                <div className="relative rounded-md overflow-hidden shadow-md h-44 md:h-full min-h-[11rem]">
+                  <Image src="/photos/deneme2.png" alt={tr('pages.production.quality.imageAlt.packing', 'Paketleme kalite kontrolü')} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
                 </div>
               </div>
             </div>

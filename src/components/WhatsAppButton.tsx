@@ -33,12 +33,6 @@ export default function WhatsAppButton({ number }: { number?: string }) {
   // For wa.me links we must use only digits (no leading '+').
   const digitsForWa = typeof digits === 'string' ? digits.replace(/^\+/, '') : '';
 
-  // Warn early if the env var isn't set so devs notice in console (local & prod logs).
-  if (!envNumber) {
-    if (process.env.NODE_ENV === 'development') {
-      console.warn('NEXT_PUBLIC_WHATSAPP_NUMBER is not configured');
-    }
-  }
   // Consider configured if either the env var or a `number` prop is provided.
   const isConfigured = Boolean(envNumber || number);
   // If we have digits after sanitization, we can build the wa.me URL.
@@ -52,11 +46,6 @@ export default function WhatsAppButton({ number }: { number?: string }) {
   if (hasDigits) {
     webUrl = `https://wa.me/${digitsForWa}`;
     if (encodedMessage) webUrl += `?text=${encodedMessage}`;
-  }
-
-  // Helpful debug output in development so you can confirm what number/link the component resolved.
-  if (process.env.NODE_ENV === 'development') {
-    console.debug('WhatsAppButton resolved', { raw, digits, digitsForWa, webUrl, envNumber, envMessage });
   }
 
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {

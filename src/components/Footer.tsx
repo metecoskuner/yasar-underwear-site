@@ -7,6 +7,15 @@ import { useLanguage } from '../contexts/LanguageContext';
 // flagEmoji removed: not used in footer
 
 export default function Footer() {
+  const mapUrl = 'https://www.google.com/maps?q=Yasar+Camasir,+Mahmutpa%C5%9Fa+Cami+Avlu+i%C3%A7i+No:+12/A,+Mahmutpa%C5%9Fa+Yk%C5%9F.+Sk.,+34120,+T%C3%BCrkiye&ftid=0x14caa563cff9b7c9:0x892026ca3f79739e&entry=gps&shh=CAE&lucs=,94259551,94297699,100808508,100794546,94284496,94231188,94280568,47071704,94218641,94282134,100799877,94286869&g_ep=CAISEjI2LjEzLjYuODg4MzU5NjE4MBgAIIgnKm8sOTQyNTk1NTEsOTQyOTc2OTksMTAwODA4NTA4LDEwMDc5NDU0Niw5NDI4NDQ5Niw5NDIzMTE4OCw5NDI4MDU2OCw0NzA3MTcwNCw5NDIxODY0MSw5NDI4MjEzNCwxMDA3OTk4NzcsOTQyODY4NjlCAklF&skid=8dcef658-1ba7-4dac-9dec-f3ef8bdd396f&g_st=iw';
+  const envNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '';
+  const phoneHref = envNumber ? `tel:${envNumber}` : 'tel:+902125209299';
+  const digitsForWa = envNumber.replace(/[^0-9]/g, '');
+  const envMessage = process.env.NEXT_PUBLIC_WHATSAPP_MESSAGE || '';
+  const footerWhatsAppUrl = digitsForWa
+    ? `https://wa.me/${digitsForWa}${envMessage ? `?text=${encodeURIComponent(envMessage)}` : ''}`
+    : '#';
+  const footerPhoneLabel = envNumber || '+90 212 520 92 99';
   const [showTop, setShowTop] = useState(false);
   const [openLinks, setOpenLinks] = useState(false);
   const [openCorporate, setOpenCorporate] = useState(false);
@@ -125,7 +134,7 @@ export default function Footer() {
   return (
   <footer className="site-footer relative mt-0 bg-[var(--brand-color)] text-white">
 
-  <div className="relative z-10 max-w-6xl mx-auto px-4 py-12 sm:py-14 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8 xl:gap-12 items-start">
+  <div className="relative z-10 max-w-6xl mx-auto px-4 py-12 sm:py-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 items-start">
 
         {/* (flags moved to homepage under the map) */}
         <div className="flex flex-col space-y-4">
@@ -143,7 +152,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <nav aria-label="Bağlantılar" className="flex flex-col space-y-2 md:pl-2 xl:pl-6">
+        <nav aria-label="Bağlantılar" className="flex flex-col space-y-2 md:pl-2 lg:pl-6">
           <h4 className="text-base lg:text-lg font-semibold">{tr('footer.links','Bağlantılar')}</h4>
           <span className="block mt-1 h-0.5 w-12 bg-white/90 rounded" aria-hidden />
           {/* mobile accordion toggle */}
@@ -184,7 +193,7 @@ export default function Footer() {
           )}
         </nav>
 
-        <nav aria-label="Kurumsal" className="flex flex-col space-y-2 md:pl-2 xl:pl-6">
+        <nav aria-label="Kurumsal" className="flex flex-col space-y-2 md:pl-2 lg:pl-6">
           <h4 className="text-base lg:text-lg font-semibold">{tr('footer.corporate.title','Kurumsal')}</h4>
           <span className="block mt-1 h-0.5 w-12 bg-white/90 rounded" aria-hidden />
           {!isDesktop && (
@@ -224,7 +233,7 @@ export default function Footer() {
           )}
         </nav>
 
-        <div className="flex flex-col space-y-2 md:pl-2 xl:pl-6">
+        <div className="flex flex-col space-y-2 md:pl-2 lg:pl-6">
           <h4 className="text-base lg:text-lg font-semibold">{tr('footer.follow.title','Bizi takip et')}</h4>
           <span className="block mt-1 h-0.5 w-12 bg-white/90 rounded" aria-hidden />
           <p className="text-sm text-white">{tr('footer.follow.desc','Sosyal kanallarımızdan kampanyaları ve yenilikleri takip edebilirsiniz.')}</p>
@@ -259,7 +268,7 @@ export default function Footer() {
 
             {/* WhatsApp */}
             <a
-              href="https://wa.me/905551234567"
+              href={footerWhatsAppUrl}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="WhatsApp"
@@ -275,9 +284,9 @@ export default function Footer() {
           <div className="mt-4 text-sm text-white flex flex-col space-y-2">
             <h4 className="text-base lg:text-lg font-semibold">{tr('footer.contactInfo.title','İletişim')}</h4>
             <span className="block mt-1 h-0.5 w-12 bg-white/90 rounded" aria-hidden />
-            <a href="tel:+902125190149" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{tr('footer.contactInfo.phone','tel:+902125190149')}</a>
+            <a href={phoneHref} className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{footerPhoneLabel}</a>
             <a href="mailto:info@yasarunderwear.com" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{tr('footer.contactInfo.email','info@yasarunderwear.com')}</a>
-            <a href="https://maps.google.com?q=Yasar+Tekstil" target="_blank" rel="noopener noreferrer" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{tr('footer.contactInfo.map','Adresimizi haritada gör')}</a>
+            <a href={mapUrl} target="_blank" rel="noopener noreferrer" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{tr('footer.contactInfo.map','Adresimizi haritada gör')}</a>
             {/* moved developed-by link to bottom center */}
           </div>
         </div>

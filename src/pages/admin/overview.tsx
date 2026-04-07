@@ -108,7 +108,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   // Default empty results
   let stats: { messages: number; unreadMessages?: number; offers?: number; products: number } = { messages: 0, products: 0 }
   let recentMessages: Array<{ id: string; from?: string; createdAt?: string }> = []
-  let recentOffers: Array<{ id: string; title?: string; createdAt?: string }> = []
   let recentProducts: Array<{ id: string; title?: string; createdAt?: string }> = []
 
   try {
@@ -227,7 +226,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   // string on the server to avoid hydration mismatches caused by
   // Date.toLocaleString differences between server and client.
   recentMessages = recentMessages.map((m) => ({ ...m, createdAt: formatDate(m.createdAt ?? undefined) }))
-  recentOffers = recentOffers.map((o) => ({ ...o, createdAt: formatDate(o.createdAt ?? undefined) }))
   recentProducts = recentProducts.map((p) => ({ ...p, createdAt: formatDate(p.createdAt ?? undefined) }))
 
   return { props: { stats, recentMessages, recentProducts } }

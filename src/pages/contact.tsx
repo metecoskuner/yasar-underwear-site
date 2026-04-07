@@ -12,7 +12,16 @@ const ContactPage: NextPage = () => {
   const { t } = useLanguage()
   const [sending, setSending] = useState(false)
   const [success, setSuccess] = useState(false)
+  const [submitError, setSubmitError] = useState('')
   const [form, setForm] = useState({ name: '', email: '', phone: '', message: '' })
+  const tr = (key: string, fallback: string) => {
+    try {
+      const value = t(key)
+      return value === key ? fallback : String(value)
+    } catch {
+      return fallback
+    }
+  }
 
   // Get translated title for a place
   const getTranslatedTitle = (placeId: string): string => {
@@ -28,6 +37,7 @@ const ContactPage: NextPage = () => {
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setSending(true)
+    setSubmitError('')
 
     // Send message to API
     fetch('/api/contact', {
@@ -43,10 +53,12 @@ const ContactPage: NextPage = () => {
           setSending(false)
           setTimeout(() => setSuccess(false), 4000)
         } else {
+          setSubmitError(data?.message || tr('contact.errorMessage', 'Mesaj gönderilemedi. Lütfen tekrar deneyin.'))
           setSending(false)
         }
       })
       .catch(() => {
+        setSubmitError(tr('contact.errorMessage', 'Mesaj gönderilemedi. Lütfen tekrar deneyin.'))
         setSending(false)
       })
   }
@@ -54,8 +66,8 @@ const ContactPage: NextPage = () => {
   return (
     <>
       <SEO
-        title={t('contact.pageTitle') as string}
-        description={t('contact.pageDescription') as string}
+        title={tr('contact.pageTitle', 'İletişim - Yasar')}
+        description={tr('contact.pageDescription', 'Yasar ile iletişime geçin.')}
         url="/contact"
       />
 
@@ -63,9 +75,9 @@ const ContactPage: NextPage = () => {
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           {/* Header */}
           <div className="text-center mb-12">
-            <h1 className="text-4xl sm:text-5xl font-extrabold text-slate-900 mb-4">{t('contact.heading')}</h1>
+            <h1 className="text-4xl sm:text-5xl font-extrabold text-slate-900 mb-4">{tr('contact.heading', 'İletişim')}</h1>
             <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-              {t('contact.subheading')}
+              {tr('contact.subheading', 'Sorularınız, iş birlikleri ve talepleriniz için bizimle doğrudan iletişime geçebilirsiniz.')}
             </p>
           </div>
 
@@ -73,7 +85,7 @@ const ContactPage: NextPage = () => {
             {/* Info Section */}
             <div className="space-y-8">
               <div className="bg-white rounded-xl p-8 shadow-md border border-slate-200">
-                <h2 className="text-2xl font-bold mb-6 text-slate-900">{t('contact.infoTitle')}</h2>
+                <h2 className="text-2xl font-bold mb-6 text-slate-900">{tr('contact.infoTitle', 'İletişim Bilgileri')}</h2>
                 
                 {/* Email */}
                 <div className="flex items-start gap-4 mb-6">
@@ -85,8 +97,10 @@ const ContactPage: NextPage = () => {
                     </div>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-slate-900">{t('contact.emailLabel')}</h3>
-                    <p className="text-slate-600 mt-1">{CONTACT.EMAIL}</p>
+                    <h3 className="font-semibold text-slate-900">{tr('contact.emailLabel', 'E-posta')}</h3>
+                    <a href={`mailto:${CONTACT.EMAIL}`} className="text-slate-600 mt-1 inline-block hover:text-slate-900 hover:underline">
+                      {CONTACT.EMAIL}
+                    </a>
                   </div>
                 </div>
 
@@ -100,9 +114,13 @@ const ContactPage: NextPage = () => {
                     </div>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-slate-900">{t('contact.phoneLabel')}</h3>
-                    <p className="text-slate-600 mt-1">{CONTACT.PHONE_MAIN}</p>
-                    <p className="text-sm text-slate-500 mt-1">{CONTACT.PHONE_MOBILE}</p>
+                    <h3 className="font-semibold text-slate-900">{tr('contact.phoneLabel', 'Telefon')}</h3>
+                    <a href={`tel:${CONTACT.PHONE_MAIN}`} className="text-slate-600 mt-1 inline-block hover:text-slate-900 hover:underline">
+                      {CONTACT.PHONE_MAIN}
+                    </a>
+                    <a href={`tel:${CONTACT.PHONE_MOBILE}`} className="text-sm text-slate-500 mt-1 block hover:text-slate-800 hover:underline">
+                      {CONTACT.PHONE_MOBILE}
+                    </a>
                   </div>
                 </div>
 
@@ -118,7 +136,7 @@ const ContactPage: NextPage = () => {
                   </div>
                   <div className="flex-1">
                     <h3 className="font-semibold text-slate-900 mb-3">
-                      {t('contact.addressLabel')} ({MAP_PLACES.length})
+                      {tr('contact.addressLabel', 'Adresler')} ({MAP_PLACES.length})
                     </h3>
                     <div className="space-y-2">
                       {MAP_PLACES.map((place) => (
@@ -133,24 +151,24 @@ const ContactPage: NextPage = () => {
               </div>
 
               {/* Quick Links */}
-              <div className="flex gap-3">
+              <div className="flex flex-col sm:flex-row gap-3">
                 <a href={`mailto:${CONTACT.EMAIL}`} className="flex-1 bg-black text-white px-4 py-3 rounded-lg font-medium hover:bg-slate-800 transition text-center">
-                  {t('contact.sendEmailButton')}
+                  {tr('contact.sendEmailButton', 'E-posta Gönder')}
                 </a>
                 <a href={`tel:${CONTACT.PHONE_MAIN}`} className="flex-1 border-2 border-black text-black px-4 py-3 rounded-lg font-medium hover:bg-slate-50 transition text-center">
-                  {t('contact.callButton')}
+                  {tr('contact.callButton', 'Bizi Ara')}
                 </a>
               </div>
             </div>
 
             {/* Form Section */}
             <div className="bg-white rounded-xl p-8 shadow-md border border-slate-200">
-              <h2 className="text-2xl font-bold mb-6 text-slate-900">{t('contact.formTitle')}</h2>
+              <h2 className="text-2xl font-bold mb-6 text-slate-900">{tr('contact.formTitle', 'Form Gönder')}</h2>
               
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium text-slate-900 mb-2">
-                    {t('contact.nameLabel')}
+                    {tr('contact.nameLabel', 'İsim')}
                   </label>
                   <input
                     id="name"
@@ -160,13 +178,13 @@ const ContactPage: NextPage = () => {
                     onChange={handleChange}
                     required
                     className="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none transition"
-                    placeholder={t('contact.namePlaceholder') as string}
+                    placeholder={tr('contact.namePlaceholder', 'Adınız soyadınız')}
                   />
                 </div>
 
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium text-slate-900 mb-2">
-                    {t('contact.emailFormLabel')}
+                    {tr('contact.emailFormLabel', 'E-posta')}
                   </label>
                   <input
                     id="email"
@@ -176,13 +194,13 @@ const ContactPage: NextPage = () => {
                     onChange={handleChange}
                     required
                     className="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none transition"
-                    placeholder={t('contact.emailPlaceholder') as string}
+                    placeholder={tr('contact.emailPlaceholder', 'ornek@mail.com')}
                   />
                 </div>
 
                 <div>
                   <label htmlFor="phone" className="block text-sm font-medium text-slate-900 mb-2">
-                    {t('contact.phoneFormLabel')}
+                    {tr('contact.phoneFormLabel', 'Telefon')}
                   </label>
                   <input
                     id="phone"
@@ -191,13 +209,13 @@ const ContactPage: NextPage = () => {
                     value={form.phone}
                     onChange={handleChange}
                     className="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none transition"
-                    placeholder={t('contact.phonePlaceholder') as string}
+                    placeholder={tr('contact.phonePlaceholder', '+90 5xx xxx xx xx')}
                   />
                 </div>
 
                 <div>
                   <label htmlFor="message" className="block text-sm font-medium text-slate-900 mb-2">
-                    {t('contact.messageLabel')}
+                    {tr('contact.messageLabel', 'Mesaj')}
                   </label>
                   <textarea
                     id="message"
@@ -207,21 +225,27 @@ const ContactPage: NextPage = () => {
                     required
                     rows={5}
                     className="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none transition resize-none"
-                    placeholder={t('contact.messagePlaceholder') as string}
+                    placeholder={tr('contact.messagePlaceholder', 'Mesajınızı yazın')}
                   />
                 </div>
+
+                {submitError && (
+                  <div className="bg-rose-50 border border-rose-200 rounded-lg p-4 text-rose-700 text-sm">
+                    {submitError}
+                  </div>
+                )}
 
                 <button
                   type="submit"
                   disabled={sending}
                   className="w-full bg-black text-white font-semibold py-3 rounded-lg hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed transition"
                 >
-                  {sending ? t('contact.sendingButton') : t('contact.sendButton')}
+                  {sending ? tr('contact.sendingButton', 'Gönderiliyor...') : tr('contact.sendButton', 'Gönder')}
                 </button>
 
                 {success && (
                   <div className="bg-green-50 border border-green-200 rounded-lg p-4 text-green-700 text-sm">
-                    {t('contact.successMessage')}
+                    {tr('contact.successMessage', 'Mesajınız başarıyla gönderildi.')}
                   </div>
                 )}
               </form>
@@ -239,4 +263,3 @@ const ContactPage: NextPage = () => {
 }
 
 export default ContactPage
-

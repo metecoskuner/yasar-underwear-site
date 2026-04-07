@@ -2,12 +2,31 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { prisma } from '@/lib/prisma'
 import { createClient } from '@supabase/supabase-js'
 
+const prefersSupabase =
+  process.env.CONTENT_DATA_PROVIDER === 'supabase' ||
+  (!process.env.DATABASE_URL && Boolean(process.env.SUPABASE_URL) && Boolean(process.env.SUPABASE_SERVICE_KEY))
+
+let loggedPrismaFallback = false
+
+function logPrismaFallbackOnce(context: string, error: unknown) {
+  if (loggedPrismaFallback) return
+  loggedPrismaFallback = true
+  console.warn(`[api/content] Prisma unavailable during ${context}, using Supabase fallback.`, error)
+}
+
+function createSupabaseAdminClient() {
+  return createClient(
+    process.env.SUPABASE_URL || '',
+    process.env.SUPABASE_SERVICE_KEY || ''
+  )
+}
+
 // safe JSON parse: returns parsed value or undefined on failure
 function safeParse<T>(input: unknown): T | undefined {
   if (typeof input !== 'string') return undefined
   try {
     return JSON.parse(input) as T
-  } catch (err) {
+  } catch {
     try { console.error('[api/content] safeParse failed for input:', String(input).slice(0, 200)) } catch {}
     return undefined
   }
@@ -17,17 +36,17 @@ export default async function handler(_req: NextApiRequest, res: NextApiResponse
   try {
     let entry: Record<string, unknown> | null = null
     
-    // Try Prisma first
-    try {
-      entry = await prisma.siteContent.findUnique({ where: { key: 'site' } })
-    } catch (prismaErr) {
-      console.warn('[api/content] Prisma failed, falling back to Supabase:', prismaErr)
-      // Fallback to Supabase
+    if (!prefersSupabase) {
       try {
-        const supabase = createClient(
-          process.env.SUPABASE_URL || '',
-          process.env.SUPABASE_SERVICE_KEY || ''
-        )
+        entry = await prisma.siteContent.findUnique({ where: { key: 'site' } })
+      } catch (prismaErr) {
+        logPrismaFallbackOnce('site content lookup', prismaErr)
+      }
+    }
+
+    if (!entry) {
+      try {
+        const supabase = createSupabaseAdminClient()
         const { data, error } = await supabase
           .from('SiteContent')
           .select('*')
@@ -57,17 +76,17 @@ export default async function handler(_req: NextApiRequest, res: NextApiResponse
   if (!content || !Array.isArray(content.products) || (Array.isArray(content.products) && content.products.length === 0)) {
         let products: Record<string, unknown>[] = []
         
-        // Try Prisma first
-        try {
-          products = await prisma.product.findMany({ orderBy: { createdAt: 'desc' } })
-        } catch (prismaErr) {
-          console.warn('[api/content] Prisma product fetch failed, falling back to Supabase:', prismaErr)
-          // Fallback to Supabase
+        if (!prefersSupabase) {
           try {
-            const supabase = createClient(
-              process.env.SUPABASE_URL || '',
-              process.env.SUPABASE_SERVICE_KEY || ''
-            )
+            products = await prisma.product.findMany({ orderBy: { createdAt: 'desc' } })
+          } catch (prismaErr) {
+            logPrismaFallbackOnce('product lookup', prismaErr)
+          }
+        }
+
+        if (products.length === 0) {
+          try {
+            const supabase = createSupabaseAdminClient()
             const { data, error } = await supabase
               .from('Product')
               .select('*')
@@ -80,8 +99,6 @@ export default async function handler(_req: NextApiRequest, res: NextApiResponse
             console.error('[api/content] Supabase product fallback failed:', supabaseErr)
           }
         }
-        
-        try { console.log('[api/content] DB PRODUCTS COUNT:', Array.isArray(products) ? products.length : 0) } catch {}
 
         const normalized = products.map((p: unknown) => {
           const rec = p as Record<string, unknown>
@@ -154,28 +171,26 @@ export default async function handler(_req: NextApiRequest, res: NextApiResponse
 
         // ensure we don't mutate original content object
         const merged = { ...(content || {}), products: normalized }
-        try { console.log('[api/content] returning merged content.products count:', Array.isArray(merged.products) ? merged.products.length : 0) } catch {}
         return res.status(200).json({ content: merged })
       }
 
-      try { console.log('[api/content] returning admin content.products count:', Array.isArray(content?.products) ? content.products.length : '(none)') } catch {}
       return res.status(200).json({ content })
     }
 
     // Debug mode: no admin content present -> return products from DB
     let products: Record<string, unknown>[] = []
     
-    // Try Prisma first
-    try {
-      products = await prisma.product.findMany({ orderBy: { createdAt: 'desc' } })
-    } catch (prismaErr) {
-      console.warn('[api/content] Prisma product fetch failed, falling back to Supabase:', prismaErr)
-      // Fallback to Supabase
+    if (!prefersSupabase) {
       try {
-        const supabase = createClient(
-          process.env.SUPABASE_URL || '',
-          process.env.SUPABASE_SERVICE_KEY || ''
-        )
+        products = await prisma.product.findMany({ orderBy: { createdAt: 'desc' } })
+      } catch (prismaErr) {
+        logPrismaFallbackOnce('standalone product lookup', prismaErr)
+      }
+    }
+
+    if (products.length === 0) {
+      try {
+        const supabase = createSupabaseAdminClient()
         const { data, error } = await supabase
           .from('Product')
           .select('*')
@@ -188,8 +203,6 @@ export default async function handler(_req: NextApiRequest, res: NextApiResponse
         console.error('[api/content] Supabase product fallback failed:', supabaseErr)
       }
     }
-    
-    try { console.log('[api/content] DB PRODUCTS COUNT:', Array.isArray(products) ? products.length : 0) } catch {}
 
     // normalize images/titles in case they're stored as JSON string (sqlite fallback)
     const normalized = products.map((p: unknown) => {
