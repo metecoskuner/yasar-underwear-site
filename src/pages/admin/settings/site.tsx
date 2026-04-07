@@ -12,13 +12,13 @@ export default function SiteSettingsPage() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetch('/api/admin/settings').then(r => r.json()).then(j => { setSite(j.settings?.site || {}); setUsers(j.settings?.users || []); setLoading(false) }).catch(() => { setSite({}); setLoading(false) })
+    fetch('/api/admin/settings', { credentials: 'same-origin' }).then(r => r.json()).then(j => { setSite(j.settings?.site || {}); setUsers(j.settings?.users || []); setLoading(false) }).catch(() => { setSite({}); setLoading(false) })
   }, [])
 
   async function save() {
     setLoading(true)
     try {
-      const res = await fetch('/api/admin/save-settings', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ settings: { users, site } }) })
+      const res = await fetch('/api/admin/save-settings', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ settings: { users, site } }), credentials: 'same-origin' })
       if (!res.ok) throw new Error('save failed')
     } catch (err) {
       void err

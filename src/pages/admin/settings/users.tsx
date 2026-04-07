@@ -20,7 +20,7 @@ export default function UsersPage({ adminUser, savingDisabled }: Props) {
     try {
       // Best-effort: try to save to settings file. Note: login is env-backed (ADMIN_PASS) so
       // changing the settings file may not affect authentication until the app is reconfigured.
-      const res = await fetch('/api/admin/save-settings', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ settings: { users: [], site: {}, admin: { pass: newPass } } }) })
+      const res = await fetch('/api/admin/save-settings', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ settings: { users: [], site: {}, admin: { pass: newPass } } }), credentials: 'same-origin' })
       if (!res.ok) {
         const j = await res.json().catch(() => null)
         if (res.status === 501) {

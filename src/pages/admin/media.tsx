@@ -11,7 +11,7 @@ const AdminMediaPage: NextPage = () => {
   useEffect(() => {
     async function load() {
       try {
-        const res = await fetch('/api/admin/media-files')
+        const res = await fetch('/api/admin/media-files', { credentials: 'same-origin' })
         const data = await res.json()
         setVideos(data.videos || [])
         setUploads(data.uploads || [])

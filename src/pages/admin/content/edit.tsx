@@ -25,7 +25,7 @@ export default function EditPage() {
   }, [slug])
 
   async function doSave(nextStore: ContentStore) {
-    await fetch('/api/admin/content', { method: 'POST', body: JSON.stringify({ content: nextStore }), headers: { 'Content-Type': 'application/json' } })
+    await fetch('/api/admin/content', { method: 'POST', body: JSON.stringify({ content: nextStore }), headers: { 'Content-Type': 'application/json' }, credentials: 'same-origin' })
     // refresh
     setStore(nextStore)
   }
