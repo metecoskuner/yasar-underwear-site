@@ -4,8 +4,12 @@ export const CONTACT = {
   EMAIL: 'info@yasarunderwear.com'
 };
 
+// Build WhatsApp URL from env variable with fallback
+const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '+902125190149';
+const whatsappDigits = whatsappNumber.replace(/[^0-9]/g, '');
+
 export const SOCIAL = {
   INSTAGRAM: 'https://www.instagram.com/',
   FACEBOOK: 'https://www.facebook.com/',
-  WHATSAPP: 'https://wa.me/905551234567'
+  WHATSAPP: `https://wa.me/${whatsappDigits}`
 };
