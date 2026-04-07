@@ -20,16 +20,15 @@ type LeafletMap = {
 type LeafletMarker = {
   setIcon: (icon: unknown) => void
   openPopup: () => void
+  addTo: (map: LeafletMap) => void
+  bindPopup: (html: string) => LeafletMarker
+  on: (event: string, cb: () => void) => LeafletMarker
 }
 
 type LeafletGlobal = {
   map: (el: string | HTMLElement, options?: Record<string, unknown>) => LeafletMap
   tileLayer: (url: string, options?: Record<string, unknown>) => { addTo: (map: LeafletMap) => void }
-  marker: (coords: [number, number], options?: Record<string, unknown>) => LeafletMarker & {
-    bindPopup: (html: string) => LeafletMarker & { on: (event: string, cb: () => void) => LeafletMarker; addTo: (map: LeafletMap) => void }
-    on: (event: string, cb: () => void) => LeafletMarker
-    addTo: (map: LeafletMap) => void
-  }
+  marker: (coords: [number, number], options?: Record<string, unknown>) => LeafletMarker
   divIcon: (options: Record<string, unknown>) => unknown
   latLngBounds: (points: [number, number][]) => unknown
 }
