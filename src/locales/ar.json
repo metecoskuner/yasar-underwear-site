@@ -473,7 +473,9 @@
         },
         "stats": {
           "firstPass": "98%",
-          "sampleReportTime": "3 أيام"
+          "firstPassLabel": "معدل النجاح من المرة الأولى",
+          "sampleReportTime": "3 أيام",
+          "sampleReportTimeLabel": "وقت تقرير العينة"
         }
       }
     },

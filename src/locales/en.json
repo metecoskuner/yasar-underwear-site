@@ -489,7 +489,9 @@
         },
         "stats": {
           "firstPass": "98%",
-          "sampleReportTime": "3 days"
+          "firstPassLabel": "First Pass Rate",
+          "sampleReportTime": "3 days",
+          "sampleReportTimeLabel": "Sample Report Time"
         }
       }
     }

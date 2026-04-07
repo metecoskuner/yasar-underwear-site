@@ -481,7 +481,9 @@
         },
         "stats": {
           "firstPass": "98%",
-          "sampleReportTime": "3 gün"
+          "firstPassLabel": "İlk Kez Geçiş Oranı",
+          "sampleReportTime": "3 gün",
+          "sampleReportTimeLabel": "Numune Rapor Süresi"
         }
       }
     },

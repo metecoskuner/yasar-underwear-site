@@ -417,7 +417,9 @@
         },
         "stats": {
           "firstPass": "98%",
-          "sampleReportTime": "3 jours"
+          "firstPassLabel": "Taux de Première Passe",
+          "sampleReportTime": "3 jours",
+          "sampleReportTimeLabel": "Délai de Rapport d'Échantillon"
         }
       }
     }

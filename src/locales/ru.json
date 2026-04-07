@@ -523,7 +523,9 @@
         },
         "stats": {
           "firstPass": "98%",
-          "sampleReportTime": "3 дня"
+          "firstPassLabel": "Процент первичного прохождения",
+          "sampleReportTime": "3 дня",
+          "sampleReportTimeLabel": "Время отчета об образце"
         }
       }
     }
