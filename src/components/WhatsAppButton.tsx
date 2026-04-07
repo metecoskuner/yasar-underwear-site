@@ -24,14 +24,14 @@ export default function WhatsAppButton({ number }: { number?: string }) {
     }
   };
   // Use NEXT_PUBLIC_WHATSAPP_NUMBER as the authoritative source for the phone number.
-  const envNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
+  const envNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '+902125190149';
   // Do not fall back to a hard-coded placeholder. If you want a different number in tests,
   // set NEXT_PUBLIC_WHATSAPP_NUMBER or pass the `number` prop explicitly.
-  const raw = envNumber || number || '';
+  const raw = envNumber || number || '+902125190149';
   const digits = normalizeNumber(raw);
 
   // For wa.me links we must use only digits (no leading '+').
-  const digitsForWa = typeof digits === 'string' ? digits.replace(/^\+/, '') : '';
+  const digitsForWa = typeof digits === 'string' ? digits.replace(/^\+/, '') : '902125190149';
 
   // Consider configured if either the env var or a `number` prop is provided.
   const isConfigured = Boolean(envNumber || number);
