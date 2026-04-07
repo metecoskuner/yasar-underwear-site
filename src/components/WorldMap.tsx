@@ -350,6 +350,12 @@ export default function WorldMap(): JSX.Element {
                   }
                 }}
               >
+                <circle
+                  r={isMobile ? 18 : isTablet ? 15 : 12}
+                  cy={-tipOffset + 1}
+                  fill="transparent"
+                  style={{ pointerEvents: 'all', cursor: 'pointer' }}
+                />
                 <g className="pin-icon" transform={`translate(0,${-tipOffset}) scale(${pinScale})`} aria-hidden>
                   {isCenter ? (
                     <>

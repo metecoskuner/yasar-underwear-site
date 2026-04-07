@@ -123,9 +123,9 @@ export default function Footer() {
   };
 
   return (
-  <footer className="relative text-white mt-0 bg-[var(--brand-color)]">
+  <footer className="site-footer relative mt-0 bg-[var(--brand-color)] text-white">
 
-  <div className="relative z-10 max-w-6xl mx-auto px-4 py-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 items-start">
+  <div className="relative z-10 max-w-6xl mx-auto px-4 py-12 sm:py-14 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8 xl:gap-12 items-start">
 
         {/* (flags moved to homepage under the map) */}
         <div className="flex flex-col space-y-4">
@@ -143,8 +143,8 @@ export default function Footer() {
           </div>
         </div>
 
-        <nav aria-label="Bağlantılar" className="flex flex-col space-y-2 pl-4 lg:pl-6">
-          <h4 className="text-base lg:text-lg font-semibold text-white">{tr('footer.links','Bağlantılar')}</h4>
+        <nav aria-label="Bağlantılar" className="flex flex-col space-y-2 md:pl-2 xl:pl-6">
+          <h4 className="text-base lg:text-lg font-semibold">{tr('footer.links','Bağlantılar')}</h4>
           <span className="block mt-1 h-0.5 w-12 bg-white/90 rounded" aria-hidden />
           {/* mobile accordion toggle */}
           {!isDesktop && (
@@ -184,8 +184,8 @@ export default function Footer() {
           )}
         </nav>
 
-        <nav aria-label="Kurumsal" className="flex flex-col space-y-2 pl-4 lg:pl-6">
-          <h4 className="text-base lg:text-lg font-semibold text-white">{tr('footer.corporate.title','Kurumsal')}</h4>
+        <nav aria-label="Kurumsal" className="flex flex-col space-y-2 md:pl-2 xl:pl-6">
+          <h4 className="text-base lg:text-lg font-semibold">{tr('footer.corporate.title','Kurumsal')}</h4>
           <span className="block mt-1 h-0.5 w-12 bg-white/90 rounded" aria-hidden />
           {!isDesktop && (
             <button
@@ -224,8 +224,8 @@ export default function Footer() {
           )}
         </nav>
 
-        <div className="flex flex-col space-y-2 pl-4 lg:pl-6">
-          <h4 className="text-base lg:text-lg font-semibold text-white">{tr('footer.follow.title','Bizi takip et')}</h4>
+        <div className="flex flex-col space-y-2 md:pl-2 xl:pl-6">
+          <h4 className="text-base lg:text-lg font-semibold">{tr('footer.follow.title','Bizi takip et')}</h4>
           <span className="block mt-1 h-0.5 w-12 bg-white/90 rounded" aria-hidden />
           <p className="text-sm text-white">{tr('footer.follow.desc','Sosyal kanallarımızdan kampanyaları ve yenilikleri takip edebilirsiniz.')}</p>
           <div className="flex items-center space-x-4 mt-3">
@@ -235,13 +235,11 @@ export default function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Instagram"
-              className="text-white transform transition duration-150 hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 rounded inline-block hover:text-[#E1306C]"
+              className="text-white transform transition duration-150 hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 rounded inline-block hover:!text-[#E1306C]"
             >
               <span className="sr-only">Instagram</span>
-              <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
-                <rect x="3" y="3" width="18" height="18" rx="4" />
-                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-                <path d="M17.5 6.5h.01" />
+              <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                <path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2Zm0 1.8A3.95 3.95 0 0 0 3.8 7.75v8.5a3.95 3.95 0 0 0 3.95 3.95h8.5a3.95 3.95 0 0 0 3.95-3.95v-8.5a3.95 3.95 0 0 0-3.95-3.95h-8.5Zm8.95 1.35a1.15 1.15 0 1 1 0 2.3 1.15 1.15 0 0 1 0-2.3ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 1.8A3.2 3.2 0 1 0 12 15.2 3.2 3.2 0 0 0 12 8.8Z" />
               </svg>
             </a>
 
@@ -251,11 +249,11 @@ export default function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Facebook"
-              className="text-white transform transition duration-150 hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 rounded inline-block hover:text-[#1877F2]"
+              className="text-white transform transition duration-150 hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 rounded inline-block hover:!text-[#1877F2]"
             >
               <span className="sr-only">Facebook</span>
-              <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
-                <path d="M18 2h-3a4 4 0 0 0-4 4v3H8v4h3v8h4v-8h3l1-4h-4V6a1 1 0 0 1 1-1h3V2z" />
+              <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                <path d="M13.62 22v-8.03h2.7l.4-3.12h-3.1V8.86c0-.9.25-1.51 1.54-1.51H16.7V4.56c-.27-.04-1.2-.11-2.28-.11-2.26 0-3.8 1.38-3.8 3.92v2.48H8.06v3.12h2.56V22h3Z" />
               </svg>
             </a>
 
@@ -265,18 +263,17 @@ export default function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="WhatsApp"
-              className="transform transition duration-150 hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 rounded inline-block hover:text-[#25D366]"
+              className="text-white transform transition duration-150 hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 rounded inline-block hover:!text-[#25D366]"
             >
               <span className="sr-only">WhatsApp</span>
-              <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-                <path d="M20.52 3.48A11.82 11.82 0 0 0 12 .25C5.94.25.98 5.21.98 11.27c0 2.02.53 3.9 1.53 5.55L.1 23.9l7.38-1.94a11.96 11.96 0 0 0 4.5.88c6.06 0 11.02-4.96 11.02-11.02 0-3-1.17-5.81-3.48-7.34zM12 21.5c-1.3 0-2.57-.2-3.76-.6l-.27-.09-4.38 1.14 1.17-4.26-.08-.28A9.17 9.17 0 0 1 2.83 11.3c0-5.01 4.08-9.09 9.09-9.09 2.43 0 4.71.95 6.42 2.67a9.1 9.1 0 0 1-6.34 15.51z" />
-                <path d="M17.23 14.11c-.3-.15-1.76-.87-2.03-.97-.27-.1-.46-.15-.66.15-.2.3-.77.97-.95 1.17-.17.2-.35.22-.65.07-.3-.15-1.28-.47-2.44-1.51-.9-.8-1.5-1.79-1.68-2.09-.17-.3-.02-.46.13-.6.13-.13.3-.35.45-.53.15-.18.2-.3.3-.5.1-.2 0-.37-.02-.52-.02-.15-.66-1.6-.91-2.2-.24-.58-.48-.5-.66-.51-.17-.02-.37-.02-.57-.02-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.07 2.87 1.22 3.07.15.2 2.1 3.2 5.08 4.49 3 .8 3.6.63 4.25.59.65-.05 2.12-.86 2.42-1.69.3-.83.3-1.54.21-1.69-.09-.15-.27-.24-.57-.39z" />
+              <svg className="w-6 h-6" viewBox="0 0 32 32" fill="currentColor" aria-hidden>
+                <path d="M27.3 4.7A15.5 15.5 0 0 0 16.1.1C7.5.1.5 7.1.5 15.7c0 2.7.7 5.4 2.1 7.7L0 32l8.9-2.3c2.1 1.1 4.6 1.7 7.1 1.7h.1c8.6 0 15.6-7 15.6-15.6 0-4.2-1.6-8.1-4.4-11.1ZM16.1 28.7c-2.2 0-4.3-.6-6.1-1.7l-.4-.2-5.3 1.4 1.4-5.1-.3-.4a12.7 12.7 0 0 1-2-7c0-7 5.7-12.7 12.7-12.7 3.4 0 6.6 1.3 9 3.7a12.6 12.6 0 0 1 3.7 9c0 7-5.7 12.7-12.7 12.7Zm7-9.5c-.4-.2-2.2-1.1-2.5-1.3-.3-.1-.5-.2-.7.2-.2.3-.9 1.3-1.1 1.5-.2.2-.4.3-.8.1-.4-.2-1.6-.6-3.1-1.9-1.1-1-1.9-2.1-2.2-2.5-.2-.4 0-.5.1-.7.1-.1.3-.3.4-.5.2-.2.2-.3.4-.6.1-.2.1-.5 0-.6-.1-.2-.7-1.8-1-2.5-.2-.6-.5-.6-.7-.6h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.1-1.2 2.7s1.2 3.1 1.4 3.3c.2.2 2.3 3.6 5.7 5 3.3 1.4 3.3 1 3.9.9.6-.1 2-.8 2.3-1.6.3-.8.3-1.4.2-1.6-.1-.2-.3-.2-.7-.4Z" />
               </svg>
             </a>
           </div>
 
           <div className="mt-4 text-sm text-white flex flex-col space-y-2">
-            <h4 className="text-base lg:text-lg font-semibold text-white">{tr('footer.contactInfo.title','İletişim')}</h4>
+            <h4 className="text-base lg:text-lg font-semibold">{tr('footer.contactInfo.title','İletişim')}</h4>
             <span className="block mt-1 h-0.5 w-12 bg-white/90 rounded" aria-hidden />
             <a href="tel:+902125190149" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{tr('footer.contactInfo.phone','tel:+902125190149')}</a>
             <a href="mailto:info@yasarunderwear.com" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{tr('footer.contactInfo.email','info@yasarunderwear.com')}</a>
@@ -329,14 +326,11 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* developer credit overlapping the footer background image */}
-      <div className="absolute left-0 right-0 bottom-0 z-20 pointer-events-none">
-        <div className="max-w-6xl mx-auto px-4 py-3">
-          <div className="text-center">
-            <a href="https://www.linkedin.com/in/mete-coskuner-8623391a2/" target="_blank" rel="noopener noreferrer" className="inline-block text-sm text-white/90 bg-black/20 backdrop-blur-sm px-3 py-1 rounded hover:text-white transition pointer-events-auto">
-              {tr('footer.developedBy','Developed by Mete Coskuner')}
-            </a>
-          </div>
+      <div className="border-t border-white/8">
+        <div className="max-w-6xl mx-auto px-4 py-4 text-center">
+          <a href="https://www.linkedin.com/in/mete-coskuner-8623391a2/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center rounded-full bg-white/8 px-4 py-2 text-sm text-white/90 transition hover:bg-white/12 hover:text-white">
+            {tr('footer.developedBy','Developed by Mete Coskuner')}
+          </a>
         </div>
       </div>
 

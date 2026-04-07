@@ -128,6 +128,7 @@ export default function Header() {
   const [hoveredNav, setHoveredNav] = useState<string | null>(null);
   const hoverCloseTimer = useRef<number | null>(null);
   const navItemRefs = useRef<Record<string, HTMLElement | null>>({});
+  const scrollYRef = useRef(0);
 
   const cancelHoverClose = () => {
     if (hoverCloseTimer.current) {
@@ -350,8 +351,6 @@ export default function Header() {
     );
   }
 
-  // header always visible
-  const headerVisible = true;
   const headerRef = useRef<HTMLElement | null>(null);
   const [headerHeight, setHeaderHeight] = useState<number>(64);
 
@@ -645,21 +644,44 @@ export default function Header() {
   // lock body scroll when mobile menu is open
   useEffect(() => {
     if (typeof document === "undefined") return;
-    const prev = document.body.style.overflow;
-    if (mobileOpen) document.body.style.overflow = "hidden";
-    else document.body.style.overflow = prev || "";
+    const prevOverflow = document.body.style.overflow;
+    const prevPosition = document.body.style.position;
+    const prevTop = document.body.style.top;
+    const prevWidth = document.body.style.width;
+    const prevOverscroll = document.documentElement.style.overscrollBehavior;
+
+    if (mobileOpen) {
+      scrollYRef.current = window.scrollY;
+      document.documentElement.style.overscrollBehavior = "none";
+      document.body.style.overflow = "hidden";
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${scrollYRef.current}px`;
+      document.body.style.width = "100%";
+    } else {
+      document.documentElement.style.overscrollBehavior = prevOverscroll || "";
+      document.body.style.overflow = prevOverflow || "";
+      document.body.style.position = prevPosition || "";
+      document.body.style.top = prevTop || "";
+      document.body.style.width = prevWidth || "";
+    }
+
     return () => {
-      document.body.style.overflow = prev || "";
+      const lockedTop = document.body.style.top;
+      document.documentElement.style.overscrollBehavior = prevOverscroll || "";
+      document.body.style.overflow = prevOverflow || "";
+      document.body.style.position = prevPosition || "";
+      document.body.style.top = prevTop || "";
+      document.body.style.width = prevWidth || "";
+      if (mobileOpen) {
+        window.scrollTo(0, Math.abs(parseInt(lockedTop || "0", 10)) || scrollYRef.current);
+      }
     };
   }, [mobileOpen]);
   return (
     <>
-      <M.header
-        initial={false}
-        animate={headerVisible || mobileOpen ? { y: 0 } : { y: "-100%" }}
-        transition={{ duration: 0.3, ease: "easeInOut" }}
+      <header
         ref={headerRef}
-        className={`w-full shadow-sm text-white bg-[var(--brand-color)] sticky top-0 left-0 right-0 z-50`}
+        className="w-full shadow-sm text-white bg-[var(--brand-color)] fixed top-0 left-0 right-0 z-50"
       >
   <div className="max-w-6xl mx-auto px-4 py-4 xl:py-3 flex justify-between items-center xl:grid xl:gap-x-8 xl:[grid-template-columns:1fr_auto_1fr] relative">
       {/* LEFT - NAV */}
@@ -1052,7 +1074,7 @@ export default function Header() {
             </button>
           </div>
         </div>
-  </M.header>
+  </header>
   {/* spacer removed: layout uses --site-header-height CSS variable so double-padding is avoided */}
 
       {/* Render mobile overlay + panel into document.body via portal to avoid transform/stacking issues */}
