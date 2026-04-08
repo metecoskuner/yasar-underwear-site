@@ -18,10 +18,10 @@ type Product = {
 }
 
 export default function ProductPage({ product }: { product: Product }) {
-  const site = process.env.NEXT_PUBLIC_SITE_URL || ''
+  const site = (process.env.NEXT_PUBLIC_SITE_URL || 'https://yasarunderwear.com').replace(/\/$/, '')
   const pageUrl = `/urunler/${product.id}`
   const image = product.images?.[0]
-  const fullImage = image && site ? `${site.replace(/\/$/, '')}${image.startsWith('/') ? '' : '/'}${image}` : image
+  const fullImage = image && site ? `${site}${image.startsWith('/') ? '' : '/'}${image}` : image
 
   const availability = product.stock && product.stock > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock'
 
@@ -30,9 +30,9 @@ export default function ProductPage({ product }: { product: Product }) {
     '@type': 'Product',
     name: product.title,
     sku: product.productCode || undefined,
-    image: product.images && product.images.length ? product.images.map((i) => (site ? `${site.replace(/\/$/, '')}${i.startsWith('/') ? '' : '/'}${i}` : i)) : undefined,
+    image: product.images && product.images.length ? product.images.map((i) => (site ? `${site}${i.startsWith('/') ? '' : '/'}${i}` : i)) : undefined,
     description: product.description || undefined,
-    url: site ? `${site.replace(/\/$/, '')}${pageUrl}` : pageUrl,
+    url: site ? `${site}${pageUrl}` : pageUrl,
     offers: {
       '@type': 'Offer',
       availability,
@@ -106,8 +106,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     }
   } catch (err) {
     // ignore prisma errors and fallback
-     
-    console.warn('prisma product read failed', err)
+    void err
   }
 
   // Fallback to local data file

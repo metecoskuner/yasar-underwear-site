@@ -7,6 +7,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 // flagEmoji removed: not used in footer
 
 export default function Footer() {
+  const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://yasarunderwear.com').replace(/\/$/, '');
   const mapUrl = 'https://www.google.com/maps?q=Yasar+Camasir,+Mahmutpa%C5%9Fa+Cami+Avlu+i%C3%A7i+No:+12/A,+Mahmutpa%C5%9Fa+Yk%C5%9F.+Sk.,+34120,+T%C3%BCrkiye&ftid=0x14caa563cff9b7c9:0x892026ca3f79739e&entry=gps&shh=CAE&lucs=,94259551,94297699,100808508,100794546,94284496,94231188,94280568,47071704,94218641,94282134,100799877,94286869&g_ep=CAISEjI2LjEzLjYuODg4MzU5NjE4MBgAIIgnKm8sOTQyNTk1NTEsOTQyOTc2OTksMTAwODA4NTA4LDEwMDc5NDU0Niw5NDI4NDQ5Niw5NDIzMTE4OCw5NDI4MDU2OCw0NzA3MTcwNCw5NDIxODY0MSw5NDI4MjEzNCwxMDA3OTk4NzcsOTQyODY4NjlCAklF&skid=8dcef658-1ba7-4dac-9dec-f3ef8bdd396f&g_st=iw';
   const envNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '+902125190149';
   const phoneHref = envNumber ? `tel:${envNumber}` : 'tel:+902125209299';
@@ -115,8 +116,8 @@ export default function Footer() {
     "@context": "https://schema.org",
     "@type": "Organization",
     name: "Yasar",
-    url: "https://yasar.local/",
-    logo: "https://yasar.local/photos/yasarLogo2.jpg",
+    url: `${siteUrl}/`,
+    logo: `${siteUrl}/photos/yasarLogo.png`,
     contactPoint: [
       {
         "@type": "ContactPoint",
@@ -132,18 +133,41 @@ export default function Footer() {
   };
 
   return (
-  <footer className="site-footer relative mt-0 bg-[var(--brand-color)] text-white">
+  <footer className="site-footer relative mt-0 overflow-hidden bg-[radial-gradient(circle_at_top_left,_rgba(250,204,21,0.12),_transparent_18%),linear-gradient(180deg,#161619_0%,#0f0f11_100%)] text-white">
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(120deg,transparent_0%,rgba(255,255,255,0.03)_38%,transparent_70%)]" />
+
+      <div className="relative z-10 border-b border-white/8">
+        <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-6 sm:flex-row sm:items-center sm:justify-between sm:py-7">
+          <div className="max-w-2xl">
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-white/55">Yasar Tekstil</p>
+            <p className="mt-2 text-sm leading-6 text-white/72 sm:text-base">
+              {tr('footer.tagline','Türkiye yapımı iç giyim. Konfor ve kalite odaklı.')}
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-2.5">
+            <Link href="/urunler" className="inline-flex items-center rounded-full border border-white/12 bg-white/8 px-4 py-2 text-sm font-medium text-white transition hover:border-white/24 hover:bg-white/12">
+              {tr('footer.products','Ürünlerimiz')}
+            </Link>
+            <Link href="/wholesale" className="inline-flex items-center rounded-full border border-white/12 bg-white/8 px-4 py-2 text-sm font-medium text-white transition hover:border-white/24 hover:bg-white/12">
+              Toptan
+            </Link>
+            <Link href="/contact" className="inline-flex items-center rounded-full bg-white px-4 py-2 text-sm font-semibold text-slate-900 transition hover:bg-stone-100">
+              {tr('footer.contact','İletişim')}
+            </Link>
+          </div>
+        </div>
+      </div>
 
   <div className="relative z-10 max-w-6xl mx-auto px-4 py-12 sm:py-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 items-start">
 
         {/* (flags moved to homepage under the map) */}
         <div className="flex flex-col space-y-4">
           <Link href="/" className="inline-block -mt-1 lg:-mt-2" aria-label={tr('footer.home','Yasar ana sayfa')}>
-            <Image src="/photos/yasarLogo2.jpg" alt="Yasar" width={200} height={80} className="h-14 lg:h-20 w-auto" />
+            <Image src="/photos/yasarLogo2.jpg" alt="Yasar" width={200} height={80} className="h-14 w-auto lg:h-20" />
           </Link>
-          <p className="text-sm text-white">{tr('footer.tagline','Türkiye yapımı iç giyim. Konfor ve kalite odaklı.')}</p>
+          <p className="max-w-xs text-sm leading-6 text-white/85">{tr('footer.tagline','Türkiye yapımı iç giyim. Konfor ve kalite odaklı.')}</p>
 
-          <div className="text-xs text-white/80 space-y-2 leading-relaxed max-w-prose">
+          <div className="max-w-prose space-y-2 text-xs leading-relaxed text-white/70">
             <p>{tr('footer.company.paragraph1','1969 yılında kurulan firmamız, yarım asrı aşan köklü tecrübesiyle gecelik, pijama takımı, paçalı pijama altı ve iç giyim üretiminde uzmanlaşmış, sektörün önde gelen üretici ve ihracatçıları arasında yer almaktadır.')}</p>
 
             <p>{tr('footer.company.paragraph2','Amerika, Fransa, İspanya, Yunanistan, İsrail başta olmak üzere Doğu Avrupa ve Orta Doğu pazarlarına gerçekleştirdiğimiz ihracatlarla, yüksek kalite standartlarımızı ve müşteri odaklı yaklaşımımızı uluslararası arenada başarıyla temsil ediyoruz.')}</p>
@@ -153,8 +177,8 @@ export default function Footer() {
         </div>
 
         <nav aria-label="Bağlantılar" className="flex flex-col space-y-2 md:pl-2 lg:pl-6">
-          <h4 className="text-base lg:text-lg font-semibold">{tr('footer.links','Bağlantılar')}</h4>
-          <span className="block mt-1 h-0.5 w-12 bg-white/90 rounded" aria-hidden />
+          <h4 className="text-base font-semibold tracking-tight lg:text-lg">{tr('footer.links','Bağlantılar')}</h4>
+          <span className="mt-1 block h-0.5 w-12 rounded bg-gradient-to-r from-amber-300 to-transparent" aria-hidden />
           {/* mobile accordion toggle */}
           {!isDesktop && (
             <button
@@ -194,8 +218,8 @@ export default function Footer() {
         </nav>
 
         <nav aria-label="Kurumsal" className="flex flex-col space-y-2 md:pl-2 lg:pl-6">
-          <h4 className="text-base lg:text-lg font-semibold">{tr('footer.corporate.title','Kurumsal')}</h4>
-          <span className="block mt-1 h-0.5 w-12 bg-white/90 rounded" aria-hidden />
+          <h4 className="text-base font-semibold tracking-tight lg:text-lg">{tr('footer.corporate.title','Kurumsal')}</h4>
+          <span className="mt-1 block h-0.5 w-12 rounded bg-gradient-to-r from-amber-300 to-transparent" aria-hidden />
           {!isDesktop && (
             <button
               type="button"
@@ -234,9 +258,9 @@ export default function Footer() {
         </nav>
 
         <div className="flex flex-col space-y-2 md:pl-2 lg:pl-6">
-          <h4 className="text-base lg:text-lg font-semibold">{tr('footer.follow.title','Bizi takip et')}</h4>
-          <span className="block mt-1 h-0.5 w-12 bg-white/90 rounded" aria-hidden />
-          <p className="text-sm text-white">{tr('footer.follow.desc','Sosyal kanallarımızdan kampanyaları ve yenilikleri takip edebilirsiniz.')}</p>
+          <h4 className="text-base font-semibold tracking-tight lg:text-lg">{tr('footer.follow.title','Bizi takip et')}</h4>
+          <span className="mt-1 block h-0.5 w-12 rounded bg-gradient-to-r from-amber-300 to-transparent" aria-hidden />
+          <p className="text-sm leading-6 text-white/78">{tr('footer.follow.desc','Sosyal kanallarımızdan kampanyaları ve yenilikleri takip edebilirsiniz.')}</p>
           <div className="flex items-center space-x-4 mt-3">
             {/* Instagram */}
             <a
@@ -282,8 +306,8 @@ export default function Footer() {
           </div>
 
           <div className="mt-4 text-sm text-white flex flex-col space-y-2">
-            <h4 className="text-base lg:text-lg font-semibold">{tr('footer.contactInfo.title','İletişim')}</h4>
-            <span className="block mt-1 h-0.5 w-12 bg-white/90 rounded" aria-hidden />
+            <h4 className="text-base font-semibold tracking-tight lg:text-lg">{tr('footer.contactInfo.title','İletişim')}</h4>
+            <span className="mt-1 block h-0.5 w-12 rounded bg-gradient-to-r from-amber-300 to-transparent" aria-hidden />
             <a href={phoneHref} className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{footerPhoneLabel}</a>
             <a href="mailto:info@yasarunderwear.com" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{tr('footer.contactInfo.email','info@yasarunderwear.com')}</a>
             <a href={mapUrl} target="_blank" rel="noopener noreferrer" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{tr('footer.contactInfo.map','Adresimizi haritada gör')}</a>
@@ -292,7 +316,7 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="border-t border-white/8">
+      <div className="border-t border-white/8 bg-black/10">
         <div className="max-w-6xl mx-auto px-4 py-3 flex flex-col sm:flex-row justify-between items-center text-xs text-white/70">
           <div className="flex items-center space-x-3">
             {/* Render copyright with current year when translations use a {year} placeholder */}
@@ -337,7 +361,7 @@ export default function Footer() {
 
       <div className="border-t border-white/8">
         <div className="max-w-6xl mx-auto px-4 py-4 text-center">
-          <a href="https://www.linkedin.com/in/mete-coskuner-8623391a2/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center rounded-full bg-white/8 px-4 py-2 text-sm text-white/90 transition hover:bg-white/12 hover:text-white">
+          <a href="https://www.linkedin.com/in/mete-coskuner-8623391a2/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center rounded-full border border-white/10 bg-white/6 px-4 py-2 text-sm text-white/90 transition hover:border-white/20 hover:bg-white/12 hover:text-white">
             {tr('footer.developedBy','Developed by Mete Coskuner')}
           </a>
         </div>

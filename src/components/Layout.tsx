@@ -31,7 +31,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex min-h-screen flex-col bg-[linear-gradient(180deg,#ffffff_0%,#fbfbfc_38%,#f8fafc_100%)] text-[color:var(--foreground)]">
       {/* Skip link: visible when focused for keyboard users */}
       <a
         href="#content"

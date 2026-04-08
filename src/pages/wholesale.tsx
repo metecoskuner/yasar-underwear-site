@@ -4,11 +4,29 @@ import SEO from '@/components/SEO';
 import B2BForm from '@/components/B2BForm';
 import { useLanguage } from '@/contexts/LanguageContext';
 
+const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://yasarunderwear.com').replace(/\/$/, '');
+
 export default function WholesalePage() {
   const { t } = useLanguage();
   return (
     <>
-  <SEO title={t('pages.wholesale.seo.title')} description={t('pages.wholesale.seo.description')} url="/wholesale" />
+  <SEO
+    title={t('pages.wholesale.seo.title')}
+    description={t('pages.wholesale.seo.description')}
+    url="/wholesale"
+    keywords={['toptan iç giyim', 'wholesale underwear turkey', 'textile distributor turkey', 'bulk underwear manufacturer']}
+    jsonLd={{
+      '@context': 'https://schema.org',
+      '@type': 'Service',
+      serviceType: 'Wholesale underwear manufacturing',
+      provider: {
+        '@type': 'Organization',
+        name: 'Yasar',
+      },
+      areaServed: 'Worldwide',
+      url: `${SITE_URL}/wholesale`,
+    }}
+  />
 
       <main className="max-w-6xl mx-auto px-4 py-12 sm:py-16">
         <section className="text-center mb-10">

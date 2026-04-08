@@ -58,7 +58,7 @@ export default function ContactSection({ showSummary = true }: { showSummary?: b
         setTimeout(() => setSuccess(false), 4000);
       }
     } catch (err) {
-      if (process.env.NODE_ENV === 'development') console.error('[ContactSection] submit error', err);
+      void err;
       setErrors((p) => ({ ...p, form: tr('components.contact.errors.network', 'Ağ hatası. Lütfen daha sonra tekrar deneyin.') }));
     } finally {
       setLoading(false);
@@ -285,5 +285,4 @@ function Field({
     </div>
   );
 }
-
 

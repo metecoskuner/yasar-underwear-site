@@ -16,3 +16,4 @@ dist
 # public/photos/*.png  # bu satır silindi, foto repo'da kalacak
 
 *.tsbuildinfo
+.vercel

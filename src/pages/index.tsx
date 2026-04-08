@@ -7,6 +7,8 @@ import ProductGrid from '../components/ProductGrid';
 import dynamic from 'next/dynamic';
 import { useLanguage } from '@/contexts/LanguageContext';
 
+const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://yasarunderwear.com').replace(/\/$/, '');
+
 // Dynamically load the WorldMap component (client-only rendering only)
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const WorldMap = dynamic(() => import('../components/WorldMap') as Promise<any>, { ssr: false });
@@ -24,7 +26,23 @@ export default function Home() {
 
   return (
     <>
-      <SEO title="Yasar - Ana Sayfa" description="Yasar - Günlük kullanım için konforlu iç çamaşırları, Türkiye'de tasarlandı." url="/" />
+      <SEO
+        title="Yasar - Ana Sayfa"
+        description="Yasar Tekstil; iç giyim, ev giyimi, private label ve toptan üretim çözümleri sunan Türkiye merkezli üreticidir."
+        url="/"
+        keywords={['Yasar Tekstil', 'iç giyim üreticisi', 'private label üretim', 'toptan iç giyim', 'Türkiye tekstil üreticisi']}
+        jsonLd={{
+          '@context': 'https://schema.org',
+          '@type': 'Organization',
+          name: 'Yasar',
+          url: SITE_URL,
+          logo: `${SITE_URL}/photos/yasarLogo.png`,
+          sameAs: [
+            'https://www.instagram.com/',
+            'https://www.facebook.com/',
+          ],
+        }}
+      />
       <Hero />
       <div className="bg-[linear-gradient(180deg,#f8fafc_0%,#ffffff_18%,#f8fafc_100%)]">
         <HeroInfoCards />

@@ -1002,5 +1002,70 @@
     "workshop-kemalpasa": "Workshop/Depo",
     "workshop-bursa-29a": "Workshop/Depo",
     "workshop-bursa-43-1": "Workshop/Depo"
+  },
+  "manufacturerTurkey": {
+    "seo": {
+      "title": "Türkiye'de İç Giyim Üreticisi — OEM & Özel Marka",
+      "description": "Yasar, Türkiye'de OEM ve özel marka üretimi sunan deneyimli bir iç giyim üreticisidir. Rekabetçi fiyat, güvenilir kalite ve anahtar teslim üretim çözümleri sunuyoruz."
+    },
+    "hero": {
+      "title": "Türkiye'de İç Giyim Üreticisi — OEM & Özel Marka",
+      "body": "Yasar, Türkiye merkezli bir iç giyim üreticisidir; gecelik, pijama ve iç giyim alanında uluslararası markalar, perakendeciler ve özel marka iş ortaklarına üretim yapmaktadır."
+    },
+    "why": {
+      "title": "Neden Türkiye'de üretim?",
+      "items": [
+        "Rekabetçi üretim maliyetleri ve yüksek kaliteli tekstil tedarik zincirine erişim.",
+        "Deneyimli iş gücü ve Avrupa ile Orta Doğu pazarlarına ihracat tecrübesi.",
+        "Sıkı kalite kontrol ve sektör standartlarına uygunluk."
+      ]
+    },
+    "services": {
+      "title": "OEM & Özel Marka Hizmetlerimiz",
+      "body": "Numune geliştirme, prototip, üretim planlama, ambalaj tasarımı ve sevkiyat desteği sağlıyoruz. Minimum sipariş miktarları kumaş ve tasarım karmaşıklığına göre değişir."
+    },
+    "cta": {
+      "title": "Teklif alın",
+      "prefix": "Türkiye'den OEM üretimi veya özel marka hizmetleri için",
+      "privateLabel": "Özel Marka",
+      "middle": "veya",
+      "wholesale": "Toptan",
+      "suffix": "sayfalarımızdaki formu doldurarak bize ulaşabilirsiniz. Ekibimiz zaman çizelgesi ve fiyatlandırma bilgileriyle dönüş yapacaktır."
+    }
+  },
+  "admin": {
+    "contentEditor": {
+      "saved": "Kaydedildi",
+      "saveFailed": "Kaydetme başarısız",
+      "slug": "Slug (URL parçası)",
+      "pageTitle": "Sayfa Başlığı",
+      "addSection": "Bölüm Ekle",
+      "saving": "Kaydediliyor...",
+      "savePage": "Sayfayı Kaydet"
+    },
+    "users": {
+      "metaTitle": "Admin - Kullanıcılar",
+      "title": "Kullanıcılar",
+      "lead": "Bu panel artık sadece yönetici parolasını değiştirmek için kullanılmaktadır.",
+      "adminUser": "Yönetici Kullanıcı",
+      "defaultAdmin": "admin",
+      "newPassword": "Yeni Parola",
+      "confirmPassword": "Parolayı Onayla",
+      "savePassword": "Parolayı Kaydet",
+      "saving": "Kaydediliyor...",
+      "warning": "Uyarı: Bu ortamda ayar kaydetme devre dışı. Ortam değişkenini güncelleyin.",
+      "noteIntro": "Not: Bu proje varsayılan olarak yönetici kimlik bilgilerini",
+      "noteOutro": "ortam değişkenlerinden okur. Üretimde parola değişikliği için lütfen dağıtımınızın ortam ayarlarını kullanın.",
+      "validation": {
+        "emptyPassword": "Yeni parola boş olamaz.",
+        "mismatch": "Parolalar eşleşmiyor."
+      },
+      "messages": {
+        "disabled": "Bu dağıtımda parola değişikliği devre dışı. Lütfen ADMIN_PASS ortam değişkenini güncelleyin.",
+        "saveError": "Kaydetme sırasında hata oluştu.",
+        "saved": "Parola kaydedildi (uygulamayı yeniden başlatmanız gerekebilir).",
+        "requestFailed": "Kaydetme isteği başarısız oldu."
+      }
+    }
   }
 }

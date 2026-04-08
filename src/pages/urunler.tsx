@@ -561,46 +561,50 @@ export default function UrunlerPage() {
 
       {/* MODAL */}
       {activeProduct && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+        <div className="fixed inset-0 z-50 flex items-end justify-center px-0 sm:px-4 md:items-center">
           <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setActiveProduct(null)} />
           <div
-            className="relative w-full max-w-6xl overflow-hidden rounded-[24px] sm:rounded-[32px] bg-white shadow-[0_40px_120px_-40px_rgba(15,23,42,0.5)] ring-1 ring-black/5 transform-gpu transition-all duration-300"
+            className="relative h-[100svh] w-full max-w-6xl overflow-y-auto overflow-x-hidden rounded-none bg-white shadow-[0_40px_120px_-40px_rgba(15,23,42,0.5)] ring-1 ring-black/5 transform-gpu transition-all duration-300 sm:h-auto sm:rounded-t-[24px] sm:rounded-b-[32px] md:overflow-hidden"
             role="dialog"
             aria-modal="true"
-            style={{ maxHeight: 'calc(100vh - 24px)' }}
+            style={{ maxHeight: '100vh' }}
           >
             <FocusLock>
-              <div className="flex max-h-[calc(100vh-24px)] flex-col md:grid md:grid-cols-[minmax(0,1.05fr)_minmax(360px,0.95fr)]">
-                <div className="sticky top-0 z-30 flex items-start justify-between gap-4 border-b border-stone-200 bg-white/95 px-4 py-4 backdrop-blur-sm md:hidden">
-                  <div className="space-y-2">
-                    <div className="flex flex-wrap items-center gap-2">
-                      {activeCategoryLabel ? (
-                        <span className="inline-flex rounded-full bg-stone-100 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-600">
-                          {activeCategoryLabel}
-                        </span>
-                      ) : null}
-                      {modalImages.length > 1 ? (
-                        <span className="inline-flex rounded-full bg-amber-50 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-amber-700">
-                          {modalImages.length} görsel
-                        </span>
-                      ) : null}
-                    </div>
-                    <h3 className="pr-4 text-2xl font-semibold tracking-tight text-slate-900">{activeTitle}</h3>
+              <div className="flex min-h-[100svh] flex-col md:grid md:grid-cols-[minmax(0,1.05fr)_minmax(360px,0.95fr)] md:h-auto md:max-h-[calc(100vh-24px)]">
+                <div className="sticky top-0 z-30 flex items-center justify-between border-b border-stone-200/80 bg-white/95 px-4 py-3 backdrop-blur-sm md:hidden">
+                  <div className="min-w-0">
+                    {activeCategoryLabel ? (
+                      <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
+                        {activeCategoryLabel}
+                      </p>
+                    ) : null}
+                    <h3 className="truncate pr-4 text-base font-semibold text-slate-900">
+                      {activeTitle}
+                    </h3>
                   </div>
                   <button
                     ref={closeBtnRef}
                     onClick={() => setActiveProduct(null)}
                     aria-label={tr('common.close','Kapat')}
-                    className="rounded-full border border-stone-200 bg-white p-2.5 text-slate-500 transition hover:border-slate-300 hover:bg-slate-900 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-400 cursor-pointer"
+                    className="shrink-0 rounded-full border border-stone-200 bg-white p-2.5 text-slate-500 shadow-sm transition hover:border-slate-300 hover:bg-slate-900 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-400 cursor-pointer"
                   >
                     ✕
                   </button>
                 </div>
 
-                <div className="relative flex min-h-[56vh] items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_top_left,_rgba(251,191,36,0.18),_transparent_30%),linear-gradient(180deg,#f8fafc_0%,#f1f5f9_100%)] p-2 sm:p-6 lg:p-8 md:min-h-0">
+                <div className="relative shrink-0 bg-white md:min-h-0 md:overflow-hidden md:bg-[radial-gradient(circle_at_top_left,_rgba(251,191,36,0.18),_transparent_30%),linear-gradient(180deg,#f8fafc_0%,#f1f5f9_100%)] md:p-4 lg:p-8">
+                  {modalImages.length > 1 ? (
+                    <div className="absolute right-4 top-4 z-20 rounded-full bg-slate-900/80 px-3 py-1 text-[11px] font-semibold text-white backdrop-blur-sm md:hidden">
+                      {modalIndex + 1} / {modalImages.length}
+                    </div>
+                  ) : null}
                   <div
-                    className="relative flex items-center justify-center overflow-hidden rounded-[28px] bg-white shadow-[0_30px_65px_-36px_rgba(15,23,42,0.35)]"
-                    style={{ width: '100%', maxWidth: 720, maxHeight: 'min(82vh, 720px)', overflow: 'hidden' }}
+                    className="relative flex min-h-[46svh] w-full items-center justify-center bg-white px-4 py-5 md:h-auto md:min-h-0 md:max-h-none md:bg-white md:px-0 md:py-0 md:overflow-hidden md:rounded-[28px] md:shadow-[0_30px_65px_-36px_rgba(15,23,42,0.35)]"
+                    style={{
+                      width: '100%',
+                      maxWidth: 720,
+                      touchAction: 'pan-y',
+                    }}
                     onMouseEnter={() => setIsMagnifierVisible(true)}
                     onMouseLeave={() => setIsMagnifierVisible(false)}
                     onMouseMove={handleMagnifierMove}
@@ -630,7 +634,7 @@ export default function UrunlerPage() {
                             e.stopPropagation();
                             showPrevImage();
                           }}
-                          className="absolute left-3 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/92 text-lg font-semibold text-slate-800 shadow transition hover:bg-white cursor-pointer sm:left-4 sm:h-11 sm:w-11"
+                          className="absolute left-4 top-1/2 z-10 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/92 text-lg font-semibold text-slate-800 shadow transition hover:bg-white cursor-pointer md:flex"
                           aria-label="Önceki fotoğraf"
                         >
                           ‹
@@ -641,12 +645,12 @@ export default function UrunlerPage() {
                             e.stopPropagation();
                             showNextImage();
                           }}
-                          className="absolute right-3 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/92 text-lg font-semibold text-slate-800 shadow transition hover:bg-white cursor-pointer sm:right-4 sm:h-11 sm:w-11"
+                          className="absolute right-4 top-1/2 z-10 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/92 text-lg font-semibold text-slate-800 shadow transition hover:bg-white cursor-pointer md:flex"
                           aria-label="Sonraki fotoğraf"
                         >
                           ›
                         </button>
-                        <div className="absolute bottom-3 left-1/2 z-10 -translate-x-1/2 rounded-full bg-black/60 px-3 py-1 text-[11px] font-medium text-white backdrop-blur-sm sm:bottom-4 sm:text-xs">
+                        <div className="absolute bottom-3 left-1/2 z-10 hidden -translate-x-1/2 rounded-full bg-black/60 px-3 py-1 text-[11px] font-medium text-white backdrop-blur-sm sm:bottom-4 sm:block sm:text-xs">
                           {modalIndex + 1} / {modalImages.length}
                         </div>
                       </>
@@ -661,7 +665,7 @@ export default function UrunlerPage() {
                       })()}
                       width={1200}
                       height={900}
-                      className="h-auto max-h-[52vh] w-full object-contain object-center sm:max-h-[70vh] sm:w-auto"
+                      className="block h-auto max-h-[58svh] w-full max-w-full object-contain object-center md:h-auto md:max-h-[70vh] md:w-auto md:p-0"
                       style={{ cursor: 'zoom-in' }}
                     />
                     {isMagnifierVisible && (
@@ -678,9 +682,42 @@ export default function UrunlerPage() {
                       />
                     )}
                   </div>
+
+                  {modalImages.length > 1 ? (
+                    <div className="flex items-center justify-center gap-2 border-b border-stone-200 px-4 pb-4 pt-1 md:hidden">
+                      {modalImages.map((img, i) => (
+                        <button
+                          key={`${img}-mobile-dot`}
+                          type="button"
+                          onClick={() => setModalIndex(i)}
+                          className={`h-2.5 rounded-full transition-all duration-200 cursor-pointer ${
+                            modalIndex === i ? 'w-6 bg-slate-900' : 'w-2.5 bg-slate-300'
+                          }`}
+                          aria-label={`${tr('pages.products.preview','Önizleme')} ${i + 1}`}
+                        />
+                      ))}
+                    </div>
+                  ) : null}
                 </div>
 
-                <div className="flex max-h-[calc(100vh-24px)] flex-col overflow-y-auto bg-white p-4 pt-0 sm:p-6 lg:p-8">
+                <div className="bg-white p-4 pt-5 sm:p-6 lg:p-8 md:min-h-0 md:max-h-[calc(100vh-24px)] md:flex md:overflow-y-auto md:pt-0">
+                  <div className="mb-5 rounded-[24px] border border-stone-200 bg-stone-50/70 p-4 md:hidden">
+                    <div className="flex flex-wrap items-center gap-2">
+                      {activeCategoryLabel ? (
+                        <span className="inline-flex rounded-full bg-white px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-600 ring-1 ring-black/5">
+                          {activeCategoryLabel}
+                        </span>
+                      ) : null}
+                      {modalImages.length > 1 ? (
+                        <span className="inline-flex rounded-full bg-white px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500 ring-1 ring-black/5">
+                          {modalImages.length} görsel
+                        </span>
+                      ) : null}
+                    </div>
+                    <h3 className="mt-3 text-[1.45rem] font-semibold leading-tight tracking-tight text-slate-900">
+                      {activeTitle}
+                    </h3>
+                  </div>
                   <div className="sticky top-0 z-20 -mx-4 mb-4 hidden items-start justify-between gap-4 border-b border-stone-200 bg-white/95 px-4 py-4 backdrop-blur-sm md:flex md:static md:m-0 md:border-b-0 md:bg-transparent md:p-0">
                     <div className="space-y-3">
                       <div className="flex flex-wrap items-center gap-2">
@@ -797,7 +834,7 @@ export default function UrunlerPage() {
                     );
                   })()}
 
-                  <div className="mt-5 border-b border-stone-200 pb-5 sm:mt-6 sm:pb-6">
+                  <div className="mt-5 hidden border-b border-stone-200 pb-5 sm:mt-6 sm:pb-6 md:block">
                     <p className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">Görsel Seçenekleri</p>
                     <div className="-mx-1 flex gap-3 overflow-x-auto px-1 pb-1 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                     {modalImages.map((img, i) => (

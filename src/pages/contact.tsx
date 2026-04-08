@@ -7,6 +7,7 @@ import { CONTACT } from '@/config/contactConfig'
 import { useLanguage } from '@/contexts/LanguageContext'
 
 const ContactMap = dynamic(() => import('@/components/ContactMap'), { ssr: false })
+const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://yasarunderwear.com').replace(/\/$/, '')
 
 const ContactPage: NextPage = () => {
   const { t } = useLanguage()
@@ -69,6 +70,19 @@ const ContactPage: NextPage = () => {
         title={tr('contact.pageTitle', 'İletişim - Yasar')}
         description={tr('contact.pageDescription', 'Yasar ile iletişime geçin.')}
         url="/contact"
+        keywords={['Yasar iletişim', 'Yasar Tekstil iletişim', 'iç giyim üretici iletişim', 'toptan tekstil iletişim']}
+        jsonLd={{
+          '@context': 'https://schema.org',
+          '@type': 'ContactPage',
+          name: tr('contact.pageTitle', 'İletişim - Yasar'),
+          url: `${SITE_URL}/contact`,
+          mainEntity: {
+            '@type': 'Organization',
+            name: 'Yasar',
+            email: CONTACT.EMAIL,
+            telephone: CONTACT.PHONE_MAIN,
+          },
+        }}
       />
 
       <main className="py-16 bg-gradient-to-b from-slate-50 to-white">

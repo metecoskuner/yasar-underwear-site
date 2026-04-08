@@ -915,5 +915,70 @@
     "nl": "Netherlands",
     "fr": "France",
     "us": "United States"
+  },
+  "manufacturerTurkey": {
+    "seo": {
+      "title": "Underwear Manufacturer in Turkey — OEM & Private Label",
+      "description": "Yasar is an experienced underwear manufacturer in Turkey offering OEM and private label production. We provide competitive pricing, reliable quality, and turnkey manufacturing solutions."
+    },
+    "hero": {
+      "title": "Underwear Manufacturer in Turkey — OEM & Private Label",
+      "body": "Yasar is a Turkey-based underwear manufacturer serving international brands, retailers, and private label partners in sleepwear, pajamas, and underwear."
+    },
+    "why": {
+      "title": "Why manufacture in Turkey?",
+      "items": [
+        "Competitive production costs and access to a high-quality textile supply chain.",
+        "Experienced workforce and export know-how across Europe and the Middle East.",
+        "Strict quality control and compliance with industry standards."
+      ]
+    },
+    "services": {
+      "title": "Our OEM & Private Label Services",
+      "body": "We support sampling, prototyping, production planning, packaging design, and shipment coordination. Minimum order quantities vary based on fabric and design complexity."
+    },
+    "cta": {
+      "title": "Request a quote",
+      "prefix": "For OEM production or private label services from Turkey, visit our",
+      "privateLabel": "Private Label",
+      "middle": "or",
+      "wholesale": "Wholesale",
+      "suffix": "pages and fill out the form. Our team will get back to you with timeline and pricing details."
+    }
+  },
+  "admin": {
+    "contentEditor": {
+      "saved": "Saved",
+      "saveFailed": "Save failed",
+      "slug": "Slug (URL segment)",
+      "pageTitle": "Page Title",
+      "addSection": "Add Section",
+      "saving": "Saving...",
+      "savePage": "Save Page"
+    },
+    "users": {
+      "metaTitle": "Admin - Users",
+      "title": "Users",
+      "lead": "This panel is now only used to change the administrator password.",
+      "adminUser": "Administrator User",
+      "defaultAdmin": "admin",
+      "newPassword": "New Password",
+      "confirmPassword": "Confirm Password",
+      "savePassword": "Save Password",
+      "saving": "Saving...",
+      "warning": "Warning: Saving settings is disabled in this environment. Update the environment variable instead.",
+      "noteIntro": "Note: This project reads administrator credentials from the",
+      "noteOutro": "environment variables by default. For production password changes, please use your deployment environment settings.",
+      "validation": {
+        "emptyPassword": "New password cannot be empty.",
+        "mismatch": "Passwords do not match."
+      },
+      "messages": {
+        "disabled": "Password change is disabled in this deployment. Please update the ADMIN_PASS environment variable.",
+        "saveError": "An error occurred while saving.",
+        "saved": "Password saved (you may need to restart the app).",
+        "requestFailed": "Save request failed."
+      }
+    }
   }
 }

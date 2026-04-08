@@ -26,6 +26,20 @@ html, body {
   padding: 0;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+::selection {
+  background: rgba(234, 179, 8, 0.24);
+  color: #111827;
+}
+
+:focus-visible {
+  outline: 2px solid rgba(234, 179, 8, 0.9);
+  outline-offset: 2px;
+}
+
 img, picture, video, svg {
   max-width: 100%;
   height: auto;

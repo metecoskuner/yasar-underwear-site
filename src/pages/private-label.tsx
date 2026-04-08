@@ -3,6 +3,8 @@ import PrivateLabelForm from '@/components/PrivateLabelForm';
 import Link from 'next/link';
 import { useLanguage } from '@/contexts/LanguageContext';
 
+const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://yasarunderwear.com').replace(/\/$/, '');
+
 export default function PrivateLabelPage() {
   const { t } = useLanguage();
   const tr = (key: string, fallback: string) => {
@@ -16,7 +18,23 @@ export default function PrivateLabelPage() {
   };
   return (
     <>
-      <SEO title={tr('pages.privateLabel.seo.title','Private Label & OEM — Yasar')} description={tr('pages.privateLabel.seo.description','Private label and OEM manufacturing — full-service from design to packaging. MOQ and lead times vary by material and quantities.')} url="/private-label" />
+      <SEO
+        title={tr('pages.privateLabel.seo.title','Private Label & OEM — Yasar')}
+        description={tr('pages.privateLabel.seo.description','Private label and OEM manufacturing — full-service from design to packaging. MOQ and lead times vary by material and quantities.')}
+        url="/private-label"
+        keywords={['private label underwear', 'OEM underwear manufacturer', 'custom underwear production', 'Turkey private label textile']}
+        jsonLd={{
+          '@context': 'https://schema.org',
+          '@type': 'Service',
+          serviceType: 'Private label and OEM underwear manufacturing',
+          provider: {
+            '@type': 'Organization',
+            name: 'Yasar',
+          },
+          areaServed: 'Worldwide',
+          url: `${SITE_URL}/private-label`,
+        }}
+      />
 
       <main className="max-w-6xl mx-auto px-4 py-16">
         <section className="text-center mb-10">

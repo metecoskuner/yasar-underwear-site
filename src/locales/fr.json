@@ -863,5 +863,70 @@
     "nl": "Pays-Bas",
     "fr": "France",
     "us": "États-Unis"
+  },
+  "manufacturerTurkey": {
+    "seo": {
+      "title": "Fabricant de sous-vêtements en Turquie — OEM & Marque Privée",
+      "description": "Yasar est un fabricant expérimenté de sous-vêtements en Turquie, spécialisé dans la production OEM et marque privée. Nous proposons des prix compétitifs, une qualité fiable et des solutions clé en main."
+    },
+    "hero": {
+      "title": "Fabricant de sous-vêtements en Turquie — OEM & Marque Privée",
+      "body": "Yasar est un fabricant turc de sous-vêtements qui produit des articles de nuit, pyjamas et sous-vêtements pour des marques internationales, des détaillants et des partenaires de marque privée."
+    },
+    "why": {
+      "title": "Pourquoi produire en Turquie ?",
+      "items": [
+        "Des coûts de production compétitifs et un accès à une chaîne textile de haute qualité.",
+        "Une main-d'œuvre expérimentée et une solide expérience de l'exportation vers l'Europe et le Moyen-Orient.",
+        "Un contrôle qualité strict et le respect des normes du secteur."
+      ]
+    },
+    "services": {
+      "title": "Nos services OEM & marque privée",
+      "body": "Nous assurons le développement d'échantillons, le prototypage, la planification de production, la conception d'emballages et la coordination des expéditions. Les quantités minimales varient selon le tissu et la complexité du modèle."
+    },
+    "cta": {
+      "title": "Demander un devis",
+      "prefix": "Pour une production OEM ou un service de marque privée depuis la Turquie, consultez nos pages",
+      "privateLabel": "Marque Privée",
+      "middle": "ou",
+      "wholesale": "Vente en gros",
+      "suffix": "et remplissez le formulaire. Notre équipe reviendra vers vous avec les délais et les tarifs."
+    }
+  },
+  "admin": {
+    "contentEditor": {
+      "saved": "Enregistré",
+      "saveFailed": "Échec de l'enregistrement",
+      "slug": "Slug (segment d'URL)",
+      "pageTitle": "Titre de la page",
+      "addSection": "Ajouter une section",
+      "saving": "Enregistrement...",
+      "savePage": "Enregistrer la page"
+    },
+    "users": {
+      "metaTitle": "Admin - Utilisateurs",
+      "title": "Utilisateurs",
+      "lead": "Ce panneau sert désormais uniquement à modifier le mot de passe administrateur.",
+      "adminUser": "Utilisateur administrateur",
+      "defaultAdmin": "admin",
+      "newPassword": "Nouveau mot de passe",
+      "confirmPassword": "Confirmer le mot de passe",
+      "savePassword": "Enregistrer le mot de passe",
+      "saving": "Enregistrement...",
+      "warning": "Attention : l'enregistrement des paramètres est désactivé dans cet environnement. Mettez à jour la variable d'environnement.",
+      "noteIntro": "Remarque : ce projet lit par défaut les identifiants administrateur depuis les variables d'environnement",
+      "noteOutro": ". Pour modifier le mot de passe en production, utilisez les paramètres d'environnement de votre déploiement.",
+      "validation": {
+        "emptyPassword": "Le nouveau mot de passe ne peut pas être vide.",
+        "mismatch": "Les mots de passe ne correspondent pas."
+      },
+      "messages": {
+        "disabled": "Le changement de mot de passe est désactivé pour ce déploiement. Veuillez mettre à jour la variable d'environnement ADMIN_PASS.",
+        "saveError": "Une erreur s'est produite lors de l'enregistrement.",
+        "saved": "Mot de passe enregistré (un redémarrage de l'application peut être nécessaire).",
+        "requestFailed": "La requête d'enregistrement a échoué."
+      }
+    }
   }
 }

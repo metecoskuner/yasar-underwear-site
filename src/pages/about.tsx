@@ -5,6 +5,8 @@ import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { useLanguage } from '@/contexts/LanguageContext';
 
+const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://yasarunderwear.com').replace(/\/$/, '');
+
 // Dynamically load WorldMap to avoid SSR issues (same pattern as home)
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const WorldMap = dynamic(() => import('@/components/WorldMap') as Promise<any>, { ssr: false });
@@ -26,7 +28,7 @@ export default function About() {
         "@context": "https://schema.org",
         "@type": "Organization",
         name: tr('pages.about.orgName','Yasar'),
-        url: process.env.NEXT_PUBLIC_SITE_URL || undefined,
+        url: SITE_URL,
         telephone: CONTACT.PHONE_MAIN,
         email: CONTACT.EMAIL,
       }} />
