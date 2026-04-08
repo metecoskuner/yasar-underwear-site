@@ -73,8 +73,6 @@ export default function SEO({
       <meta name="twitter:description" content={description} />
       {imageHref && <meta name="twitter:image" content={imageHref} />}
 
-      <link rel="icon" href="/photos/yasarLogo2.jpg" />
-
       {jsonLd && (
         <script
           type="application/ld+json"
