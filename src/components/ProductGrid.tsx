@@ -101,17 +101,18 @@ export default function ProductGrid() {
   const router = useRouter();
 
   return (
-    <section className="max-w-6xl mx-auto px-4 py-6 md:py-12">
+    <section className="max-w-6xl mx-auto px-4 py-10 md:py-14">
       {/* products fetched (debug banner removed for production) */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="mb-8 flex items-end justify-between gap-4">
         <div>
-          <h2 className="text-xl font-semibold">{tr('components.productGrid.title','Öne Çıkan Ürünler')}</h2>
-          <p className="text-sm text-gray-500 mt-1">{tr('components.productGrid.subtitle','Seçtiğimiz popüler ve önerilen ürünler — kalite ve konfor bir arada.')}</p>
-          <div className="mt-2 h-1 w-24 rounded-full bg-gradient-to-r from-rose-400 via-yellow-300 to-indigo-400" />
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">{tr('components.productGrid.eyebrow','Öne Çıkan Seçki')}</p>
+          <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">{tr('components.productGrid.title','Öne Çıkan Ürünler')}</h2>
+          <p className="mt-2 max-w-2xl text-sm leading-6 text-gray-500">{tr('components.productGrid.subtitle','Seçtiğimiz popüler ve önerilen ürünler; kalite, konfor ve günlük kullanımı bir arada sunar.')}</p>
+          <div className="mt-3 h-1 w-24 rounded-full bg-gradient-to-r from-amber-400 via-rose-300 to-slate-900" />
         </div>
-        <Link href="/urunler" className="text-sm text-blue-600 transition-colors duration-200 hover:text-blue-500">{tr('components.productGrid.viewAll','Tümünü Gör')}</Link>
+        <Link href="/urunler" className="inline-flex shrink-0 items-center rounded-full border border-stone-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-slate-400 hover:bg-stone-50">{tr('components.productGrid.viewAll','Tümünü Gör')}</Link>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {(() => {
           const featured = products.filter((x) => !!x.isFeatured)
           // Render only featured products. If none are featured, render an empty list

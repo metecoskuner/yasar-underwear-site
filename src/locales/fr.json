@@ -183,9 +183,28 @@
       "description": "Collection de produits Yasar",
       "hero": {
         "title": "Collection homme & femme",
-        "subtitle": "Découvrez nos produits fabriqués à partir de tissus de haute qualité adaptés à un usage quotidien.",
+        "subtitle": "Consultez la collection Yasar Textile sur un seul écran avec les catégories, les codes produit et les options d’image. Comparez plus rapidement des modèles de haute qualité adaptés à un usage quotidien.",
         "ctaInspect": "Parcourir les produits",
-        "ctaContact": "Contactez-nous"
+        "ctaContact": "Contactez-nous",
+        "guide": {
+          "eyebrow": "Guide de la collection",
+          "title": "Accédez plus vite au bon modèle",
+          "body": "En parcourant la collection, vous pouvez utiliser ensemble les filtres, les codes produit et les options visuelles.",
+          "items": {
+            "filters": {
+              "title": "Affinez la collection avec les filtres de catégorie",
+              "body": "Atteignez le groupe de produits recherché en quelques étapes."
+            },
+            "code": {
+              "title": "Recherchez rapidement avec le code produit",
+              "body": "Identifiez le bon produit plus rapidement pendant le devis et la commande."
+            },
+            "gallery": {
+              "title": "Consultez tous les visuels dans la fenêtre de détail",
+              "body": "Comparez les différents angles d’un même produit sur un seul écran."
+            }
+          }
+        }
       },
       "gender": {
         "all": "Tous",
@@ -496,6 +515,8 @@
   "components": {
     "productCard": {
       "inspect": "Afficher",
+      "openDetails": "Ouvrir le détail du produit",
+      "viewInCollection": "Voir dans la collection",
       "inspectWithTitle": "{label} : {title}",
       "imageAlt": "Image du produit",
       "codeLabelLower": "code produit : {code}",
@@ -513,6 +534,7 @@
       }
     },
     "productGrid": {
+      "eyebrow": "Sélection mise en avant",
       "title": "Produits en vedette",
       "subtitle": "Nos articles populaires et recommandés sélectionnés — qualité et confort.",
       "viewAll": "Voir tout"
@@ -567,11 +589,13 @@
     },
     "heroInfoCards": {
       "wholesale": {
+        "eyebrow": "Partenariat de gros",
         "title": "Demande de vente en gros",
         "description": "Nous proposons des prix compétitifs, une capacité de production flexible et des livraisons rapides pour les commandes importantes. Yasar Textile fournit des solutions de production en gros durables pour les magasins, les chaînes, les distributeurs et les entreprises de commerce électronique.",
         "cta": "Postuler pour la vente en gros"
       },
       "private": {
+        "eyebrow": "Marque privée",
         "title": "Créez votre propre marque",
         "description": "Chez Yasar Textile, nous proposons des services de fabrication en marque blanche et OEM pour les marques de lingerie. Nous gérons professionnellement l'ensemble du processus, de la conception à la production, l'étiquetage et l'emballage.",
         "cta": "Démarrer le processus de production"
@@ -681,6 +705,13 @@
   },
   "adminLayout": {
     "logout": "Se déconnecter"
+  },
+  "pagesHome": {
+    "export": {
+      "eyebrow": "Réseau d’exportation",
+      "title": "Notre structure de distribution qui s’étend de la Turquie à différents marchés",
+      "body": "Consultez les régions desservies activement par Yasar Textile. La carte montre en un coup d’œil la puissance de production de la marque et sa portée internationale."
+    }
   },
   "contact": {
     "pageTitle": "Contact - Yasar Textile",

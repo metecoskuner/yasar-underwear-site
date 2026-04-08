@@ -31,16 +31,13 @@ export default function ApplicationsList({ initialFilter }: { initialFilter?: st
     try {
       const resp = await fetch('/api/admin/applications/read', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id }), credentials: 'include' })
       if (!resp.ok) {
-        const errData = await resp.json()
-        console.error('markRead error:', resp.status, errData)
-        setError(`Başvuru okundu olarak işaretlenemedi (${resp.status}: ${errData?.error || 'unknown'})`)
+        setError('Başvuru okundu olarak işaretlenemedi')
         return
       }
       setItems((s) => s.map((m) => (m.id === id ? { ...m, read: true } : m)))
       notifyAdminDataChanged()
-    } catch (err) {
-      console.error('markRead exception:', err)
-      setError(`Hata: ${String(err)}`)
+    } catch {
+      setError('Başvuru okundu olarak işaretlenemedi')
     }
   }
 

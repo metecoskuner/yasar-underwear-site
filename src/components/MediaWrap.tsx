@@ -4,18 +4,18 @@ import { useLanguage } from '@/contexts/LanguageContext';
 type VideoItem = { src: string; poster?: string; focal?: string };
 
 const VIDEOS: VideoItem[] = [
-  { src: "/videos/DSCF7638.mp4", poster: "/photos/PYJAMA-BRANDS.avif", focal: "center 30%" },
-  { src: "/videos/DSCF7639.mp4", poster: "/photos/PYJAMA-BRANDS.avif", focal: "center 35%" },
-  { src: "/videos/DSCF7649.mp4", poster: "/photos/PYJAMA-BRANDS.avif", focal: "center 40%" },
-  { src: "/videos/DSCF7648.mp4", poster: "/photos/PYJAMA-BRANDS.avif", focal: "center 30%" },
-  { src: "/videos/DSCF7645.mp4", poster: "/photos/PYJAMA-BRANDS.avif", focal: "center 45%" },
-  { src: "/videos/DSCF7651.mp4", poster: "/photos/PYJAMA-BRANDS.avif", focal: "center 50%" },
+  { src: "/videos/DSCF7638-web.mp4", poster: "/photos/PYJAMA-BRANDS.avif", focal: "center 30%" },
+  { src: "/videos/DSCF7639-web.mp4", poster: "/photos/PYJAMA-BRANDS.avif", focal: "center 35%" },
+  { src: "/videos/DSCF7649-web.mp4", poster: "/photos/PYJAMA-BRANDS.avif", focal: "center 40%" },
+  { src: "/videos/DSCF7648-web.mp4", poster: "/photos/PYJAMA-BRANDS.avif", focal: "center 30%" },
+  { src: "/videos/DSCF7645-web.mp4", poster: "/photos/PYJAMA-BRANDS.avif", focal: "center 45%" },
+  { src: "/videos/DSCF7651-web.mp4", poster: "/photos/PYJAMA-BRANDS.avif", focal: "center 50%" },
 ];
 
-const AUTO_PLAY_COUNT = 3;
+const ALWAYS_PLAY_COUNT = 3;
 
 export default function MediaWrap() {
-  const { t, lang } = useLanguage();
+  const { t } = useLanguage();
   const tr = (key: string, fallback: string) => {
     try {
       const v = t(key);
@@ -52,6 +52,7 @@ export default function MediaWrap() {
   }
 
   function ensureVideoLoaded(i: number) {
+    if (i < 0 || i >= VIDEOS.length) return;
     const video = videoRefs.current[i];
     if (!video || !video.dataset.src || video.src) return;
 
@@ -143,7 +144,7 @@ export default function MediaWrap() {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  // --- ensure first video loads immediately on mount ---
+  // --- ensure first 3 videos load immediately on mount ---
   useEffect(() => {
     ensureVideoLoaded(0);
     ensureVideoLoaded(1);
@@ -165,11 +166,7 @@ export default function MediaWrap() {
           }
         });
       },
-      {
-        root: containerRef.current ?? null,
-        rootMargin: "120px",
-        threshold: 0.6,
-      }
+      { root: containerRef.current ?? null, rootMargin: "48px", threshold: 0.7 }
     );
 
     videoRefs.current.forEach((v) => v && obs.observe(v));
@@ -184,12 +181,14 @@ export default function MediaWrap() {
     }
 
     ensureVideoLoaded(index);
-    ensureVideoLoaded(index - 1);
     ensureVideoLoaded(index + 1);
+    for (let i = 0; i < ALWAYS_PLAY_COUNT; i += 1) {
+      ensureVideoLoaded(i);
+    }
 
     videoRefs.current.forEach((v, i) => {
       if (!v) return;
-      const shouldPlay = i < AUTO_PLAY_COUNT || i === index;
+      const shouldPlay = i < ALWAYS_PLAY_COUNT || i === index;
 
       if (shouldPlay) {
         v.muted = true;
@@ -219,6 +218,11 @@ export default function MediaWrap() {
       } else {
         try {
           v.pause();
+          if (i >= ALWAYS_PLAY_COUNT && Math.abs(i - index) > 1) {
+            v.removeAttribute("src");
+            v.load();
+            v.dataset.src = VIDEOS[i]?.src ?? "";
+          }
         } catch {}
       }
     });
@@ -380,19 +384,6 @@ export default function MediaWrap() {
     return () => clearTimeout(t);
   }, [paused, isSectionVisible, prefersReducedMotion]);
 
-  // debug: print current lang and resolved media title to help diagnose missing translations
-  // this runs as a side-effect and does not render anything
-  React.useEffect(() => {
-    if (typeof window === 'undefined') return;
-    try {
-      if (process.env.NODE_ENV === 'development') {
-        console.debug('[MediaWrap] lang=', lang, 'title=', t('components.media.title'));
-      }
-    } catch {
-      // ignore
-    }
-  }, [lang, t]);
-
   return (
     <section ref={sectionRef} className="max-w-6xl mx-auto px-4 py-6 sm:py-8">
       <h3 className="text-lg font-semibold mb-4">{tr('components.media.title','Gör, Hisset, Keşfet')}</h3>
@@ -456,7 +447,7 @@ export default function MediaWrap() {
                   muted
                   loop
                   playsInline
-                  preload={i < AUTO_PLAY_COUNT || active ? "metadata" : "none"}
+                  preload={i < ALWAYS_PLAY_COUNT || active || i === index + 1 ? "metadata" : "none"}
                   className="w-full h-full object-cover"
                   style={{ objectPosition: it.focal }}
                 />

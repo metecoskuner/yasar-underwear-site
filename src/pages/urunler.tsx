@@ -17,6 +17,13 @@ const GENDER_TABS = [
   { key: 'female', label: 'Kadın' },
 ];
 
+const CATEGORY_LABELS: Record<string, string> = {
+  'ic-giyim': 'İç Giyim',
+  'ev-giyim': 'Ev Giyimi',
+  corap: 'Çorap & Aksesuar',
+  aktif: 'Aktif & Rahat',
+};
+
 export default function UrunlerPage() {
   const { t, lang } = useLanguage();
   
@@ -38,11 +45,16 @@ export default function UrunlerPage() {
   const [query, setQuery] = useState('');
   const [activeProduct, setActiveProduct] = useState<ProductType | null>(null);
   const [modalIndex, setModalIndex] = useState(0);
-  const [allowHoverZoom, setAllowHoverZoom] = useState(false);
-  const [hasHoveredOnce, setHasHoveredOnce] = useState(false);
-  const [zoom, setZoom] = useState(false);
-  const [zoomOrigin, setZoomOrigin] = useState<{ x: number; y: number }>({ x: 50, y: 50 });
+  const [isMagnifierVisible, setIsMagnifierVisible] = useState(false);
+  const [magnifier, setMagnifier] = useState<{ x: number; y: number; offsetX: number; offsetY: number }>({
+    x: 50,
+    y: 50,
+    offsetX: 0,
+    offsetY: 0,
+  });
   const closeBtnRef = useRef<HTMLButtonElement | null>(null);
+  const touchStartXRef = useRef<number | null>(null);
+  const touchDeltaXRef = useRef(0);
   const [copiedCode, setCopiedCode] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -106,7 +118,6 @@ export default function UrunlerPage() {
       try {
         const res = await fetch('/api/content', { cache: 'no-store' })
         if (!res.ok) {
-          try { console.error('[urunler] Fetch failed:', res.status) } catch {}
           if (mounted) setIsLoading(false)
           return
         }
@@ -180,8 +191,7 @@ export default function UrunlerPage() {
           setIsLoading(false)
         }
       } catch (err) {
-        // Log any other errors but don't break the page
-        try { console.error('[urunler] Load error:', err) } catch {}
+        void err;
         if (mounted) setIsLoading(false)
       }
     }
@@ -203,40 +213,76 @@ export default function UrunlerPage() {
     });
   }, [products, gender, category, query]);
 
+  const categories = useMemo(() => {
+    const values = Array.from(new Set(products.map((product) => product.category).filter(Boolean))) as string[];
+    return values;
+  }, [products]);
+
+  const activeProductIndex = useMemo(() => {
+    if (!activeProduct) return -1;
+    return filtered.findIndex((item) => item.id === activeProduct.id);
+  }, [activeProduct, filtered]);
+
+  const relatedProducts = useMemo(() => {
+    if (!activeProduct) return [];
+
+    const sameCategory = filtered.filter((item) => item.id !== activeProduct.id && item.category === activeProduct.category);
+    const sameGender = filtered.filter((item) => item.id !== activeProduct.id && item.gender === activeProduct.gender);
+    const fallback = filtered.filter((item) => item.id !== activeProduct.id);
+
+    const merged = [...sameCategory, ...sameGender, ...fallback];
+    const unique = merged.filter((item, index, list) => list.findIndex((entry) => entry.id === item.id) === index);
+    return unique.slice(0, 3);
+  }, [activeProduct, filtered]);
+
+  const hasActiveFilters = gender !== 'all' || category !== 'all' || query.trim().length > 0;
+
   useEffect(() => {
-    let allowTimer: number | undefined;
     setCopiedCode(false);
+    setIsMagnifierVisible(false);
     if (activeProduct) setTimeout(() => closeBtnRef.current?.focus(), 0);
-    const resetTimer = window.setTimeout(() => {
-      setAllowHoverZoom(false);
-      setHasHoveredOnce(false);
-      setZoom(false);
-      if (activeProduct) allowTimer = window.setTimeout(() => setAllowHoverZoom(true), 220);
-    }, 0);
-    return () => {
-      if (resetTimer) window.clearTimeout(resetTimer);
-      if (allowTimer) window.clearTimeout(allowTimer);
-    };
+    return undefined;
   }, [activeProduct]);
 
   useEffect(() => {
     if (!activeProduct || typeof document === 'undefined') return;
 
+    const scrollY = window.scrollY;
     const previousOverflow = document.body.style.overflow;
+    const previousPosition = document.body.style.position;
+    const previousTop = document.body.style.top;
+    const previousWidth = document.body.style.width;
     document.body.style.overflow = 'hidden';
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.width = '100%';
 
     function handleKeyDown(event: KeyboardEvent) {
       if (event.key === 'Escape') {
         setActiveProduct(null);
+        return;
+      }
+      if (event.key === 'ArrowUp' && activeProductIndex > 0) {
+        event.preventDefault();
+        openProductModal(filtered[activeProductIndex - 1], 0);
+        return;
+      }
+      if (event.key === 'ArrowDown' && activeProductIndex >= 0 && activeProductIndex < filtered.length - 1) {
+        event.preventDefault();
+        openProductModal(filtered[activeProductIndex + 1], 0);
       }
     }
 
     document.addEventListener('keydown', handleKeyDown);
     return () => {
       document.body.style.overflow = previousOverflow;
+      document.body.style.position = previousPosition;
+      document.body.style.top = previousTop;
+      document.body.style.width = previousWidth;
+      window.scrollTo(0, scrollY);
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [activeProduct]);
+  }, [activeProduct, activeProductIndex, filtered]);
 
   // If the page is opened with a ?product=<id> query (e.g. from favorites dropdown),
   // open the modal for that product and scroll it into view.
@@ -283,6 +329,74 @@ export default function UrunlerPage() {
   }, [router.query.category]);
 
   const modalSrc = activeProduct?.images?.[modalIndex] ?? activeProduct?.image ?? '/photos/placeholder.png';
+  const modalImages = activeProduct?.images?.length ? activeProduct.images : activeProduct?.image ? [activeProduct.image] : [];
+  const activeCategoryLabel = activeProduct?.category
+    ? ({
+        'ic-giyim': tr('components.productCard.categories.ic-giyim', 'İç Giyim'),
+        'ev-giyim': tr('components.productCard.categories.ev-giyim', 'Ev Giyimi'),
+        corap: tr('components.productCard.categories.corap', 'Çorap & Aksesuar'),
+        aktif: tr('components.productCard.categories.aktif', 'Aktif & Rahat'),
+      }[activeProduct.category] ?? activeProduct.category)
+    : null;
+
+  function showPrevImage() {
+    if (!modalImages.length) return;
+    setModalIndex((current) => (current - 1 + modalImages.length) % modalImages.length);
+  }
+
+  function showNextImage() {
+    if (!modalImages.length) return;
+    setModalIndex((current) => (current + 1) % modalImages.length);
+  }
+
+  function resetFilters() {
+    setGender('all');
+    setCategory('all');
+    setQuery('');
+  }
+
+  function showPrevProduct() {
+    if (activeProductIndex <= 0) return;
+    openProductModal(filtered[activeProductIndex - 1], 0);
+  }
+
+  function showNextProduct() {
+    if (activeProductIndex < 0 || activeProductIndex >= filtered.length - 1) return;
+    openProductModal(filtered[activeProductIndex + 1], 0);
+  }
+
+  function handleMagnifierMove(event: React.MouseEvent<HTMLDivElement>) {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const offsetX = event.clientX - rect.left;
+    const offsetY = event.clientY - rect.top;
+    setMagnifier({
+      x: Math.max(0, Math.min(100, (offsetX / rect.width) * 100)),
+      y: Math.max(0, Math.min(100, (offsetY / rect.height) * 100)),
+      offsetX,
+      offsetY,
+    });
+  }
+
+  function handleTouchStart(event: React.TouchEvent<HTMLDivElement>) {
+    touchStartXRef.current = event.touches[0]?.clientX ?? null;
+    touchDeltaXRef.current = 0;
+  }
+
+  function handleTouchMove(event: React.TouchEvent<HTMLDivElement>) {
+    if (touchStartXRef.current == null) return;
+    touchDeltaXRef.current = (event.touches[0]?.clientX ?? touchStartXRef.current) - touchStartXRef.current;
+  }
+
+  function handleTouchEnd() {
+    if (touchStartXRef.current == null) return;
+    const deltaX = touchDeltaXRef.current;
+    touchStartXRef.current = null;
+    touchDeltaXRef.current = 0;
+
+    if (Math.abs(deltaX) < 36) return;
+    if (deltaX < 0) showNextImage();
+    else showPrevImage();
+  }
 
   return (
     <div suppressHydrationWarning>
@@ -292,39 +406,77 @@ export default function UrunlerPage() {
       </Head>
 
       {/* HERO */}
-      <section className="bg-gradient-to-br from-amber-300 via-pink-300 to-indigo-500 text-white">
-        <div className="max-w-6xl mx-auto px-4 py-12 sm:py-16 grid lg:grid-cols-2 gap-10 items-center">
+      <section className="bg-[radial-gradient(circle_at_top_left,_rgba(251,191,36,0.35),_transparent_34%),radial-gradient(circle_at_top_right,_rgba(244,114,182,0.18),_transparent_28%),linear-gradient(135deg,#475569_0%,#64748b_34%,#1e293b_100%)] text-white">
+        <div className="max-w-6xl mx-auto grid gap-8 px-4 py-12 sm:gap-10 sm:py-16 lg:grid-cols-[minmax(0,1.1fr)_minmax(320px,0.9fr)] items-center">
           <div>
-            <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight">
-              {tr('pages.products.hero.title','Erkek & Kadın İç Giyim Koleksiyonu')}
+            <div className="mb-4 inline-flex rounded-full border border-white/15 bg-white/10 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.24em] text-white/80">
+              Yaşar Koleksiyonu
+            </div>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight">
+              {tr('pages.products.hero.title','Erkek ve Kadın İç Giyim Koleksiyonu')}
             </h1>
-            <p className="mt-4 max-w-md text-white/90">
-              {tr('pages.products.hero.subtitle','Günlük kullanıma uygun, yüksek kaliteli kumaşlarla üretilmiş ürünlerimizi inceleyin.')}
+            <p className="mt-3 max-w-2xl text-sm leading-6 text-white/86 sm:mt-4 sm:text-base">
+              {tr('pages.products.hero.subtitle','Yaşar Tekstil koleksiyonundaki ürünleri; kategori, ürün kodu ve görsel seçenekleriyle tek ekranda inceleyin. Günlük kullanıma uygun, yüksek kaliteli modelleri hızlıca karşılaştırın.')}
             </p>
-            <div className="mt-8 flex flex-col sm:flex-row gap-3">
-              <a href="#liste" className="px-6 py-3 bg-black text-white rounded-full font-semibold cursor-pointer">
+            <div className="mt-6 flex flex-col sm:mt-8 sm:flex-row gap-3">
+              <a href="#liste" className="inline-flex items-center justify-center rounded-full bg-white px-6 py-3 font-semibold text-slate-900 transition hover:bg-stone-100 cursor-pointer">
                 {tr('pages.products.hero.ctaInspect','Ürünleri İncele')}
               </a>
-              <Link href="/contact" className="px-6 py-3 bg-white/20 border border-white/30 rounded-full font-semibold cursor-pointer">
+              <Link href="/contact" className="inline-flex items-center justify-center rounded-full border border-white/30 bg-white/14 px-6 py-3 font-semibold text-white transition hover:bg-white/20 cursor-pointer">
                 {tr('pages.products.hero.ctaContact','Bizimle İletişime Geç')}
               </Link>
             </div>
           </div>
-          <div className="hidden md:block" />
+          <div className="hidden lg:block">
+            <div className="rounded-[30px] border border-white/15 bg-white/10 p-6 shadow-[0_30px_80px_-45px_rgba(15,23,42,0.6)] backdrop-blur-md">
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-white/60">{tr('pages.products.hero.guide.eyebrow','Koleksiyon Rehberi')}</p>
+              <h2 className="mt-3 text-2xl font-semibold tracking-tight text-white">
+                {tr('pages.products.hero.guide.title','Doğru modele daha hızlı ulaşın')}
+              </h2>
+              <p className="mt-3 text-sm leading-6 text-white/74">
+                {tr('pages.products.hero.guide.body','Koleksiyon içinde ilerlerken filtreleri, ürün kodlarını ve görsel seçeneklerini birlikte kullanabilirsiniz.')}
+              </p>
+              <div className="mt-6 space-y-3">
+                <div className="rounded-[22px] border border-white/12 bg-white/10 px-4 py-3">
+                  <p className="text-sm font-semibold text-white">{tr('pages.products.hero.guide.items.filters.title','Kategori filtreleriyle koleksiyonu daraltın')}</p>
+                  <p className="mt-1 text-sm text-white/68">{tr('pages.products.hero.guide.items.filters.body','İhtiyacınız olan ürün grubuna birkaç adımda ulaşın.')}</p>
+                </div>
+                <div className="rounded-[22px] border border-white/12 bg-white/10 px-4 py-3">
+                  <p className="text-sm font-semibold text-white">{tr('pages.products.hero.guide.items.code.title','Ürün kodu ile hızlı arama yapın')}</p>
+                  <p className="mt-1 text-sm text-white/68">{tr('pages.products.hero.guide.items.code.body','Teklif ve sipariş sürecinde doğru ürünü hızlıca ayırt edin.')}</p>
+                </div>
+                <div className="rounded-[22px] border border-white/12 bg-white/10 px-4 py-3">
+                  <p className="text-sm font-semibold text-white">{tr('pages.products.hero.guide.items.gallery.title','Detay modali ile tüm görselleri inceleyin')}</p>
+                  <p className="mt-1 text-sm text-white/68">{tr('pages.products.hero.guide.items.gallery.body','Aynı ürünün farklı açılarını tek ekranda karşılaştırın.')}</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Debug banner removed */}
       </section>
 
       {/* FILTERS */}
-      <section id="liste" className="max-w-6xl mx-auto px-4 py-10">
-        <div className="flex flex-wrap gap-3 mb-6 lg:sticky lg:top-[calc(var(--site-header-height)+8px)] z-20 bg-white/95 backdrop-blur-sm p-2 rounded-2xl shadow-sm ring-1 ring-black/5">
+      <section id="liste" className="bg-stone-50/70">
+        <div className="max-w-6xl mx-auto px-4 py-10 sm:py-12">
+        <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">Ürün Seçkisi</p>
+            <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900">Koleksiyonu kategori ve ürün koduna göre inceleyin</h2>
+          </div>
+          <div className="inline-flex rounded-full bg-white px-4 py-2 text-sm font-medium text-slate-600 shadow-sm ring-1 ring-black/5">
+            {filtered.length} ürün
+          </div>
+        </div>
+
+        <div className="mb-6 flex flex-wrap gap-2.5 lg:sticky lg:top-[calc(var(--site-header-height)+12px)] z-20 rounded-[24px] bg-white/92 p-3 shadow-[0_20px_45px_-35px_rgba(15,23,42,0.4)] backdrop-blur-md ring-1 ring-black/5">
           {GENDER_TABS.map((t) => (
             <button
               key={t.key}
               type="button"
               onClick={() => setGender(t.key as 'all' | 'male' | 'female')}
-              className={`px-4 py-1.5 rounded-full ${gender === t.key ? 'bg-black text-white' : 'bg-gray-100'}`}
+              className={`rounded-full px-4 py-2 text-sm font-semibold transition cursor-pointer ${gender === t.key ? 'bg-slate-900 text-white shadow-sm' : 'bg-stone-100 text-slate-600 hover:bg-stone-200'}`}
             >
               {tr(`pages.products.gender.${t.key}`, t.label)}
             </button>
@@ -334,22 +486,75 @@ export default function UrunlerPage() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder={tr('pages.products.searchPlaceholder','Ürün ara')}
-            className="w-full sm:flex-1 sm:min-w-[14rem] px-4 py-2 border rounded-xl"
+            className="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-2.5 text-slate-700 outline-none transition placeholder:text-slate-400 focus:border-slate-300 focus:bg-white sm:min-w-[14rem] sm:flex-1"
           />
+          {hasActiveFilters ? (
+            <button
+              type="button"
+              onClick={resetFilters}
+              className="rounded-full border border-stone-200 px-4 py-2 text-sm font-semibold text-slate-600 transition hover:bg-stone-100 cursor-pointer"
+            >
+              Filtreleri temizle
+            </button>
+          ) : null}
         </div>
+
+        {categories.length > 0 ? (
+          <div className="-mx-4 mb-8 overflow-x-auto px-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <div className="flex min-w-max gap-2">
+            <button
+              type="button"
+              onClick={() => setCategory('all')}
+              className={`rounded-full px-4 py-2 text-sm font-medium transition cursor-pointer ${category === 'all' ? 'bg-slate-900 text-white' : 'bg-white text-slate-600 ring-1 ring-black/5 hover:bg-stone-100'}`}
+            >
+              Tüm kategoriler
+            </button>
+            {categories.map((item) => (
+              <button
+                key={item}
+                type="button"
+                onClick={() => setCategory(item)}
+                className={`rounded-full px-4 py-2 text-sm font-medium transition cursor-pointer ${category === item ? 'bg-amber-400 text-slate-950' : 'bg-white text-slate-600 ring-1 ring-black/5 hover:bg-stone-100'}`}
+              >
+                {CATEGORY_LABELS[item] ?? item}
+              </button>
+            ))}
+          </div>
+          </div>
+        ) : null}
+
+        {hasActiveFilters ? (
+          <div className="mb-6 flex flex-wrap items-center gap-2 text-sm text-slate-500">
+            <span className="font-medium text-slate-700">Aktif seçimler:</span>
+            {gender !== 'all' ? <span className="rounded-full bg-stone-200 px-3 py-1">{GENDER_TABS.find((tab) => tab.key === gender)?.label}</span> : null}
+            {category !== 'all' ? <span className="rounded-full bg-stone-200 px-3 py-1">{CATEGORY_LABELS[category] ?? category}</span> : null}
+            {query.trim() ? <span className="rounded-full bg-stone-200 px-3 py-1">Arama: {query.trim()}</span> : null}
+          </div>
+        ) : null}
 
         {/* Render filtered products via ProductCard */}
         {isLoading ? (
           <div className="py-24 text-center text-gray-500">{tr('common.loading', 'Yükleniyor...')}</div>
         ) : filtered.length === 0 ? (
-          <div className="py-24 text-center text-gray-500">{tr('pages.products.noResults','Sonuç bulunamadı')}</div>
+          <div className="rounded-[28px] border border-dashed border-stone-300 bg-white px-6 py-16 text-center shadow-sm">
+            <p className="text-lg font-semibold text-slate-900">{tr('pages.products.noResults','Sonuç bulunamadı')}</p>
+            <p className="mt-2 text-sm text-slate-500">Farklı bir ürün kodu deneyebilir veya filtreleri temizleyerek tüm koleksiyona dönebilirsiniz.</p>
+            <button
+              type="button"
+              onClick={resetFilters}
+              className="mt-5 rounded-full bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-700 cursor-pointer"
+            >
+              Filtreleri sıfırla
+            </button>
+          </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {filtered.map((p) => (
-              <ProductCard key={p.id} product={p} onInspect={openProductModal} />
+              <ProductCard key={p.id} product={p} onInspect={openProductModal} elementId={`product-${p.id}`} />
             ))}
           </div>
         )}
+        </div>
       </section>
 
       {/* categories removed from products page as requested */}
@@ -359,55 +564,93 @@ export default function UrunlerPage() {
         <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
           <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setActiveProduct(null)} />
           <div
-            className="relative bg-white rounded-3xl max-w-5xl w-full shadow-2xl overflow-hidden ring-1 ring-black/5 transform-gpu transition-all duration-300"
+            className="relative w-full max-w-6xl overflow-hidden rounded-[24px] sm:rounded-[32px] bg-white shadow-[0_40px_120px_-40px_rgba(15,23,42,0.5)] ring-1 ring-black/5 transform-gpu transition-all duration-300"
             role="dialog"
             aria-modal="true"
-            style={{ maxHeight: 'calc(100vh - 24px)', overflowY: 'auto' }}
+            style={{ maxHeight: 'calc(100vh - 24px)' }}
           >
             <FocusLock>
-              <div className="grid md:grid-cols-2">
-                <div className="bg-gray-50 p-4 sm:p-6 flex items-center justify-center overflow-hidden">
+              <div className="flex max-h-[calc(100vh-24px)] flex-col md:grid md:grid-cols-[minmax(0,1.05fr)_minmax(360px,0.95fr)]">
+                <div className="sticky top-0 z-30 flex items-start justify-between gap-4 border-b border-stone-200 bg-white/95 px-4 py-4 backdrop-blur-sm md:hidden">
+                  <div className="space-y-2">
+                    <div className="flex flex-wrap items-center gap-2">
+                      {activeCategoryLabel ? (
+                        <span className="inline-flex rounded-full bg-stone-100 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-600">
+                          {activeCategoryLabel}
+                        </span>
+                      ) : null}
+                      {modalImages.length > 1 ? (
+                        <span className="inline-flex rounded-full bg-amber-50 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-amber-700">
+                          {modalImages.length} görsel
+                        </span>
+                      ) : null}
+                    </div>
+                    <h3 className="pr-4 text-2xl font-semibold tracking-tight text-slate-900">{activeTitle}</h3>
+                  </div>
+                  <button
+                    ref={closeBtnRef}
+                    onClick={() => setActiveProduct(null)}
+                    aria-label={tr('common.close','Kapat')}
+                    className="rounded-full border border-stone-200 bg-white p-2.5 text-slate-500 transition hover:border-slate-300 hover:bg-slate-900 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-400 cursor-pointer"
+                  >
+                    ✕
+                  </button>
+                </div>
+
+                <div className="relative flex min-h-[56vh] items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_top_left,_rgba(251,191,36,0.18),_transparent_30%),linear-gradient(180deg,#f8fafc_0%,#f1f5f9_100%)] p-2 sm:p-6 lg:p-8 md:min-h-0">
                   <div
-                    className="relative rounded-lg overflow-hidden bg-white/50 flex items-center justify-center"
-                    style={{ width: '100%', maxWidth: 720, maxHeight: '86vh', overflow: 'hidden' }}
-                    onMouseEnter={() => {
-                      if (!allowHoverZoom) return;
-                      if (!hasHoveredOnce) {
-                        setZoom(true);
-                        setHasHoveredOnce(true);
-                        window.setTimeout(() => setZoom(false), 1200);
-                      }
-                    }}
-                    onClick={(e: React.MouseEvent<HTMLDivElement>) => {
-                      // If hover-zoom isn't allowed yet, ignore clicks
-                      if (!allowHoverZoom) return;
-                      const rect = (e.currentTarget as HTMLDivElement).getBoundingClientRect();
-                      const clickX = e.clientX - rect.left;
-                      const clickY = e.clientY - rect.top;
-                      const xPercent = Math.max(0, Math.min(100, (clickX / rect.width) * 100));
-                      const yPercent = Math.max(0, Math.min(100, (clickY / rect.height) * 100));
-                      setZoomOrigin({ x: xPercent, y: yPercent });
-
-                      if (!hasHoveredOnce) {
-                        // first interaction: mark hovered and zoom in
-                        setHasHoveredOnce(true);
-                        setZoom(true);
-                        // don't auto-zoom-out here; user can click again to toggle off
-                        return;
-                      }
-
-                      // toggle zoom state (click toggles after initial preview)
-                      setZoom((s) => !s);
-                    }}
-                    role="button"
+                    className="relative flex items-center justify-center overflow-hidden rounded-[28px] bg-white shadow-[0_30px_65px_-36px_rgba(15,23,42,0.35)]"
+                    style={{ width: '100%', maxWidth: 720, maxHeight: 'min(82vh, 720px)', overflow: 'hidden' }}
+                    onMouseEnter={() => setIsMagnifierVisible(true)}
+                    onMouseLeave={() => setIsMagnifierVisible(false)}
+                    onMouseMove={handleMagnifierMove}
+                    onTouchStart={handleTouchStart}
+                    onTouchMove={handleTouchMove}
+                    onTouchEnd={handleTouchEnd}
+                    role="region"
                     tabIndex={0}
                     onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
+                      if (e.key === 'ArrowLeft') {
                         e.preventDefault();
-                        setZoom((s) => !s);
+                        showPrevImage();
+                        return;
+                      }
+                      if (e.key === 'ArrowRight') {
+                        e.preventDefault();
+                        showNextImage();
                       }
                     }}
+                    aria-label="Ürün görseli alanı"
                   >
+                    {modalImages.length > 1 && (
+                      <>
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            showPrevImage();
+                          }}
+                          className="absolute left-3 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/92 text-lg font-semibold text-slate-800 shadow transition hover:bg-white cursor-pointer sm:left-4 sm:h-11 sm:w-11"
+                          aria-label="Önceki fotoğraf"
+                        >
+                          ‹
+                        </button>
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            showNextImage();
+                          }}
+                          className="absolute right-3 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/92 text-lg font-semibold text-slate-800 shadow transition hover:bg-white cursor-pointer sm:right-4 sm:h-11 sm:w-11"
+                          aria-label="Sonraki fotoğraf"
+                        >
+                          ›
+                        </button>
+                        <div className="absolute bottom-3 left-1/2 z-10 -translate-x-1/2 rounded-full bg-black/60 px-3 py-1 text-[11px] font-medium text-white backdrop-blur-sm sm:bottom-4 sm:text-xs">
+                          {modalIndex + 1} / {modalImages.length}
+                        </div>
+                      </>
+                    )}
                     <Image
                       src={modalSrc}
                       alt={(() => {
@@ -418,32 +661,79 @@ export default function UrunlerPage() {
                       })()}
                       width={1200}
                       height={900}
-                      className="object-contain transition-transform duration-300 will-change-transform"
-                      style={{
-                        transform: zoom ? 'scale(1.5)' : 'none',
-                        transformOrigin: `${zoomOrigin.x}% ${zoomOrigin.y}%`,
-                        cursor: hasHoveredOnce ? (zoom ? 'zoom-out' : 'zoom-in') : 'zoom-in',
-                      }}
+                      className="h-auto max-h-[52vh] w-full object-contain object-center sm:max-h-[70vh] sm:w-auto"
+                      style={{ cursor: 'zoom-in' }}
                     />
+                    {isMagnifierVisible && (
+                      <div
+                        className="pointer-events-none absolute hidden h-52 w-52 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full border-4 border-white/95 shadow-[0_28px_65px_-24px_rgba(15,23,42,0.78)] ring-1 ring-black/10 md:block"
+                        style={{
+                          left: magnifier.offsetX,
+                          top: magnifier.offsetY,
+                          backgroundImage: `url(${modalSrc})`,
+                          backgroundPosition: `${magnifier.x}% ${magnifier.y}%`,
+                          backgroundRepeat: 'no-repeat',
+                          backgroundSize: '520%',
+                        }}
+                      />
+                    )}
                   </div>
                 </div>
 
-                <div className="p-4 sm:p-6 flex flex-col">
-                    <div className="flex justify-between items-start gap-4">
-                    <h3 className="text-2xl font-semibold">{activeTitle}</h3>
+                <div className="flex max-h-[calc(100vh-24px)] flex-col overflow-y-auto bg-white p-4 pt-0 sm:p-6 lg:p-8">
+                  <div className="sticky top-0 z-20 -mx-4 mb-4 hidden items-start justify-between gap-4 border-b border-stone-200 bg-white/95 px-4 py-4 backdrop-blur-sm md:flex md:static md:m-0 md:border-b-0 md:bg-transparent md:p-0">
+                    <div className="space-y-3">
+                      <div className="flex flex-wrap items-center gap-2">
+                        {activeCategoryLabel ? (
+                          <span className="inline-flex rounded-full bg-stone-100 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-600">
+                            {activeCategoryLabel}
+                          </span>
+                        ) : null}
+                        {modalImages.length > 1 ? (
+                          <span className="inline-flex rounded-full bg-amber-50 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-amber-700">
+                            {modalImages.length} görsel
+                          </span>
+                        ) : null}
+                      </div>
+                      <h3 className="max-w-xl text-2xl font-semibold tracking-tight text-slate-900 sm:text-[2rem]">{activeTitle}</h3>
+                    </div>
                     <button
-                      ref={closeBtnRef}
                       onClick={() => setActiveProduct(null)}
                       aria-label={tr('common.close','Kapat')}
-                      className="p-2 rounded-full bg-white text-rose-600 border border-rose-200 hover:bg-rose-600 hover:text-white transition transform hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-400 cursor-pointer"
+                      className="rounded-full border border-stone-200 bg-white p-2.5 text-slate-500 transition hover:border-slate-300 hover:bg-slate-900 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-400 cursor-pointer"
                     >
                       ✕
                     </button>
                   </div>
 
-                    <div className="mt-4 flex flex-wrap items-center gap-3 text-gray-600">
-                    <span>{tr('pages.products.productCode','Ürün kodu:')}</span>
-                    <span className="font-mono">{activeProduct.productCode ?? ''}</span>
+                  {filtered.length > 1 ? (
+                    <div className="mt-2 flex items-center justify-between rounded-[20px] border border-stone-200 bg-stone-50 px-3 py-3 sm:mt-5 sm:rounded-[22px] sm:px-4">
+                      <button
+                        type="button"
+                        onClick={showPrevProduct}
+                        disabled={activeProductIndex <= 0}
+                        className="rounded-full px-3 py-2 text-xs font-medium text-slate-700 transition hover:bg-white cursor-pointer disabled:cursor-not-allowed disabled:opacity-40 sm:text-sm"
+                      >
+                        ← Önceki ürün
+                      </button>
+                      <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400 sm:text-xs">
+                        {activeProductIndex + 1} / {filtered.length}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={showNextProduct}
+                        disabled={activeProductIndex < 0 || activeProductIndex >= filtered.length - 1}
+                        className="rounded-full px-3 py-2 text-xs font-medium text-slate-700 transition hover:bg-white cursor-pointer disabled:cursor-not-allowed disabled:opacity-40 sm:text-sm"
+                      >
+                        Sonraki ürün →
+                      </button>
+                    </div>
+                  ) : null}
+
+                  <div className="mt-5 rounded-[22px] border border-stone-200 bg-stone-50 p-4 sm:mt-6 sm:rounded-[24px]">
+                    <div className="flex flex-wrap items-center gap-3 text-gray-600">
+                    <span className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">{tr('pages.products.productCode','Ürün kodu:')}</span>
+                    <span className="rounded-full bg-white px-3 py-1.5 font-mono text-sm text-slate-800 shadow-sm ring-1 ring-black/5">{activeProduct.productCode ?? ''}</span>
                     {activeProduct.productCode && (
                       <button
                         type="button"
@@ -467,45 +757,133 @@ export default function UrunlerPage() {
                             void err;
                           }
                         }}
-                        className="inline-flex items-center gap-2 px-3 py-1.5 bg-gray-100 rounded-md text-sm hover:bg-gray-200 transition"
+                        className="inline-flex items-center gap-2 rounded-full bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-700 cursor-pointer"
                         aria-label={`${tr('pages.products.copyCodeAria','Ürün kodunu kopyala')} ${activeProduct.productCode ?? ''}`}
                       >
                         {tr('pages.products.copy','Kopyala')}
                       </button>
                     )}
-                    {copiedCode && <span className="text-sm text-amber-600">{tr('pages.products.copied','Kopyalandı')}</span>}
+                    {copiedCode && <span className="text-sm font-medium text-emerald-600">{tr('pages.products.copied','Kopyalandı')}</span>}
+                    </div>
+                    <p className="mt-3 text-sm leading-6 text-slate-500">
+                      Teklif ve sipariş sürecinde doğru modele hızlıca referans vermek için ürün kodunu kullanabilirsiniz.
+                    </p>
+                  </div>
+
+                  <div className="mt-5 grid grid-cols-1 gap-3 sm:mt-6 sm:grid-cols-3">
+                    <div className="rounded-[22px] border border-stone-200 bg-white p-4">
+                      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">Kategori</p>
+                      <p className="mt-2 text-sm font-semibold text-slate-800">{activeCategoryLabel ?? 'Koleksiyon parçası'}</p>
+                    </div>
+                    <div className="rounded-[22px] border border-stone-200 bg-white p-4">
+                      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">Cinsiyet</p>
+                      <p className="mt-2 text-sm font-semibold text-slate-800">{activeProduct.gender === 'male' ? 'Erkek' : activeProduct.gender === 'female' ? 'Kadın' : 'Unisex'}</p>
+                    </div>
+                    <div className="rounded-[22px] border border-stone-200 bg-white p-4">
+                      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">Galeri</p>
+                      <p className="mt-2 text-sm font-semibold text-slate-800">{modalImages.length} görsel</p>
+                    </div>
                   </div>
 
                   {/* Admin-provided description (localized if available) */}
                   {(() => {
                     const localizedDescription = (activeProduct?.i18nDescription && activeProduct.i18nDescription[langKey]) ?? activeProduct?.description;
                     if (!localizedDescription) return null;
-                    return <p className="mt-4 text-gray-700">{localizedDescription}</p>;
+                    return (
+                      <div className="mt-6 rounded-[24px] border border-stone-200 bg-white p-5 shadow-[0_18px_45px_-36px_rgba(15,23,42,0.3)]">
+                        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">Ürün Detayı</p>
+                        <p className="mt-3 text-[15px] leading-7 text-slate-700">{localizedDescription}</p>
+                      </div>
+                    );
                   })()}
 
-                  <div className="mt-6 flex flex-wrap gap-2">
-                    {activeProduct.images?.map((img, i) => (
+                  <div className="mt-5 border-b border-stone-200 pb-5 sm:mt-6 sm:pb-6">
+                    <p className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">Görsel Seçenekleri</p>
+                    <div className="-mx-1 flex gap-3 overflow-x-auto px-1 pb-1 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                    {modalImages.map((img, i) => (
                       <button
                         key={img}
                         onClick={() => setModalIndex(i)}
-                        className={`w-14 h-14 border rounded overflow-hidden ${modalIndex === i ? 'ring-2 ring-amber-400' : ''} cursor-pointer transform transition-transform duration-150 hover:scale-105 focus-visible:ring-2 focus-visible:ring-amber-300`}
+                        className={`h-16 w-16 shrink-0 overflow-hidden rounded-2xl border bg-white cursor-pointer transition duration-200 ${modalIndex === i ? 'scale-[1.03] border-slate-900 ring-2 ring-slate-900/10 shadow-md' : 'border-stone-200 hover:-translate-y-0.5 hover:border-stone-300 hover:shadow-sm'}`}
                         aria-label={`${tr('pages.products.preview','Önizleme')} ${i + 1}`}
                       >
-                        <Image src={img} alt="" width={56} height={56} className="object-cover" />
+                        <Image src={img} alt="" width={64} height={64} className="h-full w-full object-cover" />
                       </button>
                     ))}
+                    </div>
                   </div>
 
-                  <div className="mt-auto pt-6 flex flex-col sm:flex-row gap-3 justify-end">
+                  <div className="mt-6 flex flex-col gap-3 border-t border-stone-200 pt-5 sm:mt-auto sm:flex-row sm:justify-end sm:pt-6">
                     <Link
                       href={`/contact?product=${encodeURIComponent(activeTitle ?? '')}`}
-                      className="px-6 py-3 bg-amber-400 text-black rounded-full font-semibold shadow-sm hover:bg-amber-500 transition-colors duration-150 cursor-pointer min-w-[120px] sm:min-w-[160px] text-center"
+                      className="inline-flex min-w-[160px] items-center justify-center rounded-full bg-slate-900 px-6 py-3 font-semibold text-white shadow-sm transition hover:bg-slate-700 cursor-pointer text-center"
                       aria-label={`${tr('pages.products.requestInfoAria','Bilgi Al -')} ${activeTitle ?? ''}`}
                     >
                       {tr('pages.products.requestInfo','Bilgi Al')}
                     </Link>
+                    <button
+                      type="button"
+                      onClick={() => setActiveProduct(null)}
+                      className="inline-flex min-w-[160px] items-center justify-center rounded-full border border-stone-300 px-6 py-3 font-semibold text-slate-700 transition hover:border-slate-400 hover:bg-stone-50 cursor-pointer"
+                    >
+                      Koleksiyona dön
+                    </button>
                     {/* Product structured data moved to dedicated product detail pages (SEO component). */}
                   </div>
+
+                  {relatedProducts.length > 0 ? (
+                    <div className="mt-6 border-t border-stone-200 pt-5 sm:mt-8 sm:pt-6">
+                      <div className="mb-4 flex items-end justify-between gap-4">
+                        <div>
+                          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">Benzer Ürünler</p>
+                          <h4 className="mt-2 text-lg font-semibold text-slate-900">Koleksiyondaki benzer alternatifler</h4>
+                        </div>
+                        <span className="hidden text-xs font-medium text-slate-400 sm:inline">{relatedProducts.length} öneri</span>
+                      </div>
+
+                      <div className="-mx-1 flex gap-3 overflow-x-auto px-1 pb-1 sm:mx-0 sm:grid sm:grid-cols-3 sm:overflow-visible sm:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                        {relatedProducts.map((item) => {
+                          const itemTitle = (() => {
+                            const localized = item.i18nTitle?.[langKey];
+                            return localized && String(localized).trim() ? String(localized) : item.title ?? '';
+                          })();
+                          const itemImage = item.images?.[0] ?? item.image ?? '/photos/placeholder.png';
+                          const itemCategory = item.category ? CATEGORY_LABELS[item.category] ?? item.category : null;
+
+                          return (
+                            <button
+                              key={item.id}
+                              type="button"
+                              onClick={() => openProductModal(item, 0)}
+                              className="group w-[220px] shrink-0 overflow-hidden rounded-[22px] border border-stone-200 bg-white text-left shadow-sm transition hover:-translate-y-0.5 hover:border-stone-300 hover:shadow-md cursor-pointer sm:w-auto"
+                            >
+                              <div className="relative h-40 overflow-hidden bg-stone-100">
+                                <Image
+                                  src={itemImage}
+                                  alt={itemTitle}
+                                  fill
+                                  sizes="(max-width: 768px) 100vw, 33vw"
+                                  className="object-cover transition duration-300 group-hover:scale-[1.03]"
+                                />
+                              </div>
+                              <div className="space-y-2 p-4">
+                                {itemCategory ? (
+                                  <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
+                                    {itemCategory}
+                                  </div>
+                                ) : null}
+                                <div className="line-clamp-2 text-sm font-semibold text-slate-900">{itemTitle}</div>
+                                <div className="flex items-center justify-between text-xs font-medium text-slate-500">
+                                  <span>{item.productCode ?? 'Ürün seçeneği'}</span>
+                                  <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+                                </div>
+                              </div>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ) : null}
                 </div>
               </div>
             </FocusLock>

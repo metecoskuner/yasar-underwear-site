@@ -19,16 +19,10 @@ function writeData(obj: { applications?: Record<string, unknown>[] }) {
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (!isAuthed(req)) {
-    console.error('[APP-READ] Unauthorized request')
-    return res.status(401).json({ error: 'unauth' })
-  }
+  if (!isAuthed(req)) return res.status(401).json({ error: 'unauth' })
   if (req.method !== 'POST') return res.status(405).end()
   const { id } = req.body || {}
-  if (!id) {
-    console.error('[APP-READ] Missing id in body:', req.body)
-    return res.status(400).json({ error: 'missing id' })
-  }
+  if (!id) return res.status(400).json({ error: 'missing id' })
 
   let updated = false
 
@@ -39,9 +33,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       .update({ read: true })
       .eq('id', String(id))
 
-    if (error) {
-      console.error('[APP-READ] Supabase error:', error)
-    } else {
+    if (!error) {
       updated = true
     }
   }
@@ -50,9 +42,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     try {
       await prisma.b2BApplication.update({ where: { id: String(id) }, data: { read: true } as unknown as Record<string, unknown> })
       updated = true
-    } catch (err) {
-      console.error('[APP-READ] Prisma error:', err)
-    }
+    } catch {}
   }
 
   const d = readData()
@@ -67,10 +57,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     updated = true
   }
 
-  if (!updated) {
-    console.error('[APP-READ] Nothing was updated for id:', id)
-    return res.status(404).json({ error: 'application_not_found' })
-  }
-  console.log('[APP-READ] Success for id:', id)
+  if (!updated) return res.status(404).json({ error: 'application_not_found' })
   return res.status(200).json({ ok: true })
 }

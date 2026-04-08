@@ -183,9 +183,28 @@
       "description": "Yasar product collection",
       "hero": {
         "title": "Men & Women Underwear Collection",
-        "subtitle": "Discover our products made with high-quality fabrics suitable for everyday use.",
+        "subtitle": "Review the Yasar Textile collection on a single screen with category, product code and image options. Compare high-quality models designed for everyday use more quickly.",
         "ctaInspect": "View products",
-        "ctaContact": "Contact us"
+        "ctaContact": "Contact us",
+        "guide": {
+          "eyebrow": "Collection Guide",
+          "title": "Reach the right model faster",
+          "body": "While browsing the collection, you can use filters, product codes and image options together.",
+          "items": {
+            "filters": {
+              "title": "Narrow the collection with category filters",
+              "body": "Reach the product group you need in just a few steps."
+            },
+            "code": {
+              "title": "Search quickly with product code",
+              "body": "Identify the right product faster during quotation and ordering."
+            },
+            "gallery": {
+              "title": "Review all visuals in the detail modal",
+              "body": "Compare different angles of the same product on one screen."
+            }
+          }
+        }
       },
       "gender": {
         "all": "All",
@@ -553,6 +572,8 @@
   "components": {
     "productCard": {
       "inspect": "Inspect",
+      "openDetails": "Open product details",
+      "viewInCollection": "View in collection",
       "inspectWithTitle": "{label}: {title}",
       "imageAlt": "Product image",
       "codeLabelLower": "product code: {code}",
@@ -570,6 +591,7 @@
       }
     },
     "productGrid": {
+      "eyebrow": "Featured Selection",
       "title": "Featured Products",
       "subtitle": "Our curated popular and recommended items — quality and comfort together.",
       "viewAll": "View all"
@@ -721,12 +743,14 @@
     },
     "heroInfoCards": {
       "wholesale": {
+        "eyebrow": "Wholesale Partnership",
         "title": "Wholesale Sales Application",
         "description": "We offer competitive pricing, flexible production capacity and fast delivery for large orders. Yasar Textile provides sustainable wholesale manufacturing solutions for retailers, chains, distributors and e-commerce businesses.",
         "cta": "Apply for Wholesale"
       }
       ,
       "private": {
+        "eyebrow": "Private Label",
         "title": "Create Your Own Brand",
         "description": "At Yasar Textile we offer private label and OEM manufacturing services for underwear brands. We professionally manage the whole process from design to production, labeling and packaging.",
         "cta": "Start the production process"
@@ -739,6 +763,13 @@
   },
   "adminLayout": {
     "logout": "Log out"
+  },
+  "pagesHome": {
+    "export": {
+      "eyebrow": "Export Network",
+      "title": "Our distribution structure reaching different markets from Türkiye",
+      "body": "Review the regions actively reached by Yasar Textile. The map presents the brand’s production strength and international reach at a glance."
+    }
   },
   "contact": {
     "pageTitle": "Contact - Yasar Textile",

@@ -184,10 +184,29 @@
       "title": "Ürünler — Yasar",
       "description": "Yasar ürün koleksiyonu",
       "hero": {
-        "title": "Erkek & Kadın İç Giyim Koleksiyonu",
-        "subtitle": "Günlük kullanıma uygun, yüksek kaliteli kumaşlarla üretilmiş ürünlerimizi inceleyin.",
+        "title": "Erkek ve Kadın İç Giyim Koleksiyonu",
+        "subtitle": "Yaşar Tekstil koleksiyonundaki ürünleri; kategori, ürün kodu ve görsel seçenekleriyle tek ekranda inceleyin. Günlük kullanıma uygun, yüksek kaliteli modelleri hızlıca karşılaştırın.",
         "ctaInspect": "Ürünleri İncele",
-        "ctaContact": "Bizimle İletişime Geç"
+        "ctaContact": "Bizimle İletişime Geç",
+        "guide": {
+          "eyebrow": "Koleksiyon Rehberi",
+          "title": "Doğru modele daha hızlı ulaşın",
+          "body": "Koleksiyon içinde ilerlerken filtreleri, ürün kodlarını ve görsel seçeneklerini birlikte kullanabilirsiniz.",
+          "items": {
+            "filters": {
+              "title": "Kategori filtreleriyle koleksiyonu daraltın",
+              "body": "İhtiyacınız olan ürün grubuna birkaç adımda ulaşın."
+            },
+            "code": {
+              "title": "Ürün kodu ile hızlı arama yapın",
+              "body": "Teklif ve sipariş sürecinde doğru ürünü hızlıca ayırt edin."
+            },
+            "gallery": {
+              "title": "Detay modali ile tüm görselleri inceleyin",
+              "body": "Aynı ürünün farklı açılarını tek ekranda karşılaştırın."
+            }
+          }
+        }
       },
       "gender": {
         "all": "Tümü",
@@ -628,6 +647,8 @@
   "components": {
     "productCard": {
       "inspect": "İncele",
+      "openDetails": "Ürün detayını aç",
+      "viewInCollection": "Koleksiyonda görüntüle",
       "inspectWithTitle": "{label}: {title}",
       "imageAlt": "Ürün görseli",
       "codeLabelLower": "ürün kodu: {code}",
@@ -645,6 +666,7 @@
       }
     },
     "productGrid": {
+      "eyebrow": "Öne Çıkan Seçki",
       "title": "Öne Çıkan Ürünler",
       "subtitle": "Seçtiğimiz popüler ve önerilen ürünler — kalite ve konfor bir arada.",
       "viewAll": "Tümünü Gör"
@@ -821,11 +843,13 @@
     },
     "heroInfoCards": {
       "wholesale": {
+        "eyebrow": "Toptan İş Birliği",
         "title": "Toptan Satış Başvurusu",
         "description": "Büyük siparişleriniz için rekabetçi fiyatlar, esnek üretim kapasitesi ve hızlı teslimat avantajı sunuyoruz. Yasar Tekstil olarak mağazalar, zincirler, distribütörler ve e-ticaret firmaları için sürdürülebilir toptan üretim çözümleri sağlıyoruz.",
         "cta": "Toptan Başvurusu Yap"
       },
       "private": {
+        "eyebrow": "Özel Marka",
         "title": "Kendi Markanı Üret",
         "description": "Yasar Tekstil olarak iç giyim markaları için private label ve OEM üretim hizmeti sunuyoruz. Tasarım aşamasından üretime, etiketlemeden ambalajlamaya kadar tüm süreci profesyonel olarak yönetiyoruz.",
         "cta": "Üretim Sürecini Başlat"
@@ -834,6 +858,13 @@
   },
   "worldMap": {
     "title": "Dünya haritası"
+  },
+  "pagesHome": {
+    "export": {
+      "eyebrow": "İhracat Ağı",
+      "title": "Türkiye’den farklı pazarlara uzanan dağıtım yapımız",
+      "body": "Yaşar Tekstil’in aktif olarak ulaştığı bölgeleri inceleyin. Harita, markanın üretim gücünü ve uluslararası erişimini tek bakışta gösterir."
+    }
   },
   "config": {
     "mapPlaces": {

@@ -8,10 +8,12 @@ export default function ProductCard({
   product,
   onInspect,
   showWishlist = true,
+  elementId,
 }: {
   product: Product;
   onInspect?: (p: Product, preview?: number | string) => void;
   showWishlist?: boolean;
+  elementId?: string;
 }) {
   const gallery = product.images?.length ? product.images : product.image ? [product.image] : [];
   const PLACEHOLDER = '/photos/PYJAMA-BRANDS.avif';
@@ -52,12 +54,26 @@ export default function ProductCard({
   };
 
   const thumbs = gallery.length ? gallery.slice(0, 3) : Array.from({ length: 3 }).map((_, i) => `placeholder-${i}`);
+  const extraCount = Math.max(0, gallery.length - thumbs.length);
+
+  const showPrevImage = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    if (!gallery.length) return;
+    setActive((current) => (current - 1 + gallery.length) % gallery.length);
+  };
+
+  const showNextImage = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    if (!gallery.length) return;
+    setActive((current) => (current + 1) % gallery.length);
+  };
 
   return (
     <div
+      id={elementId}
       role="button"
       tabIndex={0}
-  aria-label={`${tr('components.productCard.inspect', 'İncele')}: ${displayTitle}`}
+      aria-label={`${tr('components.productCard.openDetails', 'Ürün detayını aç')}: ${displayTitle}`}
       onClick={() => onInspect?.(product, active)}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
@@ -65,12 +81,12 @@ export default function ProductCard({
           onInspect?.(product, active);
         }
       }}
-      className="group rounded-xl overflow-hidden bg-white cursor-pointer transition duration-300 md:hover:-translate-y-1 md:hover:shadow-md focus:outline-none focus:ring-2 focus:ring-amber-300"
+      className="group overflow-hidden rounded-[26px] border border-stone-200/80 bg-white shadow-[0_18px_45px_-28px_rgba(15,23,42,0.34)] cursor-pointer transition duration-300 md:hover:-translate-y-1.5 md:hover:border-stone-300 md:hover:shadow-[0_30px_65px_-30px_rgba(15,23,42,0.45)] focus:outline-none focus:ring-2 focus:ring-amber-300"
     >
-  <div className={`relative product-card-media h-[300px] sm:h-[340px] md:h-[380px] lg:h-[400px] flex items-center justify-center ${product.color ?? 'bg-gray-100'}`}>
+  <div className={`relative product-card-media h-[300px] sm:h-[340px] md:h-[380px] lg:h-[400px] flex items-center justify-center overflow-hidden ${product.color ?? 'bg-stone-100'}`}>
         {/* category badge */}
         {product.category && (
-          <div className="absolute top-3 left-3 bg-white/20 text-gray-300 text-xs px-2 py-1 rounded-md backdrop-blur-sm ring-1 ring-white/10">
+          <div className="absolute left-4 top-4 z-10 rounded-full bg-white/88 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-700 shadow-sm backdrop-blur-sm ring-1 ring-black/5">
             {categoryNames[product.category] ?? product.category}
           </div>
         )}
@@ -104,7 +120,7 @@ export default function ProductCard({
               aria-pressed={isFavorite(product.id)}
             data-wishlist-button="true"
               aria-label={isFavorite(product.id) ? tr('components.productCard.wishlist.remove', 'Favorilerden çıkar') : tr('components.productCard.wishlist.add', 'Favorilere ekle')}
-            className="absolute top-3 right-3 p-2 rounded-full bg-white/80 hover:bg-white text-gray-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-300 z-20 cursor-pointer touch-manipulation"
+            className="absolute right-4 top-4 z-20 rounded-full bg-white/88 p-2.5 text-gray-700 shadow-sm transition hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-300 cursor-pointer touch-manipulation"
           >
             {isFavorite(product.id) ? (
               <svg className={`h-5 w-5 text-rose-500 ${popping ? 'pop-heart' : ''}`} viewBox="0 0 20 20" fill="currentColor">
@@ -127,14 +143,50 @@ export default function ProductCard({
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
             onError={() => setErrored((s) => ({ ...s, [active]: true }))}
-            className="object-cover object-center pointer-events-none"
+            className="pointer-events-none object-cover object-center"
           />
         ) : (
-          <Image src={PLACEHOLDER} alt={tr('components.productCard.imageAlt', 'Ürün görseli')} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw" className="object-cover object-center pointer-events-none" />
+          <Image src={PLACEHOLDER} alt={tr('components.productCard.imageAlt', 'Ürün görseli')} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw" className="pointer-events-none object-cover object-center" />
+        )}
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/55 via-black/15 to-transparent" />
+        {gallery.length > 1 && (
+          <>
+            <button
+              type="button"
+              onClick={showPrevImage}
+              className="absolute left-4 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/88 text-lg font-semibold text-slate-800 shadow-md transition hover:bg-white md:opacity-0 md:group-hover:opacity-100 md:group-focus-within:opacity-100 cursor-pointer"
+              aria-label="Önceki fotoğraf"
+            >
+              ‹
+            </button>
+            <button
+              type="button"
+              onClick={showNextImage}
+              className="absolute right-4 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/88 text-lg font-semibold text-slate-800 shadow-md transition hover:bg-white md:opacity-0 md:group-hover:opacity-100 md:group-focus-within:opacity-100 cursor-pointer"
+              aria-label="Sonraki fotoğraf"
+            >
+              ›
+            </button>
+            <div className="absolute inset-x-0 bottom-16 z-10 flex justify-center gap-1.5 px-4 md:hidden">
+              {gallery.map((_, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setActive(idx);
+                  }}
+                  className={`h-1.5 rounded-full transition cursor-pointer ${active === idx ? 'w-6 bg-white' : 'w-2 bg-white/55'}`}
+                  aria-label={`${idx + 1}. fotoğraf`}
+                  aria-current={active === idx}
+                />
+              ))}
+            </div>
+          </>
         )}
 
         {/* Desktop thumbnails */}
-        <div className="absolute left-4 bottom-3 opacity-0 translate-y-3 group-hover:opacity-100 group-hover:translate-y-0 transition-all hidden md:flex gap-2">
+        <div className="absolute bottom-4 right-4 z-10 hidden gap-2 md:flex">
               {thumbs.map((t, idx) => (
             <button
               key={idx}
@@ -143,7 +195,7 @@ export default function ProductCard({
                 if (active === idx) onInspect?.(product, t);
                 else setActive(idx);
               }}
-              className="w-14 h-14 rounded-md overflow-hidden bg-white shadow border cursor-pointer"
+              className={`h-14 w-14 overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-black/5 cursor-pointer transition ${active === idx ? 'scale-[1.02] ring-2 ring-white shadow-md' : 'opacity-85 hover:opacity-100'}`}
               aria-current={active === idx}
             >
               {gallery[idx] ? (
@@ -161,11 +213,23 @@ export default function ProductCard({
               )}
             </button>
           ))}
+          {extraCount > 0 && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onInspect?.(product, active);
+              }}
+              className="flex h-14 w-14 items-center justify-center rounded-xl bg-black/70 text-xs font-semibold text-white shadow backdrop-blur-sm cursor-pointer"
+              aria-label={`${extraCount} fotoğraf daha görüntüle`}
+            >
+              +{extraCount}
+            </button>
+          )}
         </div>
       </div>
 
       {/* Mobile thumbnails */}
-      <div className="md:hidden mt-3 px-4 flex gap-2">
+      <div className="mt-3 flex gap-2 px-4 md:hidden">
         {thumbs.map((t, idx) => (
           <button
             key={idx}
@@ -174,19 +238,35 @@ export default function ProductCard({
               if (active === idx) onInspect?.(product, t);
               else setActive(idx);
             }}
-            className="w-12 h-12 rounded-md overflow-hidden border cursor-pointer"
+            className={`h-12 w-12 overflow-hidden rounded-xl border border-stone-200 cursor-pointer transition ${active === idx ? 'ring-2 ring-slate-900' : 'opacity-80'}`}
           >
             {gallery[idx] ? <Image src={t} alt="" width={48} height={48} className="object-cover w-full h-full" /> : <div className="w-full h-full bg-gray-200" />}
           </button>
         ))}
+        {extraCount > 0 && (
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onInspect?.(product, active);
+            }}
+            className="flex h-12 w-12 items-center justify-center rounded-xl bg-black/80 text-xs font-semibold text-white cursor-pointer"
+            aria-label={`${extraCount} foto daha görüntüle`}
+          >
+            +{extraCount}
+          </button>
+        )}
       </div>
 
-      <div className="p-4">
-  <h3 className="text-sm font-semibold text-gray-800 truncate">{displayTitle}</h3>
+      <div className="space-y-2 p-5">
+  <h3 className="text-base font-semibold tracking-[0.01em] text-slate-900 truncate">{displayTitle}</h3>
   {/* Product code shown prominently on card for quick reference */}
   {product.productCode ? (
-    <div className="text-xs text-gray-500 mt-1 font-mono">{`${tr('pages.products.productCode','ürün kodu:')} ${product.productCode}`}</div>
+    <div className="inline-flex rounded-full bg-stone-100 px-3 py-1 text-[11px] font-mono text-slate-500">{`${tr('pages.products.productCode','Ürün kodu:')} ${product.productCode}`}</div>
   ) : null}
+  <div className="flex items-center justify-between text-xs font-medium text-slate-500">
+    <span>{tr('components.productCard.viewInCollection', 'Koleksiyonda görüntüle')}</span>
+    <span className="text-sm transition-transform duration-300 md:group-hover:translate-x-1">→</span>
+  </div>
       </div>
     </div>
   );

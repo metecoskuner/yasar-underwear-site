@@ -39,12 +39,13 @@ export default function Hero() {
         autoPlay
         loop
         muted={isMuted}
+        preload="metadata"
         playsInline
         className="absolute inset-0 w-full h-full object-cover object-top"
         style={{ width: '100%', height: '100%' }}
       >
         <source
-          src={isLargeScreen ? '/videos/YasarHero1.mp4' : '/videos/yasarheromobil.mp4'}
+          src={isLargeScreen ? '/videos/YasarHero1-web.mp4' : '/videos/yasarheromobil-web.mp4'}
           type="video/mp4"
         />
         Your browser does not support the video tag.
