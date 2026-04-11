@@ -5,7 +5,8 @@ export const CONTACT = {
 };
 
 // Build WhatsApp URL from env variable with fallback
-const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '+902125190149';
+const rawWhatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '';
+const whatsappNumber = (rawWhatsappNumber.includes('$') ? '' : rawWhatsappNumber.trim()) || '+902125190149';
 const whatsappDigits = whatsappNumber.replace(/[^0-9]/g, '');
 
 export const SOCIAL = {

@@ -1,22 +1,3 @@
 {
-  "messages": [
-    {
-      "id": "msg-001",
-      "name": "John Doe",
-      "email": "john@example.com",
-      "phone": "+90 555 123 4567",
-      "message": "Merhaba, ürünleriniz hakkında bilgi almak istiyorum.",
-      "read": false,
-      "createdAt": "2026-03-10T09:30:00Z"
-    },
-    {
-      "id": "msg-002",
-      "name": "Jane Smith",
-      "email": "jane@example.com",
-      "phone": "+90 555 987 6543",
-      "message": "B2B işbirliği için iletişim kurmak istiyorum.",
-      "read": true,
-      "createdAt": "2026-03-09T14:15:00Z"
-    }
-  ]
+  "messages": []
 }

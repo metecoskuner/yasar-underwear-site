@@ -9,7 +9,10 @@ import { useLanguage } from '../contexts/LanguageContext';
 export default function Footer() {
   const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://yasarunderwear.com').replace(/\/$/, '');
   const mapUrl = 'https://www.google.com/maps?q=Yasar+Camasir,+Mahmutpa%C5%9Fa+Cami+Avlu+i%C3%A7i+No:+12/A,+Mahmutpa%C5%9Fa+Yk%C5%9F.+Sk.,+34120,+T%C3%BCrkiye&ftid=0x14caa563cff9b7c9:0x892026ca3f79739e&entry=gps&shh=CAE&lucs=,94259551,94297699,100808508,100794546,94284496,94231188,94280568,47071704,94218641,94282134,100799877,94286869&g_ep=CAISEjI2LjEzLjYuODg4MzU5NjE4MBgAIIgnKm8sOTQyNTk1NTEsOTQyOTc2OTksMTAwODA4NTA4LDEwMDc5NDU0Niw5NDI4NDQ5Niw5NDIzMTE4OCw5NDI4MDU2OCw0NzA3MTcwNCw5NDIxODY0MSw5NDI4MjEzNCwxMDA3OTk4NzcsOTQyODY4NjlCAklF&skid=8dcef658-1ba7-4dac-9dec-f3ef8bdd396f&g_st=iw';
-  const envNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '+902125190149';
+  const FALLBACK_NUMBER = '+902125190149';
+  const rawEnvNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '';
+  const sanitizedEnvNumber = rawEnvNumber.includes('$') ? '' : rawEnvNumber.trim();
+  const envNumber = sanitizedEnvNumber || FALLBACK_NUMBER;
   const phoneHref = envNumber ? `tel:${envNumber}` : 'tel:+902125209299';
   const digitsForWa = envNumber.replace(/[^0-9]/g, '');
   const envMessage = process.env.NEXT_PUBLIC_WHATSAPP_MESSAGE || '';
@@ -151,7 +154,7 @@ export default function Footer() {
             <Link href="/wholesale" className="inline-flex items-center rounded-full border border-white/12 bg-white/8 px-4 py-2 text-sm font-medium text-white transition hover:border-white/24 hover:bg-white/12">
               Toptan
             </Link>
-            <Link href="/contact" className="inline-flex items-center rounded-full bg-white px-4 py-2 text-sm font-semibold text-slate-900 transition hover:bg-stone-100">
+            <Link href="/contact" className="inline-flex items-center rounded-full bg-white px-4 py-2 text-sm font-semibold !text-slate-900 transition hover:bg-stone-100">
               {tr('footer.contact','İletişim')}
             </Link>
           </div>
