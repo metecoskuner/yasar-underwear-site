@@ -120,7 +120,7 @@ export default function Footer() {
     "@type": "Organization",
     name: "Yasar",
     url: `${siteUrl}/`,
-    logo: `${siteUrl}/photos/yasarLogo.png`,
+    logo: `${siteUrl}/photos/yasarLogo2.jpg`,
     contactPoint: [
       {
         "@type": "ContactPoint",
