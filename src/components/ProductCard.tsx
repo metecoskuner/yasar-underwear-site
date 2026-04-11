@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import Image from 'next/image';
 import useWishlist from '@/hooks/useWishlist';
 import { useLanguage } from '../contexts/LanguageContext';
-import type { Product } from '../data/demoProducts';
+import type { Product } from '@/types/product';
 
 export default function ProductCard({
   product,

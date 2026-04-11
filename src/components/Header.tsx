@@ -1,14 +1,13 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useState, useEffect, useRef, useLayoutEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useRef, useLayoutEffect, useCallback } from "react";
 import { motion } from "framer-motion";
 import { createPortal } from "react-dom";
 import { useRouter } from "next/router";
 import { useLanguage } from "../contexts/LanguageContext";
 import useWishlist, { WishlistItem } from '@/hooks/useWishlist';
-import { getProducts } from '@/data/demoProducts';
-import type { Product } from '@/data/demoProducts';
+import type { Product } from '@/types/product';
 
 const NAV_ITEMS: Array<{
   href: string;
@@ -112,8 +111,6 @@ export default function Header() {
     return map[href] ?? CHILD_META[href]?.subtitle ?? '';
   }, [t]);
   const { favorites, toggle, clear } = useWishlist();
-  // bump to force re-render when product list changes (storage event)
-  const [, setProductsVersion] = useState(0);
   const [wishOpen, setWishOpen] = useState(false);
   const wishRefDesktop = useRef<HTMLDivElement | null>(null);
   const wishRefMobile = useRef<HTMLDivElement | null>(null);
@@ -232,23 +229,13 @@ export default function Header() {
     favorites,
     setWishOpen,
     toggle,
-    getProducts,
     containerClass = '',
   }: {
     favorites: WishlistItem[];
     setWishOpen: (v: boolean) => void;
     toggle: (idOrProduct: string | Product | WishlistItem) => void;
-    getProducts: () => Product[];
     containerClass?: string;
   }) {
-    // Build id->product map once for performance
-    const products = getProducts();
-    const map = useMemo(() => {
-      const out: Record<string, Product | undefined> = {};
-      for (const p of products || []) out[p.id] = p;
-      return out;
-    }, [products]);
-
     // helper to mark panel-origin actions (debounced)
     const markPanelAction = useCallback(() => {
       panelActionRef.current = true;
@@ -287,9 +274,7 @@ export default function Header() {
       <div className={`flex flex-col gap-2 overflow-auto pr-2 ${containerClass}`} style={{ maxHeight: 240 }}>
         {favorites.map((it) => {
           const id = it.id;
-          const p = map[id];
-          // combine persisted metadata with canonical product data if available
-          const combined = p ? ({ ...p, ...it } as Product) : (it as unknown as Product);
+          const combined = it as Product;
           return (
             <div key={id} className="flex items-center gap-3 w-full cursor-pointer px-1">
               <Link
@@ -366,12 +351,6 @@ export default function Header() {
   }, [headerHeight]);
 
   useEffect(() => {
-    // Keep product change listeners and route-change listener in the same effect
-    // so all handlers are registered and cleaned up together.
-    function onProductsChange() {
-      setProductsVersion((v) => v + 1);
-    }
-
     const onRouteChange = () => {
       setMobileOpen(false);
       setLangOpen(false);
@@ -384,13 +363,9 @@ export default function Header() {
       }
     };
 
-    window.addEventListener('storage', onProductsChange);
-    window.addEventListener('yasar:products:changed', onProductsChange as EventListener);
     router.events.on('routeChangeStart', onRouteChange);
 
     return () => {
-      window.removeEventListener('storage', onProductsChange);
-      window.removeEventListener('yasar:products:changed', onProductsChange as EventListener);
       router.events.off('routeChangeStart', onRouteChange);
     };
   }, [router.events]);
@@ -817,7 +792,6 @@ export default function Header() {
                       favorites={favorites}
                       setWishOpen={setWishOpen}
                       toggle={toggle}
-                      getProducts={getProducts}
                       containerClass="max-h-60 lg:max-h-72"
                     />
                   )}
@@ -858,7 +832,6 @@ export default function Header() {
                       favorites={favorites}
                       setWishOpen={setWishOpen}
                       toggle={toggle}
-                      getProducts={getProducts}
                       containerClass="max-h-60 sm:max-h-72"
                     />
                   )}

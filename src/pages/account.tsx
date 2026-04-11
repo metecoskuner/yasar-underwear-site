@@ -8,7 +8,7 @@ export default function AccountPage() {
 
       <main className="max-w-4xl mx-auto px-4 py-12">
         <h1 className="text-2xl font-semibold mb-4">Hesabım</h1>
-        <p className="text-gray-600">Hesap bölümü henüz demo aşamasında. Aşağıdaki bağlantılarla siteyi keşfedebilirsiniz veya hesap detayları için bizimle iletişime geçin.</p>
+        <p className="text-gray-600">Hesap ve sipariş süreçleri şu an doğrudan müşteri temsilcimiz üzerinden yürütülmektedir. Hesabınızla ilgili destek almak için bizimle iletişime geçebilirsiniz.</p>
 
         <div className="mt-6 flex flex-wrap gap-3">
           <Link href="/urunler" className="inline-block px-4 py-2 bg-black text-white rounded-md">Ürünleri Gör</Link>

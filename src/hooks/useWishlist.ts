@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import type { Product } from '@/data/demoProducts';
+import type { Product } from '@/types/product';
 
 const STORAGE_KEY = 'yasar:wishlist';
 
@@ -26,7 +26,7 @@ export default function useWishlist() {
       const parsed = JSON.parse(raw);
       const stored: WishlistItem[] = Array.isArray(parsed) ? parsed.map((p) => (typeof p === 'string' ? { id: p } : p)) : [];
       return stored;
-    } catch (err) {
+    } catch {
       return [];
     }
   });

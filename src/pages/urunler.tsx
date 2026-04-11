@@ -5,7 +5,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 // Layout wrapper is provided by `src/pages/_app.tsx`; do not double-wrap pages.
 import ProductCard from '@/components/ProductCard';
-import { Product as ProductType } from '@/data/demoProducts';
+import type { Product as ProductType } from '@/types/product';
 import { useRouter } from 'next/router';
 import { useLanguage } from '@/contexts/LanguageContext';
 
@@ -564,13 +564,13 @@ export default function UrunlerPage() {
         <div className="fixed inset-0 z-50 flex items-end justify-center px-0 sm:px-4 md:items-center">
           <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setActiveProduct(null)} />
           <div
-            className="relative h-[100svh] w-full max-w-6xl overflow-y-auto overflow-x-hidden rounded-none bg-white shadow-[0_40px_120px_-40px_rgba(15,23,42,0.5)] ring-1 ring-black/5 transform-gpu transition-all duration-300 sm:h-auto sm:rounded-t-[24px] sm:rounded-b-[32px] md:overflow-hidden"
+            className="relative h-[100svh] w-full max-w-7xl overflow-y-auto overflow-x-hidden rounded-none bg-[#fcfbf8] shadow-[0_40px_120px_-40px_rgba(15,23,42,0.5)] ring-1 ring-black/5 transform-gpu transition-all duration-300 sm:h-auto sm:rounded-t-[24px] sm:rounded-b-[32px] md:overflow-hidden"
             role="dialog"
             aria-modal="true"
             style={{ maxHeight: '100vh' }}
           >
             <FocusLock>
-              <div className="flex min-h-[100svh] flex-col md:grid md:grid-cols-[minmax(0,1.05fr)_minmax(360px,0.95fr)] md:h-auto md:max-h-[calc(100vh-24px)]">
+              <div className="flex min-h-[100svh] flex-col md:grid md:grid-cols-[minmax(0,1.08fr)_minmax(380px,0.92fr)] md:h-auto md:max-h-[calc(100vh-24px)]">
                 <div className="sticky top-0 z-30 flex items-center justify-between border-b border-stone-200/80 bg-white/95 px-4 py-3 backdrop-blur-sm md:hidden">
                   <div className="min-w-0">
                     {activeCategoryLabel ? (
@@ -592,95 +592,109 @@ export default function UrunlerPage() {
                   </button>
                 </div>
 
-                <div className="relative shrink-0 bg-white md:min-h-0 md:overflow-hidden md:bg-[radial-gradient(circle_at_top_left,_rgba(251,191,36,0.18),_transparent_30%),linear-gradient(180deg,#f8fafc_0%,#f1f5f9_100%)] md:p-4 lg:p-8">
+                <div className="relative shrink-0 bg-white md:min-h-0 md:overflow-hidden md:border-r md:border-stone-200 md:bg-[radial-gradient(circle_at_top_left,_rgba(251,191,36,0.12),_transparent_26%),linear-gradient(180deg,#f8fafc_0%,#f5f5f4_100%)] md:p-6 lg:p-8">
                   {modalImages.length > 1 ? (
                     <div className="absolute right-4 top-4 z-20 rounded-full bg-slate-900/80 px-3 py-1 text-[11px] font-semibold text-white backdrop-blur-sm md:hidden">
                       {modalIndex + 1} / {modalImages.length}
                     </div>
                   ) : null}
-                  <div
-                    className="relative flex min-h-[46svh] w-full items-center justify-center bg-white px-4 py-5 md:h-auto md:min-h-0 md:max-h-none md:bg-white md:px-0 md:py-0 md:overflow-hidden md:rounded-[28px] md:shadow-[0_30px_65px_-36px_rgba(15,23,42,0.35)]"
-                    style={{
-                      width: '100%',
-                      maxWidth: 720,
-                      touchAction: 'pan-y',
-                    }}
-                    onMouseEnter={() => setIsMagnifierVisible(true)}
-                    onMouseLeave={() => setIsMagnifierVisible(false)}
-                    onMouseMove={handleMagnifierMove}
-                    onTouchStart={handleTouchStart}
-                    onTouchMove={handleTouchMove}
-                    onTouchEnd={handleTouchEnd}
-                    role="region"
-                    tabIndex={0}
-                    onKeyDown={(e) => {
-                      if (e.key === 'ArrowLeft') {
-                        e.preventDefault();
-                        showPrevImage();
-                        return;
-                      }
-                      if (e.key === 'ArrowRight') {
-                        e.preventDefault();
-                        showNextImage();
-                      }
-                    }}
-                    aria-label="Ürün görseli alanı"
-                  >
-                    {modalImages.length > 1 && (
-                      <>
-                        <button
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            showPrevImage();
-                          }}
-                          className="absolute left-4 top-1/2 z-10 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/92 text-lg font-semibold text-slate-800 shadow transition hover:bg-white cursor-pointer md:flex"
-                          aria-label="Önceki fotoğraf"
-                        >
-                          ‹
-                        </button>
-                        <button
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            showNextImage();
-                          }}
-                          className="absolute right-4 top-1/2 z-10 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/92 text-lg font-semibold text-slate-800 shadow transition hover:bg-white cursor-pointer md:flex"
-                          aria-label="Sonraki fotoğraf"
-                        >
-                          ›
-                        </button>
-                        <div className="absolute bottom-3 left-1/2 z-10 hidden -translate-x-1/2 rounded-full bg-black/60 px-3 py-1 text-[11px] font-medium text-white backdrop-blur-sm sm:bottom-4 sm:block sm:text-xs">
-                          {modalIndex + 1} / {modalImages.length}
-                        </div>
-                      </>
-                    )}
-                    <Image
-                      src={modalSrc}
-                      alt={(() => {
-                        if (!activeProduct) return '';
-                        const lk = String(lang).toLowerCase();
-                        const raw = activeProduct.i18nTitle?.[lk];
-                        return (raw && String(raw).trim()) ? String(raw) : (activeProduct.title ?? '');
-                      })()}
-                      width={1200}
-                      height={900}
-                      className="block h-auto max-h-[58svh] w-full max-w-full object-contain object-center md:h-auto md:max-h-[70vh] md:w-auto md:p-0"
-                      style={{ cursor: 'zoom-in' }}
-                    />
-                    {isMagnifierVisible && (
-                      <div
-                        className="pointer-events-none absolute hidden h-52 w-52 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full border-4 border-white/95 shadow-[0_28px_65px_-24px_rgba(15,23,42,0.78)] ring-1 ring-black/10 md:block"
-                        style={{
-                          left: magnifier.offsetX,
-                          top: magnifier.offsetY,
-                          backgroundImage: `url(${modalSrc})`,
-                          backgroundPosition: `${magnifier.x}% ${magnifier.y}%`,
-                          backgroundRepeat: 'no-repeat',
-                          backgroundSize: '520%',
-                        }}
+                  <div className="md:grid md:grid-cols-[88px_minmax(0,1fr)] md:items-center md:gap-5 lg:grid-cols-[96px_minmax(0,1fr)]">
+                    {modalImages.length > 1 ? (
+                      <div className="hidden md:flex md:max-h-[72vh] md:flex-col md:justify-center md:gap-3 md:overflow-y-auto md:pr-1">
+                        {modalImages.map((img, i) => (
+                          <button
+                            key={`${img}-desktop-thumb`}
+                            type="button"
+                            onClick={() => setModalIndex(i)}
+                            className={`group relative h-20 w-20 overflow-hidden rounded-[20px] border bg-white transition duration-200 ${modalIndex === i ? 'border-slate-900 ring-2 ring-slate-900/10 shadow-md' : 'border-stone-200 hover:border-stone-300 hover:shadow-sm'}`}
+                            aria-label={`${tr('pages.products.preview','Önizleme')} ${i + 1}`}
+                          >
+                            <Image src={img} alt="" fill sizes="96px" className="object-cover transition duration-300 group-hover:scale-[1.03]" />
+                          </button>
+                        ))}
+                      </div>
+                    ) : null}
+
+                    <div
+                      className="relative flex min-h-[46svh] w-full items-center justify-center bg-white px-4 py-5 md:min-h-[78vh] md:rounded-[32px] md:border md:border-stone-200 md:px-6 md:py-6 md:shadow-[0_30px_65px_-36px_rgba(15,23,42,0.24)]"
+                      style={{ width: '100%', touchAction: 'pan-y' }}
+                      onMouseEnter={() => setIsMagnifierVisible(true)}
+                      onMouseLeave={() => setIsMagnifierVisible(false)}
+                      onMouseMove={handleMagnifierMove}
+                      onTouchStart={handleTouchStart}
+                      onTouchMove={handleTouchMove}
+                      onTouchEnd={handleTouchEnd}
+                      role="region"
+                      tabIndex={0}
+                      onKeyDown={(e) => {
+                        if (e.key === 'ArrowLeft') {
+                          e.preventDefault();
+                          showPrevImage();
+                          return;
+                        }
+                        if (e.key === 'ArrowRight') {
+                          e.preventDefault();
+                          showNextImage();
+                        }
+                      }}
+                      aria-label="Ürün görseli alanı"
+                    >
+                      {modalImages.length > 1 && (
+                        <>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              showPrevImage();
+                            }}
+                            className="absolute left-4 top-1/2 z-10 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/92 text-lg font-semibold text-slate-800 shadow transition hover:bg-white cursor-pointer md:flex"
+                            aria-label="Önceki fotoğraf"
+                          >
+                            ‹
+                          </button>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              showNextImage();
+                            }}
+                            className="absolute right-4 top-1/2 z-10 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/92 text-lg font-semibold text-slate-800 shadow transition hover:bg-white cursor-pointer md:flex"
+                            aria-label="Sonraki fotoğraf"
+                          >
+                            ›
+                          </button>
+                          <div className="absolute bottom-3 left-1/2 z-10 hidden -translate-x-1/2 rounded-full bg-black/60 px-3 py-1 text-[11px] font-medium text-white backdrop-blur-sm sm:bottom-4 sm:block sm:text-xs">
+                            {modalIndex + 1} / {modalImages.length}
+                          </div>
+                        </>
+                      )}
+                      <Image
+                        src={modalSrc}
+                        alt={(() => {
+                          if (!activeProduct) return '';
+                          const lk = String(lang).toLowerCase();
+                          const raw = activeProduct.i18nTitle?.[lk];
+                          return (raw && String(raw).trim()) ? String(raw) : (activeProduct.title ?? '');
+                        })()}
+                        width={1200}
+                        height={900}
+                        className="block h-auto max-h-[58svh] w-full max-w-full object-contain object-center md:max-h-[72vh] md:p-0"
+                        style={{ cursor: 'zoom-in' }}
                       />
-                    )}
+                      {isMagnifierVisible && (
+                        <div
+                          className="pointer-events-none absolute hidden h-52 w-52 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full border-4 border-white/95 shadow-[0_28px_65px_-24px_rgba(15,23,42,0.78)] ring-1 ring-black/10 md:block"
+                          style={{
+                            left: magnifier.offsetX,
+                            top: magnifier.offsetY,
+                            backgroundImage: `url(${modalSrc})`,
+                            backgroundPosition: `${magnifier.x}% ${magnifier.y}%`,
+                            backgroundRepeat: 'no-repeat',
+                            backgroundSize: '520%',
+                          }}
+                        />
+                      )}
+                    </div>
                   </div>
 
                   {modalImages.length > 1 ? (
@@ -700,7 +714,7 @@ export default function UrunlerPage() {
                   ) : null}
                 </div>
 
-                <div className="bg-white p-4 pt-5 sm:p-6 lg:p-8 md:min-h-0 md:max-h-[calc(100vh-24px)] md:flex md:overflow-y-auto md:pt-0">
+                <div className="bg-[#fcfbf8] p-4 pt-5 sm:p-6 lg:p-8 md:min-h-0 md:max-h-[calc(100vh-24px)] md:flex md:overflow-y-auto">
                   <div className="mb-5 rounded-[24px] border border-stone-200 bg-stone-50/70 p-4 md:hidden">
                     <div className="flex flex-wrap items-center gap-2">
                       {activeCategoryLabel ? (
@@ -718,21 +732,25 @@ export default function UrunlerPage() {
                       {activeTitle}
                     </h3>
                   </div>
-                  <div className="sticky top-0 z-20 -mx-4 mb-4 hidden items-start justify-between gap-4 border-b border-stone-200 bg-white/95 px-4 py-4 backdrop-blur-sm md:flex md:static md:m-0 md:border-b-0 md:bg-transparent md:p-0">
-                    <div className="space-y-3">
+                  <div className="w-full space-y-5 lg:space-y-6">
+                  <div className="hidden items-start justify-between gap-4 border-b border-stone-200 pb-5 md:flex">
+                    <div className="space-y-4">
                       <div className="flex flex-wrap items-center gap-2">
                         {activeCategoryLabel ? (
-                          <span className="inline-flex rounded-full bg-stone-100 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-600">
+                          <span className="inline-flex rounded-full bg-white px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-600 ring-1 ring-stone-200">
                             {activeCategoryLabel}
                           </span>
                         ) : null}
                         {modalImages.length > 1 ? (
-                          <span className="inline-flex rounded-full bg-amber-50 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-amber-700">
+                          <span className="inline-flex rounded-full bg-amber-50 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-amber-700 ring-1 ring-amber-100">
                             {modalImages.length} görsel
                           </span>
                         ) : null}
                       </div>
                       <h3 className="max-w-xl text-2xl font-semibold tracking-tight text-slate-900 sm:text-[2rem]">{activeTitle}</h3>
+                      <p className="max-w-xl text-sm leading-6 text-slate-500">
+                        Ürün detaylarını inceleyebilir, ürün kodunu kopyalayabilir ve doğrudan bilgi talebi oluşturabilirsiniz.
+                      </p>
                     </div>
                     <button
                       onClick={() => setActiveProduct(null)}
@@ -744,7 +762,7 @@ export default function UrunlerPage() {
                   </div>
 
                   {filtered.length > 1 ? (
-                    <div className="mt-2 flex items-center justify-between rounded-[20px] border border-stone-200 bg-stone-50 px-3 py-3 sm:mt-5 sm:rounded-[22px] sm:px-4">
+                    <div className="flex items-center justify-between rounded-[20px] border border-stone-200 bg-white px-3 py-3 shadow-sm sm:rounded-[22px] sm:px-4">
                       <button
                         type="button"
                         onClick={showPrevProduct}
@@ -767,7 +785,7 @@ export default function UrunlerPage() {
                     </div>
                   ) : null}
 
-                  <div className="mt-5 rounded-[22px] border border-stone-200 bg-stone-50 p-4 sm:mt-6 sm:rounded-[24px]">
+                  <div className="rounded-[26px] border border-stone-200 bg-white p-5 shadow-[0_20px_45px_-36px_rgba(15,23,42,0.28)]">
                     <div className="flex flex-wrap items-center gap-3 text-gray-600">
                     <span className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">{tr('pages.products.productCode','Ürün kodu:')}</span>
                     <span className="rounded-full bg-white px-3 py-1.5 font-mono text-sm text-slate-800 shadow-sm ring-1 ring-black/5">{activeProduct.productCode ?? ''}</span>
@@ -807,16 +825,16 @@ export default function UrunlerPage() {
                     </p>
                   </div>
 
-                  <div className="mt-5 grid grid-cols-1 gap-3 sm:mt-6 sm:grid-cols-3">
-                    <div className="rounded-[22px] border border-stone-200 bg-white p-4">
+                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+                    <div className="rounded-[22px] border border-stone-200 bg-white p-4 shadow-sm">
                       <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">Kategori</p>
                       <p className="mt-2 text-sm font-semibold text-slate-800">{activeCategoryLabel ?? 'Koleksiyon parçası'}</p>
                     </div>
-                    <div className="rounded-[22px] border border-stone-200 bg-white p-4">
+                    <div className="rounded-[22px] border border-stone-200 bg-white p-4 shadow-sm">
                       <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">Cinsiyet</p>
                       <p className="mt-2 text-sm font-semibold text-slate-800">{activeProduct.gender === 'male' ? 'Erkek' : activeProduct.gender === 'female' ? 'Kadın' : 'Unisex'}</p>
                     </div>
-                    <div className="rounded-[22px] border border-stone-200 bg-white p-4">
+                    <div className="rounded-[22px] border border-stone-200 bg-white p-4 shadow-sm">
                       <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">Galeri</p>
                       <p className="mt-2 text-sm font-semibold text-slate-800">{modalImages.length} görsel</p>
                     </div>
@@ -827,30 +845,30 @@ export default function UrunlerPage() {
                     const localizedDescription = (activeProduct?.i18nDescription && activeProduct.i18nDescription[langKey]) ?? activeProduct?.description;
                     if (!localizedDescription) return null;
                     return (
-                      <div className="mt-6 rounded-[24px] border border-stone-200 bg-white p-5 shadow-[0_18px_45px_-36px_rgba(15,23,42,0.3)]">
+                      <div className="rounded-[26px] border border-stone-200 bg-white p-5 shadow-[0_18px_45px_-36px_rgba(15,23,42,0.3)]">
                         <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">Ürün Detayı</p>
                         <p className="mt-3 text-[15px] leading-7 text-slate-700">{localizedDescription}</p>
                       </div>
                     );
                   })()}
 
-                  <div className="mt-5 hidden border-b border-stone-200 pb-5 sm:mt-6 sm:pb-6 md:block">
+                  <div className="hidden rounded-[26px] border border-stone-200 bg-white p-5 shadow-sm md:block">
                     <p className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">Görsel Seçenekleri</p>
-                    <div className="-mx-1 flex gap-3 overflow-x-auto px-1 pb-1 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                    <div className="grid grid-cols-4 gap-3">
                     {modalImages.map((img, i) => (
                       <button
                         key={img}
                         onClick={() => setModalIndex(i)}
-                        className={`h-16 w-16 shrink-0 overflow-hidden rounded-2xl border bg-white cursor-pointer transition duration-200 ${modalIndex === i ? 'scale-[1.03] border-slate-900 ring-2 ring-slate-900/10 shadow-md' : 'border-stone-200 hover:-translate-y-0.5 hover:border-stone-300 hover:shadow-sm'}`}
+                        className={`relative aspect-square overflow-hidden rounded-2xl border bg-white cursor-pointer transition duration-200 ${modalIndex === i ? 'scale-[1.03] border-slate-900 ring-2 ring-slate-900/10 shadow-md' : 'border-stone-200 hover:-translate-y-0.5 hover:border-stone-300 hover:shadow-sm'}`}
                         aria-label={`${tr('pages.products.preview','Önizleme')} ${i + 1}`}
                       >
-                        <Image src={img} alt="" width={64} height={64} className="h-full w-full object-cover" />
+                        <Image src={img} alt="" fill sizes="96px" className="object-cover" />
                       </button>
                     ))}
                     </div>
                   </div>
 
-                  <div className="mt-6 flex flex-col gap-3 border-t border-stone-200 pt-5 sm:mt-auto sm:flex-row sm:justify-end sm:pt-6">
+                  <div className="flex flex-col gap-3 pt-1 sm:flex-row sm:justify-end">
                     <Link
                       href={`/contact?product=${encodeURIComponent(activeTitle ?? '')}`}
                       className="inline-flex min-w-[160px] items-center justify-center rounded-full bg-slate-900 px-6 py-3 font-semibold text-white shadow-sm transition hover:bg-slate-700 cursor-pointer text-center"
@@ -869,7 +887,7 @@ export default function UrunlerPage() {
                   </div>
 
                   {relatedProducts.length > 0 ? (
-                    <div className="mt-6 border-t border-stone-200 pt-5 sm:mt-8 sm:pt-6">
+                    <div className="rounded-[26px] border border-stone-200 bg-white p-5 shadow-sm">
                       <div className="mb-4 flex items-end justify-between gap-4">
                         <div>
                           <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">Benzer Ürünler</p>
@@ -878,7 +896,7 @@ export default function UrunlerPage() {
                         <span className="hidden text-xs font-medium text-slate-400 sm:inline">{relatedProducts.length} öneri</span>
                       </div>
 
-                      <div className="-mx-1 flex gap-3 overflow-x-auto px-1 pb-1 sm:mx-0 sm:grid sm:grid-cols-3 sm:overflow-visible sm:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                      <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
                         {relatedProducts.map((item) => {
                           const itemTitle = (() => {
                             const localized = item.i18nTitle?.[langKey];
@@ -892,14 +910,15 @@ export default function UrunlerPage() {
                               key={item.id}
                               type="button"
                               onClick={() => openProductModal(item, 0)}
-                              className="group w-[220px] shrink-0 overflow-hidden rounded-[22px] border border-stone-200 bg-white text-left shadow-sm transition hover:-translate-y-0.5 hover:border-stone-300 hover:shadow-md cursor-pointer sm:w-auto"
+                              className="group overflow-hidden rounded-[22px] border border-stone-200 bg-white text-left shadow-sm transition hover:-translate-y-0.5 hover:border-stone-300 hover:shadow-md cursor-pointer"
                             >
-                              <div className="relative h-40 overflow-hidden bg-stone-100">
+                              <div className="grid min-h-[128px] grid-cols-[104px_minmax(0,1fr)]">
+                              <div className="relative overflow-hidden bg-stone-100">
                                 <Image
                                   src={itemImage}
                                   alt={itemTitle}
                                   fill
-                                  sizes="(max-width: 768px) 100vw, 33vw"
+                                  sizes="160px"
                                   className="object-cover transition duration-300 group-hover:scale-[1.03]"
                                 />
                               </div>
@@ -915,12 +934,14 @@ export default function UrunlerPage() {
                                   <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
                                 </div>
                               </div>
+                              </div>
                             </button>
                           );
                         })}
                       </div>
                     </div>
                   ) : null}
+                  </div>
                 </div>
               </div>
             </FocusLock>

@@ -545,7 +545,7 @@
     "terms": {
       "seo": {
         "title": "Kullanım Şartları - Yasar",
-        "description": "Bu sayfa yakında eklenecek. Daha fazla bilgi için lütfen bizimle iletişime geçin: info@yasarunderwear.com"
+        "description": "Yasar web sitesinin kullanım şartları ve ziyaretçi sorumlulukları."
       },
       "breadcrumb": {
         "home": "Anasayfa",
@@ -553,9 +553,9 @@
       },
       "header": {
         "title": "Kullanım Şartları",
-        "intro": "Bu sayfa yakında eklenecek. Daha fazla bilgi için lütfen bizimle iletişime geçin: info@yasarunderwear.com"
+        "intro": "Bu web sitesini kullanan ziyaretçiler aşağıdaki temel kullanım koşullarını kabul etmiş sayılır."
       },
-      "placeholder": "Bu sayfa yakında eklenecek. Daha fazla bilgi için lütfen bizimle iletişime geçin: info@yasarunderwear.com",
+      "placeholder": "Bu sitedeki içerikler ve ürün bilgileri bilgilendirme amaçlıdır. Detaylı bilgi için bizimle iletişime geçebilirsiniz.",
       "contactLink": "İletişim sayfasına git"
     },
     "uretim_index": {
@@ -578,7 +578,7 @@
       "title": "Hesabım",
       "seoTitle": "Hesabım - Yasar",
       "description": "Hesabınızla ilgili işlemler.",
-      "demoNote": "Hesap bölümü henüz demo aşamasında. Aşağıdaki bağlantılarla siteyi keşfedebilirsiniz veya hesap detayları için bizimle iletişime geçin.",
+      "demoNote": "Hesap ve sipariş süreçleri şu an doğrudan müşteri temsilcimiz üzerinden yürütülmektedir. Destek almak için bizimle iletişime geçebilirsiniz.",
       "links": {
         "viewProducts": "Ürünleri Gör",
         "contact": "İletişime Geç",

@@ -18,7 +18,7 @@ function useTr() {
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useInView } from '../hooks/useInView';
-import type { Product } from '../data/demoProducts';
+import type { Product } from '@/types/product';
 
 function SlideCard({ id, side = 'left', children }: { id?: string; side?: 'left' | 'right'; children: React.ReactNode }) {
   const { ref, inView } = useInView<HTMLDivElement>({ threshold: 0.12 });
@@ -84,7 +84,7 @@ export default function ProductGrid() {
             images: imgs,
             stock: typeof rec.stock === 'number' ? rec.stock : Number(rec.stock ?? 0) || 0,
             createdAt: rec.createdAt ? new Date(Number(rec.createdAt) || (rec.createdAt as string)).toISOString() : undefined,
-            // map gender strings (Turkish) to expected demoProducts Gender values when possible
+            // map Turkish/English gender labels to the normalized product type values
             gender: mapGender(rec.gender),
           }
   }) as Product[]

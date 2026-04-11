@@ -8,11 +8,11 @@
     "stock": 150,
     "isActive": true,
     "isFeatured": true,
-    "imageUrl": "https://via.placeholder.com/300x300?text=Product+001",
+    "imageUrl": "/photos/PYJAMA-BRANDS.avif",
     "images": {
-      "main": "https://via.placeholder.com/300x300?text=Product+001",
-      "alt1": "https://via.placeholder.com/300x300?text=Product+001+View2",
-      "alt2": "https://via.placeholder.com/300x300?text=Product+001+View3"
+      "main": "/photos/PYJAMA-BRANDS.avif",
+      "alt1": "/photos/PYJAMA-BRANDS.avif",
+      "alt2": "/photos/PYJAMA-BRANDS.avif"
     },
     "createdAt": "2026-03-10T10:00:00Z"
   },
@@ -25,11 +25,11 @@
     "stock": 200,
     "isActive": true,
     "isFeatured": true,
-    "imageUrl": "https://via.placeholder.com/300x300?text=Product+002",
+    "imageUrl": "/photos/PYJAMA-BRANDS.avif",
     "images": {
-      "main": "https://via.placeholder.com/300x300?text=Product+002",
-      "alt1": "https://via.placeholder.com/300x300?text=Product+002+View2",
-      "alt2": "https://via.placeholder.com/300x300?text=Product+002+View3"
+      "main": "/photos/PYJAMA-BRANDS.avif",
+      "alt1": "/photos/PYJAMA-BRANDS.avif",
+      "alt2": "/photos/PYJAMA-BRANDS.avif"
     },
     "createdAt": "2026-03-10T10:05:00Z"
   },
@@ -42,11 +42,11 @@
     "stock": 120,
     "isActive": true,
     "isFeatured": false,
-    "imageUrl": "https://via.placeholder.com/300x300?text=Product+003",
+    "imageUrl": "/photos/PYJAMA-BRANDS.avif",
     "images": {
-      "main": "https://via.placeholder.com/300x300?text=Product+003",
-      "alt1": "https://via.placeholder.com/300x300?text=Product+003+View2",
-      "alt2": "https://via.placeholder.com/300x300?text=Product+003+View3"
+      "main": "/photos/PYJAMA-BRANDS.avif",
+      "alt1": "/photos/PYJAMA-BRANDS.avif",
+      "alt2": "/photos/PYJAMA-BRANDS.avif"
     },
     "createdAt": "2026-03-10T10:10:00Z"
   }

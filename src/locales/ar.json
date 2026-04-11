@@ -519,7 +519,7 @@
     "terms": {
       "seo": {
         "title": "شروط الاستخدام - Yasar",
-        "description": "سيتم إضافة صفحة شروط الاستخدام قريبًا. لمزيد من المعلومات، يرجى التواصل معنا."
+        "description": "شروط الاستخدام ومسؤوليات الزائرين على موقع Yasar."
       },
       "breadcrumb": {
         "home": "الصفحة الرئيسية",
@@ -527,9 +527,9 @@
       },
       "header": {
         "title": "شروط الاستخدام",
-        "intro": "ستتوفر هذه الصفحة قريبًا. لمزيد من المعلومات، يرجى التواصل معنا: info@yasarunderwear.com"
+        "intro": "يُعد مستخدمو هذا الموقع موافقين على شروط الاستخدام الأساسية التالية."
       },
-      "placeholder": "ستتوفر هذه الصفحة قريبًا. لمزيد من المعلومات، يرجى التواصل معنا: info@yasarunderwear.com",
+      "placeholder": "يتم تقديم محتوى هذا الموقع ومعلومات المنتجات لأغراض تعريفية عامة. تواصل معنا للحصول على مزيد من التفاصيل.",
       "contactLink": "اذهب إلى صفحة الاتصال"
     },
     "uretim_index": {
@@ -552,7 +552,7 @@
       "title": "Hesabım",
       "seoTitle": "Hesabım - Yasar",
       "description": "Hesabınızla ilgili işlemler.",
-      "demoNote": "Hesap bölümü henüz demo aşamasında. Aşağıdaki bağlantılarla siteyi keşfedebilirsiniz veya hesap detayları için bizimle iletişime geçin.",
+      "demoNote": "تتم إدارة الحسابات والطلبات حاليًا مباشرة عبر فريق خدمة العملاء. تواصل معنا للحصول على الدعم.",
       "links": {
         "viewProducts": "Ürünleri Gör",
         "contact": "İletişime Geç",

@@ -334,7 +334,7 @@
       "terms": {
         "seo": {
           "title": "Terms of Use - Yasar",
-          "description": "Terms of Use will be added soon. Contact us for more information."
+          "description": "Terms of use and visitor responsibilities for the Yasar website."
         },
         "breadcrumb": {
           "home": "Home",
@@ -342,9 +342,9 @@
         },
         "header": {
           "title": "Terms of Use",
-          "intro": "This page will be available soon. For more information, please contact us: info@yasarunderwear.com"
+          "intro": "Visitors using this website are deemed to accept the following basic terms of use."
         },
-        "placeholder": "This page will be available soon. For more information, please contact us: info@yasarunderwear.com",
+        "placeholder": "The content and product information on this site are provided for general information. Contact us for further details.",
         "contactLink": "Go to contact page"
       },
     "about": {

@@ -5,7 +5,6 @@
   "scripts": {
     "dev": "next dev",
     "postinstall": "prisma generate",
-    "seed": "node --experimental-specifier-resolution=node ./scripts/seed.mjs",
     "build": "next build --webpack",
     "start": "next start",
     "lint": "eslint",
