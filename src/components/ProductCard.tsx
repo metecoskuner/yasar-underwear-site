@@ -155,7 +155,7 @@ export default function ProductCard({
               type="button"
               onClick={showPrevImage}
               className="absolute left-4 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/88 text-lg font-semibold text-slate-800 shadow-md transition hover:bg-white md:opacity-0 md:group-hover:opacity-100 md:group-focus-within:opacity-100 cursor-pointer"
-              aria-label="Önceki fotoğraf"
+              aria-label={tr('components.productCard.prevPhoto', 'Önceki fotoğraf')}
             >
               ‹
             </button>
@@ -163,7 +163,7 @@ export default function ProductCard({
               type="button"
               onClick={showNextImage}
               className="absolute right-4 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/88 text-lg font-semibold text-slate-800 shadow-md transition hover:bg-white md:opacity-0 md:group-hover:opacity-100 md:group-focus-within:opacity-100 cursor-pointer"
-              aria-label="Sonraki fotoğraf"
+              aria-label={tr('components.productCard.nextPhoto', 'Sonraki fotoğraf')}
             >
               ›
             </button>
@@ -177,7 +177,7 @@ export default function ProductCard({
                     setActive(idx);
                   }}
                   className={`h-1.5 rounded-full transition cursor-pointer ${active === idx ? 'w-6 bg-white' : 'w-2 bg-white/55'}`}
-                  aria-label={`${idx + 1}. fotoğraf`}
+                  aria-label={tr('components.productCard.photoNumber', '{n}. fotoğraf').replace('{n}', String(idx + 1))}
                   aria-current={active === idx}
                 />
               ))}
@@ -220,7 +220,7 @@ export default function ProductCard({
                 onInspect?.(product, active);
               }}
               className="flex h-14 w-14 items-center justify-center rounded-xl bg-black/70 text-xs font-semibold text-white shadow backdrop-blur-sm cursor-pointer"
-              aria-label={`${extraCount} fotoğraf daha görüntüle`}
+              aria-label={tr('components.productCard.morePhotos', '{count} fotoğraf daha görüntüle').replace('{count}', String(extraCount))}
             >
               +{extraCount}
             </button>
@@ -250,7 +250,7 @@ export default function ProductCard({
               onInspect?.(product, active);
             }}
             className="flex h-12 w-12 items-center justify-center rounded-xl bg-black/80 text-xs font-semibold text-white cursor-pointer"
-            aria-label={`${extraCount} foto daha görüntüle`}
+              aria-label={tr('components.productCard.morePhotosShort', '{count} foto daha görüntüle').replace('{count}', String(extraCount))}
           >
             +{extraCount}
           </button>

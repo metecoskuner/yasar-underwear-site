@@ -1,316 +1,374 @@
-import SEO from '@/components/SEO';
-import Image from 'next/image';
-import { motion } from 'framer-motion';
-import { useLanguage } from '@/contexts/LanguageContext';
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const M: any = motion;
+import SEO from '@/components/SEO'
+import Image from 'next/image'
+import Link from 'next/link'
+import { motion } from 'framer-motion'
+import { useLanguage } from '@/contexts/LanguageContext'
 
-// note: list items are translated via locale keys below
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const M: any = motion
+
 const sampleCheckKeys = [
   'pages.production.quality.sampleChecks.0',
   'pages.production.quality.sampleChecks.1',
   'pages.production.quality.sampleChecks.2',
   'pages.production.quality.sampleChecks.3',
-  'pages.production.quality.sampleChecks.4'
-];
+  'pages.production.quality.sampleChecks.4',
+]
 
 const productionCheckKeys = [
   'pages.production.quality.productionChecks.0',
   'pages.production.quality.productionChecks.1',
   'pages.production.quality.productionChecks.2',
   'pages.production.quality.productionChecks.3',
-  'pages.production.quality.productionChecks.4'
-];
+  'pages.production.quality.productionChecks.4',
+]
 
 const packingCheckKeys = [
   'pages.production.quality.packingChecks.0',
   'pages.production.quality.packingChecks.1',
   'pages.production.quality.packingChecks.2',
   'pages.production.quality.packingChecks.3',
-  'pages.production.quality.packingChecks.4'
-];
+  'pages.production.quality.packingChecks.4',
+]
+
+const sectionReveal = {
+  hidden: { opacity: 0, y: 24 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: 'easeOut' },
+  },
+}
+
+const staggerGroup = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.08, delayChildren: 0.05 },
+  },
+}
 
 export default function KaliteSurecleri() {
-  const { t, g, lang } = useLanguage();
+  const { t, g } = useLanguage()
+
   const tr = (key: string, fallback: string) => {
     try {
-      const value = t(key);
-      return value === key ? fallback : value;
+      const value = t(key)
+      return value === key ? fallback : value
     } catch {
-      return fallback;
+      return fallback
     }
-  };
-
-  // small helper to normalize g() results into an array of strings
-  function ensureArray(v: unknown): string[] {
-    if (Array.isArray(v)) return v as string[];
-    if (v == null) return [];
-    if (typeof v === 'string') return [v];
-    if (typeof v === 'object') return Object.values(v as Record<string, string>);
-    return [];
   }
-  const container = {
-    hidden: {},
-    show: { transition: { staggerChildren: 0.06 } }
-  };
 
-  const item = {
-    hidden: { y: 10, opacity: 0 },
-    show: { y: 0, opacity: 1, transition: { duration: 0.45, ease: 'easeOut' } }
-  };
+  const ensureArray = (v: unknown): string[] => {
+    if (Array.isArray(v)) return v as string[]
+    if (v == null) return []
+    if (typeof v === 'string') return [v]
+    if (typeof v === 'object') return Object.values(v as Record<string, string>)
+    return []
+  }
+
+  const title = tr('pages.production.quality.title', 'Kalite Süreçlerimiz')
+  const heroLead = tr(
+    'pages.production.quality.heroLead',
+    'Üretimin her aşamasında uyguladığımız sıkı kalite denetimleriyle tutarlı, izlenebilir ve güvenilir ürünler sunuyoruz.'
+  )
+
+  const highlights = [
+    { value: tr('pages.production.quality.stats.firstPass', '98%'), label: tr('pages.production.quality.stats.firstPassLabel', 'İlk Geçiş Uygunluk') },
+    { value: tr('pages.production.quality.stats.sampleReportTime', '24s'), label: tr('pages.production.quality.stats.sampleReportTimeLabel', 'Numune Raporlama') },
+    { value: '3', label: tr('pages.production.quality.stats.stages', 'Kontrol Aşaması') },
+  ]
+
+  const phaseCards = [
+    {
+      title: tr('pages.production.quality.features.sample.title', 'Numune Kontrolü'),
+      desc: tr('pages.production.quality.features.sample.desc', 'İlk onay aşamasında ölçü, dikiş ve malzeme uygunluğu denetlenir.'),
+    },
+    {
+      title: tr('pages.production.quality.features.production.title', 'Üretim Kontrolleri'),
+      desc: tr('pages.production.quality.features.production.desc', 'Üretim akışında belirlenen kritik noktalarda düzenli kontroller yapılır.'),
+    },
+    {
+      title: tr('pages.production.quality.features.packing.title', 'Paketleme Kontrolü'),
+      desc: tr('pages.production.quality.features.packing.desc', 'Son ürün, etiket, ambalaj ve sevkiyat hazırlığı aşamasında doğrulanır.'),
+    },
+    {
+      title: tr('pages.production.quality.features.assurance.title', 'Kalite Güvencesi'),
+      desc: tr('pages.production.quality.features.assurance.desc', 'Tüm bulgular kayıt altına alınır ve sürekli iyileştirme döngüsüne dahil edilir.'),
+    },
+  ]
+
+  const assuranceBullets = ensureArray(g('pages.production.quality.features.assurance.bullets'))
+
+  const sampleChecks = sampleCheckKeys.map((key) => t(key))
+  const productionChecks = productionCheckKeys.map((key) => t(key))
+  const packingChecks = packingCheckKeys.map((key) => t(key))
 
   return (
     <>
-  <SEO
-        title={`${tr('pages.production.quality.title', 'Kalite Süreçlerimiz')} - Yasar`}
-        description={tr('pages.production.quality.heroLead', 'Üretimin her aşamasında uyguladığımız sıkı kalite denetimleriyle tutarlı, izlenebilir ve güvenilir ürünler sunuyoruz.')}
+      <SEO
+        title={`${title} - Yasar`}
+        description={heroLead}
         url="/uretim/kalite-surecleri"
       />
 
-      {/* remount main content when language changes so motion "whileInView" animations
-          and any locale-dependent rendering are re-evaluated and do not remain
-          stuck hidden after a language swap */}
-      <main key={lang} className="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-12">
-        {/* Hero */}
-        <M.header
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, amount: 0.2 }}
-          variants={container}
-          className="rounded-xl bg-gradient-to-r from-slate-50 to-white p-6 md:p-12 mb-8"
-        >
-          <div className="md:flex md:items-center md:gap-10">
-            <M.div variants={item} className="md:flex-1 md:max-w-xl">
-              <h1 className="text-3xl md:text-4xl font-extrabold leading-tight">{tr('pages.production.quality.title', 'Kalite Süreçlerimiz')}</h1>
-              <p className="mt-4 text-gray-600 max-w-2xl leading-relaxed">{tr('pages.production.quality.heroLead', 'Üretimin her aşamasında uyguladığımız sıkı kalite denetimleriyle tutarlı, izlenebilir ve güvenilir ürünler sunuyoruz.')}</p>
-
-              <div className="mt-6 flex flex-wrap gap-3 items-center text-sm">
-                <span className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-emerald-50 text-emerald-700">{tr('pages.production.quality.badges.iso', 'ISO Uyumlu')}</span>
-                <span className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-slate-50 text-slate-700">{tr('pages.production.quality.badges.spc', 'SPC Takibi')}</span>
-                <span className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-slate-50 text-slate-700">{tr('pages.production.quality.badges.experience', 'Sürekli İyileştirme')}</span>
-              </div>
-            </M.div>
-
-            <M.div variants={item} className="md:w-1/2 hidden md:block">
-              <div className="rounded-lg overflow-hidden shadow-md"><div className="relative h-64 md:h-72 lg:h-80">
-                <Image src="/photos/PYJAMA-BRANDS.avif" alt={tr('pages.production.quality.imageAlt.hero', 'Kalite süreçleri')} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
-              </div></div>
-            </M.div>
-          </div>
-        </M.header>
-
-        {/* Feature cards (Modern Product style) */}
+      <main className="bg-[linear-gradient(180deg,#f4f1ea_0%,#f8f7f3_18%,#ffffff_100%)]">
         <M.section
-          variants={container}
+          variants={sectionReveal}
           initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, amount: 0.2 }}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8"
+          animate="visible"
+          className="relative overflow-hidden"
         >
-          {[
-            { titleKey: 'pages.production.quality.features.sample.title', descKey: 'pages.production.quality.features.sample.desc', icon: 'check', titleFallback: 'Numune Kontrolü', descFallback: 'İlk onay aşamasında ölçü, dikiş ve malzeme uygunluğu denetlenir.' },
-            { titleKey: 'pages.production.quality.features.production.title', descKey: 'pages.production.quality.features.production.desc', icon: 'factory', titleFallback: 'Üretim Kontrolleri', descFallback: 'Üretim akışında belirlenen kritik noktalarda düzenli kontroller yapılır.' },
-            { titleKey: 'pages.production.quality.features.packing.title', descKey: 'pages.production.quality.features.packing.desc', icon: 'box', titleFallback: 'Paketleme Kontrolü', descFallback: 'Son ürün, etiket, ambalaj ve sevkiyat hazırlığı aşamasında doğrulanır.' },
-            { titleKey: 'pages.production.quality.features.assurance.title', descKey: 'pages.production.quality.features.assurance.desc', icon: 'chart', titleFallback: 'Kalite Güvencesi', descFallback: 'Tüm bulgular kayıt altına alınır ve sürekli iyileştirme döngüsüne dahil edilir.' }
-          ].map((f) => (
-            <M.article
-              key={f.titleKey}
-              variants={item}
-              className="bg-white rounded-lg p-6 border border-slate-100 shadow-sm hover:shadow-md transition-transform"
-            >
-              <div className="mb-4">
-                <div className="h-1 w-12 rounded-full bg-gradient-to-r from-emerald-100 to-white mb-3" />
-                <div className="inline-flex items-center justify-center w-10 h-10 rounded-md bg-slate-50 text-slate-700 mb-1">
-                  {f.icon === 'check' ? (
-                    <svg className="w-5 h-5" viewBox="0 0 20 20" fill="none" aria-hidden>
-                      <path d="M4 10l3 3 9-9" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  ) : f.icon === 'factory' ? (
-                    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" aria-hidden>
-                      <path d="M3 21h18V8l-6 4-4-3-5 4v8z" stroke="currentColor" strokeWidth={1.4} strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  ) : f.icon === 'box' ? (
-                    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" aria-hidden>
-                      <path d="M21 16V8l-9-5-9 5v8l9 5 9-5z" stroke="currentColor" strokeWidth={1.2} strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  ) : (
-                    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" aria-hidden>
-                      <path d="M3 3v18h18" stroke="currentColor" strokeWidth={1.4} strokeLinecap="round" strokeLinejoin="round" />
-                      <path d="M7 14l3-6 4 8 3-10" stroke="currentColor" strokeWidth={1.4} strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  )}
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(16,185,129,0.12),_transparent_24%),radial-gradient(circle_at_bottom_right,_rgba(245,158,11,0.10),_transparent_28%),linear-gradient(180deg,#f7f5ef_0%,#fbfaf7_100%)]" />
+          <div className="relative mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
+            <div className="grid gap-8 lg:grid-cols-[minmax(0,1.04fr)_minmax(360px,0.96fr)] lg:items-start">
+              <div className="max-w-3xl">
+                <div className="inline-flex rounded-full border border-emerald-200 bg-white/90 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.24em] text-emerald-700 backdrop-blur">
+                  {title}
+                </div>
+                <h1 className="mt-6 text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl lg:text-[4.1rem] lg:leading-[1.03]">
+                  {tr('pages.production.quality.heroHeading', 'Her aşamada ölçülen, raporlanan ve tekrar doğrulanan kalite akışı.')}
+                </h1>
+                <p className="mt-5 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
+                  {heroLead}
+                </p>
+
+                <div className="mt-8 flex flex-wrap gap-2">
+                  <div className="inline-flex items-center rounded-full border border-stone-200 bg-white/90 px-4 py-2 text-sm font-medium text-slate-700 shadow-sm">
+                    {tr('pages.production.quality.badges.iso', 'ISO Uyumlu')}
+                  </div>
+                  <div className="inline-flex items-center rounded-full border border-stone-200 bg-white/90 px-4 py-2 text-sm font-medium text-slate-700 shadow-sm">
+                    {tr('pages.production.quality.badges.spc', 'SPC Takibi')}
+                  </div>
+                  <div className="inline-flex items-center rounded-full border border-stone-200 bg-white/90 px-4 py-2 text-sm font-medium text-slate-700 shadow-sm">
+                    {tr('pages.production.quality.badges.experience', 'Sürekli İyileştirme')}
+                  </div>
+                </div>
+
+                <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                  <Link href="/contact" className="inline-flex items-center justify-center rounded-full bg-slate-950 px-6 py-3 font-semibold text-white transition hover:bg-slate-800">
+                    {tr('pages.about.collab.cta', 'İletişime Geç')}
+                  </Link>
+                  <Link href="/uretim/tesisler" className="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-6 py-3 font-semibold text-slate-800 transition hover:border-slate-400 hover:bg-slate-50">
+                    {tr('footer.production.facilities', 'Üretim Tesislerimiz')}
+                  </Link>
                 </div>
               </div>
 
-              <h4 className="font-semibold mb-2 text-slate-800">{tr(f.titleKey, f.titleFallback)}</h4>
-              <p className="text-gray-600 text-sm">{tr(f.descKey, f.descFallback)}</p>
-            </M.article>
-          ))}
-        </M.section>
-
-        {/* Visual checklist */}
-        <section className="grid md:grid-cols-3 gap-6 mb-8">
-          <div className="md:col-span-2 bg-white rounded-lg p-6 shadow-sm">
-            <h2 className="text-2xl font-bold mb-4">{t('pages.production.quality.sections.how.title')}</h2>
-            <p className="text-gray-700 mb-4">{t('pages.production.quality.sections.how.lead')}</p>
-
-            <div className="grid sm:grid-cols-2 gap-4">
-              <article className="p-4 border rounded-lg">
-                <h3 className="font-semibold mb-2">{t('pages.production.quality.sections.sample.title')}</h3>
-                <ul className="list-none space-y-2 text-gray-700">
-                  {sampleCheckKeys.map((k) => (
-                    <li key={k} className="flex items-start gap-3">
-                      <svg className="w-5 h-5 text-emerald-500 mt-1 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden>
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414L8.414 15l-4.121-4.121a1 1 0 011.414-1.414L8.414 12.172l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                      </svg>
-                      <span>{t(k)}</span>
-                    </li>
-                  ))}
-                </ul>
-              </article>
-
-              <article className="p-4 border rounded-lg">
-                <h3 className="font-semibold mb-2">{t('pages.production.quality.sections.production.title')}</h3>
-                <ul className="list-none space-y-2 text-gray-700">
-                  {productionCheckKeys.map((k) => (
-                    <li key={k} className="flex items-start gap-3">
-                      <svg className="w-5 h-5 text-sky-500 mt-1 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden>
-                        <path d="M2 11a1 1 0 011-1h14a1 1 0 110 2H3a1 1 0 01-1-1z" />
-                        <path d="M2 15a1 1 0 011-1h10a1 1 0 110 2H3a1 1 0 01-1-1z" />
-                      </svg>
-                      <span>{t(k)}</span>
-                    </li>
-                  ))}
-                </ul>
-              </article>
-            </div>
-          </div>
-
-          <aside className="bg-white rounded-lg p-6 shadow-sm">
-            <h3 className="text-lg font-semibold">{t('pages.production.quality.features.assurance.title')}</h3>
-            <p className="mt-2 text-gray-700 text-sm">{t('pages.production.quality.features.assurance.desc')}</p>
-
-            <div className="mt-4 grid grid-cols-1 gap-2">
-              {ensureArray(g('pages.production.quality.features.assurance.bullets')).map((b, i) => (
-                <div key={i} className="flex items-center gap-3">
-                  <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-emerald-50 text-emerald-600">{i === 0 ? '✔' : '⚙'}</span>
-                  <span className="text-sm text-gray-700">{b}</span>
-                </div>
-              ))}
-            </div>
-          </aside>
-        </section>
-
-        {/* Detailed sections */}
-        <section className="space-y-8">
-          <M.div variants={container} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} className="relative bg-white rounded-lg p-6 shadow-sm overflow-hidden">
-            <h3 className="text-xl font-bold mb-3">{t('pages.production.quality.sections.sample.title')}</h3>
-            <p className="text-gray-700 mb-4">{t('pages.production.quality.sections.sample.desc')}</p>
-
-              <div className="md:grid md:grid-cols-3 md:gap-6">
-                <div className="md:col-span-2">
-                  <M.ul variants={container} className="space-y-2">
-                    {sampleCheckKeys.map((k) => (
-                      <M.li key={k} variants={item} whileHover={{ x: 2 }} className="flex items-start gap-3 bg-white/50 hover:bg-emerald-50/60 rounded-md p-3">
-                        <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 flex-shrink-0">
-                          <svg className="w-4 h-4" viewBox="0 0 20 20" fill="none" aria-hidden>
-                            <path d="M4 10l3 3 9-9" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" />
-                          </svg>
-                        </span>
-                        <span className="text-gray-700">{t(k)}</span>
-                      </M.li>
-                    ))}
-                  </M.ul>
-
-                  <div className="mt-4 bg-slate-50 rounded-md p-4 border border-slate-100">
-                    <p className="text-sm text-slate-700">{t('pages.production.quality.sample.detail')}</p>
-                    <div className="mt-3 flex gap-4 text-sm">
-                      <div className="flex flex-col">
-                        <span className="text-2xl font-semibold text-slate-800">{t('pages.production.quality.stats.firstPass')}</span>
-                        <span className="text-xs text-slate-600">{t('pages.production.quality.stats.firstPassLabel')}</span>
-                      </div>
-                      <div className="flex flex-col">
-                        <span className="text-2xl font-semibold text-slate-800">{t('pages.production.quality.stats.sampleReportTime')}</span>
-                        <span className="text-xs text-slate-600">{t('pages.production.quality.stats.sampleReportTimeLabel')}</span>
-                      </div>
+              <div className="grid gap-4">
+                <div className="relative overflow-hidden rounded-[34px] border border-white/80 bg-white shadow-[0_40px_90px_-40px_rgba(15,23,42,0.22)]">
+                  <div className="relative h-72 sm:h-80 lg:h-[22rem]">
+                    <Image
+                      src="/photos/machinery-line.jpg"
+                      alt={tr('pages.production.quality.imageAlt.hero', 'Kalite süreçleri')}
+                      fill
+                      sizes="(max-width: 1024px) 100vw, 40vw"
+                      className="object-cover object-center"
+                    />
+                  </div>
+                  <div className="border-t border-stone-200 bg-white p-5">
+                    <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">{tr('pages.production.quality.summary.eyebrow', 'Kalite Özeti')}</p>
+                    <div className="mt-4 grid gap-3 sm:grid-cols-3">
+                      {highlights.map((item, index) => (
+                        <div key={item.label} className={`rounded-[22px] border p-4 ${index === 0 ? 'border-emerald-200 bg-emerald-50/80' : 'border-stone-200 bg-stone-50/80'}`}>
+                          <div className="text-2xl font-semibold tracking-tight text-slate-950">{item.value}</div>
+                          <div className="mt-2 text-xs leading-5 text-slate-600">{item.label}</div>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 </div>
 
-                <div className="md:col-span-1 hidden sm:block">
-                  <div className="relative rounded-md overflow-hidden shadow-md h-44 md:h-full min-h-[11rem]">
-                    <Image src="/photos/deneme3.jpg" alt={tr('pages.production.quality.imageAlt.sample', 'Numune kontrolü')} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
+                <div className="rounded-[30px] border border-stone-200 bg-white p-5 shadow-sm">
+                  <div className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">{tr('pages.production.quality.features.assurance.title', 'Kalite Güvencesi')}</div>
+                  <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                    {assuranceBullets.map((bullet) => (
+                      <div key={bullet} className="rounded-[20px] bg-stone-50 px-4 py-3 text-sm leading-6 text-slate-700">
+                        {bullet}
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </M.section>
+
+        <M.section
+          variants={sectionReveal}
+          initial="hidden"
+          animate="visible"
+          className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8"
+        >
+          <div className="mb-5">
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">{tr('pages.production.quality.layers.eyebrow', 'Kontrol Katmanları')}</p>
+            <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-950 sm:text-3xl">
+              {tr('pages.production.quality.layers.title', 'Numuneden sevkiyata uzanan doğrulama yapısı.')}
+            </h2>
+          </div>
+
+          <M.div variants={staggerGroup} initial="hidden" animate="visible" className="grid gap-4 md:grid-cols-2 xl:grid-cols-12">
+            {phaseCards.map((card, index) => (
+              <M.article
+                key={card.title}
+                variants={sectionReveal}
+                whileHover={{ y: -4 }}
+                className={`flex h-full flex-col rounded-[30px] border p-6 shadow-sm transition ${
+                  index === 0 ? 'xl:col-span-6 border-emerald-200 bg-emerald-50/55' :
+                  index === 1 ? 'xl:col-span-6 border-stone-200 bg-white' :
+                  index === 2 ? 'xl:col-span-6 border-amber-200 bg-amber-50/55' :
+                  'xl:col-span-6 border-slate-200 bg-slate-50'
+                }`}
+              >
+                <div className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">0{index + 1}</div>
+                <h3 className="mt-4 text-lg font-semibold text-slate-900">{card.title}</h3>
+                <p className="mt-3 flex-1 text-sm leading-6 text-slate-600">{card.desc}</p>
+              </M.article>
+            ))}
           </M.div>
+        </M.section>
 
-          <M.div variants={container} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} className="relative bg-white rounded-lg p-6 shadow-sm overflow-hidden">
-            <h3 className="text-xl font-bold mb-3">{t('pages.production.quality.sections.production.title')}</h3>
-            <p className="text-gray-700 mb-4">{t('pages.production.quality.sections.production.desc')}</p>
+        <M.section
+          variants={sectionReveal}
+          initial="hidden"
+          animate="visible"
+          className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8"
+        >
+          <div className="grid gap-6 lg:grid-cols-[minmax(320px,0.78fr)_minmax(0,1.22fr)]">
+            <div className="rounded-[34px] border border-stone-200 bg-white p-6 shadow-sm">
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">{tr('pages.production.quality.sections.how.title', 'Nasıl Çalışıyoruz')}</p>
+              <h2 className="mt-3 text-2xl font-semibold tracking-tight text-slate-950 sm:text-3xl">
+                {tr('pages.production.quality.sections.how.heading', 'Her kontrol adımı kayıt altına alınır ve iyileştirme döngüsüne bağlanır.')}
+              </h2>
+              <p className="mt-4 text-sm leading-7 text-slate-600">
+                {tr('pages.production.quality.sections.how.lead', 'Kalite yaklaşımımız sadece final kontrolden ibaret değildir; numune, üretim ve paketleme adımlarında ayrı ayrı gözlem ve doğrulama yapılır.')}
+              </p>
 
-            <div className="md:grid md:grid-cols-3 md:gap-6">
-              <div className="md:col-span-2">
-                <M.ol variants={container} className="space-y-2 list-decimal pl-5">
-                  {productionCheckKeys.map((k) => (
-                    <M.li key={k} variants={item} whileHover={{ x: 2 }} className="flex items-start gap-3 bg-white/50 hover:bg-sky-50/60 rounded-md p-3">
-                      <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-sky-100 text-sky-600 flex-shrink-0">
-                        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" aria-hidden>
-                          <path d="M3 11h18" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" />
-                          <path d="M3 15h10" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                      </span>
-                      <span className="text-gray-700">{t(k)}</span>
-                    </M.li>
-                  ))}
-                </M.ol>
-
-                <div className="mt-4 bg-slate-50 rounded-md p-4 border border-slate-100">
-                  <p className="text-sm text-slate-700">{t('pages.production.quality.details.productionNote')}</p>
+              <div className="mt-6 space-y-4">
+                <div className="border-l border-stone-200 pl-4">
+                  <div className="text-xs uppercase tracking-[0.24em] text-slate-400">01</div>
+                  <p className="mt-2 text-sm leading-6 text-slate-600">{tr('pages.production.quality.sections.how.steps.0', 'Ölçü tablosu, dikiş kalitesi, kumaş davranışı ve ilk görünüm onayı numune aşamasında birlikte değerlendirilir.')}</p>
                 </div>
-              </div>
-
-              <div className="md:col-span-1 hidden sm:block">
-                <div className="relative rounded-md overflow-hidden shadow-md h-44 md:h-full min-h-[11rem]">
-                  <Image src="/photos/deneme1.jpg" alt={tr('pages.production.quality.imageAlt.production', 'Üretim kalite kontrolü')} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
+                <div className="border-l border-stone-200 pl-4">
+                  <div className="text-xs uppercase tracking-[0.24em] text-slate-400">02</div>
+                  <p className="mt-2 text-sm leading-6 text-slate-600">{tr('pages.production.quality.sections.how.steps.1', 'Üretim boyunca kesim, dikim ve ara operasyonlarda tanımlı kritik kontrol noktaları düzenli aralıklarla izlenir.')}</p>
+                </div>
+                <div className="border-l border-stone-200 pl-4">
+                  <div className="text-xs uppercase tracking-[0.24em] text-slate-400">03</div>
+                  <p className="mt-2 text-sm leading-6 text-slate-600">{tr('pages.production.quality.sections.how.steps.2', 'Paketleme, etiketleme ve sevkiyat hazırlığı öncesinde son doğrulamalar yapılarak uygunsuzluk riski minimize edilir.')}</p>
                 </div>
               </div>
             </div>
-          </M.div>
 
-          <M.div variants={container} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} className="relative bg-white rounded-lg p-6 shadow-sm overflow-hidden">
-            <h3 className="text-xl font-bold mb-3">{t('pages.production.quality.sections.packing.title')}</h3>
-            <p className="text-gray-700 mb-4">{t('pages.production.quality.sections.packing.desc')}</p>
+            <div className="grid gap-4">
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="rounded-[28px] bg-slate-950 p-6 text-white shadow-sm">
+                  <div className="text-xs uppercase tracking-[0.2em] text-white/45">{tr('pages.production.quality.sections.sample.title', 'Numune Kontrolü')}</div>
+                  <div className="mt-4 space-y-3">
+                    {sampleChecks.slice(0, 3).map((item) => (
+                      <div key={item} className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white/85">
+                        {item}
+                      </div>
+                    ))}
+                  </div>
+                </div>
 
-            <div className="md:grid md:grid-cols-3 md:gap-6">
-              <div className="md:col-span-2">
-                <M.ul variants={container} className="space-y-2">
-                  {packingCheckKeys.map((k) => (
-                    <M.li key={k} variants={item} whileHover={{ x: 2 }} className="flex items-start gap-3 bg-white/50 hover:bg-amber-50/60 rounded-md p-3">
-                      <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-amber-100 text-amber-600 flex-shrink-0">
-                        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" aria-hidden>
-                          <path d="M21 16V8l-9-5-9 5v8l9 5 9-5z" stroke="currentColor" strokeWidth={1.4} strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                      </span>
-                      <span className="text-gray-700">{t(k)}</span>
-                    </M.li>
-                  ))}
-                </M.ul>
-
-                <div className="mt-4 bg-slate-50 rounded-md p-4 border border-slate-100">
-                  <p className="text-sm text-slate-700">{t('pages.production.quality.details.packingNote')}</p>
+                <div className="rounded-[28px] bg-white p-6 shadow-sm border border-stone-200">
+                  <div className="text-xs uppercase tracking-[0.2em] text-slate-400">{tr('pages.production.quality.sections.production.title', 'Üretim Kontrolleri')}</div>
+                  <div className="mt-4 space-y-3">
+                    {productionChecks.slice(0, 3).map((item) => (
+                      <div key={item} className="rounded-2xl bg-stone-50 px-4 py-3 text-sm text-slate-700">
+                        {item}
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
 
-              <div className="md:col-span-1 hidden sm:block">
-                <div className="relative rounded-md overflow-hidden shadow-md h-44 md:h-full min-h-[11rem]">
-                  <Image src="/photos/deneme2.png" alt={tr('pages.production.quality.imageAlt.packing', 'Paketleme kalite kontrolü')} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
+              <div className="rounded-[32px] border border-stone-200 bg-white p-6 shadow-sm">
+                <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_220px] lg:items-center">
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">{tr('pages.production.quality.sections.packing.title', 'Paketleme Kontrolü')}</p>
+                    <p className="mt-4 text-sm leading-7 text-slate-600">
+                      {tr('pages.production.quality.details.packingNote', 'Etiket, paket içeriği, lot doğruluğu ve sevkiyat hazırlığı son aşamada tekrar kontrol edilir.')}
+                    </p>
+                  </div>
+                  <div className="relative h-40 overflow-hidden rounded-[24px]">
+                    <Image
+                      src="/photos/weaving-machine-unsplash.jpg"
+                      alt={tr('pages.production.quality.imageAlt.packing', 'Paketleme kalite kontrolü')}
+                      fill
+                      sizes="220px"
+                      className="object-cover object-center"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
-          </M.div>
-        </section>
+          </div>
+        </M.section>
+
+        <M.section
+          variants={sectionReveal}
+          initial="hidden"
+          animate="visible"
+          className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8"
+        >
+          <div className="overflow-hidden rounded-[36px] border border-stone-200 bg-white shadow-sm">
+            <div className="grid gap-0 lg:grid-cols-[minmax(0,1.02fr)_minmax(320px,0.98fr)]">
+              <div className="border-b border-stone-200 p-6 lg:border-b-0 lg:border-r">
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">{tr('pages.production.quality.detailedLists.eyebrow', 'Detaylı Kontrol Listeleri')}</p>
+                <h2 className="mt-3 text-2xl font-semibold tracking-tight text-slate-950 sm:text-3xl">
+                  {tr('pages.production.quality.detailedLists.title', 'Kontrol başlıkları tek tek görünür ve raporlanır.')}
+                </h2>
+                <div className="mt-6 grid gap-4 lg:grid-cols-3">
+                  <div className="rounded-[24px] bg-emerald-50/70 p-4">
+                    <div className="text-sm font-semibold text-slate-900">{tr('pages.production.quality.sections.sample.title', 'Numune Kontrolü')}</div>
+                    <div className="mt-3 space-y-2">
+                      {sampleChecks.map((item) => (
+                        <div key={item} className="text-sm leading-6 text-slate-700">{item}</div>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="rounded-[24px] bg-sky-50/70 p-4">
+                    <div className="text-sm font-semibold text-slate-900">{tr('pages.production.quality.sections.production.title', 'Üretim Kontrolleri')}</div>
+                    <div className="mt-3 space-y-2">
+                      {productionChecks.map((item) => (
+                        <div key={item} className="text-sm leading-6 text-slate-700">{item}</div>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="rounded-[24px] bg-amber-50/75 p-4">
+                    <div className="text-sm font-semibold text-slate-900">{tr('pages.production.quality.sections.packing.title', 'Paketleme Kontrolü')}</div>
+                    <div className="mt-3 space-y-2">
+                      {packingChecks.map((item) => (
+                        <div key={item} className="text-sm leading-6 text-slate-700">{item}</div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid gap-0 sm:grid-cols-2 lg:grid-cols-1">
+                <div className="flex h-64 items-end border-b border-stone-200 bg-[linear-gradient(135deg,#f6fbf8_0%,#ffffff_100%)] p-6 sm:h-72 lg:h-[18rem]">
+                  <div>
+                    <div className="text-xs font-semibold uppercase tracking-[0.24em] text-emerald-700">{tr('pages.production.quality.bottomCards.sample.eyebrow', 'Numune Aşaması')}</div>
+                    <div className="mt-3 text-lg font-semibold text-slate-950">{tr('pages.production.quality.bottomCards.sample.title', 'İlk onay aşaması sonraki tüm kalite akışının referans noktasını oluşturur.')}</div>
+                    <div className="mt-3 text-sm leading-6 text-slate-600">{tr('pages.production.quality.bottomCards.sample.body', 'Ölçü, yüzey, dikiş ve malzeme uyumu bu aşamada netleştirilir.')}</div>
+                  </div>
+                </div>
+                <div className="flex h-64 items-end border-t border-stone-200 bg-[linear-gradient(135deg,#eff6ff_0%,#f8fafc_100%)] p-6 sm:h-72 lg:h-[18rem]">
+                  <div>
+                    <div className="text-xs font-semibold uppercase tracking-[0.24em] text-sky-700">{tr('pages.production.quality.bottomCards.reporting.eyebrow', 'Raporlama')}</div>
+                    <div className="mt-3 text-lg font-semibold text-slate-950">{tr('pages.production.quality.bottomCards.reporting.title', 'Kontrol bulguları yalnızca tespit edilmez, kayıt altına alınır ve aksiyona çevrilir.')}</div>
+                    <div className="mt-3 text-sm leading-6 text-slate-600">{tr('pages.production.quality.bottomCards.reporting.body', 'Bu görünürlük kalite disiplininin sürdürülebilir hale gelmesini sağlar.')}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </M.section>
       </main>
     </>
-  );
+  )
 }

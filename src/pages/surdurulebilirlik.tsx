@@ -1,220 +1,304 @@
-import SEO from '@/components/SEO';
-import Image from 'next/image';
-import { motion } from 'framer-motion';
-import { useLanguage } from '@/contexts/LanguageContext';
-// Framer Motion typing in this project is a bit strict for intrinsic elements.
-// Use a small `any` helper to avoid TS issues when applying `className` to motion elements.
+import SEO from '@/components/SEO'
+import Image from 'next/image'
+import Link from 'next/link'
+import { motion } from 'framer-motion'
+import { useLanguage } from '@/contexts/LanguageContext'
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const M: any = motion;
+const M: any = motion
 
-const container = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.08 } },
-};
+const sectionReveal = {
+  hidden: { opacity: 0, y: 24 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: 'easeOut' },
+  },
+}
 
-const item = {
-  hidden: { opacity: 0, y: 12 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.38, ease: 'easeOut' } },
-};
+const staggerGroup = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.08, delayChildren: 0.05 },
+  },
+}
 
 export default function SustPage() {
-  const { t, g } = useLanguage();
+  const { t } = useLanguage()
+
   const tr = (key: string, fallback: string) => {
     try {
-      const value = t(key);
-      return value === key ? fallback : value;
+      const value = t(key)
+      return value === key ? fallback : value
     } catch {
-      return fallback;
+      return fallback
     }
-  };
-
-  // Normalize a value returned from `g()` into an array of T.
-  function ensureArray<T = unknown>(v: unknown): T[] {
-    if (Array.isArray(v)) return v as T[];
-    if (v == null) return [] as T[];
-    if (typeof v === 'string') {
-      const s = v.trim();
-      try {
-        const parsed = JSON.parse(s);
-        if (Array.isArray(parsed)) return parsed as T[];
-      } catch {}
-  if (s.includes('\n')) return (s.split(/\r?\n/).map(x => x.trim()).filter(Boolean) as unknown) as T[];
-      return [s as unknown as T];
-    }
-    if (typeof v === 'object') {
-      try { return Object.values(v as Record<string, T>); } catch { return [] as T[]; }
-    }
-    return [] as T[];
   }
 
-  const title = tr('sustainability.title', 'Sürdürülebilirlik');
+  const title = tr('sustainability.title', 'Sürdürülebilirlik')
   const heroLead = tr(
     'sustainability.heroLead',
     'Üretim yaklaşımımızda çevresel etkiyi azaltan, kaynak kullanımını iyileştiren ve uzun vadeli sorumluluk alan süreçler geliştiriyoruz.'
-  );
-  const metrics = {
-    m1: tr('sustainability.metrics.m1', 'İzlenebilir süreçler'),
-    m2: tr('sustainability.metrics.m2', 'Verimli kaynak kullanımı'),
-    m3: tr('sustainability.metrics.m3', 'Sürekli iyileştirme'),
-  };
+  )
 
-  const pillars = ensureArray<{ title: string; desc: string }>(g('sustainability.pillars'));
-  const how = {
-    title: tr('sustainability.how.title', 'Nasıl Çalışıyoruz'),
-    lead: tr('sustainability.how.lead', 'Operasyonlarımızda ölçülebilir, uygulanabilir ve sürekli gelişen sürdürülebilirlik adımları kullanıyoruz.'),
-    bullets: ensureArray<string>(g('sustainability.how.bullets')),
-  };
+  const metrics = [
+    { value: tr('sustainability.metrics.m1', 'İzlenebilir süreçler'), label: '01' },
+    { value: tr('sustainability.metrics.m2', 'Verimli kaynak kullanımı'), label: '02' },
+    { value: tr('sustainability.metrics.m3', 'Sürekli iyileştirme'), label: '03' },
+  ]
 
-  const cards = ensureArray<{ title: string; text: string }>(g('sustainability.cards'));
-  const resolvedCards = cards.length > 0 ? cards : [
-    { title: tr('sustainability.cards.0.title', 'Kaynak Verimliliği'), text: tr('sustainability.cards.0.text', 'Enerji, su ve malzeme kullanımını daha verimli hale getiren uygulamalara öncelik veriyoruz.') },
-    { title: tr('sustainability.cards.1.title', 'Sorumlu Üretim'), text: tr('sustainability.cards.1.text', 'Kalite, güvenlik ve çevresel hassasiyeti aynı üretim disiplini içinde yönetiyoruz.') },
-    { title: tr('sustainability.cards.2.title', 'Uzun Vadeli Yaklaşım'), text: tr('sustainability.cards.2.text', 'Süreçlerimizi kısa vadeli değil, kalıcı iyileştirme hedefleriyle geliştiriyoruz.') },
-  ];
-  const imageAlt2 = tr('sustainability.imageAlt2', 'Sürdürülebilir üretim yaklaşımı');
-  const footerNote = tr('sustainability.footerNote', 'Sürdürülebilirlik yaklaşımımız operasyonel disiplin, sorumlu üretim ve sürekli gelişim odağında ilerler.');
-  const resolvedHowBullets = how.bullets.length > 0 ? how.bullets : [
-    'Kaynak kullanımlarını ölçüyor ve düzenli olarak gözden geçiriyoruz.',
-    'Üretim akışında iyileştirme alanlarını veriyle takip ediyoruz.',
-    'Operasyon kararlarında kalite ve çevresel etkiyi birlikte değerlendiriyoruz.',
-  ];
-  const resolvedPillars = [0, 1, 2].map((i) => pillars[i] ?? {
-    title: i === 0
-      ? tr('sustainability.pillars.0.title', 'Çevresel Etki')
-      : i === 1
-      ? tr('sustainability.pillars.1.title', 'Sorumlu Operasyon')
-      : tr('sustainability.pillars.2.title', 'Sürekli Gelişim'),
-    desc: i === 0
-      ? tr('sustainability.pillars.0.desc', 'Enerji, su ve atık yönetiminde daha dengeli ve ölçülebilir uygulamalar geliştiriyoruz.')
-      : i === 1
-      ? tr('sustainability.pillars.1.desc', 'Kalite, çalışan güvenliği ve operasyonel disiplin sürdürülebilirliğin temel parçası olarak ele alınıyor.')
-      : tr('sustainability.pillars.2.desc', 'Süreçleri düzenli takip edip geri bildirimlerle daha iyi hale getiriyoruz.'),
-  });
+  const resolvedPillars = [
+    {
+      title: tr('sustainability.pillars.0.title', 'Çevresel Etki'),
+      desc: tr('sustainability.pillars.0.desc', 'Enerji, su ve atık yönetiminde daha dengeli ve ölçülebilir uygulamalar geliştiriyoruz.'),
+    },
+    {
+      title: tr('sustainability.pillars.1.title', 'Sorumlu Operasyon'),
+      desc: tr('sustainability.pillars.1.desc', 'Kalite, çalışan güvenliği ve operasyonel disiplin sürdürülebilirliğin temel parçası olarak ele alınıyor.'),
+    },
+    {
+      title: tr('sustainability.pillars.2.title', 'Sürekli Gelişim'),
+      desc: tr('sustainability.pillars.2.desc', 'Süreçleri düzenli takip edip geri bildirimlerle daha iyi hale getiriyoruz.'),
+    },
+  ]
+
+  const howTitle = tr('sustainability.how.title', 'Nasıl Çalışıyoruz')
+  const howLead = tr(
+    'sustainability.how.lead',
+    'Operasyonlarımızda ölçülebilir, uygulanabilir ve sürekli gelişen sürdürülebilirlik adımları kullanıyoruz.'
+  )
+  const resolvedHowBullets = [
+    tr('sustainability.how.bullets.0', 'Kaynak kullanımlarını ölçüyor ve düzenli olarak gözden geçiriyoruz.'),
+    tr('sustainability.how.bullets.1', 'Üretim akışında iyileştirme alanlarını veriyle takip ediyoruz.'),
+    tr('sustainability.how.bullets.2', 'Operasyon kararlarında kalite ve çevresel etkiyi birlikte değerlendiriyoruz.'),
+    tr('sustainability.how.bullets.3', 'Düzenli denetimler ve şeffaf raporlama ile süreci görünür tutuyoruz.'),
+  ]
+
+  const resolvedCards = [
+    {
+      title: tr('sustainability.cards.0.title', 'Kaynak Verimliliği'),
+      text: tr('sustainability.cards.0.text', 'Enerji, su ve malzeme kullanımını daha verimli hale getiren uygulamalara öncelik veriyoruz.'),
+    },
+    {
+      title: tr('sustainability.cards.1.title', 'Sorumlu Üretim'),
+      text: tr('sustainability.cards.1.text', 'Kalite, güvenlik ve çevresel hassasiyeti aynı üretim disiplini içinde yönetiyoruz.'),
+    },
+    {
+      title: tr('sustainability.cards.2.title', 'Uzun Vadeli Yaklaşım'),
+      text: tr('sustainability.cards.2.text', 'Süreçlerimizi kısa vadeli değil, kalıcı iyileştirme hedefleriyle geliştiriyoruz.'),
+    },
+  ]
+
+  const footerNote = tr(
+    'sustainability.footerNote',
+    'Sürdürülebilirlik yaklaşımımız operasyonel disiplin, sorumlu üretim ve sürekli gelişim odağında ilerler.'
+  )
 
   return (
     <>
       <SEO title={`${title} - Yasar`} description={heroLead} url="/surdurulebilirlik" />
 
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-12">
-        {/* Hero */}
-        <M.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.18 }} variants={item} className="relative rounded-xl overflow-hidden shadow-lg mb-10">
-          <div className="relative h-64 md:h-80 lg:h-96 bg-gradient-to-br from-amber-50 to-rose-50">
-            <Image src="/photos/sustainability-410.svg" alt={title} fill sizes="100vw" className="object-cover" priority />
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent to-white/70" />
+      <main className="bg-[linear-gradient(180deg,#f4f1ea_0%,#f8f7f3_18%,#ffffff_100%)]">
+        <M.section
+          variants={sectionReveal}
+          initial="hidden"
+          animate="visible"
+          className="relative overflow-hidden"
+        >
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(16,185,129,0.10),_transparent_24%),radial-gradient(circle_at_bottom_right,_rgba(245,158,11,0.10),_transparent_28%),linear-gradient(180deg,#f7f5ef_0%,#fbfaf7_100%)]" />
+          <div className="relative mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
+            <div className="grid gap-8 lg:grid-cols-[minmax(0,1.02fr)_minmax(360px,0.98fr)] lg:items-start">
+              <div className="max-w-3xl">
+                <div className="inline-flex rounded-full border border-emerald-200 bg-white/90 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.24em] text-emerald-700 backdrop-blur">
+                  {title}
+                </div>
+                <h1 className="mt-6 text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl lg:text-[4.1rem] lg:leading-[1.03]">
+                  {tr('sustainability.heroHeading', 'Kaynakları daha dikkatli kullanan, etkisini ölçen ve uzun vadeyi gözeten üretim yaklaşımı.')}
+                </h1>
+                <p className="mt-5 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
+                  {heroLead}
+                </p>
 
-            {/* decorative accent */}
-            <svg className="absolute right-6 top-6 opacity-30 w-40 h-40 transform rotate-12" viewBox="0 0 100 100" fill="none" aria-hidden>
-              <circle cx="50" cy="50" r="40" fill="url(#g)" />
-              <defs>
-                <linearGradient id="g" x1="0" x2="1">
-                  <stop offset="0" stopColor="#fff7ed" />
-                  <stop offset="1" stopColor="#fff1f2" />
-                </linearGradient>
-              </defs>
-            </svg>
+                <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                  <Link href="/contact" className="inline-flex items-center justify-center rounded-full bg-slate-950 px-6 py-3 font-semibold text-white transition hover:bg-slate-800">
+                    {tr('pages.about.collab.cta', 'İletişime Geç')}
+                  </Link>
+                  <Link href="/uretim/tesisler" className="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-6 py-3 font-semibold text-slate-800 transition hover:border-slate-400 hover:bg-slate-50">
+                    {tr('footer.production.facilities', 'Üretim Tesislerimiz')}
+                  </Link>
+                </div>
 
-            <div className="absolute inset-0 flex items-center">
-              <div className="max-w-4xl mx-auto w-full px-4 sm:px-6 py-8 md:py-12 flex">
-                <div className="bg-white/85 backdrop-blur-sm rounded-2xl p-5 sm:p-6 md:p-8 shadow-2xl max-w-2xl">
-                  <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-black">{title}</h1>
-                  <p className="mt-3 text-black/70 max-w-2xl">{heroLead}</p>
-                  {/* No action buttons on this page by request */}
+                <M.div variants={staggerGroup} initial="hidden" animate="visible" className="mt-10 grid gap-3 sm:grid-cols-3">
+                  {metrics.map((metric, index) => (
+                    <M.div
+                      key={metric.value}
+                      variants={sectionReveal}
+                      whileHover={{ y: -4 }}
+                      className={`rounded-[24px] border p-4 shadow-sm transition ${index === 0 ? 'border-emerald-200 bg-emerald-50/80' : 'border-stone-200 bg-white/95'}`}
+                    >
+                      <div className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">{metric.label}</div>
+                      <div className="mt-3 text-sm font-medium leading-6 text-slate-800">{metric.value}</div>
+                    </M.div>
+                  ))}
+                </M.div>
+              </div>
+
+              <div className="grid gap-4">
+                <div className="relative overflow-hidden rounded-[34px] border border-white/80 bg-white shadow-[0_40px_90px_-40px_rgba(15,23,42,0.22)]">
+                  <div className="relative h-72 sm:h-80 lg:h-[22rem]">
+                    <Image src="/photos/fabric-texture-light.jpg" alt={title} fill sizes="(max-width: 1024px) 100vw, 40vw" className="object-cover object-center" priority />
+                  </div>
+                  <div className="border-t border-stone-200 bg-white p-5">
+                    <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">{tr('sustainability.approach.eyebrow', 'Yaklaşım')}</p>
+                    <div className="mt-3 text-sm leading-6 text-slate-700">
+                      {tr('sustainability.approach.body', 'Sürdürülebilirlik bizim için ayrı bir başlık değil; üretim, kalite, operasyon ve karar alma süreçlerinin doğal parçası.')}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <M.div whileHover={{ y: -4 }} className="rounded-[28px] border border-stone-200 bg-white p-5 shadow-sm transition">
+                    <div className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">{tr('sustainability.focus.resource.title', 'Kaynak')}</div>
+                    <div className="mt-3 text-base font-semibold text-slate-900">{tr('sustainability.focus.resource.body', 'Enerji, su ve malzeme kullanımında daha dengeli kararlar.')}</div>
+                  </M.div>
+                  <M.div whileHover={{ y: -4 }} className="rounded-[28px] border border-stone-200 bg-white p-5 shadow-sm transition">
+                    <div className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">{tr('sustainability.focus.process.title', 'Süreç')}</div>
+                    <div className="mt-3 text-base font-semibold text-slate-900">{tr('sustainability.focus.process.body', 'İzleme, raporlama ve sürekli iyileştirme ile ilerleyen işleyiş.')}</div>
+                  </M.div>
                 </div>
               </div>
             </div>
           </div>
-        </M.div>
+        </M.section>
 
-        {/* Micro-metrics row under hero */}
-        <M.div variants={container} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.12 }} className="mt-6 mb-10">
-          <div className="max-w-4xl mx-auto px-0 sm:px-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
-              <M.div variants={item} className="inline-flex items-center gap-3 bg-white/90 backdrop-blur-sm px-4 py-3 rounded-2xl shadow-sm">
-                <span className="text-amber-500">✓</span>
-                <span className="text-sm font-medium">{metrics.m1}</span>
+        <M.section
+          variants={sectionReveal}
+          initial="hidden"
+          animate="visible"
+          className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8"
+        >
+          <div className="mb-5">
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">{tr('sustainability.pillarsEyebrow', 'Temel Başlıklar')}</p>
+            <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-950 sm:text-3xl">
+              {tr('sustainability.pillarsTitle', 'Sürdürülebilirlik yaklaşımını taşıyan ana eksenler.')}
+            </h2>
+          </div>
+
+          <M.div variants={staggerGroup} initial="hidden" animate="visible" className="grid gap-4 md:grid-cols-2 xl:grid-cols-12">
+            {resolvedPillars.map((pillar, index) => (
+              <M.article
+                key={pillar.title}
+                variants={sectionReveal}
+                whileHover={{ y: -4 }}
+                className={`rounded-[30px] border p-6 shadow-sm transition ${
+                  index === 0
+                    ? 'xl:col-span-4 border-emerald-200 bg-emerald-50/55'
+                    : index === 1
+                    ? 'xl:col-span-5 border-stone-200 bg-white'
+                    : 'xl:col-span-3 border-amber-200 bg-amber-50/60'
+                }`}
+              >
+                <div className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">0{index + 1}</div>
+                <h3 className="mt-4 text-lg font-semibold text-slate-900">{pillar.title}</h3>
+                <p className="mt-3 text-sm leading-6 text-slate-600">{pillar.desc}</p>
+              </M.article>
+            ))}
+          </M.div>
+        </M.section>
+
+        <M.section
+          variants={sectionReveal}
+          initial="hidden"
+          animate="visible"
+          className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8"
+        >
+          <div className="grid gap-6 lg:grid-cols-[minmax(320px,0.8fr)_minmax(0,1.2fr)]">
+            <div className="rounded-[34px] border border-stone-200 bg-white p-6 shadow-sm">
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">{howTitle}</p>
+              <h2 className="mt-3 text-2xl font-semibold tracking-tight text-slate-950 sm:text-3xl">
+                {tr('sustainability.how.heading', 'Ölçülebilir ve uygulanabilir adımlarla ilerleyen operasyon yaklaşımı.')}
+              </h2>
+              <p className="mt-4 text-sm leading-7 text-slate-600">
+                {howLead}
+              </p>
+
+              <div className="mt-6 space-y-4">
+                {resolvedHowBullets.map((bullet, index) => (
+                  <M.div key={bullet} whileHover={{ y: -2 }} className="flex gap-4 rounded-[22px] bg-stone-50 px-4 py-4 transition">
+                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white text-sm font-semibold text-slate-900 shadow-sm">
+                      0{index + 1}
+                    </div>
+                    <p className="text-sm leading-6 text-slate-600">{bullet}</p>
+                  </M.div>
+                ))}
+              </div>
+            </div>
+
+            <div className="grid gap-4">
+              <M.div whileHover={{ y: -4 }} className="relative overflow-hidden rounded-[32px] border border-stone-200 bg-white shadow-sm transition">
+                <div className="grid gap-0 lg:grid-cols-[minmax(0,1fr)_220px] lg:items-center">
+                  <div className="p-6">
+                    <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">{tr('sustainability.operationNote.eyebrow', 'Operasyon Notu')}</p>
+                    <div className="mt-4 text-sm leading-7 text-slate-600">
+                      {tr('sustainability.operationNote.body', 'Sürdürülebilirlik başlıklarımız yalnızca hedef beyanı değil; günlük operasyon içinde takip edilen ve düzenli olarak gözden geçirilen uygulamalara dayanır.')}
+                    </div>
+                  </div>
+                  <div className="flex h-44 items-end border-t border-stone-200 bg-[linear-gradient(135deg,#f6fbf8_0%,#f7f1e6_100%)] p-5 lg:h-full lg:border-t-0 lg:border-l">
+                    <div>
+                      <div className="text-xs font-semibold uppercase tracking-[0.24em] text-emerald-700">{tr('sustainability.operationNote.sideTitle', 'İzleme')}</div>
+                      <div className="mt-3 text-sm leading-6 text-slate-600">
+                        {tr('sustainability.operationNote.sideBody', 'Kaynak kullanımı, süreç çıktıları ve operasyon notları düzenli olarak gözden geçirilir.')}
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </M.div>
 
-              <M.div variants={item} className="inline-flex items-center gap-3 bg-white/90 backdrop-blur-sm px-4 py-3 rounded-2xl shadow-sm">
-                <span className="text-amber-500">✓</span>
-                <span className="text-sm font-medium">{metrics.m2}</span>
-              </M.div>
-
-              <M.div variants={item} className="inline-flex items-center gap-3 bg-white/90 backdrop-blur-sm px-4 py-3 rounded-2xl shadow-sm">
-                <span className="text-amber-500">✓</span>
-                <span className="text-sm font-medium">{metrics.m3}</span>
-              </M.div>
+              <div className="grid gap-4 sm:grid-cols-3">
+                {resolvedCards.map((card, index) => (
+                  <M.div
+                    key={card.title}
+                    whileHover={{ y: -4 }}
+                    className={`rounded-[28px] border p-5 shadow-sm transition ${index === 0 ? 'border-emerald-200 bg-emerald-50/50' : index === 1 ? 'border-stone-200 bg-white' : 'border-amber-200 bg-amber-50/55'}`}
+                  >
+                    <div className="text-sm font-semibold text-slate-900">{card.title}</div>
+                    <p className="mt-3 text-sm leading-6 text-slate-600">{card.text}</p>
+                  </M.div>
+                ))}
+              </div>
             </div>
           </div>
-        </M.div>
+        </M.section>
 
-        {/* Three pillars — render safely even if `pillars` is empty initially */}
-        <M.div variants={container} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.12 }} className="grid gap-6 md:grid-cols-3 mb-12">
-          {resolvedPillars.map((p, i) => {
-            const titleText = p?.title ?? '';
-            const descText = p?.desc ?? '';
-
-            const accent = i === 0 ? {
-              ring: 'focus-visible:ring-amber-300',
-              bg: 'bg-amber-100',
-              color: 'text-amber-600',
-              svg: (<svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C7 7 3 11 3 15c0 3.866 3.582 7 9 7 1.333 0 2.667-.333 4-1.001V13.5C18 11 14 6 12 2z"/></svg>)
-            } : i === 1 ? {
-              ring: 'focus-visible:ring-rose-300',
-              bg: 'bg-rose-100',
-              color: 'text-rose-600',
-              svg: (<svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l7 4v6c0 5-3.5 9-7 10-3.5-1-7-5-7-10V6l7-4z"/></svg>)
-            } : {
-              ring: 'focus-visible:ring-sky-300',
-              bg: 'bg-sky-100',
-              color: 'text-sky-600',
-              svg: (<svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 24 24" fill="currentColor"><path d="M21 13v6a1 1 0 0 1-1 1h-5l-3-3-3 3H4a1 1 0 0 1-1-1v-6"/></svg>)
-            };
-
-            return (
-              <M.article key={i} variants={item} className={`p-6 bg-white rounded-lg shadow-sm hover:shadow-lg transform hover:-translate-y-2 transition duration-300 focus:outline-none ${accent.ring}`}>
-                <div className={`h-12 w-12 rounded-md ${accent.bg} flex items-center justify-center ${accent.color} mb-3`}>
-                  {accent.svg}
-                </div>
-                <h3 className="font-semibold text-slate-900">{titleText}</h3>
-                <p className="mt-2 text-sm text-gray-600">{descText}</p>
-              </M.article>
-            );
-          })}
-        </M.div>
-
-        {/* Details & visuals */}
-        <M.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.12 }} variants={container} className="grid gap-8 md:grid-cols-2 items-start mb-12">
-          <M.div variants={item} className="space-y-4">
-            <h2 className="text-2xl font-semibold">{how.title}</h2>
-            <p className="text-gray-700">{how.lead}</p>
-            <ul className="list-disc pl-5 text-gray-700 space-y-2">
-              {resolvedHowBullets.map((b, i) => (
-                 
-                <li key={i}>{b}</li>
-              ))}
-            </ul>
-          </M.div>
-
-            <M.div variants={item} className="rounded-lg overflow-hidden shadow-sm">
-            <Image src="/photos/sustainability-411.svg" alt={imageAlt2} width={900} height={600} className="object-cover w-full h-56 md:h-72" />
-          </M.div>
-  </M.div>
-
-        {/* Cards */}
-        <M.div variants={container} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.12 }} className="grid gap-6 md:grid-cols-3 mb-12">
-          {resolvedCards.map((c) => (
-            <M.article key={c.title} variants={item} className="p-5 bg-white rounded-lg shadow-sm hover:shadow-md transition">
-              <h4 className="font-semibold">{c.title}</h4>
-              <p className="mt-2 text-sm text-gray-600">{c.text}</p>
-            </M.article>
-          ))}
-        </M.div>
-
-        {/* Neutral footer note (no contact CTA on this page) */}
-          <M.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={item} className="text-center">
-          <p className="text-gray-700">{footerNote}</p>
-        </M.div>
+        <M.section
+          variants={sectionReveal}
+          initial="hidden"
+          animate="visible"
+          className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8"
+        >
+          <div className="rounded-[36px] border border-emerald-200 bg-[linear-gradient(135deg,#f6fbf8_0%,#f9f5eb_100%)] p-8 text-slate-950 shadow-[0_35px_80px_-45px_rgba(15,23,42,0.12)] sm:p-10">
+            <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-emerald-700">{tr('sustainability.closing.eyebrow', 'Yaklaşım Notu')}</p>
+                <h3 className="mt-3 text-3xl font-semibold tracking-tight">
+                  {tr('sustainability.closing.title', 'Sürdürülebilirlik yaklaşımımız tek seferlik değil, operasyon içinde devam eden bir gelişim alanıdır.')}
+                </h3>
+                <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-600">
+                  {footerNote}
+                </p>
+              </div>
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <Link href="/uretim/tesisler" className="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-6 py-3 font-semibold text-slate-900 transition hover:border-slate-400 hover:bg-stone-50">
+                  {tr('footer.production.facilities', 'Üretim Tesislerimiz')}
+                </Link>
+                <Link href="/contact" className="inline-flex items-center justify-center rounded-full bg-slate-950 px-6 py-3 font-semibold text-white transition hover:bg-slate-800">
+                  {tr('pages.about.collab.cta', 'İletişime Geç')}
+                </Link>
+              </div>
+            </div>
+          </div>
+        </M.section>
       </main>
     </>
-  );
+  )
 }

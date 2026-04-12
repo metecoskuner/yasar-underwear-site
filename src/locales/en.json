@@ -29,6 +29,7 @@
   },
   "sustainability": {
     "title": "Sustainability",
+    "heroHeading": "A production approach that uses resources more carefully, measures its impact and looks to the long term.",
     "heroLead": "We invest in the future through production processes focused on environmental and social responsibility.",
     "metrics": {
       "m1": "ISO 9001 compliant",
@@ -49,16 +50,6 @@
         "desc": "We ensure worker health, fair pay and safe working conditions."
       }
     ],
-    "how": {
-      "title": "How We Work",
-      "lead": "Transparency, quality and continuous improvement guide our processes.",
-      "bullets": [
-        "Sustainable raw material sourcing",
-        "Energy efficiency and water saving projects",
-        "Waste management and recycling practices",
-        "Regular audits and transparent reporting"
-      ]
-    },
     "cards": [
       {
         "title": "Traceable Production",
@@ -74,12 +65,68 @@
       }
     ],
     "imageAlt2": "Sustainability image",
+    "approach": {
+      "eyebrow": "Approach",
+      "body": "For us, sustainability is not a separate topic; it is a natural part of production, quality, operations and decision-making processes."
+    },
+    "focus": {
+      "resource": {
+        "title": "Resource",
+        "body": "More balanced decisions in the use of energy, water and materials."
+      },
+      "process": {
+        "title": "Process",
+        "body": "An operating model driven by monitoring, reporting and continuous improvement."
+      }
+    },
+    "pillarsEyebrow": "Core Topics",
+    "pillarsTitle": "The main axes that carry our sustainability approach.",
+    "how": {
+      "title": "How We Work",
+      "heading": "An operational approach progressing with measurable and applicable steps.",
+      "lead": "Transparency, quality and continuous improvement guide our processes.",
+      "bullets": [
+        "Sustainable raw material sourcing",
+        "Energy efficiency and water saving projects",
+        "Waste management and recycling practices",
+        "Regular audits and transparent reporting"
+      ]
+    },
+    "operationNote": {
+      "eyebrow": "Operational Note",
+      "body": "Our sustainability topics are not merely statements of intent; they are based on practices tracked in daily operations and reviewed regularly.",
+      "sideTitle": "Monitoring",
+      "sideBody": "Resource use, process outputs and operational notes are reviewed regularly."
+    },
+    "closing": {
+      "eyebrow": "Approach Note",
+      "title": "Our sustainability approach is not one-off; it is an area of ongoing development within operations."
+    },
     "footerNote": "Contact us to learn more about our sustainability approach."
   },
   "uretim": {
     "tesis": {
       "title": "Our Production Facilities",
       "lead": "We provide a modern, safe and sustainable production infrastructure.",
+      "heroHeading": "A facility structure operating in one flow from the production line to quality control.",
+      "imageAlt": "Facility",
+      "imageLabel": "Facility image",
+      "fieldView": {
+        "label": "Field View",
+        "body": "Production, quality and process tracking are managed on the same physical and operational infrastructure."
+      },
+      "processTracking": {
+        "label": "Process Tracking"
+      },
+      "stats": {
+        "foundation": "Foundation",
+        "facilities": "Facilities",
+        "capacity": "Annual Production"
+      },
+      "components": {
+        "eyebrow": "Facility Components",
+        "title": "The main layers carrying the operation."
+      },
       "tags": {
         "iso": "ISO 9001 compliant",
         "energy": "Energy efficiency",
@@ -105,7 +152,13 @@
       },
       "how": {
         "title": "How We Work",
-        "lead": "Our facilities combine efficient production, worker safety and environmental responsibility. Processes are tracked with digital records and continuously improved."
+        "heading": "Line layout, data tracking and quality control move forward within the same system.",
+        "lead": "Our facilities combine efficient production, worker safety and environmental responsibility. Processes are tracked with digital records and continuously improved.",
+        "steps": [
+          "We combine production planning, quality control and delivery tracking within the same operational flow.",
+          "We ensure a repeatable quality standard through digital records, reporting and process control.",
+          "Worker safety, energy efficiency and environmental measures are treated as integral parts of the operation."
+        ]
       },
       "infrastructure": {
         "title": "Infrastructure & Machines",
@@ -129,6 +182,8 @@
       "quality": {
         "title": "Quality Assurance",
         "lead": "Quality assurance is maintained through continuous monitoring, data records and feedback mechanisms.",
+        "standardLabel": "Standard",
+        "trackingLabel": "Tracking",
         "bullets": [
           "ISO 9001 compliant processes",
           "SPC and reporting"
@@ -136,6 +191,7 @@
       },
       "applications": {
         "title": "On-site Practices",
+        "heading": "Concrete practices reflected in operations.",
         "lead": "Key practices implemented in our facilities and the points we focus on are listed below.",
         "items": [
           "Automated cutting and quality tracking",
@@ -144,9 +200,15 @@
         ],
         "summary": "Our infrastructure is designed with efficiency, occupational health and environmental impact in mind. We reduce energy consumption and manage waste with measurable targets."
       },
+      "materialFlow": {
+        "title": "Material Flow",
+        "heading": "The flow of fabric and semi-finished materials is organized to support production efficiency.",
+        "body": "Physical layout and process discipline support capacity utilization and quality standards together."
+      },
       "energy": {
         "title": "Energy & Environment",
         "lead": "Energy efficiency projects and waste reduction programs are part of our operations.",
+        "heading": "Energy efficiency and environmental impact management are part of production decisions.",
         "body": "Energy efficiency and water saving projects are in place; measurements are taken across the facility and progress is tracked through regular reporting."
       }
     }
@@ -182,6 +244,7 @@
       "title": "Products — Yasar",
       "description": "Yasar product collection",
       "hero": {
+        "eyebrow": "Yasar Collection",
         "title": "Men & Women Underwear Collection",
         "subtitle": "Review the Yasar Textile collection on a single screen with category, product code and image options. Compare high-quality models designed for everyday use more quickly.",
         "ctaInspect": "View products",
@@ -209,15 +272,50 @@
       "gender": {
         "all": "All",
         "male": "Male",
-        "female": "Female"
+        "female": "Female",
+        "unisex": "Unisex"
+      },
+      "listing": {
+        "eyebrow": "Product Selection",
+        "title": "Browse the collection by category and product code",
+        "countSuffix": "products"
       },
       "searchPlaceholder": "Search products",
+      "searchPrefix": "Search:",
+      "clearFilters": "Clear filters",
+      "allCategories": "All categories",
+      "activeSelections": "Active selections:",
       "noResults": "No results",
+      "noResultsBody": "Try a different product code or clear the filters to return to the full collection.",
+      "resetFilters": "Reset filters",
       "productCode": "Product code:",
       "copy": "Copy",
       "copied": "Copied",
       "copyCodeAria": "Copy product code",
       "preview": "Preview",
+      "imageAreaAria": "Product image area",
+      "prevPhoto": "Previous photo",
+      "nextPhoto": "Next photo",
+      "galleryCount": "{count} images",
+      "modalIntro": "You can review product details, copy the product code and create an information request directly.",
+      "prevProduct": "← Previous product",
+      "nextProduct": "Next product →",
+      "codeHelp": "You can use the product code to reference the right model quickly during quotation and ordering.",
+      "detailEyebrow": "Product Detail",
+      "galleryOptions": "Image Options",
+      "backToCollection": "Back to collection",
+      "meta": {
+        "category": "Category",
+        "collectionPiece": "Collection item",
+        "gender": "Gender",
+        "gallery": "Gallery"
+      },
+      "related": {
+        "eyebrow": "Related Products",
+        "title": "Similar alternatives in the collection",
+        "count": "{count} suggestions",
+        "productOption": "Product option"
+      },
       "requestInfo": "Request info",
       "requestInfoAria": "Request info -"
     },
@@ -352,7 +450,9 @@
       "description": "About Yasar Textile: our mission, vision and production capabilities.",
       "hero": {
         "title": "Corporate",
-        "desc": "At Yasar we emphasize quality, sustainability and worker welfare. Our Turkish facilities use modern production techniques to deliver products meeting international standards."
+        "desc": "At Yasar we emphasize quality, sustainability and worker welfare. Our Turkish facilities use modern production techniques to deliver products meeting international standards.",
+        "heading": "Consistent, traceable underwear production from Turkey for global brands.",
+        "ctaFacilitiesInspect": "Explore Production Infrastructure"
       },
       "intro": {
         "p1": "We are a family-owned manufacturer operating modern facilities in Turkey. From design to delivery, we apply quality controls and traceability at every step.",
@@ -367,7 +467,7 @@
         "facilities": "Facilities"
       },
       "milestones": {
-        "1992": "Established and started local production.",
+        "1992": "Established and started production.",
         "2005": "Modernized production line and quality laboratory.",
         "2017": "Launched sustainable raw material program.",
         "2023": "Strengthened international partnerships."
@@ -393,6 +493,7 @@
         }
       },
       "values": {
+        "eyebrow": "Values",
         "design": {
           "title": "Design & Comfort",
           "body": "Good design, durability and wearing comfort combined."
@@ -412,6 +513,10 @@
       },
       "quick": {
         "title": "Quick overview",
+        "foundation": "Foundation",
+        "location": "Location",
+        "locationValue": "Marmara Region, Turkey",
+        "certificates": "Certificates",
         "labels": {
           "experience": "Years of experience",
           "audits": "Audits / year",
@@ -424,14 +529,83 @@
       "contactPrompt": "For more information or corporate partnership requests, please contact us.",
       "collab": {
         "title": "Partnerships & Requests",
+        "eyebrow": "Partnership",
+        "heading": "We are ready for corporate partnerships, OEM requests and production discussions.",
         "body": "For site visits, technical questions or large volume orders, contact us directly.",
-        "cta": "Contact us"
+        "cta": "Contact us",
+        "detailCta": "About Details"
+      },
+      "overview": {
+        "title": "Overview",
+        "operationEyebrow": "Operations",
+        "operationBody": "A structured production flow for OEM, private label and wholesale order processes."
+      },
+      "profile": {
+        "eyebrow": "Profile",
+        "title": "An organized and readable operation structure for long-term manufacturing partnerships.",
+        "point1": "We manage design, production and delivery under one operational discipline.",
+        "point2": "We offer a traceable, planned and sustainable production model for corporate clients.",
+        "point3": "We operate with flexible infrastructure suited to OEM, private label and wholesale order processes."
+      },
+      "quality": {
+        "eyebrow": "Quality",
+        "title": "Standards-focused production discipline",
+        "body": "An operating model centered on control, monitoring and repeatable quality."
+      },
+      "capacity": {
+        "eyebrow": "Capacity",
+        "title": "Planned delivery, scalable operations",
+        "body": "A steady and sustainable production flow for corporate partners."
+      },
+      "export": {
+        "eyebrow": "Export Network",
+        "lead": "We work with active business partnerships across the American, European and Middle Eastern markets. All countries we sell to are listed below."
+      },
+      "countries": {
+        "lead": "We operate with an active customer and business partner network across Europe, the Middle East and the Americas.",
+        "activeMarkets": "{count}+ active markets"
       }
+    },
+    "aboutMissionVision": {
+      "seoTitle": "Mission & Vision - Yasar",
+      "seoDescription": "Yasar's mission and vision; our focus on quality, sustainability and international growth.",
+      "title": "Mission & Vision",
+      "lead": "Our mission and vision are to be a trusted underwear brand through quality, responsible and innovative manufacturing.",
+      "missionTitle": "Mission",
+      "missionBody": "Our mission is to produce underwear products with high quality standards through sustainable methods. Resource efficiency, supply transparency and employee safety are core parts of this mission.",
+      "visionTitle": "Vision",
+      "visionBody": "Our vision is to become a preferred brand in international markets, drawing strength from our regional roots and being recognized for sustainable production. We aim to make a difference through innovative design and process optimization.",
+      "contactLead": "For corporate partnerships, site visits or technical requests,",
+      "contactLink": "you can contact us"
     },
     "production": {
       "quality": {
         "title": "Quality Control Processes",
+        "heroHeading": "A quality flow measured, reported and re-verified at every stage.",
         "heroLead": "Through rigorous quality inspections at every stage of production, we deliver consistent, traceable and reliable products. From sampling to packing, each step is recorded and supported by continuous improvement.",
+        "summary": {
+          "eyebrow": "Quality Summary"
+        },
+        "layers": {
+          "eyebrow": "Control Layers",
+          "title": "A verification structure extending from sampling to shipment."
+        },
+        "detailedLists": {
+          "eyebrow": "Detailed Checklists",
+          "title": "Control headings are visible and reported one by one."
+        },
+        "bottomCards": {
+          "sample": {
+            "eyebrow": "Sample Stage",
+            "title": "The initial approval stage forms the reference point for the entire quality flow that follows.",
+            "body": "Measurements, surface quality, stitching and material compatibility are clarified at this stage."
+          },
+          "reporting": {
+            "eyebrow": "Reporting",
+            "title": "Control findings are not only identified, but also recorded and turned into action.",
+            "body": "This visibility makes quality discipline sustainable."
+          }
+        },
         "imageAlt": {
           "hero": "Quality visual",
           "sample": "Sample"
@@ -467,7 +641,13 @@
         "sections": {
           "how": {
             "title": "How we work",
-            "lead": "Below you can find the main headings of our quality control processes and application examples. Standard Operating Procedures (SOP) are applied and recorded at each step."
+            "heading": "Every control step is recorded and connected to the improvement cycle.",
+            "lead": "Below you can find the main headings of our quality control processes and application examples. Standard Operating Procedures (SOP) are applied and recorded at each step.",
+            "steps": [
+              "The measurement chart, seam quality, fabric behavior and first appearance approval are evaluated together during the sampling stage.",
+              "Defined critical control points in cutting, sewing and intermediate operations are monitored at regular intervals throughout production.",
+              "Before packing, labeling and shipment preparation, final verifications are carried out to minimize the risk of non-conformities."
+            ]
           },
           "sample": {
             "title": "Sample Stage",
@@ -528,8 +708,10 @@
     "tagline": "Underwear made in Turkey. Comfort and quality.",
     "links": "Links",
     "home": "Home",
-  "products": "Products",
-  "sustainability": "Sustainability",
+    "products": "Products",
+    "wholesale": "Wholesale",
+    "privateLabel": "Private Label",
+    "sustainability": "Sustainability",
     "contact": "Contact",
     "corporate": {
       "title": "Corporate",
@@ -559,14 +741,14 @@
     "company": {
       "paragraph1": "Underwear made in Turkey. Focused on comfort and quality.",
       "paragraph2": "Founded in 1969, our company has become one of the leading manufacturers and exporters in the sector, specializing in nightwear, pajama sets, pajama bottoms and underwear, with over half a century of experience.",
-      "paragraph3": "With exports to Eastern Europe and the Middle East — including the United States, France, Spain, Greece and Israel — we proudly represent our high quality standards internationally. Committed to reliability, continuity and quality, we remain a trusted global partner."
+      "paragraph3": "With exports to Eastern Europe and the Middle East — including the United States, France, Spain and Greece — we proudly represent our high quality standards internationally. Committed to reliability, continuity and quality, we remain a trusted global partner."
     },
     "cookie": {
       "reset": "Reset cookies"
     },
     "terms": "Terms",
-  "copyright": "© {year} Yasar. All rights reserved.",
-  "copyrightRaw": "© ${new Date().getFullYear()} Yasar. All rights reserved.",
+    "copyright": "© {year} Yasar. All rights reserved.",
+    "copyrightRaw": "© ${new Date().getFullYear()} Yasar. All rights reserved.",
     "backToTop": "Back to top"
   },
   "components": {
@@ -588,7 +770,12 @@
       "wishlist": {
         "add": "Add to favorites",
         "remove": "Remove from favorites"
-      }
+      },
+      "prevPhoto": "Previous photo",
+      "nextPhoto": "Next photo",
+      "photoNumber": "Photo {n}",
+      "morePhotos": "View {count} more photos",
+      "morePhotosShort": "View {count} more"
     },
     "productGrid": {
       "eyebrow": "Featured Selection",
@@ -734,6 +921,11 @@
       }
     },
     "header": {
+      "wishlist": {
+        "placeholder": "P",
+        "productFallback": "Product {id}",
+        "removeItem": "Remove {title}"
+      },
       "aria": {
         "openLangMenu": "Open language menu",
         "closeLangMenu": "Close language menu",
@@ -765,6 +957,34 @@
     "logout": "Log out"
   },
   "pagesHome": {
+    "seo": {
+      "title": "Yasar - Home",
+      "description": "Yasar Textile is a Turkey-based manufacturer offering underwear, homewear, private label and wholesale production solutions."
+    },
+    "overview": {
+      "eyebrow": "Overview",
+      "title": "A clearer homepage experience that brings production, quality and market reach into one flow.",
+      "body": "Yasar Textile brings together corporate manufacturing partnership, product development capability and an export-oriented operational structure under one roof. In the sections below, you can see our core business model more clearly."
+    },
+    "structure": {
+      "production": {
+        "title": "Production Partnership",
+        "body": "We provide planned production and a consistent delivery flow for wholesale, private label and corporate requests."
+      },
+      "quality": {
+        "title": "Quality & Traceability",
+        "body": "We deliver a repeatable quality standard through controlled processes from sampling to shipment."
+      },
+      "global": {
+        "title": "Global Reach",
+        "body": "With our Turkey-based production infrastructure, we serve different markets in a regular and sustainable way."
+      }
+    },
+    "catalog": {
+      "eyebrow": "Product Selection",
+      "title": "Featured products are not just a showcase, but examples of our production capability.",
+      "body": "We gathered products in this section that stand out in fabric quality, wearing comfort and everyday usability. If desired, users can move quickly to the detail modal for a closer look."
+    },
     "export": {
       "eyebrow": "Export Network",
       "title": "Our distribution structure reaching different markets from Türkiye",
@@ -914,7 +1134,9 @@
     "ly": "Libya",
     "nl": "Netherlands",
     "fr": "France",
-    "us": "United States"
+    "us": "United States",
+    "es": "Spain",
+    "gr": "Greece"
   },
   "manufacturerTurkey": {
     "seo": {

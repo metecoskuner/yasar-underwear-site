@@ -29,6 +29,7 @@
   },
   "sustainability": {
     "title": "Sürdürülebilirlik",
+    "heroHeading": "Kaynakları daha dikkatli kullanan, etkisini ölçen ve uzun vadeyi gözeten üretim yaklaşımı.",
     "heroLead": "Çevresel ve sosyal sorumluluk odaklı üretim süreçlerimizle geleceğe yatırım yapıyoruz.",
     "metrics": {
       "m1": "ISO 9001 uyumlu",
@@ -49,16 +50,6 @@
         "desc": "Çalışan sağlığı, adil ücretlendirme ve güvenli çalışma koşulları sağlıyoruz."
       }
     ],
-    "how": {
-      "title": "Nasıl Çalışıyoruz",
-      "lead": "Süreçlerimizde şeffaflık, kalite ve sürekli iyileştirme ön plandadır.",
-      "bullets": [
-        "Ham madde tedarikinde sürdürülebilir kriterler",
-        "Enerji verimliliği ve su tasarrufu projeleri",
-        "Atık yönetimi ve geri dönüşüm uygulamaları",
-        "Düzenli denetimler ve şeffaf raporlama"
-      ]
-    },
     "cards": [
       {
         "title": "İzlenebilir Üretim",
@@ -74,14 +65,69 @@
       }
     ],
     "imageAlt2": "Sürdürülebilirlik görseli",
+    "approach": {
+      "eyebrow": "Yaklaşım",
+      "body": "Sürdürülebilirlik bizim için ayrı bir başlık değil; üretim, kalite, operasyon ve karar alma süreçlerinin doğal parçası."
+    },
+    "focus": {
+      "resource": {
+        "title": "Kaynak",
+        "body": "Enerji, su ve malzeme kullanımında daha dengeli kararlar."
+      },
+      "process": {
+        "title": "Süreç",
+        "body": "İzleme, raporlama ve sürekli iyileştirme ile ilerleyen işleyiş."
+      }
+    },
+    "pillarsEyebrow": "Temel Başlıklar",
+    "pillarsTitle": "Sürdürülebilirlik yaklaşımını taşıyan ana eksenler.",
+    "how": {
+      "title": "Nasıl Çalışıyoruz",
+      "heading": "Ölçülebilir ve uygulanabilir adımlarla ilerleyen operasyon yaklaşımı.",
+      "lead": "Süreçlerimizde şeffaflık, kalite ve sürekli iyileştirme ön plandadır.",
+      "bullets": [
+        "Ham madde tedarikinde sürdürülebilir kriterler",
+        "Enerji verimliliği ve su tasarrufu projeleri",
+        "Atık yönetimi ve geri dönüşüm uygulamaları",
+        "Düzenli denetimler ve şeffaf raporlama"
+      ]
+    },
+    "operationNote": {
+      "eyebrow": "Operasyon Notu",
+      "body": "Sürdürülebilirlik başlıklarımız yalnızca hedef beyanı değil; günlük operasyon içinde takip edilen ve düzenli olarak gözden geçirilen uygulamalara dayanır.",
+      "sideTitle": "İzleme",
+      "sideBody": "Kaynak kullanımı, süreç çıktıları ve operasyon notları düzenli olarak gözden geçirilir."
+    },
+    "closing": {
+      "eyebrow": "Yaklaşım Notu",
+      "title": "Sürdürülebilirlik yaklaşımımız tek seferlik değil, operasyon içinde devam eden bir gelişim alanıdır."
+    },
     "footerNote": "Sürdürülebilirlik yaklaşımımız hakkında daha fazla bilgi için bizimle iletişime geçin."
   },
   "uretim": {
     "tesis": {
       "title": "Üretim Tesislerimiz",
       "lead": "Modern, güvenli ve sürdürülebilir bir üretim altyapısı sunuyoruz. Tesislerimizde kalite, çalışan güvenliği ve çevresel sorumluluk eş zamanlı olarak yönetilir; süreçler dijital kayıtlarla izlenir.",
+      "heroHeading": "Üretim hattından kalite kontrolüne kadar tek akışta çalışan tesis yapısı.",
+      "imageAlt": "Tesis",
       "imageLabel": "Tesis Görsel",
       "shortLead": "Yasar üretim tesisleri, kalite ve sürdürülebilirlik odaklı üretim altyapısı.",
+      "fieldView": {
+        "label": "Saha Görünümü",
+        "body": "Üretim, kalite ve proses takibi aynı fiziksel ve operasyonel altyapı üzerinde yönetilir."
+      },
+      "processTracking": {
+        "label": "Proses Takibi"
+      },
+      "stats": {
+        "foundation": "Kuruluş",
+        "facilities": "Tesis",
+        "capacity": "Yıllık Üretim"
+      },
+      "components": {
+        "eyebrow": "Tesis Bileşenleri",
+        "title": "Operasyonu taşıyan ana katmanlar."
+      },
       "tags": {
         "iso": "ISO 9001 uyumlu",
         "energy": "Enerji verimliliği",
@@ -107,7 +153,13 @@
       },
       "how": {
         "title": "Nasıl Çalışıyoruz",
-        "lead": "Tesislerimizde verimli üretim, çalışan güvenliği ve çevresel sorumluluk bir arada yürütülür. Dijital kayıtlarla izlenebilirlik sağlanır ve süreçler sürekli iyileştirilir."
+        "heading": "Hat düzeni, veri takibi ve kalite kontrol aynı sistem içinde ilerler.",
+        "lead": "Tesislerimizde verimli üretim, çalışan güvenliği ve çevresel sorumluluk bir arada yürütülür. Dijital kayıtlarla izlenebilirlik sağlanır ve süreçler sürekli iyileştirilir.",
+        "steps": [
+          "Üretim planlama, kalite kontrol ve teslim takibini aynı operasyon akışında birleştiriyoruz.",
+          "Dijital kayıt, raporlama ve süreç kontrolü ile tekrarlanabilir kalite standardı sağlıyoruz.",
+          "Çalışan güvenliği, enerji verimliliği ve çevresel tedbirler operasyonun ayrılmaz parçası olarak ele alınıyor."
+        ]
       },
       "infrastructure": {
         "title": "Altyapı & Makine",
@@ -131,6 +183,8 @@
       "quality": {
         "title": "Kalite Güvencesi",
         "lead": "Sürekli izleme, veri kayıtları ve geri bildirim mekanizmaları ile kalite güvencesi sağlanır.",
+        "standardLabel": "Standart",
+        "trackingLabel": "Takip",
         "bullets": [
           "ISO 9001 uyumlu süreçler",
           "SPC ve raporlama"
@@ -138,6 +192,7 @@
       },
       "applications": {
         "title": "Tesislerde Uygulamalar",
+        "heading": "Operasyona yansıyan somut uygulamalar.",
         "lead": "Tesislerimizde yürütülen başlıca uygulamalar ve dikkat ettiğimiz noktalar aşağıdaki gibidir.",
         "items": [
           "Otomatik kesim ve kalite takibi",
@@ -146,9 +201,15 @@
         ],
         "summary": "Tesis altyapımız verimlilik, iş sağlığı ve çevresel etki odağında tasarlanmıştır. Ölçülebilir hedeflerle enerji tüketimimizi azaltıyor ve atıklarımızı yönetiyoruz."
       },
+      "materialFlow": {
+        "title": "Malzeme Akışı",
+        "heading": "Kumaş ve yarı mamul akışı üretim verimliliğini destekleyecek şekilde organize edilir.",
+        "body": "Fiziksel yerleşim ve süreç disiplini, kapasite kullanımı ile kalite standardını birlikte destekler."
+      },
       "energy": {
         "title": "Enerji & Çevre",
         "lead": "Enerji verimliliği projeleri ve atık azaltma programları tesis operasyonlarımızın parçasıdır.",
+        "heading": "Enerji verimliliği ve çevresel etki yönetimi üretim kararlarının parçasıdır.",
         "body": "Enerji verimliliği ve su tasarrufu projeleri mevcut; tesis genelinde ölçümler yapılıyor ve düzenli raporlama ile ilerleme izleniyor."
       }
     }
@@ -384,6 +445,7 @@
       "contactHeading": "Teklif / İletişim",
       "missionLead": "Yasar'ın misyonu ve vizyonu; kalite, sürdürülebilirlik ve uluslararası hedeflerimiz.",
       "values": {
+        "eyebrow": "Değerler",
         "design": {
           "title": "Tasarım & Konfor",
           "body": "İyi tasarım, dayanıklılık ve kullanım rahatlığı bir arada."
@@ -403,6 +465,10 @@
       },
       "quick": {
         "title": "Hızlı Bakış",
+        "foundation": "Kuruluş",
+        "location": "Konum",
+        "locationValue": "Marmara Bölgesi, Türkiye",
+        "certificates": "Sertifikalar",
         "labels": {
           "experience": "Yıllık tecrübe",
           "audits": "Denetim / yıl",
@@ -411,6 +477,11 @@
           "location": "Konum",
           "certificates": "Sertifikalar"
         }
+      },
+      "profile": {
+        "point1": "Tasarım, üretim ve teslimat akışını tek operasyon disiplini altında yönetiyoruz.",
+        "point2": "Kurumsal müşteriler için izlenebilir, planlı ve sürdürülebilir bir üretim modeli sunuyoruz.",
+        "point3": "OEM, private label ve toptan sipariş süreçlerine uygun esnek altyapıyla çalışıyoruz."
       },
       "contactPrompt": "Daha fazla bilgi veya kurumsal iş birliği talepleri için bizimle iletişime geçin.",
       "collab": {
@@ -423,7 +494,31 @@
     "production": {
       "quality": {
         "title": "Kalite Kontrol Süreçlerimiz",
+        "heroHeading": "Her aşamada ölçülen, raporlanan ve tekrar doğrulanan kalite akışı.",
         "heroLead": "Üretimin her aşamasında uyguladığımız sıkı kalite denetimleriyle tutarlı, izlenebilir ve güvenilir ürünler sunuyoruz. Numuneden paketlemeye kadar her adım, kayıt altına alınır ve sürekli iyileştirme ile desteklenir.",
+        "summary": {
+          "eyebrow": "Kalite Özeti"
+        },
+        "layers": {
+          "eyebrow": "Kontrol Katmanları",
+          "title": "Numuneden sevkiyata uzanan doğrulama yapısı."
+        },
+        "detailedLists": {
+          "eyebrow": "Detaylı Kontrol Listeleri",
+          "title": "Kontrol başlıkları tek tek görünür ve raporlanır."
+        },
+        "bottomCards": {
+          "sample": {
+            "eyebrow": "Numune Aşaması",
+            "title": "İlk onay aşaması sonraki tüm kalite akışının referans noktasını oluşturur.",
+            "body": "Ölçü, yüzey, dikiş ve malzeme uyumu bu aşamada netleştirilir."
+          },
+          "reporting": {
+            "eyebrow": "Raporlama",
+            "title": "Kontrol bulguları yalnızca tespit edilmez, kayıt altına alınır ve aksiyona çevrilir.",
+            "body": "Bu görünürlük kalite disiplininin sürdürülebilir hale gelmesini sağlar."
+          }
+        },
         "imageAlt": {
           "hero": "Kalite görseli",
           "sample": "Numune"
@@ -459,7 +554,13 @@
         "sections": {
           "how": {
             "title": "Nasıl Çalışıyoruz",
-            "lead": "Aşağıda kalite kontrol süreçlerimizin ana başlıklarını ve uygulama örneklerini bulabilirsiniz. Her adımda standart prosedürler (SOP) uygulanır ve kayıt altına alınır."
+            "heading": "Her kontrol adımı kayıt altına alınır ve iyileştirme döngüsüne bağlanır.",
+            "lead": "Aşağıda kalite kontrol süreçlerimizin ana başlıklarını ve uygulama örneklerini bulabilirsiniz. Her adımda standart prosedürler (SOP) uygulanır ve kayıt altına alınır.",
+            "steps": [
+              "Ölçü tablosu, dikiş kalitesi, kumaş davranışı ve ilk görünüm onayı numune aşamasında birlikte değerlendirilir.",
+              "Üretim boyunca kesim, dikim ve ara operasyonlarda tanımlı kritik kontrol noktaları düzenli aralıklarla izlenir.",
+              "Paketleme, etiketleme ve sevkiyat hazırlığı öncesinde son doğrulamalar yapılarak uygunsuzluk riski minimize edilir."
+            ]
           },
           "sample": {
             "title": "Numune Aşaması",
@@ -603,6 +704,8 @@
     "links": "Bağlantılar",
     "home": "Ana sayfa",
     "products": "Ürünlerimiz",
+    "wholesale": "Toptan",
+    "privateLabel": "Özel Marka",
     "contact": "İletişim",
     "corporate": {
       "title": "Kurumsal",
@@ -860,6 +963,34 @@
     "title": "Dünya haritası"
   },
   "pagesHome": {
+    "seo": {
+      "title": "Yasar - Ana Sayfa",
+      "description": "Yasar Tekstil; iç giyim, ev giyimi, private label ve toptan üretim çözümleri sunan Türkiye merkezli üreticidir."
+    },
+    "overview": {
+      "eyebrow": "Ana Bakış",
+      "title": "Üretim, kalite ve pazar erişimini tek akışta toplayan daha net bir ana sayfa deneyimi.",
+      "body": "Yaşar Tekstil; kurumsal üretim partnerliği, ürün geliştirme kabiliyeti ve ihracat odaklı operasyon yapısını aynı çatı altında sunar. Aşağıdaki bölümlerde ana iş modelimizi daha net biçimde görebilirsiniz."
+    },
+    "structure": {
+      "production": {
+        "title": "Üretim Partnerliği",
+        "body": "Toptan, private label ve kurumsal taleplerde planlı üretim ve düzenli teslim akışı sunuyoruz."
+      },
+      "quality": {
+        "title": "Kalite & İzlenebilirlik",
+        "body": "Numuneden sevkiyata kadar kontrol edilen süreçlerle tekrar edilebilir kalite standardı sağlıyoruz."
+      },
+      "global": {
+        "title": "Global Erişim",
+        "body": "Türkiye merkezli üretim altyapımızla farklı pazarlara düzenli ve sürdürülebilir biçimde ulaşıyoruz."
+      }
+    },
+    "catalog": {
+      "eyebrow": "Ürün Seçkisi",
+      "title": "Öne çıkan ürünler yalnızca vitrin değil, üretim kabiliyetimizin örnekleri.",
+      "body": "Kumaş kalitesi, kullanım konforu ve günlük giyilebilirlik açısından öne çıkan ürünleri bu bölümde topladık. Kullanıcı isterse detay modalı üzerinden hızlıca incelemeye geçebilir."
+    },
     "export": {
       "eyebrow": "İhracat Ağı",
       "title": "Türkiye’den farklı pazarlara uzanan dağıtım yapımız",
@@ -891,7 +1022,9 @@
     "ly": "Libya",
     "nl": "Hollanda",
     "fr": "Fransa",
-    "us": "ABD"
+    "us": "ABD",
+    "es": "İspanya",
+    "gr": "Yunanistan"
   },
   "api": {
     "quote": {
@@ -1067,5 +1200,22 @@
         "requestFailed": "Kaydetme isteği başarısız oldu."
       }
     }
+  },
+  "privacy": {
+    "title": "Gizlilik Politikası",
+    "seoTitle": "Gizlilik Politikası - Yasar",
+    "headerTitle": "Yasar Gizlilik Politikası",
+    "intro": "Kişisel verilerinizin korunmasını önemser ve şeffaf, güvenli bir şekilde işleriz. Bu sayfa hangi verileri topladığımızı, nasıl kullandığımızı ve haklarınızı özetlemektedir.",
+    "sections": {
+      "lead1": "Kişisel verilerinizin korunmasını önemsiyoruz. Aşağıda hangi verileri topladığımızı, nasıl kullandığımızı ve haklarınızı özetlemekteyiz. Detaylar için lütfen bize ulaşın.",
+      "lead2": "Verilerinizi korumak için makul teknik ve yönetimsel önlemler alıyoruz. Gizlilik soruları, talepleri veya şikayetler için lütfen bize ulaşın.",
+      "personalData": "İsim, e-posta adresi, telefon numarası ve iletişim formlarına girdiğiniz diğer bilgiler. Ayrıca site kullanımı ile ilgili çerezler ve teknik verileri (IP adresi, tarayıcı bilgileri, sayfa görüntülemeleri, vb.) toplayabiliriz.",
+      "whyUse": "Toplanan verileri taleplerini cevaplamak, hizmetleri sunmak ve iyileştirmek, sipariş/teklife ilişkin süreçleri yönetmek ve yasal yükümlülükleri yerine getirmek için kullanırız.",
+      "sharing": "Verileriniz, siz açık rıza vermedikçe veya kanun tarafından gerekli kılındıkça üçüncü taraflarla paylaşılmaz. Yüklenici (ör. kargo, ödeme sağlayıcıları) gibi sınırlı ve amaçla sınırlı paylaşım oluşabilir; bu tür aktarımlar güvenli bir şekilde gerçekleştirilir.",
+      "rights": "Verilerinize erişme ve düzeltme hakkı; silme veya işleme kısıtlanması talep etme hakkı; işleme itiraz etme ve veri taşınabilirliği hakkı.",
+      "cookies": "Site üzerinde performans ve analiz çerezleri kullanılabilir. Çerezleri tarayıcı ayarlarınız aracılığıyla yönetebilir veya devre dışı bırakabilirsiniz; bazı özellikler çerezler devre dışı bırakılırsa düzgün çalışmayabilir.",
+      "securityContact": "Verilerinizi korumak için makul teknik ve yönetimsel önlemler alıyoruz. Gizlilik ile ilgili sorular, talepleri veya şikayetler için lütfen bize ulaşın."
+    },
+    "quickSummary": "Hızlı Özet"
   }
 }

@@ -29,6 +29,7 @@
   },
   "sustainability": {
     "title": "Durabilité",
+    "heroHeading": "Une approche de production qui utilise les ressources avec plus de soin, mesure son impact et pense au long terme.",
     "heroLead": "Nous investissons dans l'avenir grâce à des processus de production axés sur la responsabilité environnementale et sociale.",
     "metrics": {
       "m1": "Conforme ISO 9001",
@@ -49,16 +50,6 @@
         "desc": "Assurer la santé des travailleurs, une rémunération équitable et des conditions de travail sûres."
       }
     ],
-    "how": {
-      "title": "Comment nous travaillons",
-      "lead": "Transparence, qualité et amélioration continue guident nos processus.",
-      "bullets": [
-        "Approvisionnement en matières premières durables",
-        "Projets d'efficacité énergétique et d'économie d'eau",
-        "Gestion des déchets et pratiques de recyclage",
-        "Audits réguliers et rapports transparents"
-      ]
-    },
     "cards": [
       {
         "title": "Production traçable",
@@ -74,12 +65,68 @@
       }
     ],
     "imageAlt2": "Image durabilité",
+    "approach": {
+      "eyebrow": "Approche",
+      "body": "Pour nous, la durabilité n’est pas un sujet distinct ; elle fait naturellement partie de la production, de la qualité, des opérations et des processus de décision."
+    },
+    "focus": {
+      "resource": {
+        "title": "Ressource",
+        "body": "Des décisions plus équilibrées dans l’utilisation de l’énergie, de l’eau et des matériaux."
+      },
+      "process": {
+        "title": "Processus",
+        "body": "Un fonctionnement fondé sur le suivi, le reporting et l’amélioration continue."
+      }
+    },
+    "pillarsEyebrow": "Axes principaux",
+    "pillarsTitle": "Les axes majeurs qui portent notre approche de la durabilité.",
+    "how": {
+      "title": "Comment nous travaillons",
+      "heading": "Une approche opérationnelle fondée sur des étapes mesurables et applicables.",
+      "lead": "Transparence, qualité et amélioration continue guident nos processus.",
+      "bullets": [
+        "Approvisionnement en matières premières durables",
+        "Projets d'efficacité énergétique et d'économie d'eau",
+        "Gestion des déchets et pratiques de recyclage",
+        "Audits réguliers et rapports transparents"
+      ]
+    },
+    "operationNote": {
+      "eyebrow": "Note opérationnelle",
+      "body": "Nos axes de durabilité ne sont pas seulement des déclarations d’intention ; ils reposent sur des pratiques suivies dans les opérations quotidiennes et régulièrement réévaluées.",
+      "sideTitle": "Suivi",
+      "sideBody": "L’utilisation des ressources, les résultats des processus et les notes opérationnelles sont examinés régulièrement."
+    },
+    "closing": {
+      "eyebrow": "Note d’approche",
+      "title": "Notre approche de la durabilité n’est pas ponctuelle ; c’est un domaine de développement continu au sein des opérations."
+    },
     "footerNote": "Contactez-nous pour en savoir plus sur notre approche de durabilité."
   },
   "uretim": {
     "tesis": {
       "title": "Nos installations de production",
       "lead": "Nous offrons une infrastructure de production moderne, sûre et durable. Dans nos installations, la qualité, la sécurité des travailleurs et la responsabilité environnementale sont gérées simultanément ; les processus sont suivis par des enregistrements numériques.",
+      "heroHeading": "Une structure d’installation qui fonctionne en un seul flux, de la ligne de production au contrôle qualité.",
+      "imageAlt": "Installation",
+      "imageLabel": "Image de l’installation",
+      "fieldView": {
+        "label": "Vue du site",
+        "body": "La production, la qualité et le suivi des processus sont gérés sur la même infrastructure physique et opérationnelle."
+      },
+      "processTracking": {
+        "label": "Suivi des processus"
+      },
+      "stats": {
+        "foundation": "Fondation",
+        "facilities": "Installations",
+        "capacity": "Production annuelle"
+      },
+      "components": {
+        "eyebrow": "Composants de l’installation",
+        "title": "Les couches principales qui portent l’opération."
+      },
       "tags": {
         "iso": "Conforme ISO 9001",
         "energy": "Efficacité énergétique",
@@ -105,7 +152,13 @@
       },
       "how": {
         "title": "Comment nous travaillons",
-        "lead": "Dans nos installations, nous conjuguons production efficace, sécurité des travailleurs et responsabilité environnementale. La traçabilité est assurée par des enregistrements numériques et les processus sont continuellement améliorés."
+        "heading": "L’organisation de ligne, le suivi des données et le contrôle qualité avancent dans le même système.",
+        "lead": "Dans nos installations, nous conjuguons production efficace, sécurité des travailleurs et responsabilité environnementale. La traçabilité est assurée par des enregistrements numériques et les processus sont continuellement améliorés.",
+        "steps": [
+          "Nous réunissons la planification de production, le contrôle qualité et le suivi des livraisons dans un même flux opérationnel.",
+          "Nous garantissons un niveau de qualité reproductible grâce aux enregistrements numériques, au reporting et au contrôle des processus.",
+          "La sécurité des travailleurs, l’efficacité énergétique et les mesures environnementales sont traitées comme des éléments indissociables de l’opération."
+        ]
       },
       "infrastructure": {
         "title": "Infrastructure & Machines",
@@ -129,6 +182,8 @@
       "quality": {
         "title": "Assurance qualité",
         "lead": "L'assurance qualité est assurée grâce à une surveillance continue, des enregistrements de données et des mécanismes de retour d'information.",
+        "standardLabel": "Norme",
+        "trackingLabel": "Suivi",
         "bullets": [
           "Processus conformes à ISO 9001",
           "SPC et reporting"
@@ -136,6 +191,7 @@
       },
       "applications": {
         "title": "Pratiques dans les installations",
+        "heading": "Des pratiques concrètes reflétées dans l’opération.",
         "lead": "Les principales pratiques mises en œuvre dans nos installations et les points auxquels nous prêtons attention sont listés ci-dessous.",
         "items": [
           "Suivi automatisé de la découpe et de la qualité",
@@ -144,9 +200,15 @@
         ],
         "summary": "Notre infrastructure est conçue pour l'efficacité, la santé au travail et l'impact environnemental. Nous réduisons la consommation d'énergie et gérons les déchets selon des objectifs mesurables."
       },
+      "materialFlow": {
+        "title": "Flux de matériaux",
+        "heading": "Le flux des tissus et semi-produits est organisé pour soutenir l’efficacité de la production.",
+        "body": "L’implantation physique et la discipline des processus soutiennent ensemble l’utilisation des capacités et le niveau de qualité."
+      },
       "energy": {
         "title": "Énergie & Environnement",
         "lead": "Les projets d'efficacité énergétique et les programmes de réduction des déchets font partie de nos opérations.",
+        "heading": "L’efficacité énergétique et la gestion de l’impact environnemental font partie des décisions de production.",
         "body": "Des projets d'efficacité énergétique et d'économie d'eau sont en place ; des mesures sont prises dans l'ensemble de l'installation et les progrès sont suivis par des rapports réguliers."
       }
     }
@@ -182,6 +244,7 @@
       "title": "Produits — Yasar",
       "description": "Collection de produits Yasar",
       "hero": {
+        "eyebrow": "Collection Yasar",
         "title": "Collection homme & femme",
         "subtitle": "Consultez la collection Yasar Textile sur un seul écran avec les catégories, les codes produit et les options d’image. Comparez plus rapidement des modèles de haute qualité adaptés à un usage quotidien.",
         "ctaInspect": "Parcourir les produits",
@@ -209,15 +272,50 @@
       "gender": {
         "all": "Tous",
         "male": "Homme",
-        "female": "Femme"
+        "female": "Femme",
+        "unisex": "Unisexe"
+      },
+      "listing": {
+        "eyebrow": "Sélection de produits",
+        "title": "Parcourez la collection par catégorie et code produit",
+        "countSuffix": "produits"
       },
       "searchPlaceholder": "Rechercher des produits",
+      "searchPrefix": "Recherche :",
+      "clearFilters": "Effacer les filtres",
+      "allCategories": "Toutes les catégories",
+      "activeSelections": "Sélections actives :",
       "noResults": "Aucun résultat",
+      "noResultsBody": "Essayez un autre code produit ou effacez les filtres pour revenir à toute la collection.",
+      "resetFilters": "Réinitialiser les filtres",
       "productCode": "Code produit:",
       "copy": "Copier",
       "copied": "Copié",
       "copyCodeAria": "Copier le code produit",
       "preview": "Aperçu",
+      "imageAreaAria": "Zone d’image du produit",
+      "prevPhoto": "Photo précédente",
+      "nextPhoto": "Photo suivante",
+      "galleryCount": "{count} visuels",
+      "modalIntro": "Vous pouvez consulter les détails du produit, copier le code produit et envoyer directement une demande d’information.",
+      "prevProduct": "← Produit précédent",
+      "nextProduct": "Produit suivant →",
+      "codeHelp": "Vous pouvez utiliser le code produit pour référencer rapidement le bon modèle lors des devis et commandes.",
+      "detailEyebrow": "Détail du produit",
+      "galleryOptions": "Options visuelles",
+      "backToCollection": "Retour à la collection",
+      "meta": {
+        "category": "Catégorie",
+        "collectionPiece": "Pièce de collection",
+        "gender": "Genre",
+        "gallery": "Galerie"
+      },
+      "related": {
+        "eyebrow": "Produits similaires",
+        "title": "Alternatives similaires dans la collection",
+        "count": "{count} suggestions",
+        "productOption": "Option produit"
+      },
       "requestInfo": "Demander des infos",
       "requestInfoAria": "Demander des infos -"
     },
@@ -275,12 +373,30 @@
         "submitError": "Impossible d'envoyer. Veuillez réessayer plus tard."
       }
     },
+    "terms": {
+      "seo": {
+        "title": "Conditions d'utilisation - Yasar",
+        "description": "Conditions d'utilisation et responsabilités des visiteurs du site Yasar."
+      },
+      "breadcrumb": {
+        "home": "Accueil",
+        "title": "Conditions d'utilisation"
+      },
+      "header": {
+        "title": "Conditions d'utilisation",
+        "intro": "Les visiteurs utilisant ce site web sont réputés accepter les conditions générales d'utilisation suivantes."
+      },
+      "placeholder": "Le contenu et les informations produits de ce site sont fournis à titre informatif. Contactez-nous pour plus de détails.",
+      "contactLink": "Aller à la page de contact"
+    },
     "about": {
       "title": "Entreprise - Yasar",
       "description": "À propos de Yasar Textile : notre mission, vision et capacités de production.",
       "hero": {
         "title": "Entreprise",
-        "desc": "Chez Yasar, nous mettons l'accent sur la qualité, la durabilité et le bien-être des travailleurs. Nos installations en Turquie utilisent des techniques de production modernes pour offrir des produits conformes aux normes internationales."
+        "desc": "Chez Yasar, nous mettons l'accent sur la qualité, la durabilité et le bien-être des travailleurs. Nos installations en Turquie utilisent des techniques de production modernes pour offrir des produits conformes aux normes internationales.",
+        "heading": "Une production de sous-vêtements régulière et traçable depuis la Turquie pour des marques mondiales.",
+        "ctaFacilitiesInspect": "Découvrir l’infrastructure de production"
       },
       "intro": {
         "p1": "Nous sommes un fabricant familial opérant des installations modernes en Turquie. De la conception à la livraison, nous appliquons des contrôles qualité et une traçabilité rigoureuse.",
@@ -295,7 +411,7 @@
         "facilities": "Installations"
       },
       "milestones": {
-        "1992": "Fondation et début de la production locale.",
+        "1992": "Fondation et début de la production.",
         "2005": "Modernisation de la ligne de production et création d'un laboratoire qualité.",
         "2017": "Lancement du programme de matières premières durables.",
         "2023": "Renforcement des partenariats internationaux."
@@ -321,6 +437,7 @@
         }
       },
       "values": {
+        "eyebrow": "Valeurs",
         "design": {
           "title": "Design & Confort",
           "body": "Bon design, durabilité et confort d'utilisation."
@@ -340,6 +457,10 @@
       },
       "quick": {
         "title": "Aperçu rapide",
+        "foundation": "Fondation",
+        "location": "Emplacement",
+        "locationValue": "Région de Marmara, Turquie",
+        "certificates": "Certificats",
         "labels": {
           "experience": "Années d'expérience",
           "audits": "Audits / an",
@@ -352,14 +473,83 @@
       "contactPrompt": "Pour plus d'informations ou des demandes de partenariat, veuillez nous contacter.",
       "collab": {
         "title": "Partenariats & Demandes",
+        "eyebrow": "Partenariat",
+        "heading": "Nous sommes prêts pour les partenariats d’entreprise, les demandes OEM et les échanges de production.",
         "body": "Pour des visites sur site, des questions techniques ou des commandes en gros, contactez-nous directement.",
-        "cta": "Contactez-nous"
+        "cta": "Contactez-nous",
+        "detailCta": "Détail à propos"
+      },
+      "overview": {
+        "title": "Vue d’ensemble",
+        "operationEyebrow": "Opérations",
+        "operationBody": "Un flux de production structuré pour les commandes OEM, private label et wholesale."
+      },
+      "profile": {
+        "eyebrow": "Profil",
+        "title": "Une structure opérationnelle claire et organisée pour des partenariats de fabrication à long terme.",
+        "point1": "Nous gérons les flux de conception, de production et de livraison sous une seule discipline opérationnelle.",
+        "point2": "Nous proposons un modèle de production traçable, planifié et durable pour les clients professionnels.",
+        "point3": "Nous travaillons avec une infrastructure flexible adaptée aux processus OEM, private label et wholesale."
+      },
+      "quality": {
+        "eyebrow": "Qualité",
+        "title": "Une discipline de production axée sur les standards",
+        "body": "Un fonctionnement centré sur le contrôle, le suivi et une qualité reproductible."
+      },
+      "capacity": {
+        "eyebrow": "Capacité",
+        "title": "Livraison planifiée, opérations évolutives",
+        "body": "Un flux de production régulier et durable pour les partenaires professionnels."
+      },
+      "export": {
+        "eyebrow": "Réseau d’exportation",
+        "lead": "Nous travaillons avec des partenariats actifs sur les marchés américain, européen et du Moyen-Orient. Tous les pays où nous vendons sont listés ci-dessous."
+      },
+      "countries": {
+        "lead": "Nous travaillons avec un réseau actif de clients et de partenaires en Europe, au Moyen-Orient et sur le continent américain.",
+        "activeMarkets": "{count}+ marchés actifs"
       }
+    },
+    "aboutMissionVision": {
+      "seoTitle": "Mission & Vision - Yasar",
+      "seoDescription": "La mission et la vision de Yasar ; notre cap en matière de qualité, durabilité et croissance internationale.",
+      "title": "Mission & Vision",
+      "lead": "Notre mission et notre vision sont de devenir une marque de confiance dans les sous-vêtements grâce à une production de qualité, responsable et innovante.",
+      "missionTitle": "Mission",
+      "missionBody": "Notre mission est de fabriquer des sous-vêtements aux standards de qualité élevés avec des méthodes durables. L’efficacité des ressources, la transparence de la chaîne d’approvisionnement et la sécurité des employés sont des piliers de cette mission.",
+      "visionTitle": "Vision",
+      "visionBody": "Notre vision est de devenir une marque privilégiée sur les marchés internationaux, portée par nos racines régionales et reconnue pour sa production durable. Nous visons à faire la différence grâce à un design innovant et à l’optimisation des processus.",
+      "contactLead": "Pour des partenariats d’entreprise, des visites de site ou des demandes techniques,",
+      "contactLink": "vous pouvez nous contacter"
     },
     "production": {
       "quality": {
         "title": "Processus de contrôle qualité",
+        "heroHeading": "Un flux qualité mesuré, rapporté et revérifié à chaque étape.",
         "heroLead": "Nous appliquons des inspections qualité strictes à chaque étape de la production afin d'offrir des produits cohérents, traçables et fiables. De l'échantillonnage à l'emballage, chaque étape est enregistrée et soutenue par une amélioration continue.",
+        "summary": {
+          "eyebrow": "Résumé qualité"
+        },
+        "layers": {
+          "eyebrow": "Couches de contrôle",
+          "title": "Une structure de vérification qui s’étend de l’échantillon à l’expédition."
+        },
+        "detailedLists": {
+          "eyebrow": "Listes de contrôle détaillées",
+          "title": "Les points de contrôle sont visibles et rapportés un par un."
+        },
+        "bottomCards": {
+          "sample": {
+            "eyebrow": "Phase d'échantillonnage",
+            "title": "La phase d’approbation initiale constitue le point de référence pour tout le flux qualité qui suit.",
+            "body": "Les mesures, l’aspect de surface, les coutures et la compatibilité des matériaux sont clarifiés à ce stade."
+          },
+          "reporting": {
+            "eyebrow": "Reporting",
+            "title": "Les constats de contrôle ne sont pas seulement identifiés, ils sont aussi enregistrés et transformés en actions.",
+            "body": "Cette visibilité permet de rendre la discipline qualité durable."
+          }
+        },
         "imageAlt": {
           "hero": "Image qualité",
           "sample": "Échantillon"
@@ -395,7 +585,13 @@
         "sections": {
           "how": {
             "title": "Comment nous travaillons",
-            "lead": "Vous trouverez ci‑dessous les principaux volets de nos processus de contrôle qualité et des exemples d'application. Des procédures opératoires standard (SOP) sont appliquées et consignées à chaque étape."
+            "heading": "Chaque étape de contrôle est enregistrée et reliée à la boucle d’amélioration.",
+            "lead": "Vous trouverez ci‑dessous les principaux volets de nos processus de contrôle qualité et des exemples d'application. Des procédures opératoires standard (SOP) sont appliquées et consignées à chaque étape.",
+            "steps": [
+              "Le tableau des mesures, la qualité des coutures, le comportement du tissu et l’approbation du premier aspect sont évalués ensemble lors de la phase d’échantillonnage.",
+              "Pendant la production, les points de contrôle critiques définis pour la coupe, la couture et les opérations intermédiaires sont suivis à intervalles réguliers.",
+              "Avant l’emballage, l’étiquetage et la préparation à l’expédition, des vérifications finales sont effectuées afin de minimiser le risque de non-conformité."
+            ]
           },
           "sample": {
             "title": "Phase d'échantillonnage",
@@ -457,6 +653,8 @@
     "links": "Liens",
     "home": "Accueil",
     "products": "Produits",
+    "wholesale": "Vente en gros",
+    "privateLabel": "Marque privée",
     "contact": "Contact",
     "corporate": {
       "title": "Entreprise",
@@ -491,22 +689,7 @@
     "cookie": {
       "reset": "Réinitialiser les cookies"
     },
-    "terms": {
-      "seo": {
-        "title": "Conditions d'utilisation - Yasar",
-        "description": "Cette page sera disponible bientôt. Pour plus d'informations, veuillez nous contacter : info@yasarunderwear.com"
-      },
-      "breadcrumb": {
-        "home": "Accueil",
-        "title": "Conditions d'utilisation"
-      },
-      "header": {
-        "title": "Conditions d'utilisation",
-        "intro": "Les visiteurs utilisant ce site web sont réputés accepter les conditions générales d'utilisation suivantes."
-      },
-      "placeholder": "Le contenu et les informations produits de ce site sont fournis à titre informatif. Contactez-nous pour plus de détails.",
-      "contactLink": "Aller à la page de contact"
-    },
+    "terms": "Conditions d'utilisation",
     "copyright": "© {year} Yasar. Tous droits réservés.",
     "copyrightRaw": "© ${new Date().getFullYear()} Yasar. Tous droits réservés.",
     "backToTop": "Haut de page",
@@ -531,7 +714,12 @@
       "wishlist": {
         "add": "Ajouter aux favoris",
         "remove": "Retirer des favoris"
-      }
+      },
+      "prevPhoto": "Photo précédente",
+      "nextPhoto": "Photo suivante",
+      "photoNumber": "Photo {n}",
+      "morePhotos": "Voir {count} photos de plus",
+      "morePhotosShort": "Voir encore {count}"
     },
     "productGrid": {
       "eyebrow": "Sélection mise en avant",
@@ -707,6 +895,34 @@
     "logout": "Se déconnecter"
   },
   "pagesHome": {
+    "seo": {
+      "title": "Yasar - Accueil",
+      "description": "Yasar Textile est un fabricant basé en Turquie proposant des solutions de production de sous-vêtements, de homewear, de marque privée et de vente en gros."
+    },
+    "overview": {
+      "eyebrow": "Vue d’ensemble",
+      "title": "Une expérience d’accueil plus claire qui réunit production, qualité et accès au marché dans un seul flux.",
+      "body": "Yasar Textile réunit sous un même toit le partenariat de production pour les entreprises, la capacité de développement produit et une structure opérationnelle orientée vers l’exportation. Dans les sections ci-dessous, vous pouvez voir plus clairement notre modèle économique principal."
+    },
+    "structure": {
+      "production": {
+        "title": "Partenariat de production",
+        "body": "Nous proposons une production planifiée et un flux de livraison régulier pour les demandes de vente en gros, de marque privée et des entreprises."
+      },
+      "quality": {
+        "title": "Qualité & traçabilité",
+        "body": "Nous garantissons un niveau de qualité reproductible grâce à des processus contrôlés, de l’échantillon à l’expédition."
+      },
+      "global": {
+        "title": "Portée mondiale",
+        "body": "Grâce à notre infrastructure de production basée en Turquie, nous desservons différents marchés de manière régulière et durable."
+      }
+    },
+    "catalog": {
+      "eyebrow": "Sélection de produits",
+      "title": "Les produits mis en avant ne sont pas seulement une vitrine, mais aussi des exemples de notre capacité de production.",
+      "body": "Nous avons rassemblé dans cette section des produits qui se distinguent par la qualité du tissu, le confort d’utilisation et l’aptitude au quotidien. L’utilisateur peut accéder rapidement à la fenêtre détaillée pour les examiner de plus près."
+    },
     "export": {
       "eyebrow": "Réseau d’exportation",
       "title": "Notre structure de distribution qui s’étend de la Turquie à différents marchés",
@@ -862,7 +1078,9 @@
     "ly": "Libye",
     "nl": "Pays-Bas",
     "fr": "France",
-    "us": "États-Unis"
+    "us": "États-Unis",
+    "es": "Espagne",
+    "gr": "Grèce"
   },
   "manufacturerTurkey": {
     "seo": {

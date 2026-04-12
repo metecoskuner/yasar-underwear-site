@@ -410,7 +410,7 @@ export default function UrunlerPage() {
         <div className="max-w-6xl mx-auto grid gap-8 px-4 py-12 sm:gap-10 sm:py-16 lg:grid-cols-[minmax(0,1.1fr)_minmax(320px,0.9fr)] items-center">
           <div>
             <div className="mb-4 inline-flex rounded-full border border-white/15 bg-white/10 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.24em] text-white/80">
-              Yaşar Koleksiyonu
+              {tr('pages.products.hero.eyebrow','Yaşar Koleksiyonu')}
             </div>
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight">
               {tr('pages.products.hero.title','Erkek ve Kadın İç Giyim Koleksiyonu')}
@@ -462,11 +462,11 @@ export default function UrunlerPage() {
         <div className="max-w-6xl mx-auto px-4 py-10 sm:py-12">
         <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">Ürün Seçkisi</p>
-            <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900">Koleksiyonu kategori ve ürün koduna göre inceleyin</h2>
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">{tr('pages.products.listing.eyebrow','Ürün Seçkisi')}</p>
+            <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900">{tr('pages.products.listing.title','Koleksiyonu kategori ve ürün koduna göre inceleyin')}</h2>
           </div>
           <div className="inline-flex rounded-full bg-white px-4 py-2 text-sm font-medium text-slate-600 shadow-sm ring-1 ring-black/5">
-            {filtered.length} ürün
+            {filtered.length} {tr('pages.products.listing.countSuffix','ürün')}
           </div>
         </div>
 
@@ -494,7 +494,7 @@ export default function UrunlerPage() {
               onClick={resetFilters}
               className="rounded-full border border-stone-200 px-4 py-2 text-sm font-semibold text-slate-600 transition hover:bg-stone-100 cursor-pointer"
             >
-              Filtreleri temizle
+              {tr('pages.products.clearFilters','Filtreleri temizle')}
             </button>
           ) : null}
         </div>
@@ -507,7 +507,7 @@ export default function UrunlerPage() {
               onClick={() => setCategory('all')}
               className={`rounded-full px-4 py-2 text-sm font-medium transition cursor-pointer ${category === 'all' ? 'bg-slate-900 text-white' : 'bg-white text-slate-600 ring-1 ring-black/5 hover:bg-stone-100'}`}
             >
-              Tüm kategoriler
+              {tr('pages.products.allCategories','Tüm kategoriler')}
             </button>
             {categories.map((item) => (
               <button
@@ -525,10 +525,10 @@ export default function UrunlerPage() {
 
         {hasActiveFilters ? (
           <div className="mb-6 flex flex-wrap items-center gap-2 text-sm text-slate-500">
-            <span className="font-medium text-slate-700">Aktif seçimler:</span>
-            {gender !== 'all' ? <span className="rounded-full bg-stone-200 px-3 py-1">{GENDER_TABS.find((tab) => tab.key === gender)?.label}</span> : null}
+            <span className="font-medium text-slate-700">{tr('pages.products.activeSelections','Aktif seçimler:')}</span>
+            {gender !== 'all' ? <span className="rounded-full bg-stone-200 px-3 py-1">{tr(`pages.products.gender.${gender}`, GENDER_TABS.find((tab) => tab.key === gender)?.label ?? gender)}</span> : null}
             {category !== 'all' ? <span className="rounded-full bg-stone-200 px-3 py-1">{CATEGORY_LABELS[category] ?? category}</span> : null}
-            {query.trim() ? <span className="rounded-full bg-stone-200 px-3 py-1">Arama: {query.trim()}</span> : null}
+            {query.trim() ? <span className="rounded-full bg-stone-200 px-3 py-1">{tr('pages.products.searchPrefix','Arama:')} {query.trim()}</span> : null}
           </div>
         ) : null}
 
@@ -538,13 +538,13 @@ export default function UrunlerPage() {
         ) : filtered.length === 0 ? (
           <div className="rounded-[28px] border border-dashed border-stone-300 bg-white px-6 py-16 text-center shadow-sm">
             <p className="text-lg font-semibold text-slate-900">{tr('pages.products.noResults','Sonuç bulunamadı')}</p>
-            <p className="mt-2 text-sm text-slate-500">Farklı bir ürün kodu deneyebilir veya filtreleri temizleyerek tüm koleksiyona dönebilirsiniz.</p>
+            <p className="mt-2 text-sm text-slate-500">{tr('pages.products.noResultsBody','Farklı bir ürün kodu deneyebilir veya filtreleri temizleyerek tüm koleksiyona dönebilirsiniz.')}</p>
             <button
               type="button"
               onClick={resetFilters}
               className="mt-5 rounded-full bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-700 cursor-pointer"
             >
-              Filtreleri sıfırla
+              {tr('pages.products.resetFilters','Filtreleri sıfırla')}
             </button>
           </div>
         ) : (
@@ -637,7 +637,7 @@ export default function UrunlerPage() {
                           showNextImage();
                         }
                       }}
-                      aria-label="Ürün görseli alanı"
+                            aria-label={tr('pages.products.imageAreaAria','Ürün görseli alanı')}
                     >
                       {modalImages.length > 1 && (
                         <>
@@ -648,7 +648,7 @@ export default function UrunlerPage() {
                               showPrevImage();
                             }}
                             className="absolute left-4 top-1/2 z-10 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/92 text-lg font-semibold text-slate-800 shadow transition hover:bg-white cursor-pointer md:flex"
-                            aria-label="Önceki fotoğraf"
+                            aria-label={tr('pages.products.prevPhoto','Önceki fotoğraf')}
                           >
                             ‹
                           </button>
@@ -659,7 +659,7 @@ export default function UrunlerPage() {
                               showNextImage();
                             }}
                             className="absolute right-4 top-1/2 z-10 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/92 text-lg font-semibold text-slate-800 shadow transition hover:bg-white cursor-pointer md:flex"
-                            aria-label="Sonraki fotoğraf"
+                            aria-label={tr('pages.products.nextPhoto','Sonraki fotoğraf')}
                           >
                             ›
                           </button>
@@ -724,7 +724,7 @@ export default function UrunlerPage() {
                       ) : null}
                       {modalImages.length > 1 ? (
                         <span className="inline-flex rounded-full bg-white px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500 ring-1 ring-black/5">
-                          {modalImages.length} görsel
+                          {tr('pages.products.galleryCount','{count} görsel').replace('{count}', String(modalImages.length))}
                         </span>
                       ) : null}
                     </div>
@@ -743,13 +743,13 @@ export default function UrunlerPage() {
                         ) : null}
                         {modalImages.length > 1 ? (
                           <span className="inline-flex rounded-full bg-amber-50 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-amber-700 ring-1 ring-amber-100">
-                            {modalImages.length} görsel
+                            {tr('pages.products.galleryCount','{count} görsel').replace('{count}', String(modalImages.length))}
                           </span>
                         ) : null}
                       </div>
                       <h3 className="max-w-xl text-2xl font-semibold tracking-tight text-slate-900 sm:text-[2rem]">{activeTitle}</h3>
                       <p className="max-w-xl text-sm leading-6 text-slate-500">
-                        Ürün detaylarını inceleyebilir, ürün kodunu kopyalayabilir ve doğrudan bilgi talebi oluşturabilirsiniz.
+                        {tr('pages.products.modalIntro','Ürün detaylarını inceleyebilir, ürün kodunu kopyalayabilir ve doğrudan bilgi talebi oluşturabilirsiniz.')}
                       </p>
                     </div>
                     <button
@@ -769,7 +769,7 @@ export default function UrunlerPage() {
                         disabled={activeProductIndex <= 0}
                         className="rounded-full px-3 py-2 text-xs font-medium text-slate-700 transition hover:bg-white cursor-pointer disabled:cursor-not-allowed disabled:opacity-40 sm:text-sm"
                       >
-                        ← Önceki ürün
+                        {tr('pages.products.prevProduct','← Önceki ürün')}
                       </button>
                       <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400 sm:text-xs">
                         {activeProductIndex + 1} / {filtered.length}
@@ -780,7 +780,7 @@ export default function UrunlerPage() {
                         disabled={activeProductIndex < 0 || activeProductIndex >= filtered.length - 1}
                         className="rounded-full px-3 py-2 text-xs font-medium text-slate-700 transition hover:bg-white cursor-pointer disabled:cursor-not-allowed disabled:opacity-40 sm:text-sm"
                       >
-                        Sonraki ürün →
+                        {tr('pages.products.nextProduct','Sonraki ürün →')}
                       </button>
                     </div>
                   ) : null}
@@ -821,22 +821,22 @@ export default function UrunlerPage() {
                     {copiedCode && <span className="text-sm font-medium text-emerald-600">{tr('pages.products.copied','Kopyalandı')}</span>}
                     </div>
                     <p className="mt-3 text-sm leading-6 text-slate-500">
-                      Teklif ve sipariş sürecinde doğru modele hızlıca referans vermek için ürün kodunu kullanabilirsiniz.
+                      {tr('pages.products.codeHelp','Teklif ve sipariş sürecinde doğru modele hızlıca referans vermek için ürün kodunu kullanabilirsiniz.')}
                     </p>
                   </div>
 
                   <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
                     <div className="rounded-[22px] border border-stone-200 bg-white p-4 shadow-sm">
-                      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">Kategori</p>
-                      <p className="mt-2 text-sm font-semibold text-slate-800">{activeCategoryLabel ?? 'Koleksiyon parçası'}</p>
+                      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">{tr('pages.products.meta.category','Kategori')}</p>
+                      <p className="mt-2 text-sm font-semibold text-slate-800">{activeCategoryLabel ?? tr('pages.products.meta.collectionPiece','Koleksiyon parçası')}</p>
                     </div>
                     <div className="rounded-[22px] border border-stone-200 bg-white p-4 shadow-sm">
-                      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">Cinsiyet</p>
-                      <p className="mt-2 text-sm font-semibold text-slate-800">{activeProduct.gender === 'male' ? 'Erkek' : activeProduct.gender === 'female' ? 'Kadın' : 'Unisex'}</p>
+                      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">{tr('pages.products.meta.gender','Cinsiyet')}</p>
+                      <p className="mt-2 text-sm font-semibold text-slate-800">{activeProduct.gender === 'male' ? tr('pages.products.gender.male','Erkek') : activeProduct.gender === 'female' ? tr('pages.products.gender.female','Kadın') : tr('pages.products.gender.unisex','Unisex')}</p>
                     </div>
                     <div className="rounded-[22px] border border-stone-200 bg-white p-4 shadow-sm">
-                      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">Galeri</p>
-                      <p className="mt-2 text-sm font-semibold text-slate-800">{modalImages.length} görsel</p>
+                      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">{tr('pages.products.meta.gallery','Galeri')}</p>
+                      <p className="mt-2 text-sm font-semibold text-slate-800">{tr('pages.products.galleryCount','{count} görsel').replace('{count}', String(modalImages.length))}</p>
                     </div>
                   </div>
 
@@ -846,14 +846,14 @@ export default function UrunlerPage() {
                     if (!localizedDescription) return null;
                     return (
                       <div className="rounded-[26px] border border-stone-200 bg-white p-5 shadow-[0_18px_45px_-36px_rgba(15,23,42,0.3)]">
-                        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">Ürün Detayı</p>
+                        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">{tr('pages.products.detailEyebrow','Ürün Detayı')}</p>
                         <p className="mt-3 text-[15px] leading-7 text-slate-700">{localizedDescription}</p>
                       </div>
                     );
                   })()}
 
                   <div className="hidden rounded-[26px] border border-stone-200 bg-white p-5 shadow-sm md:block">
-                    <p className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">Görsel Seçenekleri</p>
+                    <p className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">{tr('pages.products.galleryOptions','Görsel Seçenekleri')}</p>
                     <div className="grid grid-cols-4 gap-3">
                     {modalImages.map((img, i) => (
                       <button
@@ -881,7 +881,7 @@ export default function UrunlerPage() {
                       onClick={() => setActiveProduct(null)}
                       className="inline-flex min-w-[160px] items-center justify-center rounded-full border border-stone-300 px-6 py-3 font-semibold text-slate-700 transition hover:border-slate-400 hover:bg-stone-50 cursor-pointer"
                     >
-                      Koleksiyona dön
+                      {tr('pages.products.backToCollection','Koleksiyona dön')}
                     </button>
                     {/* Product structured data moved to dedicated product detail pages (SEO component). */}
                   </div>
@@ -890,10 +890,10 @@ export default function UrunlerPage() {
                     <div className="rounded-[26px] border border-stone-200 bg-white p-5 shadow-sm">
                       <div className="mb-4 flex items-end justify-between gap-4">
                         <div>
-                          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">Benzer Ürünler</p>
-                          <h4 className="mt-2 text-lg font-semibold text-slate-900">Koleksiyondaki benzer alternatifler</h4>
+                          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">{tr('pages.products.related.eyebrow','Benzer Ürünler')}</p>
+                          <h4 className="mt-2 text-lg font-semibold text-slate-900">{tr('pages.products.related.title','Koleksiyondaki benzer alternatifler')}</h4>
                         </div>
-                        <span className="hidden text-xs font-medium text-slate-400 sm:inline">{relatedProducts.length} öneri</span>
+                        <span className="hidden text-xs font-medium text-slate-400 sm:inline">{tr('pages.products.related.count','{count} öneri').replace('{count}', String(relatedProducts.length))}</span>
                       </div>
 
                       <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
@@ -930,7 +930,7 @@ export default function UrunlerPage() {
                                 ) : null}
                                 <div className="line-clamp-2 text-sm font-semibold text-slate-900">{itemTitle}</div>
                                 <div className="flex items-center justify-between text-xs font-medium text-slate-500">
-                                  <span>{item.productCode ?? 'Ürün seçeneği'}</span>
+                                  <span>{item.productCode ?? tr('pages.products.related.productOption','Ürün seçeneği')}</span>
                                   <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
                                 </div>
                               </div>

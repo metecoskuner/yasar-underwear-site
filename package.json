@@ -7,8 +7,7 @@
     "postinstall": "prisma generate",
     "build": "next build --webpack",
     "start": "next start",
-    "lint": "eslint",
-    "capture-screenshots": "node ./scripts/capture_screenshots.js"
+    "lint": "eslint"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.1.0",
@@ -19,7 +18,6 @@
     "dotenv": "^17.3.1",
     "formidable": "^3.5.4",
     "framer-motion": "^10.12.4",
-    "marked": "^5.1.1",
     "next": "^16.0.10",
     "nodemailer": "^6.10.1",
     "pg": "^8.20.0",

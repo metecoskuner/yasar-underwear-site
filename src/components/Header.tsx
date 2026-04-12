@@ -205,7 +205,7 @@ export default function Header() {
     if (!src) {
       return (
         <div className="w-12 h-12 bg-gray-100 rounded-md flex-shrink-0 flex items-center justify-center text-sm text-gray-500">
-          Ü
+          {tr('components.header.wishlist.placeholder', 'Ü')}
         </div>
       );
     }
@@ -215,10 +215,10 @@ export default function Header() {
       // If all candidates fail, the onError loop will exhaust and we can show the placeholder.
       // We guard by rendering the placeholder when idx becomes >= candidates.length.
       idx < candidates.length ? (
-        <Image src={src} alt={p?.title ?? `Ürün ${id}`} width={48} height={48} className="rounded-md object-cover flex-shrink-0" onError={handleError} />
+        <Image src={src} alt={p?.title ?? tr('components.header.wishlist.productFallback', 'Ürün {id}').replace('{id}', id)} width={48} height={48} className="rounded-md object-cover flex-shrink-0" onError={handleError} />
       ) : (
         <div className="w-12 h-12 bg-gray-100 rounded-md flex-shrink-0 flex items-center justify-center text-sm text-gray-500">
-          Ü
+          {tr('components.header.wishlist.placeholder', 'Ü')}
         </div>
       )
     );
@@ -298,7 +298,7 @@ export default function Header() {
               <button
                 onClick={(e) => handleRemove(e, id)}
                 data-wishlist-button="true"
-                aria-label={`Kaldır ${combined?.title ?? id}`}
+                aria-label={tr('components.header.wishlist.removeItem', 'Kaldır {title}').replace('{title}', combined?.title ?? id)}
                 className="ml-2 p-1 rounded-full text-rose-500 hover:bg-rose-50 focus:outline-none flex-shrink-0 cursor-pointer transition-transform duration-150 hover:scale-110"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden>

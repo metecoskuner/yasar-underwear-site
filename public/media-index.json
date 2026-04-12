@@ -1,25 +1,13 @@
 {
   "videos": [
-    { "name": "DSCF7638.mp4", "url": "/videos/DSCF7638.mp4" },
-    { "name": "DSCF7639.mp4", "url": "/videos/DSCF7639.mp4" },
-    { "name": "DSCF7649.mp4", "url": "/videos/DSCF7649.mp4" },
-    { "name": "DSCF7648.mp4", "url": "/videos/DSCF7648.mp4" },
-    { "name": "DSCF7645.mp4", "url": "/videos/DSCF7645.mp4" },
-    { "name": "DSCF7651.mp4", "url": "/videos/DSCF7651.mp4" },
-    { "name": "DSCF7650.mp4", "url": "/videos/DSCF7650.mp4" },
-    { "name": "DSCF7644.mp4", "url": "/videos/DSCF7644.mp4" },
-    { "name": "DSCF7652.mp4", "url": "/videos/DSCF7652.mp4" },
-    { "name": "DSCF7646.mp4", "url": "/videos/DSCF7646.mp4" },
-    { "name": "DSCF7647.mp4", "url": "/videos/DSCF7647.mp4" },
-    { "name": "DSCF7653.mp4", "url": "/videos/DSCF7653.mp4" },
-    { "name": "DSCF7643.mp4", "url": "/videos/DSCF7643.mp4" },
-    { "name": "DSCF7642.mp4", "url": "/videos/DSCF7642.mp4" },
-    { "name": "DSCF7640.mp4", "url": "/videos/DSCF7640.mp4" },
-    { "name": "DSCF7654.mp4", "url": "/videos/DSCF7654.mp4" },
-    { "name": "DSCF7655.mp4", "url": "/videos/DSCF7655.mp4" },
-    { "name": "DSCF7641.mp4", "url": "/videos/DSCF7641.mp4" },
-    { "name": "XT4F5956.mp4", "url": "/videos/XT4F5956.mp4" },
-    { "name": "DSCF0014.mp4", "url": "/videos/DSCF0014.mp4" }
+    { "name": "YasarHero1-web.mp4", "url": "/videos/YasarHero1-web.mp4" },
+    { "name": "yasarheromobil-web.mp4", "url": "/videos/yasarheromobil-web.mp4" },
+    { "name": "DSCF7638-web.mp4", "url": "/videos/DSCF7638-web.mp4" },
+    { "name": "DSCF7639-web.mp4", "url": "/videos/DSCF7639-web.mp4" },
+    { "name": "DSCF7645-web.mp4", "url": "/videos/DSCF7645-web.mp4" },
+    { "name": "DSCF7648-web.mp4", "url": "/videos/DSCF7648-web.mp4" },
+    { "name": "DSCF7649-web.mp4", "url": "/videos/DSCF7649-web.mp4" },
+    { "name": "DSCF7651-web.mp4", "url": "/videos/DSCF7651-web.mp4" }
   ],
   "uploads": [
     { "name": "1769808561142-os4xau-tank air tank top.jpg", "url": "/uploads/1769808561142-os4xau-tank air tank top.jpg" },

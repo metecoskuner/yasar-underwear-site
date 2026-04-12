@@ -45,8 +45,8 @@ export default function Footer() {
     <div className="flex flex-col space-y-2">
       <Link href="/" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{tr('footer.home','Ana sayfa')}</Link>
       <Link href="/urunler" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{tr('footer.products','Ürünlerimiz')}</Link>
-  <Link href="/wholesale" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">Toptan</Link>
-  <Link href="/private-label" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">Özel Marka</Link>
+      <Link href="/wholesale" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{tr('footer.wholesale','Toptan')}</Link>
+      <Link href="/private-label" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{tr('footer.privateLabel','Özel Marka')}</Link>
       <Link href="/surdurulebilirlik" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{tr('footer.sustainability','Sürdürülebilirlik')}</Link>
       <Link href="/contact" className="block text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transform transition-transform duration-150 hover:scale-105">{tr('footer.contact','İletişim')}</Link>
     </div>
@@ -152,7 +152,7 @@ export default function Footer() {
               {tr('footer.products','Ürünlerimiz')}
             </Link>
             <Link href="/wholesale" className="inline-flex items-center rounded-full border border-white/12 bg-white/8 px-4 py-2 text-sm font-medium text-white transition hover:border-white/24 hover:bg-white/12">
-              Toptan
+              {tr('footer.wholesale','Toptan')}
             </Link>
             <Link href="/contact" className="inline-flex items-center rounded-full bg-white px-4 py-2 text-sm font-semibold !text-slate-900 transition hover:bg-stone-100">
               {tr('footer.contact','İletişim')}
@@ -173,7 +173,7 @@ export default function Footer() {
           <div className="max-w-prose space-y-2 text-xs leading-relaxed text-white/70">
             <p>{tr('footer.company.paragraph1','1969 yılında kurulan firmamız, yarım asrı aşan köklü tecrübesiyle gecelik, pijama takımı, paçalı pijama altı ve iç giyim üretiminde uzmanlaşmış, sektörün önde gelen üretici ve ihracatçıları arasında yer almaktadır.')}</p>
 
-            <p>{tr('footer.company.paragraph2','Amerika, Fransa, İspanya, Yunanistan, İsrail başta olmak üzere Doğu Avrupa ve Orta Doğu pazarlarına gerçekleştirdiğimiz ihracatlarla, yüksek kalite standartlarımızı ve müşteri odaklı yaklaşımımızı uluslararası arenada başarıyla temsil ediyoruz.')}</p>
+            <p>{tr('footer.company.paragraph2','Amerika, Fransa, İspanya ve Yunanistan başta olmak üzere Doğu Avrupa ve Orta Doğu pazarlarına gerçekleştirdiğimiz ihracatlarla, yüksek kalite standartlarımızı ve müşteri odaklı yaklaşımımızı uluslararası arenada başarıyla temsil ediyoruz.')}</p>
 
             <p>{tr('footer.company.paragraph3','Güvenilirliği, sürekliliği ve kaliteyi esas alan firmamız, global ölçekte tercih edilen güçlü bir iş ortağı olmayı sürdürmektedir.')}</p>
           </div>
