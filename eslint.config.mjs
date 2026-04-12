@@ -9,6 +9,7 @@ const eslintConfig = defineConfig([
   globalIgnores([
     // Default ignores of eslint-config-next:
     ".next/**",
+    ".vercel/**",
     "out/**",
     "build/**",
     // ignore backup copy directory used in this workspace

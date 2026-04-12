@@ -1094,6 +1094,39 @@
       "undoError": "Geri alma hatası",
       "loginFailed": "Giriş başarısız",
       "loginRequestFailed": "Giriş isteği başarısız"
+    },
+    "contentEditor": {
+      "saved": "Kaydedildi",
+      "saveFailed": "Kaydetme başarısız",
+      "slug": "Slug (URL parçası)",
+      "pageTitle": "Sayfa Başlığı",
+      "addSection": "Bölüm Ekle",
+      "saving": "Kaydediliyor...",
+      "savePage": "Sayfayı Kaydet"
+    },
+    "users": {
+      "metaTitle": "Admin - Kullanıcılar",
+      "title": "Kullanıcılar",
+      "lead": "Bu panel artık sadece yönetici parolasını değiştirmek için kullanılmaktadır.",
+      "adminUser": "Yönetici Kullanıcı",
+      "defaultAdmin": "admin",
+      "newPassword": "Yeni Parola",
+      "confirmPassword": "Parolayı Onayla",
+      "savePassword": "Parolayı Kaydet",
+      "saving": "Kaydediliyor...",
+      "warning": "Uyarı: Bu ortamda ayar kaydetme devre dışı. Ortam değişkenini güncelleyin.",
+      "noteIntro": "Not: Bu proje varsayılan olarak yönetici kimlik bilgilerini",
+      "noteOutro": "ortam değişkenlerinden okur. Üretimde parola değişikliği için lütfen dağıtımınızın ortam ayarlarını kullanın.",
+      "validation": {
+        "emptyPassword": "Yeni parola boş olamaz.",
+        "mismatch": "Parolalar eşleşmiyor."
+      },
+      "messages": {
+        "disabled": "Bu dağıtımda parola değişikliği devre dışı. Lütfen ADMIN_PASS ortam değişkenini güncelleyin.",
+        "saveError": "Kaydetme sırasında hata oluştu.",
+        "saved": "Parola kaydedildi (uygulamayı yeniden başlatmanız gerekebilir).",
+        "requestFailed": "Kaydetme isteği başarısız oldu."
+      }
     }
   },
   "adminLayout": {
@@ -1164,41 +1197,6 @@
       "middle": "veya",
       "wholesale": "Toptan",
       "suffix": "sayfalarımızdaki formu doldurarak bize ulaşabilirsiniz. Ekibimiz zaman çizelgesi ve fiyatlandırma bilgileriyle dönüş yapacaktır."
-    }
-  },
-  "admin": {
-    "contentEditor": {
-      "saved": "Kaydedildi",
-      "saveFailed": "Kaydetme başarısız",
-      "slug": "Slug (URL parçası)",
-      "pageTitle": "Sayfa Başlığı",
-      "addSection": "Bölüm Ekle",
-      "saving": "Kaydediliyor...",
-      "savePage": "Sayfayı Kaydet"
-    },
-    "users": {
-      "metaTitle": "Admin - Kullanıcılar",
-      "title": "Kullanıcılar",
-      "lead": "Bu panel artık sadece yönetici parolasını değiştirmek için kullanılmaktadır.",
-      "adminUser": "Yönetici Kullanıcı",
-      "defaultAdmin": "admin",
-      "newPassword": "Yeni Parola",
-      "confirmPassword": "Parolayı Onayla",
-      "savePassword": "Parolayı Kaydet",
-      "saving": "Kaydediliyor...",
-      "warning": "Uyarı: Bu ortamda ayar kaydetme devre dışı. Ortam değişkenini güncelleyin.",
-      "noteIntro": "Not: Bu proje varsayılan olarak yönetici kimlik bilgilerini",
-      "noteOutro": "ortam değişkenlerinden okur. Üretimde parola değişikliği için lütfen dağıtımınızın ortam ayarlarını kullanın.",
-      "validation": {
-        "emptyPassword": "Yeni parola boş olamaz.",
-        "mismatch": "Parolalar eşleşmiyor."
-      },
-      "messages": {
-        "disabled": "Bu dağıtımda parola değişikliği devre dışı. Lütfen ADMIN_PASS ortam değişkenini güncelleyin.",
-        "saveError": "Kaydetme sırasında hata oluştu.",
-        "saved": "Parola kaydedildi (uygulamayı yeniden başlatmanız gerekebilir).",
-        "requestFailed": "Kaydetme isteği başarısız oldu."
-      }
     }
   },
   "privacy": {

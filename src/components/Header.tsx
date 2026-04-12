@@ -126,6 +126,7 @@ export default function Header() {
   const hoverCloseTimer = useRef<number | null>(null);
   const navItemRefs = useRef<Record<string, HTMLElement | null>>({});
   const scrollYRef = useRef(0);
+  const mobileLockCleanupRef = useRef<null | (() => void)>(null);
 
   const cancelHoverClose = () => {
     if (hoverCloseTimer.current) {
@@ -562,39 +563,44 @@ export default function Header() {
     };
   }, [mobileOpen]);
 
-  // lock body scroll when mobile menu is open
+  // lock body scroll when mobile menu is open without causing layout jumps on close
   useEffect(() => {
     if (typeof document === "undefined") return;
+
+    if (!mobileOpen) {
+      if (mobileLockCleanupRef.current) {
+        mobileLockCleanupRef.current();
+        mobileLockCleanupRef.current = null;
+      }
+      return;
+    }
+
     const prevOverflow = document.body.style.overflow;
     const prevPosition = document.body.style.position;
     const prevTop = document.body.style.top;
     const prevWidth = document.body.style.width;
     const prevOverscroll = document.documentElement.style.overscrollBehavior;
 
-    if (mobileOpen) {
-      scrollYRef.current = window.scrollY;
-      document.documentElement.style.overscrollBehavior = "none";
-      document.body.style.overflow = "hidden";
-      document.body.style.position = "fixed";
-      document.body.style.top = `-${scrollYRef.current}px`;
-      document.body.style.width = "100%";
-    } else {
+    scrollYRef.current = window.scrollY;
+    document.documentElement.style.overscrollBehavior = "none";
+    document.body.style.overflow = "hidden";
+    document.body.style.position = "fixed";
+    document.body.style.top = `-${scrollYRef.current}px`;
+    document.body.style.width = "100%";
+
+    mobileLockCleanupRef.current = () => {
       document.documentElement.style.overscrollBehavior = prevOverscroll || "";
       document.body.style.overflow = prevOverflow || "";
       document.body.style.position = prevPosition || "";
       document.body.style.top = prevTop || "";
       document.body.style.width = prevWidth || "";
-    }
+      window.scrollTo(0, scrollYRef.current);
+    };
 
     return () => {
-      const lockedTop = document.body.style.top;
-      document.documentElement.style.overscrollBehavior = prevOverscroll || "";
-      document.body.style.overflow = prevOverflow || "";
-      document.body.style.position = prevPosition || "";
-      document.body.style.top = prevTop || "";
-      document.body.style.width = prevWidth || "";
-      if (mobileOpen) {
-        window.scrollTo(0, Math.abs(parseInt(lockedTop || "0", 10)) || scrollYRef.current);
+      if (mobileLockCleanupRef.current) {
+        mobileLockCleanupRef.current();
+        mobileLockCleanupRef.current = null;
       }
     };
   }, [mobileOpen]);
@@ -617,7 +623,6 @@ export default function Header() {
               const resolvedLabel = getLabel(item.href);
 
               if (item.children && item.children.length > 0) {
-                // Simplify: do not render a dropdown here. Show the parent link only.
                 return (
                   <div
                     key={item.href}
@@ -625,21 +630,34 @@ export default function Header() {
                     onMouseEnter={() => { cancelHoverClose(); setHoveredNav(item.href); }}
                     onMouseLeave={() => scheduleHoverClose()}
                   >
-                    <button
-                      type="button"
+                    <div
                       ref={(el) => { navItemRefs.current[item.href] = el; }}
-                      aria-haspopup="menu"
-                      aria-expanded={hoveredNav === item.href}
-                      onFocus={() => { cancelHoverClose(); setHoveredNav(item.href); }}
-                      onBlur={() => scheduleHoverClose()}
-                      onClick={() => setHoveredNav((prev) => (prev === item.href ? null : item.href))}
-                      className={`relative z-10 ${active ? 'font-semibold' : ''} whitespace-nowrap truncate group-hover:text-white/90 flex items-center gap-1 focus:outline-none cursor-pointer`}
+                      className={`relative z-10 flex items-center gap-1 ${active ? 'font-semibold' : ''}`}
                     >
-                      <span>{resolvedLabel}</span>
-                      <svg className={`h-3 w-3 ml-1 transform transition-transform duration-150 ${hoveredNav === item.href ? 'rotate-180' : 'rotate-0'}`} viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
-                        <path d="M6 8l4 4 4-4" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                    </button>
+                      <Link
+                        href={item.href}
+                        className="whitespace-nowrap truncate group-hover:text-white/90 focus:outline-none"
+                        aria-current={active ? 'page' : undefined}
+                        onFocus={() => { cancelHoverClose(); setHoveredNav(item.href); }}
+                        onBlur={() => scheduleHoverClose()}
+                      >
+                        {resolvedLabel}
+                      </Link>
+                      <button
+                        type="button"
+                        aria-haspopup="menu"
+                        aria-expanded={hoveredNav === item.href}
+                        aria-label={`${resolvedLabel} menu`}
+                        onFocus={() => { cancelHoverClose(); setHoveredNav(item.href); }}
+                        onBlur={() => scheduleHoverClose()}
+                        onClick={() => setHoveredNav((prev) => (prev === item.href ? null : item.href))}
+                        className="flex h-6 w-6 items-center justify-center rounded-md transition-colors duration-150 hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 cursor-pointer"
+                      >
+                        <svg className={`h-3 w-3 transform transition-transform duration-150 ${hoveredNav === item.href ? 'rotate-180' : 'rotate-0'}`} viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
+                          <path d="M6 8l4 4 4-4" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                      </button>
+                    </div>
 
                     <M.span
                       className={`absolute left-0 -bottom-1 h-0.5 z-0 ${active ? 'bg-amber-400' : 'bg-white'}`}
@@ -1030,24 +1048,14 @@ export default function Header() {
                             {item.children && item.children.length > 0 ? (
                               <div>
                                 <div className="flex items-center justify-between px-3 py-3 rounded">
-                                  <span className={`font-medium ${isActive(item.href) ? 'font-semibold' : ''}`}>
-                                    {(() => {
-                                      switch (item.href) {
-                                        case "/":
-                                          return t("nav.home");
-                                        case "/about":
-                                          return t("nav.corporate.title");
-                                        case "/uretim":
-                                          return t("nav.production.title");
-                                        case "/surdurulebilirlik":
-                                          return t("nav.sustainability");
-                                        case "/urunler":
-                                          return t("nav.products");
-                                        default:
-                                          return item.label;
-                                      }
-                                    })()}
-                                  </span>
+                                  <Link
+                                    href={item.href}
+                                    className={`min-w-0 flex-1 pr-3 font-medium ${isActive(item.href) ? 'font-semibold' : ''} cursor-pointer`}
+                                    aria-current={isActive(item.href) ? 'page' : undefined}
+                                    onClick={() => setMobileOpen(false)}
+                                  >
+                                    {getLabel(item.href)}
+                                  </Link>
                                   <button
                                     type="button"
                                     aria-expanded={!!mobileOpenItems[item.href]}

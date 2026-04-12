@@ -55,6 +55,9 @@ export default function UrunlerPage() {
   const closeBtnRef = useRef<HTMLButtonElement | null>(null);
   const touchStartXRef = useRef<number | null>(null);
   const touchDeltaXRef = useRef(0);
+  const modalScrollYRef = useRef(0);
+  const filteredRef = useRef<ProductType[]>([]);
+  const activeProductIndexRef = useRef(-1);
   const [copiedCode, setCopiedCode] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -235,6 +238,11 @@ export default function UrunlerPage() {
     return unique.slice(0, 3);
   }, [activeProduct, filtered]);
 
+  useEffect(() => {
+    filteredRef.current = filtered;
+    activeProductIndexRef.current = activeProductIndex;
+  }, [filtered, activeProductIndex]);
+
   const hasActiveFilters = gender !== 'all' || category !== 'all' || query.trim().length > 0;
 
   useEffect(() => {
@@ -247,14 +255,14 @@ export default function UrunlerPage() {
   useEffect(() => {
     if (!activeProduct || typeof document === 'undefined') return;
 
-    const scrollY = window.scrollY;
+    modalScrollYRef.current = window.scrollY;
     const previousOverflow = document.body.style.overflow;
     const previousPosition = document.body.style.position;
     const previousTop = document.body.style.top;
     const previousWidth = document.body.style.width;
     document.body.style.overflow = 'hidden';
     document.body.style.position = 'fixed';
-    document.body.style.top = `-${scrollY}px`;
+    document.body.style.top = `-${modalScrollYRef.current}px`;
     document.body.style.width = '100%';
 
     function handleKeyDown(event: KeyboardEvent) {
@@ -262,14 +270,14 @@ export default function UrunlerPage() {
         setActiveProduct(null);
         return;
       }
-      if (event.key === 'ArrowUp' && activeProductIndex > 0) {
+      if (event.key === 'ArrowUp' && activeProductIndexRef.current > 0) {
         event.preventDefault();
-        openProductModal(filtered[activeProductIndex - 1], 0);
+        openProductModal(filteredRef.current[activeProductIndexRef.current - 1], 0);
         return;
       }
-      if (event.key === 'ArrowDown' && activeProductIndex >= 0 && activeProductIndex < filtered.length - 1) {
+      if (event.key === 'ArrowDown' && activeProductIndexRef.current >= 0 && activeProductIndexRef.current < filteredRef.current.length - 1) {
         event.preventDefault();
-        openProductModal(filtered[activeProductIndex + 1], 0);
+        openProductModal(filteredRef.current[activeProductIndexRef.current + 1], 0);
       }
     }
 
@@ -279,10 +287,10 @@ export default function UrunlerPage() {
       document.body.style.position = previousPosition;
       document.body.style.top = previousTop;
       document.body.style.width = previousWidth;
-      window.scrollTo(0, scrollY);
+      window.scrollTo(0, modalScrollYRef.current);
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [activeProduct, activeProductIndex, filtered]);
+  }, [activeProduct]);
 
   // If the page is opened with a ?product=<id> query (e.g. from favorites dropdown),
   // open the modal for that product and scroll it into view.
@@ -301,11 +309,6 @@ export default function UrunlerPage() {
       else preview = rawPreview
     }
     openProductModal(p, preview)
-    // scroll to product card after a short delay so layout is ready
-    window.setTimeout(() => {
-      const el = document.getElementById(`product-${p.id}`);
-      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }, 80);
     // remove query param so it doesn't re-trigger on history navigation
     void router.replace(router.pathname, undefined, { shallow: true });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -564,13 +567,13 @@ export default function UrunlerPage() {
         <div className="fixed inset-0 z-50 flex items-end justify-center px-0 sm:px-4 md:items-center">
           <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setActiveProduct(null)} />
           <div
-            className="relative h-[100svh] w-full max-w-7xl overflow-y-auto overflow-x-hidden rounded-none bg-[#fcfbf8] shadow-[0_40px_120px_-40px_rgba(15,23,42,0.5)] ring-1 ring-black/5 transform-gpu transition-all duration-300 sm:h-auto sm:rounded-t-[24px] sm:rounded-b-[32px] md:overflow-hidden"
+            className="relative h-[100dvh] w-full max-w-7xl overflow-y-auto overflow-x-hidden rounded-none bg-[#fcfbf8] shadow-[0_40px_120px_-40px_rgba(15,23,42,0.5)] ring-1 ring-black/5 transform-gpu transition-all duration-300 sm:h-auto sm:rounded-t-[24px] sm:rounded-b-[32px] md:overflow-hidden"
             role="dialog"
             aria-modal="true"
-            style={{ maxHeight: '100vh' }}
+            style={{ maxHeight: '100dvh' }}
           >
             <FocusLock>
-              <div className="flex min-h-[100svh] flex-col md:grid md:grid-cols-[minmax(0,1.08fr)_minmax(380px,0.92fr)] md:h-auto md:max-h-[calc(100vh-24px)]">
+              <div className="flex min-h-[100dvh] flex-col md:grid md:grid-cols-[minmax(0,1.08fr)_minmax(380px,0.92fr)] md:h-auto md:max-h-[calc(100dvh-24px)]">
                 <div className="sticky top-0 z-30 flex items-center justify-between border-b border-stone-200/80 bg-white/95 px-4 py-3 backdrop-blur-sm md:hidden">
                   <div className="min-w-0">
                     {activeCategoryLabel ? (

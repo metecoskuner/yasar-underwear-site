@@ -1013,6 +1013,39 @@
       "undoError": "Erreur lors de l'annulation",
       "loginFailed": "Échec de la connexion",
       "loginRequestFailed": "La requête de connexion a échoué"
+    },
+    "contentEditor": {
+      "saved": "Enregistré",
+      "saveFailed": "Échec de l'enregistrement",
+      "slug": "Slug (segment d'URL)",
+      "pageTitle": "Titre de la page",
+      "addSection": "Ajouter une section",
+      "saving": "Enregistrement...",
+      "savePage": "Enregistrer la page"
+    },
+    "users": {
+      "metaTitle": "Admin - Utilisateurs",
+      "title": "Utilisateurs",
+      "lead": "Ce panneau sert désormais uniquement à modifier le mot de passe administrateur.",
+      "adminUser": "Utilisateur administrateur",
+      "defaultAdmin": "admin",
+      "newPassword": "Nouveau mot de passe",
+      "confirmPassword": "Confirmer le mot de passe",
+      "savePassword": "Enregistrer le mot de passe",
+      "saving": "Enregistrement...",
+      "warning": "Attention : l'enregistrement des paramètres est désactivé dans cet environnement. Mettez à jour la variable d'environnement.",
+      "noteIntro": "Remarque : ce projet lit par défaut les identifiants administrateur depuis les variables d'environnement",
+      "noteOutro": ". Pour modifier le mot de passe en production, utilisez les paramètres d'environnement de votre déploiement.",
+      "validation": {
+        "emptyPassword": "Le nouveau mot de passe ne peut pas être vide.",
+        "mismatch": "Les mots de passe ne correspondent pas."
+      },
+      "messages": {
+        "disabled": "Le changement de mot de passe est désactivé pour ce déploiement. Veuillez mettre à jour la variable d'environnement ADMIN_PASS.",
+        "saveError": "Une erreur s'est produite lors de l'enregistrement.",
+        "saved": "Mot de passe enregistré (un redémarrage de l'application peut être nécessaire).",
+        "requestFailed": "La requête d'enregistrement a échoué."
+      }
     }
   },
   "api": {
@@ -1110,41 +1143,6 @@
       "middle": "ou",
       "wholesale": "Vente en gros",
       "suffix": "et remplissez le formulaire. Notre équipe reviendra vers vous avec les délais et les tarifs."
-    }
-  },
-  "admin": {
-    "contentEditor": {
-      "saved": "Enregistré",
-      "saveFailed": "Échec de l'enregistrement",
-      "slug": "Slug (segment d'URL)",
-      "pageTitle": "Titre de la page",
-      "addSection": "Ajouter une section",
-      "saving": "Enregistrement...",
-      "savePage": "Enregistrer la page"
-    },
-    "users": {
-      "metaTitle": "Admin - Utilisateurs",
-      "title": "Utilisateurs",
-      "lead": "Ce panneau sert désormais uniquement à modifier le mot de passe administrateur.",
-      "adminUser": "Utilisateur administrateur",
-      "defaultAdmin": "admin",
-      "newPassword": "Nouveau mot de passe",
-      "confirmPassword": "Confirmer le mot de passe",
-      "savePassword": "Enregistrer le mot de passe",
-      "saving": "Enregistrement...",
-      "warning": "Attention : l'enregistrement des paramètres est désactivé dans cet environnement. Mettez à jour la variable d'environnement.",
-      "noteIntro": "Remarque : ce projet lit par défaut les identifiants administrateur depuis les variables d'environnement",
-      "noteOutro": ". Pour modifier le mot de passe en production, utilisez les paramètres d'environnement de votre déploiement.",
-      "validation": {
-        "emptyPassword": "Le nouveau mot de passe ne peut pas être vide.",
-        "mismatch": "Les mots de passe ne correspondent pas."
-      },
-      "messages": {
-        "disabled": "Le changement de mot de passe est désactivé pour ce déploiement. Veuillez mettre à jour la variable d'environnement ADMIN_PASS.",
-        "saveError": "Une erreur s'est produite lors de l'enregistrement.",
-        "saved": "Mot de passe enregistré (un redémarrage de l'application peut être nécessaire).",
-        "requestFailed": "La requête d'enregistrement a échoué."
-      }
     }
   }
 }
