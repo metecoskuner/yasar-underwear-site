@@ -12,11 +12,27 @@ export default function App({ Component, pageProps }: AppProps) {
   const [showSplash, setShowSplash] = useState(false);
 
   useEffect(() => {
-    // Always show the splash on each page load/refresh.
-    // Keep the deferred setState to avoid SSR/client hydration mismatch.
-    const defer = window.setTimeout(() => setShowSplash(true), 0);
+    let defer: number | undefined;
+    try {
+      const seen = window.sessionStorage.getItem('yasar_splash_seen');
+      if (!seen) {
+        defer = window.setTimeout(() => {
+          setShowSplash(true);
+          try {
+            window.sessionStorage.setItem('yasar_splash_seen', '1');
+          } catch (err) {
+            void err;
+          }
+        }, 0);
+      }
+    } catch (err) {
+      void err;
+      defer = window.setTimeout(() => setShowSplash(true), 0);
+    }
 
-    return () => clearTimeout(defer);
+    return () => {
+      if (defer !== undefined) clearTimeout(defer);
+    };
   }, []);
 
   // Add a 'js' class to <html> on mount so CSS can opt-in to JS-only

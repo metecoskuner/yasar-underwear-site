@@ -16,6 +16,17 @@ type IncomingProduct = {
   isFeatured?: unknown
 }
 
+function parseStringArrayJson(raw: unknown): string[] {
+  if (Array.isArray(raw)) return raw.filter((item): item is string => typeof item === 'string')
+  if (typeof raw !== 'string') return []
+  try {
+    const parsed = JSON.parse(String(raw))
+    return Array.isArray(parsed) ? parsed.filter((item): item is string => typeof item === 'string') : []
+  } catch {
+    return []
+  }
+}
+
 function validateProductPayload(payload: IncomingProduct) {
   const errors: string[] = []
   // support localized titles: either a string (legacy) or an object like { tr: '', en: '', fr: '', ar: '', ru: '' }
@@ -186,8 +197,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       // normalize images and localized title: if stored as JSON string (sqlite fallback), parse them
       const normalized = products.map((p: unknown) => {
         const rec = p as Record<string, unknown>
-        const rawImages = rec.images
-        const imgs = typeof rawImages === 'string' ? JSON.parse(String(rawImages)) : Array.isArray(rawImages) ? (rawImages as string[]) : []
+        const imgs = parseStringArrayJson(rec.images)
         let i18nTitle: Record<string, string> | undefined = undefined
         let titleFallback = ''
         try {
@@ -353,7 +363,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         }
 
         // normalize existing images (could be stored as JSON string in sqlite fallback)
-        const existingImages = typeof existing.images === 'string' ? JSON.parse(String(existing.images)) : (Array.isArray(existing.images) ? (existing.images as string[]) : [])
+        const existingImages = parseStringArrayJson(existing.images)
 
         // build merged payload: incoming fields override existing
         const merged = {
@@ -450,7 +460,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           }
           
           // normalize existing images
-          const existingImages = typeof existing.images === 'string' ? JSON.parse(String(existing.images)) : (Array.isArray(existing.images) ? existing.images : [])
+          const existingImages = parseStringArrayJson(existing.images)
           
           // build merged payload
           const merged = {

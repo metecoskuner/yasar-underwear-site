@@ -1,7 +1,8 @@
 import React, { createContext, useContext, useState, useMemo, useCallback } from 'react';
-// Load Turkish locale as a stable fallback so pages remain populated when a
-// chosen language file is still loading or missing specific keys.
+// Load Turkish and English locale baselines so incomplete locale files can
+// fall back deterministically without mixing arbitrary languages.
 import trLocale from '../locales/tr.json';
+import enLocale from '../locales/en.json';
 
 type Lang = 'TR' | 'EN' | 'FR' | 'AR' | 'RU';
 
@@ -23,6 +24,23 @@ type LangContextValue = {
 };
 
 const LangContext = createContext<LangContextValue | undefined>(undefined);
+
+function getStringAtPath(source: Translations | null, key: string): string | null {
+  if (!source) return null;
+  const tryResolve = (path: string) => {
+    const parts = path.split('.');
+    let cur: unknown = source;
+    for (const part of parts) {
+      if (typeof cur !== 'object' || cur === null) return null;
+      const next = (cur as Record<string, unknown>)[part];
+      if (next === undefined) return null;
+      cur = next;
+    }
+    return typeof cur === 'string' ? cur : null;
+  };
+
+  return tryResolve(key) ?? tryResolve(`components.${key}`);
+}
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
   // Start with a deterministic value for SSR to avoid hydration mismatches.
@@ -111,89 +129,14 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   };
 
   const t = useCallback((key: string) => {
-    // Prefer the loaded dictionary translation when available. This prevents
-    // admin-provided overrides (which may be unscoped or misconfigured) from
-    // accidentally forcing a different language's text when a proper
-    // translation exists in the locale files.
-    if (dict) {
-      const parts = key.split('.');
-      let cur: unknown = dict;
-      let found = true;
-      for (const p of parts) {
-        if (typeof cur === 'object' && cur !== null) {
-          const next = (cur as Record<string, unknown>)[p];
-          if (next === undefined) {
-            found = false;
-            break;
-          }
-          cur = next;
-        } else {
-          found = false;
-          break;
-        }
-      }
-      if (found && typeof cur === 'string') return cur as string;
+    const localeValue = getStringAtPath(dict, key);
+    if (localeValue) return localeValue;
 
-      // If not found, try a common alias namespace used in locales: `components.<key>`
-      // This handles calls like `t('header.aria.openLangMenu')` when the JSON
-      // stores the string under `components.header.aria.openLangMenu`.
-      try {
-        const compKey = `components.${key}`;
-        const parts2 = compKey.split('.');
-        let cur2: unknown = dict;
-        let found2 = true;
-        for (const p of parts2) {
-          if (typeof cur2 === 'object' && cur2 !== null) {
-            const next = (cur2 as Record<string, unknown>)[p];
-            if (next === undefined) { found2 = false; break; }
-            cur2 = next;
-          } else { found2 = false; break; }
-        }
-        if (found2 && typeof cur2 === 'string') return cur2 as string;
-      } catch {}
-    }
+    const englishFallback = getStringAtPath(enLocale as Translations, key);
+    if (englishFallback) return englishFallback;
 
-    // If current locale doesn't have the key, fall back to the Turkish
-    // baseline so important sections (e.g. 'uretim.tesis.*') remain visible
-    // even when other locale files are incomplete or still loading.
-    try {
-      const fallback = trLocale as Translations;
-      const parts = key.split('.');
-      let cur: unknown = fallback;
-      let found = true;
-      for (const p of parts) {
-        if (typeof cur === 'object' && cur !== null) {
-          const next = (cur as Record<string, unknown>)[p];
-          if (next === undefined) {
-            found = false;
-            break;
-          }
-          cur = next;
-        } else {
-          found = false;
-          break;
-        }
-      }
-      if (found && typeof cur === 'string') return cur as string;
-      // Also try Turkish fallback under `components.<key>` to catch aliasing in
-      // the canonical translations.
-      try {
-        const compKey = `components.${key}`;
-        const parts2 = compKey.split('.');
-        let cur2: unknown = fallback;
-        let found2 = true;
-        for (const p of parts2) {
-          if (typeof cur2 === 'object' && cur2 !== null) {
-            const next = (cur2 as Record<string, unknown>)[p];
-            if (next === undefined) { found2 = false; break; }
-            cur2 = next;
-          } else { found2 = false; break; }
-        }
-        if (found2 && typeof cur2 === 'string') return cur2 as string;
-      } catch {}
-    } catch {
-      // ignore fallback errors
-    }
+    const turkishFallback = lang === 'TR' ? getStringAtPath(trLocale as Translations, key) : null;
+    if (turkishFallback) return turkishFallback;
 
     // If dict isn't available or doesn't have the key, consult admin overrides.
     if (overrides) {

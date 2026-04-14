@@ -20,6 +20,17 @@ import { useRouter } from 'next/router';
 import { useInView } from '../hooks/useInView';
 import type { Product } from '@/types/product';
 
+function parseImageList(raw: unknown): string[] {
+  if (Array.isArray(raw)) return raw.filter((item): item is string => typeof item === 'string')
+  if (typeof raw !== 'string') return []
+  try {
+    const parsed = JSON.parse(String(raw))
+    return Array.isArray(parsed) ? parsed.filter((item): item is string => typeof item === 'string') : []
+  } catch {
+    return []
+  }
+}
+
 function SlideCard({ id, side = 'left', children }: { id?: string; side?: 'left' | 'right'; children: React.ReactNode }) {
   const { ref, inView } = useInView<HTMLDivElement>({ threshold: 0.12 });
   return (
@@ -52,8 +63,7 @@ export default function ProductGrid() {
 
         const normalized = list.map((p: unknown) => {
           const rec = p as Record<string, unknown>
-          const rawImages = rec.images
-          const imgs = Array.isArray(rawImages) ? rawImages as string[] : (typeof rawImages === 'string' ? JSON.parse(String(rawImages)) : [])
+          const imgs = parseImageList(rec.images)
           let i18nTitle: Record<string, string> | undefined = undefined
           let titleFallback = ''
           try {

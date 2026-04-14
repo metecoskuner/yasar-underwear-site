@@ -25,6 +25,10 @@ function writeData(obj: { applications?: Record<string, unknown>[] }) {
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
   const body = req.body as Body;
+  const id = createId();
+  const createdAt = new Date().toISOString();
+  const type = body.type || 'unknown';
+  const payload = body.payload || {};
 
   try {
     // Persist to database (with Supabase fallback)
@@ -34,9 +38,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         try {
           await prisma.b2BApplication.create({
             data: {
-              type: body.type || 'unknown',
+              id,
+              type,
+              createdAt: new Date(createdAt),
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              payload: (body.payload || {}) as unknown as any,
+              payload: payload as unknown as any,
             },
           });
         } catch {
@@ -45,9 +51,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             process.env.SUPABASE_URL || '',
             process.env.SUPABASE_SERVICE_KEY || ''
           );
-          const generatedId = createId();
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const insertData = { id: generatedId, type: body.type || 'unknown', payload: (body.payload || {}) as unknown as any };
+          const insertData = { id, type, payload: payload as unknown as any, createdAt };
           const { error: supabaseErr } = await supabase
             .from('B2BApplication')
             .insert(insertData)
@@ -67,7 +72,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Also persist to admin-applications.json for backward compatibility
     try {
       const d = readData();
-      const item = { id: String(Date.now()), type: body.type || 'unknown', payload: body.payload || {}, createdAt: new Date().toISOString(), read: false };
+      const item = { id, type, payload, createdAt, read: false };
       d.applications = [item as Record<string, unknown>, ...(d.applications || [])];
       writeData(d);
     } catch (err) {

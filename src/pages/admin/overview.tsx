@@ -5,6 +5,7 @@ import { isAuthed } from '@/lib/adminAuth'
 import Link from 'next/link'
 import fs from 'fs'
 import path from 'path'
+import { createClient } from '@supabase/supabase-js'
 // prisma client is imported lazily inside getServerSideProps to avoid
 // module-load failures in serverless/CI environments where the native
 // prisma engine may not be available at import time.
@@ -22,6 +23,130 @@ type OverviewProps = {
   recentMessages: Array<{ id: string; from?: string; createdAt?: string }>
   recentApplications: Array<{ id: string; type?: string; company?: string; createdAt?: string }>
   recentProducts: Array<{ id: string; title?: string; createdAt?: string }>
+}
+
+type RawRecord = Record<string, unknown>
+type OverviewMessage = { id: string; from?: string; read?: unknown; createdAt?: string }
+type OverviewApplication = { id: string; type?: string; payload?: RawRecord; read?: unknown; createdAt?: string }
+type OverviewProduct = { id: string; title?: string; createdAt?: string }
+
+const DATA_DIR = path.join(process.cwd(), 'data')
+
+function isRead(value: unknown) {
+  return value === true || value === 'true' || value === 1 || value === '1'
+}
+
+function readJsonArray<T extends RawRecord>(filename: string, key?: string): T[] {
+  try {
+    const raw = fs.readFileSync(path.join(DATA_DIR, filename), 'utf-8')
+    const parsed = JSON.parse(raw) as unknown
+    if (!key) return Array.isArray(parsed) ? (parsed as T[]) : []
+    if (parsed && typeof parsed === 'object' && Array.isArray((parsed as Record<string, unknown>)[key])) {
+      return (parsed as Record<string, unknown>)[key] as T[]
+    }
+  } catch {
+    return []
+  }
+  return []
+}
+
+function mergeById<T extends { id: string }>(primary: T[], secondary: T[]) {
+  const map = new Map<string, T>()
+  for (const item of secondary) map.set(item.id, item)
+  for (const item of primary) map.set(item.id, item)
+  return Array.from(map.values())
+}
+
+function sortByCreatedAtDesc<T extends { createdAt?: string }>(items: T[]) {
+  return [...items].sort((a, b) => new Date(String(b.createdAt ?? '')).valueOf() - new Date(String(a.createdAt ?? '')).valueOf())
+}
+
+function mapFileMessage(message: RawRecord): OverviewMessage {
+  return {
+    id: String(message.id ?? `file-${message.createdAt ?? Date.now()}`),
+    from: String(message.name ?? message.from ?? 'Anonim'),
+    read: message.read,
+    createdAt: typeof message.createdAt === 'string' ? message.createdAt : new Date().toISOString(),
+  }
+}
+
+function mapDbMessage(message: RawRecord): OverviewMessage {
+  return {
+    id: String(message.id ?? ''),
+    from: String(message.name ?? 'Anonim'),
+    read: message.read,
+    createdAt: typeof message.createdAt === 'string' ? message.createdAt : new Date(message.createdAt as Date).toISOString(),
+  }
+}
+
+function mapFileApplication(app: RawRecord): OverviewApplication {
+  return {
+    id: String(app.id ?? `file-${app.createdAt ?? Date.now()}`),
+    type: String(app.type ?? ''),
+    payload: (app.payload && typeof app.payload === 'object') ? app.payload as RawRecord : {},
+    read: app.read,
+    createdAt: typeof app.createdAt === 'string' ? app.createdAt : new Date().toISOString(),
+  }
+}
+
+function mapDbApplication(app: RawRecord): OverviewApplication {
+  return {
+    id: String(app.id ?? ''),
+    type: String(app.type ?? ''),
+    payload: (app.payload && typeof app.payload === 'object') ? app.payload as RawRecord : {},
+    read: app.read,
+    createdAt: typeof app.createdAt === 'string' ? app.createdAt : new Date(app.createdAt as Date).toISOString(),
+  }
+}
+
+function mapFileProduct(product: RawRecord): OverviewProduct {
+  return {
+    id: String(product.id ?? ''),
+    title: parseDisplayTitle(product.title),
+    createdAt: product.createdAt ? String(product.createdAt) : undefined,
+  }
+}
+
+function parseDisplayTitle(raw: unknown) {
+  try {
+    if (!raw && raw !== 0) return ''
+    if (typeof raw === 'object') {
+      const obj = raw as Record<string, unknown>
+      if (typeof obj.tr === 'string' && obj.tr.trim()) return obj.tr
+      for (const value of Object.values(obj)) {
+        if (typeof value === 'string' && value.trim()) return value
+      }
+      return JSON.stringify(raw)
+    }
+    if (typeof raw === 'string') {
+      const trimmed = raw.trim()
+      if (!trimmed) return ''
+      try {
+        return parseDisplayTitle(JSON.parse(trimmed))
+      } catch {
+        return trimmed
+      }
+    }
+    return String(raw)
+  } catch {
+    return ''
+  }
+}
+
+function formatDate(iso?: string | null) {
+  try {
+    if (!iso) return undefined
+    const d = new Date(iso)
+    if (Number.isNaN(d.getTime())) return undefined
+    const pad = (n: number) => String(n).padStart(2, '0')
+    return `${pad(d.getDate())}.${pad(d.getMonth() + 1)}.${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`
+  } catch {
+    return undefined
+  }
+}
+
+function companyFromPayload(payload?: RawRecord) {
+  return String(payload?.companyName ?? payload?.company ?? '').trim() || '—'
 }
 
 export default function OverviewPage({ stats, recentMessages, recentApplications, recentProducts }: OverviewProps) {
@@ -177,173 +302,89 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   let recentProducts: Array<{ id: string; title?: string; createdAt?: string }> = []
 
   try {
-    let dbLoaded = false
-    if (process.env.DATABASE_URL) {
-      // Use DB-backed counts and recent items (offers/quoteRequests removed)
-      // Import prisma lazily so module-load failures in CI/serverless
-      // don't crash page collection.
+    const fileMessages = readJsonArray<RawRecord>('admin-messages.json', 'messages').map(mapFileMessage)
+    const fileApplications = readJsonArray<RawRecord>('admin-applications.json', 'applications').map(mapFileApplication)
+    const fileProducts = readJsonArray<RawRecord>('products.json').map(mapFileProduct)
+
+    let resolvedMessages = fileMessages
+    let resolvedApplications = fileApplications
+    let resolvedProducts = fileProducts
+
+    if (process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_KEY) {
+      try {
+        const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY)
+        const [{ data: dbMessages, error: messagesError }, { data: dbApplications, error: applicationsError }] = await Promise.all([
+          supabase.from('ContactMessage').select('*').order('createdAt', { ascending: false }),
+          supabase.from('B2BApplication').select('*').order('createdAt', { ascending: false }),
+        ])
+        if (messagesError) throw messagesError
+        if (applicationsError) throw applicationsError
+
+        resolvedMessages = sortByCreatedAtDesc(mergeById((dbMessages || []).map((message) => mapDbMessage(message as RawRecord)), fileMessages))
+        resolvedApplications = sortByCreatedAtDesc(mergeById((dbApplications || []).map((app) => mapDbApplication(app as RawRecord)), fileApplications))
+        try {
+          if (process.env.DATABASE_URL) {
+            const { prisma } = await import('@/lib/prisma')
+            const products = await prisma.product.findMany({ orderBy: { createdAt: 'desc' }, take: 5 })
+            stats.products = await prisma.product.count()
+            resolvedProducts = products.map((product) => ({ id: String(product.id), title: product.title, createdAt: product.createdAt?.toISOString() ?? undefined }))
+          }
+        } catch {
+          resolvedProducts = fileProducts
+        }
+      } catch (err) {
+        void err
+      }
+    } else if (process.env.DATABASE_URL) {
       try {
         const { prisma } = await import('@/lib/prisma')
-        const [messagesCount, unreadCount, productsCount] = await Promise.all([
-          prisma.contactMessage.count(),
-          prisma.contactMessage.count({ where: { read: false } }),
-          prisma.product.count(),
-        ])
-        const [
-          wholesaleApplications,
-          privateLabelApplications,
-          unreadWholesaleApplications,
-          unreadPrivateLabelApplications,
-        ] = await Promise.all([
-          prisma.b2BApplication.count({ where: { type: 'wholesale' } }),
-          prisma.b2BApplication.count({ where: { type: 'private-label' } }),
-          prisma.b2BApplication.count({ where: { type: 'wholesale', read: false } }),
-          prisma.b2BApplication.count({ where: { type: 'private-label', read: false } }),
-        ])
-
-        stats = {
-          messages: messagesCount,
-          unreadMessages: unreadCount,
-          products: productsCount,
-          wholesaleApplications,
-          privateLabelApplications,
-          unreadWholesaleApplications,
-          unreadPrivateLabelApplications,
-        }
-
         const [msgs, apps, products] = await Promise.all([
-          prisma.contactMessage.findMany({ orderBy: { createdAt: 'desc' }, take: 5 }),
-          prisma.b2BApplication.findMany({ orderBy: { createdAt: 'desc' }, take: 5 }),
-          prisma.product.findMany({ orderBy: { createdAt: 'desc' }, take: 5 }),
+          prisma.contactMessage.findMany({ orderBy: { createdAt: 'desc' } }),
+          prisma.b2BApplication.findMany({ orderBy: { createdAt: 'desc' } }),
+          prisma.product.findMany({ orderBy: { createdAt: 'desc' } }),
         ])
-        recentMessages = msgs.map((m) => ({ id: m.id, from: m.name || 'Anonim', createdAt: m.createdAt?.toISOString() }))
-        recentApplications = apps.map((app) => {
-          const payload = (app.payload && typeof app.payload === 'object') ? app.payload as Record<string, unknown> : {}
-          return {
-            id: app.id,
-            type: app.type ?? undefined,
-            company: String(payload.companyName ?? payload.company ?? '').trim() || '—',
-            createdAt: app.createdAt?.toISOString(),
-          }
-        })
-        recentProducts = products.map((p) => ({ id: String(p.id), title: (typeof p.title === 'string' ? p.title : JSON.stringify(p.title)) || '', createdAt: p.createdAt?.toISOString() ?? undefined }))
-        dbLoaded = true
+        resolvedMessages = sortByCreatedAtDesc(mergeById(msgs.map((message) => mapDbMessage(message as unknown as RawRecord)), fileMessages))
+        resolvedApplications = sortByCreatedAtDesc(mergeById(apps.map((app) => mapDbApplication(app as unknown as RawRecord)), fileApplications))
+        resolvedProducts = products.map((product) => ({ id: String(product.id), title: product.title, createdAt: product.createdAt?.toISOString() ?? undefined }))
       } catch (err) {
-        // If DB access or prisma import fails in the build environment,
-        // swallow and fall back to file-based data below.
         void err
       }
     }
 
-    if (!dbLoaded) {
-      // File-based fallback: read JSON files from /data
-      const base = process.cwd()
-      try {
-        const msgsRaw = fs.readFileSync(path.join(base, 'data', 'admin-messages.json'), 'utf-8')
-        const parsed = JSON.parse(msgsRaw) as { messages?: unknown }
-        const msgsArr = Array.isArray(parsed.messages) ? (parsed.messages as unknown[]) : []
-        stats.messages = msgsArr.length
-        // Compute unread count from file data. Accept multiple possible shapes for `read`.
-        const isRead = (v: unknown) => v === true || v === 'true' || v === 1 || v === '1'
-        const unreadFromFile = msgsArr.filter((m) => { const r = (m as Record<string, unknown>).read; return !isRead(r) }).length
-        stats.unreadMessages = unreadFromFile
-        recentMessages = msgsArr.slice(0, 5).map((m) => {
-          const rec = m as Record<string, unknown>
-          return { id: String(rec.id ?? Date.now()), from: String(rec.from ?? rec.name ?? 'Anonim'), createdAt: (rec.createdAt ? String(rec.createdAt) : undefined) }
-        })
-      } catch { /* ignore */ }
+    const orderedMessages = sortByCreatedAtDesc(resolvedMessages)
+    const orderedApplications = sortByCreatedAtDesc(resolvedApplications)
+    const orderedProducts = sortByCreatedAtDesc(resolvedProducts)
 
-      try {
-        const appsRaw = fs.readFileSync(path.join(base, 'data', 'admin-applications.json'), 'utf-8')
-        const parsed = JSON.parse(appsRaw) as { applications?: unknown }
-        const appsArr = Array.isArray(parsed.applications) ? (parsed.applications as unknown[]) : []
-        const isRead = (v: unknown) => v === true || v === 'true' || v === 1 || v === '1'
-        stats.wholesaleApplications = appsArr.filter((app) => String((app as Record<string, unknown>).type ?? '') === 'wholesale').length
-        stats.privateLabelApplications = appsArr.filter((app) => String((app as Record<string, unknown>).type ?? '') === 'private-label').length
-        stats.unreadWholesaleApplications = appsArr.filter((app) => String((app as Record<string, unknown>).type ?? '') === 'wholesale' && !isRead((app as Record<string, unknown>).read)).length
-        stats.unreadPrivateLabelApplications = appsArr.filter((app) => String((app as Record<string, unknown>).type ?? '') === 'private-label' && !isRead((app as Record<string, unknown>).read)).length
-        recentApplications = appsArr.slice(0, 5).map((app) => {
-          const rec = app as Record<string, unknown>
-          const payload = (rec.payload && typeof rec.payload === 'object') ? rec.payload as Record<string, unknown> : {}
-          return {
-            id: String(rec.id ?? Date.now()),
-            type: String(rec.type ?? ''),
-            company: String(payload.companyName ?? payload.company ?? '').trim() || '—',
-            createdAt: rec.createdAt ? String(rec.createdAt) : undefined,
-          }
-        })
-      } catch { /* ignore */ }
+    stats.messages = orderedMessages.length
+    stats.unreadMessages = orderedMessages.filter((message) => !isRead(message.read)).length
+    stats.wholesaleApplications = orderedApplications.filter((app) => app.type === 'wholesale').length
+    stats.privateLabelApplications = orderedApplications.filter((app) => app.type === 'private-label').length
+    stats.unreadWholesaleApplications = orderedApplications.filter((app) => app.type === 'wholesale' && !isRead(app.read)).length
+    stats.unreadPrivateLabelApplications = orderedApplications.filter((app) => app.type === 'private-label' && !isRead(app.read)).length
+    stats.products = orderedProducts.length
 
-      try {
-        const prodRaw = fs.readFileSync(path.join(base, 'data', 'products.json'), 'utf-8')
-        const parsed = JSON.parse(prodRaw) as unknown
-        const prodsArr = Array.isArray(parsed) ? (parsed as unknown[]) : []
-        stats.products = prodsArr.length
-        recentProducts = prodsArr.slice(0, 5).map((p) => {
-          const rec = p as Record<string, unknown>
-          return { id: String(rec.id ?? ''), title: String(rec.title ?? ''), createdAt: (rec.createdAt ? String(rec.createdAt) : undefined) }
-        })
-      } catch { /* ignore */ }
-    }
+    recentMessages = orderedMessages.slice(0, 5).map((message) => ({
+      id: message.id,
+      from: message.from,
+      createdAt: message.createdAt,
+    }))
+    recentApplications = orderedApplications.slice(0, 5).map((app) => ({
+      id: app.id,
+      type: app.type || undefined,
+      company: companyFromPayload(app.payload),
+      createdAt: app.createdAt,
+    }))
+    recentProducts = orderedProducts.slice(0, 5).map((product) => ({
+      id: product.id,
+      title: product.title,
+      createdAt: product.createdAt,
+    }))
   } catch (err) {
     // swallow and render empty placeholders
     void err
   }
 
-  // Normalize product titles for a nicer admin display. Titles may be stored
-  // as plain strings, localization objects, or JSON-encoded strings.
-  const formatDate = (iso?: string | null) => {
-    try {
-      if (!iso) return undefined
-      const d = new Date(iso)
-      if (Number.isNaN(d.getTime())) return undefined
-      const pad = (n: number) => String(n).padStart(2, '0')
-      const day = pad(d.getDate())
-      const month = pad(d.getMonth() + 1)
-      const year = d.getFullYear()
-      const hours = pad(d.getHours())
-      const mins = pad(d.getMinutes())
-      const secs = pad(d.getSeconds())
-      return `${day}.${month}.${year} ${hours}:${mins}:${secs}`
-    } catch {
-      return undefined
-    }
-  }
-  const parseDisplayTitle = (raw: unknown) => {
-    try {
-      if (!raw && raw !== 0) return ''
-      // If it's already an object with i18n keys
-      if (typeof raw === 'object') {
-        const o = raw as Record<string, unknown>
-        // prefer Turkish if available
-        if (typeof o.tr === 'string' && o.tr.trim()) return o.tr
-        // otherwise first non-empty value
-        for (const v of Object.values(o)) if (typeof v === 'string' && v.trim()) return v
-        return JSON.stringify(raw)
-      }
-      if (typeof raw === 'string') {
-        const s = raw.trim()
-        if (!s) return ''
-        // Try to parse JSON strings which may contain objects
-        try {
-          const parsed = JSON.parse(s)
-          return parseDisplayTitle(parsed)
-        } catch {
-          // not JSON — return as-is
-          return s
-        }
-      }
-      return String(raw)
-    } catch {
-      return ''
-    }
-  }
-
   recentProducts = recentProducts.map((p) => ({ ...p, title: parseDisplayTitle(p.title) }))
-
-  // Format createdAt timestamps into a deterministic, locale-independent
-  // string on the server to avoid hydration mismatches caused by
-  // Date.toLocaleString differences between server and client.
   recentMessages = recentMessages.map((m) => ({ ...m, createdAt: formatDate(m.createdAt ?? undefined) }))
   recentApplications = recentApplications.map((app) => ({ ...app, createdAt: formatDate(app.createdAt ?? undefined) }))
   recentProducts = recentProducts.map((p) => ({ ...p, createdAt: formatDate(p.createdAt ?? undefined) }))

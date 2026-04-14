@@ -508,9 +508,12 @@ export default function Header() {
     }
   }, [mobileLangOpen]);
 
+  // keep portal mounted while exit animation plays so closing is smooth
+  const [isMounted, setIsMounted] = useState(false);
+
   // simple focus trap for mobile menu
   useEffect(() => {
-    if (!mobileOpen) {
+    if (!isMounted) {
       menuButtonRef.current?.focus();
       return;
     }
@@ -541,12 +544,10 @@ export default function Header() {
 
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
-  }, [mobileOpen]);
+  }, [isMounted]);
 
   // (dropdown removed) -- simplified header does not compute dynamic panelLeft
 
-  // keep portal mounted while exit animation plays so closing is smooth
-  const [isMounted, setIsMounted] = useState(false);
   useEffect(() => {
     let closeTimer: number | undefined;
     let openTimer: number | undefined;
@@ -563,11 +564,12 @@ export default function Header() {
     };
   }, [mobileOpen]);
 
-  // lock body scroll when mobile menu is open without causing layout jumps on close
+  // Keep body locked until the closing animation fully finishes; releasing
+  // early causes the page behind the menu to jump/scroll on mobile.
   useEffect(() => {
     if (typeof document === "undefined") return;
 
-    if (!mobileOpen) {
+    if (!isMounted) {
       if (mobileLockCleanupRef.current) {
         mobileLockCleanupRef.current();
         mobileLockCleanupRef.current = null;
@@ -603,7 +605,7 @@ export default function Header() {
         mobileLockCleanupRef.current = null;
       }
     };
-  }, [mobileOpen]);
+  }, [isMounted]);
   return (
     <>
       <header
@@ -719,7 +721,7 @@ export default function Header() {
                   <span className={`relative z-10 ${active ? 'font-semibold' : ''} whitespace-nowrap truncate`}>{resolvedLabel}</span>
 
                   <M.span
-                    className={`absolute left-0 -bottom-1 h-0.5 z-0 ${active ? 'bg-amber-400' : 'bg-white'}`}
+                      className={`absolute left-0 -bottom-1 h-0.5 z-0 ${active ? 'bg-amber-400' : 'bg-white'}`}
                     initial={{ width: '0%' }}
                     animate={{ width: highlight ? '100%' : '0%' }}
                     transition={{ duration: 0.16 }}
@@ -756,7 +758,7 @@ export default function Header() {
                   data-wishlist-button="true"
                   onClick={() => setWishOpen((s) => !s)}
                   aria-label={tr('wishlist.title', 'Favoriler')}
-                  className="p-2 rounded-md hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 cursor-pointer ml-2 z-50"
+                className="p-2 rounded-md hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 cursor-pointer ml-2 z-50"
                 >
                   <span aria-hidden className="text-xl">🤍</span>
                 {hydrated && favorites.length > 0 && (
