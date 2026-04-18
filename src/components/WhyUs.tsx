@@ -133,7 +133,7 @@ export default function WhyUs() {
 
         {/* Counters block */}
         <SlideDiv side="left">
-          <div className="mt-8 border-t border-stone-200 pt-8">
+          <div className="mt-8 border-t border-stone-300 pt-8">
               <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 sm:gap-6">
               <Counter end={200000} label={tr('components.whyUs.counters.monthlyCapacity','Aylık Üretim Kapasitesi')} />
               <Counter end={4500} label={tr('components.whyUs.counters.facilityArea','m² Üretim Tesisi')} />

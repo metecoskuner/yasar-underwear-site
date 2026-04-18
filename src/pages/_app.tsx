@@ -3,10 +3,30 @@ import type { AppProps } from 'next/app';
 import Layout from '../components/Layout';
 import { LanguageProvider } from '../contexts/LanguageContext';
 import CookieBanner from '../components/CookieBanner';
+import Script from 'next/script';
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import Splash from '../components/Splash';
 
+const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
+
+function trackPageView(url: string) {
+  if (!GA_ID || typeof window === 'undefined') return;
+  if (typeof window.gtag !== 'function') return;
+  window.gtag('config', GA_ID, {
+    page_path: url,
+  });
+}
+
+declare global {
+  interface Window {
+    dataLayer: unknown[];
+    gtag?: (...args: unknown[]) => void;
+  }
+}
+
 export default function App({ Component, pageProps }: AppProps) {
+  const router = useRouter();
   // Start as false to avoid SSR/client hydration mismatch.
   // We'll check sessionStorage on mount and show the splash only if it hasn't been shown in this session.
   const [showSplash, setShowSplash] = useState(false);
@@ -48,8 +68,41 @@ export default function App({ Component, pageProps }: AppProps) {
     return undefined;
   }, []);
 
+  useEffect(() => {
+    if (!GA_ID) return;
+
+    const handleRouteChange = (url: string) => {
+      trackPageView(url);
+    };
+
+    trackPageView(router.asPath);
+    router.events.on('routeChangeComplete', handleRouteChange);
+
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange);
+    };
+  }, [router.asPath, router.events]);
+
   return (
     <LanguageProvider>
+      {GA_ID ? (
+        <>
+          <Script
+            src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+            strategy="afterInteractive"
+          />
+          <Script id="google-analytics" strategy="afterInteractive">
+            {`
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              window.gtag = gtag;
+              gtag('js', new Date());
+              gtag('config', '${GA_ID}', { send_page_view: false });
+            `}
+          </Script>
+        </>
+      ) : null}
+
       {/* Splash shown only on initial load. Duration tuned to 0.7s by default inside the component. */}
       {showSplash && <Splash duration={700} onFinish={() => setShowSplash(false)} />}
 

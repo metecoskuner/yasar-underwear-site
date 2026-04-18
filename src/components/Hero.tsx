@@ -1,4 +1,4 @@
-import { useState, useSyncExternalStore } from 'react';
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 
 const DESKTOP_MEDIA_QUERY = '(min-width: 1024px)';
 
@@ -23,8 +23,53 @@ function getSnapshot() {
 }
 
 export default function Hero() {
-  const [isMuted, setIsMuted] = useState(true);
+  const [isMuted, setIsMuted] = useState(false);
   const isLargeScreen = useSyncExternalStore(subscribe, getSnapshot, () => false);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const tryPlay = async () => {
+      try {
+        video.muted = isMuted;
+        await video.play();
+      } catch {
+        // Most mobile browsers block autoplay with sound.
+        // Fall back to muted autoplay; user can enable sound from the control button.
+        video.muted = true;
+        setIsMuted(true);
+        try {
+          await video.play();
+        } catch {
+          // user interaction will be required
+        }
+      }
+    };
+
+    void tryPlay();
+  }, [isLargeScreen, isMuted]);
+
+  const applyMuteState = async (nextMuted: boolean) => {
+    const video = videoRef.current;
+    setIsMuted(nextMuted);
+    if (!video) return false;
+
+    try {
+      video.muted = nextMuted;
+      await video.play();
+      return true;
+    } catch {
+      video.muted = true;
+      setIsMuted(true);
+      return false;
+    }
+  };
+
+  const toggleMute = async () => {
+    await applyMuteState(!isMuted);
+  };
 
   return (
     <div
@@ -35,6 +80,7 @@ export default function Hero() {
     >
       {/* Single responsive video element - only one renders at a time */}
       <video
+        ref={videoRef}
         key={isLargeScreen ? 'desktop' : 'mobile'}
         autoPlay
         loop
@@ -45,7 +91,7 @@ export default function Hero() {
         style={{ width: '100%', height: '100%' }}
       >
         <source
-          src={isLargeScreen ? '/videos/YasarHero1-web.mp4' : '/videos/yasarheromobil-web.mp4'}
+          src={isLargeScreen ? '/videos/YasarHero1.mp4' : '/videos/yasarheromobil.mp4'}
           type="video/mp4"
         />
         Your browser does not support the video tag.
@@ -56,7 +102,7 @@ export default function Hero() {
 
       {/* Mute toggle button - highest z-index */}
       <button
-        onClick={() => setIsMuted(!isMuted)}
+        onClick={toggleMute}
         className="absolute bottom-3 right-3 sm:bottom-4 sm:right-4 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full p-2.5 sm:p-3 z-[10] transition-all duration-200 hover:scale-110"
         aria-label={isMuted ? 'Unmute video' : 'Mute video'}
         title={isMuted ? 'Unmute video' : 'Mute video'}

@@ -49,12 +49,12 @@ export default function Counter({ end, duration = 1500, suffix = '+', label }: C
 
   return (
     <div ref={ref} className="flex flex-col items-center">
-      <div className="text-xl sm:text-2xl md:text-4xl font-extrabold text-gray-900 dark:text-gray-100">
+      <div className="text-xl sm:text-2xl md:text-4xl font-extrabold text-slate-950">
         {formatted}
         {suffix}
       </div>
       {label ? (
-        <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mt-1 text-center max-w-xs">{label}</div>
+        <div className="mt-1 max-w-xs text-center text-xs text-slate-700 sm:text-sm">{label}</div>
       ) : null}
     </div>
   );
