@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --webpack",
     "postinstall": "prisma generate",
     "build": "next build --webpack",
     "start": "next start",
@@ -39,7 +39,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/topojson-client": "^3.1.5",
-    "baseline-browser-mapping": "^2.10.8",
+    "baseline-browser-mapping": "^2.10.22",
     "eslint": "^9",
     "eslint-config-next": "16.0.3",
     "prisma": "^5.0.0",

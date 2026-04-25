@@ -322,7 +322,7 @@
     "wholesale": {
       "seo": {
         "title": "Wholesale — Yasar",
-        "description": "Wholesale inquiries — distributors and wholesalers can apply for pricing and terms."
+        "description": "Wholesale inquiries — distributors and wholesalers can apply for production terms and availability."
       },
       "breadcrumb": {
         "home": "Home",
@@ -330,7 +330,7 @@
       },
       "header": {
         "title": "Wholesale Partnerships",
-        "lead": "We work with distributors and retailers worldwide. We offer competitive prices, reliable lead times and flexible MOQ options.",
+        "lead": "We work with distributors and retailers worldwide. We offer reliable lead times, flexible MOQ options and consistent production standards.",
         "contact": "Contact",
         "apply": "Apply"
       },
@@ -341,7 +341,7 @@
         },
         "howItWorks": {
           "title": "How it works",
-          "body": "Send your company information and order estimates. Our sales team will return with pricing and lead time information."
+          "body": "Send your company information and order estimates. Our sales team will return with production terms and lead time information."
         },
         "policies": {
           "title": "Policies",
@@ -384,7 +384,7 @@
       "header": {
         "title": "Private Label & OEM",
         "lead": "Take your brand to market — we offer full-service private label manufacturing from design to packaging. MOQ and lead times vary by materials and quantities.",
-        "typicalMoq": "Typical MOQ: 1000 pcs / style — contact us for a custom quote.",
+        "typicalMoq": "Typical MOQ: 1000 pcs / style — contact us for production details.",
         "ctaStart": "Start private label"
       },
       "sections": {
@@ -693,7 +693,23 @@
           "sampleReportTimeLabel": "Sample Report Time"
         }
       }
-    }
+    },
+    "uretim_index": {
+      "title": "Production",
+      "lead": "Review the links below for information about our facilities and quality processes.",
+      "pageDescription": "Production page - facilities and quality processes",
+      "cards": {
+        "facilities": {
+          "title": "Our Production Facilities",
+          "desc": "Information about our facility infrastructure, capacities and quality-focused production approach."
+        },
+        "quality": {
+          "title": "Our Quality Processes",
+          "desc": "Details about our quality control, testing and certification processes."
+        }
+      }
+    },
+    "uretim_index_seoTitle": "Production - Yasar"
   },
   "wishlist": {
     "title": "Favorites",
@@ -748,6 +764,7 @@
     },
     "terms": "Terms",
     "copyright": "© {year} Yasar. All rights reserved.",
+    "developedBy": "Developed by Mete Coskuner",
     "copyrightRaw": "© ${new Date().getFullYear()} Yasar. All rights reserved.",
     "backToTop": "Back to top"
   },
@@ -820,10 +837,12 @@
       "save": "Save"
     },
     "hero": {
+      "eyebrow": "Turkish textile manufacturer",
+      "brand": "Yasar Underwear",
       "title": "Trusted Turkish Pajama and Homewear Manufacturer Since 1969",
-      "subtitle": "High-quality production with a monthly capacity of 200K–500K. Private label and wholesale manufacturing solutions for global brands.",
+      "subtitle": "Yasar Underwear is a Turkey-based pajama, underwear and homewear manufacturer serving global brands with private label, OEM and wholesale production.",
       "ctaCollections": "View Collections",
-      "ctaQuote": "Get a Quote"
+      "ctaQuote": "Request Info"
     },
     "heroRaw": {
       "subtitleFragment": ", \"Soft, breathable everyday underwear collection that brings comfort and elegance. \nTurkey"
@@ -832,8 +851,8 @@
       "subtitleExact": ", \"Soft, breathable everyday underwear collection that brings comfort and elegance. \nTurkey                                                                                    "
     },
     "quoteModal": {
-      "title": "Request a Quote",
-      "lead": "Give us brief details and our quotes team will get back to you.",
+      "title": "Request Production Info",
+      "lead": "Give us brief details and our team will get back to you.",
       "placeholders": {
         "name": "Your full name",
         "email": "Email (you@company.com)",
@@ -850,7 +869,7 @@
       "success": "Your request was received — we will reply shortly.",
       "buttons": {
         "cancel": "Cancel",
-        "submit": "Request Quote",
+        "submit": "Send Request",
         "submitting": "Sending…"
       }
     },
@@ -937,7 +956,7 @@
       "wholesale": {
         "eyebrow": "Wholesale Partnership",
         "title": "Wholesale Sales Application",
-        "description": "We offer competitive pricing, flexible production capacity and fast delivery for large orders. Yasar Textile provides sustainable wholesale manufacturing solutions for retailers, chains, distributors and e-commerce businesses.",
+        "description": "We offer flexible production capacity, reliable lead times and consistent quality for large orders. Yasar Textile provides sustainable wholesale manufacturing solutions for retailers, chains, distributors and e-commerce businesses.",
         "cta": "Apply for Wholesale"
       }
       ,
@@ -958,8 +977,8 @@
   },
   "pagesHome": {
     "seo": {
-      "title": "Yasar - Home",
-      "description": "Yasar Textile is a Turkey-based manufacturer offering underwear, homewear, private label and wholesale production solutions."
+      "title": "Yasar Underwear | Turkish Underwear, Pajama & Private Label Manufacturer",
+      "description": "Yasar Underwear is an experienced Turkey-based underwear, pajama, homewear, private label, OEM and wholesale textile manufacturer founded in 1969."
     },
     "overview": {
       "eyebrow": "Overview",
@@ -1150,7 +1169,7 @@
       "lead1": "We care about protecting your personal data. Below we summarize which data we collect, how we use it and your rights. For details, please contact us.",
       "lead2": "We implement reasonable technical and administrative measures to protect your data. For privacy questions, requests or complaints, please contact us.",
       "personalData": "Your name, email address, phone number and other information you enter into contact forms. We may also collect cookies and technical data related to site usage (IP address, browser information, page views, etc.).",
-      "whyUse": "We use collected data to respond to your requests, deliver and improve our services, manage order/quote processes and to fulfill our legal obligations.",
+      "whyUse": "We use collected data to respond to your requests, deliver and improve our services, manage order and information request processes and to fulfill our legal obligations.",
       "sharing": "Your data is not shared with third parties unless you give explicit consent or when required by law. Limited, purpose-bound sharing with subcontractors (e.g., shipping, payment providers) may occur; such transfers are carried out securely.",
       "rights": "Right to access and correct your data; right to request deletion or restriction of processing; right to object to processing and data portability.",
       "cookies": "Performance and analytics cookies may be used on the site. You can manage or disable cookies via your browser settings; some features may not function properly if cookies are disabled.",
@@ -1174,7 +1193,7 @@
   "manufacturerTurkey": {
     "seo": {
       "title": "Underwear Manufacturer in Turkey — OEM & Private Label",
-      "description": "Yasar is an experienced underwear manufacturer in Turkey offering OEM and private label production. We provide competitive pricing, reliable quality, and turnkey manufacturing solutions."
+      "description": "Yasar is an experienced underwear manufacturer in Turkey offering OEM and private label production. We provide reliable quality, flexible production planning and turnkey manufacturing solutions."
     },
     "hero": {
       "title": "Underwear Manufacturer in Turkey — OEM & Private Label",
@@ -1183,7 +1202,7 @@
     "why": {
       "title": "Why manufacture in Turkey?",
       "items": [
-        "Competitive production costs and access to a high-quality textile supply chain.",
+        "Flexible production planning and access to a high-quality textile supply chain.",
         "Experienced workforce and export know-how across Europe and the Middle East.",
         "Strict quality control and compliance with industry standards."
       ]
@@ -1193,12 +1212,12 @@
       "body": "We support sampling, prototyping, production planning, packaging design, and shipment coordination. Minimum order quantities vary based on fabric and design complexity."
     },
     "cta": {
-      "title": "Request a quote",
+      "title": "Request production info",
       "prefix": "For OEM production or private label services from Turkey, visit our",
       "privateLabel": "Private Label",
       "middle": "or",
       "wholesale": "Wholesale",
-      "suffix": "pages and fill out the form. Our team will get back to you with timeline and pricing details."
+      "suffix": "pages and fill out the form. Our team will get back to you with timeline and production details."
     }
   }
 }

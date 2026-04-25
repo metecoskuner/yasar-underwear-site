@@ -6,6 +6,8 @@ import { v2 as cloudinary } from 'cloudinary'
 import { createClient } from '@supabase/supabase-js'
 import path from 'path'
 
+const MAX_UPLOAD_BYTES = 15 * 1024 * 1024
+
 export const config = {
   api: {
     bodyParser: false,
@@ -22,12 +24,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (!isAuthed(req)) return res.status(401).json({ ok: false, message: 'unauthorized' })
   if (req.method !== 'POST') return res.status(405).json({ ok: false })
   
-  const form = formidable({ multiples: false })
+  const form = formidable({
+    multiples: false,
+    maxFileSize: MAX_UPLOAD_BYTES,
+    filter: (part) => !part.mimetype || part.mimetype.startsWith('image/'),
+  })
 
   form.parse(req, async (err: Error | null, fields: formidable.Fields, files: formidable.Files) => {
     if (err) {
       console.error('[UPLOAD] formidable parse error:', err?.message || err)
-      return res.status(500).json({ ok: false, message: 'parse_failed', detail: String(err?.message || err) })
+      const detail = String(err?.message || err)
+      const status = detail.toLowerCase().includes('maxfilesize') || detail.toLowerCase().includes('max file size') ? 413 : 500
+      return res.status(status).json({ ok: false, message: status === 413 ? 'file_too_large' : 'parse_failed', detail })
     }
     try {
       const rawFile = files.file

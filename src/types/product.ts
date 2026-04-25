@@ -12,7 +12,6 @@ export type Product = {
   gender?: Gender
   category?: string
   images?: string[]
-  price?: number | null
   description?: string
   sizes?: string[]
   stock?: number | null

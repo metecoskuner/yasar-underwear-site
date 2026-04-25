@@ -15,14 +15,22 @@ function pickLangFromHeader(header: string | null): string {
 }
 
 export function middleware(req: NextRequest) {
+  const pathname = req.nextUrl.pathname
+  const shouldNoindex = pathname.startsWith('/admin') || pathname.startsWith('/api/')
+
   // If a cookie already exists, don't overwrite it.
   const existing = req.cookies.get('yasar_lang')
-  if (existing) return NextResponse.next()
+  if (existing) {
+    const res = NextResponse.next()
+    if (shouldNoindex) res.headers.set('X-Robots-Tag', 'noindex, nofollow, noarchive')
+    return res
+  }
 
   const header = req.headers.get('accept-language')
   const lang = pickLangFromHeader(header)
 
   const res = NextResponse.next()
+  if (shouldNoindex) res.headers.set('X-Robots-Tag', 'noindex, nofollow, noarchive')
   // set a cookie so the client-side LanguageProvider can read it on mount
   res.cookies.set('yasar_lang', lang, { path: '/', maxAge: 60 * 60 * 24 * 30 })
   return res

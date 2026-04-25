@@ -288,7 +288,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   } catch (err) { void err; return { redirect: { destination: '/admin', permanent: false } } }
 
   // Default empty results
-  let stats = {
+  const stats = {
     messages: 0,
     unreadMessages: 0,
     products: 0,

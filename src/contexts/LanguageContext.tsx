@@ -4,6 +4,8 @@ import React, { createContext, useContext, useState, useMemo, useCallback } from
 import trLocale from '../locales/tr.json';
 import enLocale from '../locales/en.json';
 
+const warnedMissingTranslations = new Set<string>();
+
 type Lang = 'TR' | 'EN' | 'FR' | 'AR' | 'RU';
 
 type Translations = Record<string, unknown>;
@@ -129,13 +131,16 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   };
 
   const t = useCallback((key: string) => {
+    if (typeof key !== 'string' || !key.trim()) return '';
     const localeValue = getStringAtPath(dict, key);
     if (localeValue) return localeValue;
+
+    const turkishFallback = getStringAtPath(trLocale as Translations, key);
+    if (lang === 'TR' && turkishFallback) return turkishFallback;
 
     const englishFallback = getStringAtPath(enLocale as Translations, key);
     if (englishFallback) return englishFallback;
 
-    const turkishFallback = lang === 'TR' ? getStringAtPath(trLocale as Translations, key) : null;
     if (turkishFallback) return turkishFallback;
 
     // If dict isn't available or doesn't have the key, consult admin overrides.
@@ -226,8 +231,11 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
 
     // last resort: log missing key in development for easier debugging
     if (typeof window !== 'undefined' && process.env.NODE_ENV !== 'production') {
-       
-      console.warn('[i18n] missing translation', { key, lang });
+      const warningKey = `${lang}:${key}`;
+      if (!warnedMissingTranslations.has(warningKey)) {
+        warnedMissingTranslations.add(warningKey);
+        console.warn(`[i18n] missing translation: ${key} (${lang})`);
+      }
     }
 
     return key;
@@ -235,6 +243,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
 
   // Return the raw translation value (could be string, array or object).
   const g = useCallback((key: string) => {
+    if (typeof key !== 'string' || !key.trim()) return undefined;
     // try dict first
     if (dict) {
       try {

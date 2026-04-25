@@ -1,18 +1,26 @@
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
+import type { GetStaticProps } from 'next'
 import { motion } from 'framer-motion'
 import Hero from '../components/Hero'
 import SEO from '../components/SEO'
 import HeroInfoCards from '../components/HeroInfoCards'
-import MediaWrap from '../components/MediaWrap'
 import WhyUs from '../components/WhyUs'
 import ProductGrid from '../components/ProductGrid'
 import { useLanguage } from '@/contexts/LanguageContext'
+import { CONTACT, SOCIAL } from '@/config/contactConfig'
+import { MAP_PLACES } from '@/config/mapPlaces'
+import { loadProducts } from '@/lib/loadProducts'
+import type { Product } from '@/types/product'
 
-const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://yasarunderwear.com').replace(/\/$/, '')
+const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.yasarunderwear.com').replace(/\/$/, '')
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const WorldMap = dynamic(() => import('../components/WorldMap') as Promise<any>, { ssr: false })
+const MediaWrap = dynamic(() => import('../components/MediaWrap'), {
+  ssr: false,
+  loading: () => <section className="min-h-[24rem] bg-[linear-gradient(180deg,#fffdf8_0%,#ffffff_100%)]" aria-hidden="true" />,
+})
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const M: any = motion
 
@@ -32,7 +40,7 @@ const staggerGroup = {
   },
 }
 
-export default function Home() {
+export default function Home({ products }: { products: Product[] }) {
   const { t } = useLanguage()
   const tr = (key: string, fallback: string) => {
     try {
@@ -57,22 +65,56 @@ export default function Home() {
       body: tr('pagesHome.structure.global.body', 'Türkiye merkezli üretim altyapımızla farklı pazarlara düzenli ve sürdürülebilir biçimde ulaşıyoruz.'),
     },
   ]
+  const headOffice = MAP_PLACES[0]
+  const organizationSchema = {
+    '@context': 'https://schema.org',
+    '@type': ['Organization', 'LocalBusiness'],
+    '@id': `${SITE_URL}/#organization`,
+    name: 'Yasar Underwear',
+    alternateName: ['Yaşar Çamaşır', 'Yasar Textile', 'Yasar Tekstil'],
+    legalName: 'Yaşar Çamaşır Sanayi Ticaret Limited Şirketi',
+    url: SITE_URL,
+    logo: `${SITE_URL}/photos/yasarLogo.png`,
+    image: `${SITE_URL}/photos/yasarLogo.png`,
+    foundingDate: '1969',
+    email: CONTACT.EMAIL,
+    telephone: CONTACT.PHONE_MAIN,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: headOffice?.addr ?? 'Mahmutpaşa Camii Avlu İçi No:12/A',
+      addressLocality: 'Fatih',
+      addressRegion: 'Istanbul',
+      addressCountry: 'TR',
+    },
+    geo: headOffice ? {
+      '@type': 'GeoCoordinates',
+      latitude: headOffice.lat,
+      longitude: headOffice.lng,
+    } : undefined,
+    sameAs: [SOCIAL.INSTAGRAM, SOCIAL.FACEBOOK].filter(Boolean),
+    areaServed: ['Turkey', 'United States', 'France', 'Spain', 'Greece', 'Germany', 'United Kingdom', 'Middle East', 'Europe'],
+    knowsAbout: ['Underwear manufacturing', 'Pajama manufacturing', 'Private label textile production', 'Wholesale underwear', 'OEM textile production'],
+  }
+  const websiteSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    '@id': `${SITE_URL}/#website`,
+    name: 'Yasar Underwear',
+    alternateName: ['Yaşar Çamaşır', 'Yasar Textile'],
+    url: SITE_URL,
+    publisher: { '@id': `${SITE_URL}/#organization` },
+    inLanguage: ['tr', 'en'],
+  }
 
   return (
     <>
       <SEO
-        title={tr('pagesHome.seo.title', 'Yasar - Ana Sayfa')}
-        description={tr('pagesHome.seo.description', 'Yasar Tekstil; iç giyim, ev giyimi, private label ve toptan üretim çözümleri sunan Türkiye merkezli üreticidir.')}
+        title={tr('pagesHome.seo.title', 'Yasar Underwear | Türkiye İç Giyim, Pijama ve Private Label Üreticisi')}
+        description={tr('pagesHome.seo.description', 'Yasar Underwear, 1969’dan beri Türkiye’de iç giyim, pijama, homewear, private label, OEM ve toptan tekstil üretimi yapan deneyimli bir üreticidir.')}
         url="/"
-        keywords={['Yasar Tekstil', 'iç giyim üreticisi', 'private label üretim', 'toptan iç giyim', 'Türkiye tekstil üreticisi']}
-        jsonLd={{
-          '@context': 'https://schema.org',
-          '@type': 'Organization',
-          name: 'Yasar',
-          url: SITE_URL,
-          logo: `${SITE_URL}/photos/yasarLogo.png`,
-          sameAs: ['https://www.instagram.com/', 'https://www.facebook.com/'],
-        }}
+        keywords={['Yasar Underwear', 'Yaşar Çamaşır', 'Yasar Textile', 'iç giyim üreticisi', 'pijama üreticisi', 'private label underwear Turkey', 'OEM textile manufacturer Turkey', 'wholesale underwear manufacturer']}
+        jsonLd={[organizationSchema, websiteSchema]}
+        breadcrumbs={[{ name: 'Home', item: '/' }]}
       />
 
       <Hero />
@@ -162,7 +204,7 @@ export default function Home() {
         </M.section>
 
         <section className="bg-white">
-          <ProductGrid />
+          <ProductGrid products={products} />
         </section>
 
         <M.section
@@ -191,4 +233,12 @@ export default function Home() {
       {/* FlagsStrip layout seviyesinde kalıyor; marquee davranışına dokunulmadı */}
     </>
   )
+}
+
+export const getStaticProps: GetStaticProps<{ products: Product[] }> = async () => {
+  const products = await loadProducts()
+  return {
+    props: { products },
+    revalidate: 300,
+  }
 }

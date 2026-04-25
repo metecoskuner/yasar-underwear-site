@@ -7,7 +7,7 @@ import { CONTACT } from '@/config/contactConfig'
 import { useLanguage } from '@/contexts/LanguageContext'
 
 const ContactMap = dynamic(() => import('@/components/ContactMap'), { ssr: false })
-const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://yasarunderwear.com').replace(/\/$/, '')
+const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.yasarunderwear.com').replace(/\/$/, '')
 
 const ContactPage: NextPage = () => {
   const { t } = useLanguage()
@@ -83,6 +83,10 @@ const ContactPage: NextPage = () => {
             telephone: CONTACT.PHONE_MAIN,
           },
         }}
+        breadcrumbs={[
+          { name: 'Home', item: '/' },
+          { name: tr('contact.heading', 'İletişim'), item: '/contact' },
+        ]}
       />
 
       <main className="py-16 bg-gradient-to-b from-slate-50 to-white">

@@ -41,14 +41,9 @@ export default function WhatsAppButton({ number }: { number?: string }) {
   // If we have digits after sanitization, we can build the wa.me URL.
   const hasDigits = digitsForWa.length > 0;
 
-  // Support an optional default message from NEXT_PUBLIC_WHATSAPP_MESSAGE
-  const envMessage = process.env.NEXT_PUBLIC_WHATSAPP_MESSAGE || '';
-  const encodedMessage = envMessage ? encodeURIComponent(envMessage) : '';
-
   let webUrl = '#';
   if (hasDigits) {
     webUrl = `https://wa.me/${digitsForWa}`;
-    if (encodedMessage) webUrl += `?text=${encodedMessage}`;
   }
 
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {

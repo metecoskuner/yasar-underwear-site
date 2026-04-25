@@ -2,7 +2,6 @@ import React from 'react';
 import Link from 'next/link';
 import ProductCard from './ProductCard';
 import { useLanguage } from '../contexts/LanguageContext';
-import normalizeProduct from '@/lib/normalizeProduct';
 
 function useTr() {
   const { t } = useLanguage();
@@ -15,21 +14,10 @@ function useTr() {
     }
   };
 }
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useInView } from '../hooks/useInView';
 import type { Product } from '@/types/product';
-
-function parseImageList(raw: unknown): string[] {
-  if (Array.isArray(raw)) return raw.filter((item): item is string => typeof item === 'string')
-  if (typeof raw !== 'string') return []
-  try {
-    const parsed = JSON.parse(String(raw))
-    return Array.isArray(parsed) ? parsed.filter((item): item is string => typeof item === 'string') : []
-  } catch {
-    return []
-  }
-}
 
 function SlideCard({ id, side = 'left', children }: { id?: string; side?: 'left' | 'right'; children: React.ReactNode }) {
   const { ref, inView } = useInView<HTMLDivElement>({ threshold: 0.12 });
@@ -40,73 +28,9 @@ function SlideCard({ id, side = 'left', children }: { id?: string; side?: 'left'
   );
 }
 
-export default function ProductGrid() {
+export default function ProductGrid({ products: initialProducts = [] }: { products?: Product[] }) {
   const tr = useTr();
-  const [products, setProducts] = useState<Product[]>([]);
-
-  useEffect(() => {
-    let mounted = true
-    async function load() {
-      try {
-  const res = await fetch('/api/content', { cache: 'no-store' })
-        if (!res.ok) return
-        const j = await res.json()
-        const list = Array.isArray(j?.content?.products) ? (j.content.products as unknown as Array<Record<string, unknown>>) : []
-        function mapGender(raw: unknown) {
-          if (!raw && raw !== '') return undefined
-          const s = String(raw ?? '').trim().toLowerCase()
-          if (!s) return undefined
-          if (s.startsWith('erk') || s === 'male' || s === 'm') return 'male'
-          if (s.startsWith('kad') || s === 'female' || s === 'f') return 'female'
-          return undefined
-        }
-
-        const normalized = list.map((p: unknown) => {
-          const rec = p as Record<string, unknown>
-          const imgs = parseImageList(rec.images)
-          let i18nTitle: Record<string, string> | undefined = undefined
-          let titleFallback = ''
-          try {
-            if (rec.i18nTitle && typeof rec.i18nTitle === 'object') {
-              i18nTitle = rec.i18nTitle as Record<string, string>
-              titleFallback = (i18nTitle && (i18nTitle.tr || i18nTitle.en)) || Object.values(i18nTitle || {}).find((x) => !!x) || ''
-            } else if (typeof rec.title === 'string') {
-              try {
-                const parsed = JSON.parse(rec.title as string)
-                if (parsed && typeof parsed === 'object') {
-                  i18nTitle = parsed as Record<string, string>
-                  titleFallback = (i18nTitle.tr || i18nTitle.en) || Object.values(i18nTitle || {}).find((x) => !!x) || ''
-                } else {
-                  titleFallback = rec.title as string
-                }
-              } catch {
-                titleFallback = rec.title as string
-              }
-            }
-          } catch {}
-          return {
-            id: String(rec.id ?? ''),
-            title: titleFallback || String(rec.title ?? ''),
-            i18nTitle,
-            isFeatured: !!rec.isFeatured,
-            productCode: typeof rec.productCode === 'string' ? rec.productCode : undefined,
-            description: typeof rec.description === 'string' ? rec.description : undefined,
-            images: imgs,
-            stock: typeof rec.stock === 'number' ? rec.stock : Number(rec.stock ?? 0) || 0,
-            createdAt: rec.createdAt ? new Date(Number(rec.createdAt) || (rec.createdAt as string)).toISOString() : undefined,
-            // map Turkish/English gender labels to the normalized product type values
-            gender: mapGender(rec.gender),
-          }
-  }) as Product[]
-  const safe = normalized.map((x) => normalizeProduct(x as Record<string, unknown>) as unknown as Product)
-  if (mounted) setProducts(safe)
-      } catch {
-        // ignore errors; leave products empty
-      }
-    }
-    load()
-    return () => { mounted = false }
-  }, []);
+  const [products] = useState<Product[]>(initialProducts);
 
   const router = useRouter();
 

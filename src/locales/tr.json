@@ -245,6 +245,7 @@
       "title": "Ürünler — Yasar",
       "description": "Yasar ürün koleksiyonu",
       "hero": {
+        "eyebrow": "Ürün Seçkisi",
         "title": "Erkek ve Kadın İç Giyim Koleksiyonu",
         "subtitle": "Yaşar Tekstil koleksiyonundaki ürünleri; kategori, ürün kodu ve görsel seçenekleriyle tek ekranda inceleyin. Günlük kullanıma uygun, yüksek kaliteli modelleri hızlıca karşılaştırın.",
         "ctaInspect": "Ürünleri İncele",
@@ -260,7 +261,7 @@
             },
             "code": {
               "title": "Ürün kodu ile hızlı arama yapın",
-              "body": "Teklif ve sipariş sürecinde doğru ürünü hızlıca ayırt edin."
+              "body": "Bilgi talebi ve sipariş sürecinde doğru ürünü hızlıca ayırt edin."
             },
             "gallery": {
               "title": "Detay modali ile tüm görselleri inceleyin",
@@ -272,24 +273,57 @@
       "gender": {
         "all": "Tümü",
         "male": "Erkek",
-        "female": "Kadın"
+        "female": "Kadın",
+        "unisex": "Unisex"
+      },
+      "listing": {
+        "eyebrow": "Ürün Seçkisi",
+        "title": "Koleksiyonu kategori ve ürün koduna göre inceleyin",
+        "countSuffix": "ürün"
       },
       "searchPlaceholder": "Ürün ara",
+      "searchPrefix": "Arama:",
+      "clearFilters": "Filtreleri temizle",
+      "allCategories": "Tüm kategoriler",
+      "activeSelections": "Aktif seçimler:",
       "noResults": "Sonuç bulunamadı",
+      "noResultsBody": "Farklı bir ürün kodu deneyebilir veya filtreleri temizleyerek tüm koleksiyona dönebilirsiniz.",
+      "resetFilters": "Filtreleri sıfırla",
       "productCode": "Ürün kodu:",
       "copy": "Kopyala",
       "copied": "Kopyalandı",
       "copyCodeAria": "Ürün kodunu kopyala",
       "preview": "Önizleme",
-      "copyCodeRaw": "${tr('pages.products.copyCodeAria','Ürün kodunu kopyala')} ${activeProduct.productCode ?? ''}",
-      "previewRaw": "${tr('pages.products.preview','Önizleme')} ${i + 1}",
+      "imageAreaAria": "Ürün görseli alanı",
+      "prevPhoto": "Önceki fotoğraf",
+      "nextPhoto": "Sonraki fotoğraf",
+      "galleryCount": "{count} görsel",
+      "modalIntro": "Ürün detaylarını inceleyebilir, ürün kodunu kopyalayabilir ve doğrudan bilgi talebi oluşturabilirsiniz.",
+      "prevProduct": "← Önceki ürün",
+      "nextProduct": "Sonraki ürün →",
+      "codeHelp": "Bilgi talebi ve sipariş sürecinde doğru modele hızlıca referans vermek için ürün kodunu kullanabilirsiniz.",
+      "detailEyebrow": "Ürün Detayı",
+      "galleryOptions": "Görsel Seçenekleri",
+      "backToCollection": "Koleksiyona dön",
+      "meta": {
+        "category": "Kategori",
+        "collectionPiece": "Koleksiyon parçası",
+        "gender": "Cinsiyet",
+        "gallery": "Galeri"
+      },
+      "related": {
+        "eyebrow": "Benzer Ürünler",
+        "title": "Koleksiyondaki benzer alternatifler",
+        "count": "{count} öneri",
+        "productOption": "Ürün seçeneği"
+      },
       "requestInfo": "Bilgi Al",
       "requestInfoAria": "Bilgi Al -"
     },
     "wholesale": {
       "seo": {
         "title": "Toptan — Yasar",
-        "description": "Toptan talepleri — distribütör veya toptancılar fiyat ve şartlar için başvurabilir."
+        "description": "Toptan talepleri — distribütör veya toptancılar üretim şartları ve uygunluk için başvurabilir."
       },
       "breadcrumb": {
         "home": "Anasayfa",
@@ -297,7 +331,7 @@
       },
       "header": {
         "title": "Toptan İş Ortaklıkları",
-        "lead": "Dünya çapında distribütörler ve perakendecilerle çalışıyoruz. Rekabetçi fiyat, güvenilir teslimat süreleri ve esnek MOQ seçenekleri sunuyoruz.",
+        "lead": "Dünya çapında distribütörler ve perakendecilerle çalışıyoruz. Güvenilir teslimat süreleri, esnek MOQ seçenekleri ve istikrarlı üretim standartları sunuyoruz.",
         "contact": "İletişim",
         "apply": "Başvur"
       },
@@ -308,7 +342,7 @@
         },
         "howItWorks": {
           "title": "Nasıl çalışır",
-          "body": "Şirket bilgilerinizi ve sipariş tahminlerinizi gönderin. Satış ekibimiz fiyatlandırma ve teslim süresi bilgileriyle dönüş yapacaktır."
+          "body": "Şirket bilgilerinizi ve sipariş tahminlerinizi gönderin. Satış ekibimiz üretim şartları ve teslim süresi bilgileriyle dönüş yapacaktır."
         },
         "policies": {
           "title": "Politikalar",
@@ -351,7 +385,7 @@
       "header": {
         "title": "Özel Marka & OEM",
         "lead": "Markanızı pazara taşıyın — tasarımdan paketlemeye kadar tam hizmet özel marka üretimi sunuyoruz. MOQ ve teslim süreleri malzeme ve adetlere göre değişir.",
-        "typicalMoq": "Tipik MOQ: 1000 adet / model — özel teklif için bizimle iletişime geçin.",
+        "typicalMoq": "Tipik MOQ: 1000 adet / model — üretim detayları için bizimle iletişime geçin.",
         "ctaStart": "Özel marka başlat"
       },
       "sections": {
@@ -361,7 +395,7 @@
         },
         "samplePolicy": {
           "title": "Numune politikası",
-          "body": "Numuneler istek üzerine sağlanır; numune ücreti uygulanabilir ve onaylanan siparişlerde iade edilebilir."
+          "body": "Numuneler istek üzerine sağlanır; numune koşulları ürün, adet ve üretim detaylarına göre başvuru sırasında paylaşılır."
         },
         "designPayment": {
           "title": "Tasarım & Ödeme",
@@ -442,7 +476,7 @@
         }
       },
       "foundedLabel": "Kuruluş:",
-      "contactHeading": "Teklif / İletişim",
+      "contactHeading": "Bilgi Talebi / İletişim",
       "missionLead": "Yasar'ın misyonu ve vizyonu; kalite, sürdürülebilirlik ve uluslararası hedeflerimiz.",
       "values": {
         "eyebrow": "Değerler",
@@ -609,7 +643,7 @@
     },
     "contact_rewrite": {
       "title": "Bize Ulaşın",
-      "intro": "Her türlü soru, teklif veya iş birliği için aşağıdaki formu doldurun ya da doğrudan iletişim bilgilerini kullanın.",
+      "intro": "Her türlü soru, bilgi talebi veya iş birliği için aşağıdaki formu doldurun ya da doğrudan iletişim bilgilerini kullanın.",
       "button": {
         "send": "Gönder",
         "sending": "Gönderiliyor...",
@@ -636,7 +670,7 @@
         "lead1": "Yasar olarak kişisel verilerinizin gizliliğine önem veriyoruz. Aşağıda hangi verileri topladığımızı, nasıl kullandığımızı ve haklarınızı özetledik. Detay için bizimle",
         "lead2": "Verilerinizi korumak için makul teknik ve idari önlemler uyguluyoruz. Gizlilik ile ilgili soru, talep veya şikâyetleriniz için lütfen iletişime geçin.",
         "personalData": "Adınız, e‑posta adresiniz, telefon numaranız ve iletişim formlarına girdiğiniz diğer bilgiler. Ayrıca site kullanımına ilişkin çerez ve teknik veriler (IP adresi, tarayıcı bilgisi, sayfa görüntüleme vb.) toplanabilir.",
-        "whyUse": "Topladığımız veriler; taleplerinize yanıt vermek, hizmetlerimizi sunmak ve geliştirmek, sipariş/teklif süreçlerini yürütmek ve yasal yükümlülüklerimizi yerine getirmek için kullanılır.",
+        "whyUse": "Topladığımız veriler; taleplerinize yanıt vermek, hizmetlerimizi sunmak ve geliştirmek, sipariş ve bilgi talebi süreçlerini yürütmek ve yasal yükümlülüklerimizi yerine getirmek için kullanılır.",
         "sharing": "Verileriniz, açık rızanız veya kanuni zorunluluk olmadıkça üçüncü taraflarla paylaşılmaz. Hizmet sağlamak amacıyla alt yükleniciler (ör. kargo, ödeme sağlayıcıları) ile gerekli ve sınırlı paylaşım yapılabilir; bu aktarımlar güvenli şekilde gerçekleştirilir.",
         "rights": "Verilerinize erişme ve düzeltme hakkı, Verilerin silinmesini ya da işlenmesinin kısıtlanmasını isteme hakkı, Veri işlenmesine itiraz etme ve veri taşınabilirliği hakkı",
         "cookies": "Sitede performans ve analitik amaçlı çerezler kullanılabilir. Tarayıcı ayarlarından çerezleri yönetebilir veya devre dışı bırakabilirsiniz; bazı özellikler bu durumda düzgün çalışmayabilir.",
@@ -743,6 +777,7 @@
     "privacy": "Gizlilik",
     "terms": "Kullanım Şartları",
     "copyright": "© {year} Yasar. Tüm hakları saklıdır.",
+    "developedBy": "Developed by Mete Coskuner",
     "copyrightRaw": "© ${new Date().getFullYear()} Yasar. Tüm hakları saklıdır.",
     "backToTop": "Sayfanın başına dön",
     "sustainability": "Sürdürülebilirlik"
@@ -752,6 +787,11 @@
       "inspect": "İncele",
       "openDetails": "Ürün detayını aç",
       "viewInCollection": "Koleksiyonda görüntüle",
+      "prevPhoto": "Önceki fotoğraf",
+      "nextPhoto": "Sonraki fotoğraf",
+      "photoNumber": "{n}. fotoğraf",
+      "morePhotos": "{count} fotoğraf daha görüntüle",
+      "morePhotosShort": "{count} foto daha görüntüle",
       "inspectWithTitle": "{label}: {title}",
       "imageAlt": "Ürün görseli",
       "codeLabelLower": "ürün kodu: {code}",
@@ -811,10 +851,12 @@
       "save": "Kaydet"
     },
     "hero": {
+      "eyebrow": "Türkiye merkezli tekstil üreticisi",
+      "brand": "Yasar Underwear",
       "title": "1969’dan Beri Türkiye’nin Güvenilir Pijama ve Ev Giyim Üreticisi",
-      "subtitle": "Aylık 200K–500K üretim kapasitesi ile yüksek kaliteli üretim. Global markalar için private label ve toptan üretim çözümleri.",
+      "subtitle": "1969’dan beri Türkiye’de pijama, iç giyim ve ev giyimi üreten Yasar Underwear, global markalar için özel etiketli üretim, OEM ve toptan üretim çözümleri sunar.",
       "ctaCollections": "Koleksiyonları Gör",
-      "ctaQuote": "Teklif Al"
+      "ctaQuote": "Bilgi Talep Et"
     },
     "heroRaw": {
       "subtitleFragment": ", \"Yumuşak, nefes alan iç giyim koleksiyonumuzla rahatlığı ve zarafeti keşfedin. \nTürkiye"
@@ -823,8 +865,8 @@
       "subtitleExact": ", \"Yumuşak, nefes alan iç giyim koleksiyonumuzla rahatlığı ve zarafeti keşfedin. \nTürkiye                                                                                    "
     },
     "quoteModal": {
-      "title": "Teklif Talebi Gönder",
-      "lead": "Kısa bilgi verin, teklif ekibimiz size dönüş yapsın.",
+      "title": "Üretim Bilgisi Talebi Gönder",
+      "lead": "Kısa bilgi verin, ekibimiz size dönüş yapsın.",
       "placeholders": {
         "name": "Adınız ve Soyadınız",
         "email": "E-posta (you@firma.com)",
@@ -841,7 +883,7 @@
       "success": "Talebiniz alındı — en kısa sürede dönüş yapılacaktır.",
       "buttons": {
         "cancel": "İptal",
-        "submit": "Teklif İste",
+        "submit": "Talebi Gönder",
         "submitting": "Gönderiliyor…"
       }
     },
@@ -948,7 +990,7 @@
       "wholesale": {
         "eyebrow": "Toptan İş Birliği",
         "title": "Toptan Satış Başvurusu",
-        "description": "Büyük siparişleriniz için rekabetçi fiyatlar, esnek üretim kapasitesi ve hızlı teslimat avantajı sunuyoruz. Yasar Tekstil olarak mağazalar, zincirler, distribütörler ve e-ticaret firmaları için sürdürülebilir toptan üretim çözümleri sağlıyoruz.",
+        "description": "Büyük siparişleriniz için esnek üretim kapasitesi, güvenilir teslimat süreleri ve istikrarlı kalite sunuyoruz. Yasar Tekstil olarak mağazalar, zincirler, distribütörler ve e-ticaret firmaları için sürdürülebilir toptan üretim çözümleri sağlıyoruz.",
         "cta": "Toptan Başvurusu Yap"
       },
       "private": {
@@ -964,8 +1006,8 @@
   },
   "pagesHome": {
     "seo": {
-      "title": "Yasar - Ana Sayfa",
-      "description": "Yasar Tekstil; iç giyim, ev giyimi, private label ve toptan üretim çözümleri sunan Türkiye merkezli üreticidir."
+      "title": "Yasar Underwear | Türkiye İç Giyim, Pijama ve Private Label Üreticisi",
+      "description": "Yasar Underwear, 1969’dan beri Türkiye’de iç giyim, pijama ve ev giyimi üreten; özel etiketli üretim, OEM ve toptan tekstil çözümleri sunan deneyimli bir üreticidir."
     },
     "overview": {
       "eyebrow": "Ana Bakış",
@@ -1134,7 +1176,7 @@
   },
   "contact": {
     "pageTitle": "İletişim - Yasar Tekstil",
-    "pageDescription": "Yasar Tekstil ile iletişime geçin. Sorularınız, teklifleriniz ve talepleriniz için bize yazın.",
+    "pageDescription": "Yasar Tekstil ile iletişime geçin. Sorularınız, bilgi talepleriniz ve iş birliği konuları için bize yazın.",
     "heading": "İletişime Geçin",
     "subheading": "Sorularınız, talepleriniz veya önerileriniz için bize ulaşın. En kısa sürede dönüş yapacağız.",
     "infoTitle": "İletişim Bilgileri",
@@ -1172,7 +1214,7 @@
   "manufacturerTurkey": {
     "seo": {
       "title": "Türkiye'de İç Giyim Üreticisi — OEM & Özel Marka",
-      "description": "Yasar, Türkiye'de OEM ve özel marka üretimi sunan deneyimli bir iç giyim üreticisidir. Rekabetçi fiyat, güvenilir kalite ve anahtar teslim üretim çözümleri sunuyoruz."
+      "description": "Yasar, Türkiye'de OEM ve özel marka üretimi sunan deneyimli bir iç giyim üreticisidir. Güvenilir kalite, esnek üretim planlama ve anahtar teslim üretim çözümleri sunuyoruz."
     },
     "hero": {
       "title": "Türkiye'de İç Giyim Üreticisi — OEM & Özel Marka",
@@ -1191,12 +1233,12 @@
       "body": "Numune geliştirme, prototip, üretim planlama, ambalaj tasarımı ve sevkiyat desteği sağlıyoruz. Minimum sipariş miktarları kumaş ve tasarım karmaşıklığına göre değişir."
     },
     "cta": {
-      "title": "Teklif alın",
+      "title": "Üretim bilgisi alın",
       "prefix": "Türkiye'den OEM üretimi veya özel marka hizmetleri için",
       "privateLabel": "Özel Marka",
       "middle": "veya",
       "wholesale": "Toptan",
-      "suffix": "sayfalarımızdaki formu doldurarak bize ulaşabilirsiniz. Ekibimiz zaman çizelgesi ve fiyatlandırma bilgileriyle dönüş yapacaktır."
+      "suffix": "sayfalarımızdaki formu doldurarak bize ulaşabilirsiniz. Ekibimiz zaman çizelgesi ve üretim detaylarıyla dönüş yapacaktır."
     }
   },
   "privacy": {
@@ -1208,7 +1250,7 @@
       "lead1": "Kişisel verilerinizin korunmasını önemsiyoruz. Aşağıda hangi verileri topladığımızı, nasıl kullandığımızı ve haklarınızı özetlemekteyiz. Detaylar için lütfen bize ulaşın.",
       "lead2": "Verilerinizi korumak için makul teknik ve yönetimsel önlemler alıyoruz. Gizlilik soruları, talepleri veya şikayetler için lütfen bize ulaşın.",
       "personalData": "İsim, e-posta adresi, telefon numarası ve iletişim formlarına girdiğiniz diğer bilgiler. Ayrıca site kullanımı ile ilgili çerezler ve teknik verileri (IP adresi, tarayıcı bilgileri, sayfa görüntülemeleri, vb.) toplayabiliriz.",
-      "whyUse": "Toplanan verileri taleplerini cevaplamak, hizmetleri sunmak ve iyileştirmek, sipariş/teklife ilişkin süreçleri yönetmek ve yasal yükümlülükleri yerine getirmek için kullanırız.",
+      "whyUse": "Toplanan verileri taleplerini cevaplamak, hizmetleri sunmak ve iyileştirmek, sipariş ve bilgi talebi süreçlerini yönetmek ve yasal yükümlülükleri yerine getirmek için kullanırız.",
       "sharing": "Verileriniz, siz açık rıza vermedikçe veya kanun tarafından gerekli kılındıkça üçüncü taraflarla paylaşılmaz. Yüklenici (ör. kargo, ödeme sağlayıcıları) gibi sınırlı ve amaçla sınırlı paylaşım oluşabilir; bu tür aktarımlar güvenli bir şekilde gerçekleştirilir.",
       "rights": "Verilerinize erişme ve düzeltme hakkı; silme veya işleme kısıtlanması talep etme hakkı; işleme itiraz etme ve veri taşınabilirliği hakkı.",
       "cookies": "Site üzerinde performans ve analiz çerezleri kullanılabilir. Çerezleri tarayıcı ayarlarınız aracılığıyla yönetebilir veya devre dışı bırakabilirsiniz; bazı özellikler çerezler devre dışı bırakılırsa düzgün çalışmayabilir.",

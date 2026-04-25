@@ -22,13 +22,79 @@ type Page = { id: string; slug: string; sections?: unknown[] }
 
 type ContentStore = Record<string, unknown> & { products?: Product[] }
 
+const MAX_SOURCE_IMAGE_BYTES = 15 * 1024 * 1024
+const TARGET_IMAGE_MAX_DIMENSION = 1600
+const TARGET_IMAGE_QUALITY = 0.82
+
+function formatBytes(bytes: number) {
+  if (bytes < 1024 * 1024) return `${Math.round(bytes / 1024)} KB`
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
+}
+
+function loadImageFromFile(file: File) {
+  return new Promise<HTMLImageElement>((resolve, reject) => {
+    const url = URL.createObjectURL(file)
+    const img = new Image()
+    img.onload = () => {
+      URL.revokeObjectURL(url)
+      resolve(img)
+    }
+    img.onerror = () => {
+      URL.revokeObjectURL(url)
+      reject(new Error('image_decode_failed'))
+    }
+    img.src = url
+  })
+}
+
+async function compressImageForUpload(file: File) {
+  if (!file.type.startsWith('image/')) throw new Error('image_type_required')
+  if (file.size > MAX_SOURCE_IMAGE_BYTES) {
+    throw new Error(`Dosya çok büyük. En fazla ${formatBytes(MAX_SOURCE_IMAGE_BYTES)} yükleyebilirsiniz.`)
+  }
+
+  if (file.type === 'image/svg+xml' || file.type === 'image/gif') return file
+
+  const img = await loadImageFromFile(file)
+  const scale = Math.min(1, TARGET_IMAGE_MAX_DIMENSION / Math.max(img.naturalWidth || img.width, img.naturalHeight || img.height))
+  const width = Math.max(1, Math.round((img.naturalWidth || img.width) * scale))
+  const height = Math.max(1, Math.round((img.naturalHeight || img.height) * scale))
+
+  const canvas = document.createElement('canvas')
+  canvas.width = width
+  canvas.height = height
+  const ctx = canvas.getContext('2d')
+  if (!ctx) return file
+  ctx.drawImage(img, 0, 0, width, height)
+
+  const makeBlob = (type: string) => new Promise<Blob | null>((resolve) => {
+    canvas.toBlob((blob) => resolve(blob), type, TARGET_IMAGE_QUALITY)
+  })
+
+  const blob = await makeBlob('image/webp') || await makeBlob('image/jpeg')
+  if (!blob) return file
+  if (blob.size >= file.size && file.size <= 2 * 1024 * 1024) return file
+
+  const baseName = file.name.replace(/\.[^.]+$/, '') || 'product-image'
+  return new File([blob], `${baseName}.webp`, { type: blob.type || 'image/webp' })
+}
+
 export default function ContentPage() {
   const [store, setStore] = useState<ContentStore | null>(null)
   const [loading, setLoading] = useState(true)
   const [products, setProducts] = useState<Product[]>([])
   const [editing, setEditing] = useState<Product | null>(null)
   const [saving, setSaving] = useState(false)
-  const MAX_IMAGE_BYTES = 512 * 1024 // 512KB per image limit to avoid huge base64 payloads
+
+  async function uploadProductImage(file: File) {
+    const uploadFile = await compressImageForUpload(file)
+    const fd = new FormData()
+    fd.append('file', uploadFile)
+    const r = await fetch('/api/admin/upload', { method: 'POST', body: fd, credentials: 'same-origin' })
+    const j = await r.json()
+    if (!r.ok || !j.url) throw new Error(j?.detail || j?.message || 'upload_failed')
+    return j.url as string
+  }
 
   useEffect(() => {
     // load products from DB-backed API
@@ -151,7 +217,7 @@ export default function ContentPage() {
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:space-x-2">
               <button
                 className="inline-flex items-center justify-center gap-2 rounded-lg bg-green-600 px-3 py-2 text-sm text-white transition hover:bg-green-700 focus:ring-2 focus:ring-green-500"
-                onClick={() => setEditing({ id: String(Date.now()), title: '', i18nTitle: { tr: '', en: '', fr: '', ar: '', ru: '' }, productCode: '', description: '', gender: '', images: [null, null, null] } as Product)}
+                onClick={() => setEditing({ id: String(Date.now()), title: '', i18nTitle: { tr: '', en: '', fr: '', ar: '', ru: '' }, productCode: '', description: '', gender: '', images: Array(8).fill(null) } as Product)}
               >
                 Ürün Ekle
               </button>
@@ -233,17 +299,8 @@ export default function ContentPage() {
                         <input className="w-full text-xs" type="file" accept="image/*" onChange={async (e) => {
                           const file = e.target.files && e.target.files[0]
                           if (!file) return
-                          if (file.size > MAX_IMAGE_BYTES) {
-                            alert(`Dosya çok büyük. Maksimum ${(MAX_IMAGE_BYTES/1024)|0} KB olabilir.`)
-                            return
-                          }
                           try {
-                            const fd = new FormData()
-                            fd.append('file', file)
-                            const r = await fetch('/api/admin/upload', { method: 'POST', body: fd, credentials: 'same-origin' })
-                            const j = await r.json()
-                            if (!r.ok || !j.url) throw new Error(j?.message || 'upload_failed')
-                            const url = j.url as string
+                            const url = await uploadProductImage(file)
                             setEditing((cur) => {
                               if (!cur) return cur
                               const imgs = Array.isArray(cur.images) ? [...cur.images] : Array(8).fill(null)
@@ -252,11 +309,11 @@ export default function ContentPage() {
                             })
                           } catch (err) {
                             console.error(err)
-                            alert('Resim yükleme başarısız')
+                            alert(err instanceof Error ? err.message : 'Resim yükleme başarısız')
                           }
                         }} />
                         <div className="mt-2">
-                          <button className="rounded-full bg-red-50 px-3 py-1 text-xs font-medium text-red-600" onClick={() => setEditing((cur) => cur ? { ...cur, images: (cur.images || [null, null, null]).map((v, i) => i === slot ? null : v) } : cur)}>Kaldır</button>
+                          <button className="rounded-full bg-red-50 px-3 py-1 text-xs font-medium text-red-600" onClick={() => setEditing((cur) => cur ? { ...cur, images: (cur.images || Array(8).fill(null)).map((v, i) => i === slot ? null : v) } : cur)}>Kaldır</button>
                         </div>
                       </div>
                     ))}
@@ -435,30 +492,21 @@ export default function ContentPage() {
                             <input className="w-full text-xs" type="file" accept="image/*" onChange={async (e) => {
                               const file = e.target.files && e.target.files[0]
                               if (!file) return
-                              if (file.size > MAX_IMAGE_BYTES) {
-                                alert(`Dosya çok büyük. Maksimum ${(MAX_IMAGE_BYTES/1024)|0} KB olabilir.`)
-                                return
-                              }
                               try {
-                                const fd = new FormData()
-                                fd.append('file', file)
-                                const r = await fetch('/api/admin/upload', { method: 'POST', body: fd, credentials: 'same-origin' })
-                                const j = await r.json()
-                                if (!r.ok || !j.url) throw new Error(j?.message || 'upload_failed')
-                                const url = j.url as string
+                                const url = await uploadProductImage(file)
                                 setEditing((cur) => {
                                   if (!cur) return cur
-                                  const imgs = Array.isArray(cur.images) ? [...cur.images] : [null, null, null]
+                                  const imgs = Array.isArray(cur.images) ? [...cur.images] : Array(8).fill(null)
                                   imgs[slot] = url
                                   return { ...cur, images: imgs }
                                 })
                               } catch (err) {
                                 console.error(err)
-                                alert('Resim yükleme başarısız')
+                                alert(err instanceof Error ? err.message : 'Resim yükleme başarısız')
                               }
                             }} />
                             <div className="mt-2">
-                              <button className="rounded-full bg-red-50 px-3 py-1 text-xs font-medium text-red-600" onClick={() => setEditing((cur) => cur ? { ...cur, images: (cur.images || [null, null, null]).map((v, i) => i === slot ? null : v) } : cur)}>Kaldır</button>
+                              <button className="rounded-full bg-red-50 px-3 py-1 text-xs font-medium text-red-600" onClick={() => setEditing((cur) => cur ? { ...cur, images: (cur.images || Array(8).fill(null)).map((v, i) => i === slot ? null : v) } : cur)}>Kaldır</button>
                             </div>
                           </div>
                         ))}

@@ -1,6 +1,6 @@
 import { GetServerSideProps } from 'next'
 
-const DEFAULT_SITE_URL = 'https://yasarunderwear.com'
+const DEFAULT_SITE_URL = 'https://www.yasarunderwear.com'
 
 export default function Robots() {
   // handled by getServerSideProps

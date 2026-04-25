@@ -12,7 +12,7 @@ const VIDEOS: VideoItem[] = [
   { src: "/videos/DSCF7651-web.mp4", poster: "/photos/PYJAMA-BRANDS.avif", focal: "center 50%" },
 ];
 
-const ALWAYS_PLAY_COUNT = 3;
+const ALWAYS_PLAY_COUNT = 1;
 
 export default function MediaWrap() {
   const { t } = useLanguage();
@@ -144,13 +144,6 @@ export default function MediaWrap() {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  // --- ensure first 3 videos load immediately on mount ---
-  useEffect(() => {
-    ensureVideoLoaded(0);
-    ensureVideoLoaded(1);
-    ensureVideoLoaded(2);
-  }, []);
-
   // --- IntersectionObserver: lazy-load & mark visible ---
   useEffect(() => {
     const obs = new IntersectionObserver(
@@ -182,9 +175,6 @@ export default function MediaWrap() {
 
     ensureVideoLoaded(index);
     ensureVideoLoaded(index + 1);
-    for (let i = 0; i < ALWAYS_PLAY_COUNT; i += 1) {
-      ensureVideoLoaded(i);
-    }
 
     videoRefs.current.forEach((v, i) => {
       if (!v) return;

@@ -1,15 +1,18 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
+import type { GetStaticProps } from 'next';
 import Image from 'next/image';
 import FocusLock from 'react-focus-lock';
-import Head from 'next/head';
 import Link from 'next/link';
 // Layout wrapper is provided by `src/pages/_app.tsx`; do not double-wrap pages.
 import ProductCard from '@/components/ProductCard';
 import type { Product as ProductType } from '@/types/product';
 import { useRouter } from 'next/router';
 import { useLanguage } from '@/contexts/LanguageContext';
+import SEO from '@/components/SEO';
+import { loadProducts } from '@/lib/loadProducts';
 
 export const dynamic = "force-dynamic";
+const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.yasarunderwear.com').replace(/\/$/, '');
 
 const GENDER_TABS = [
   { key: 'all', label: 'Tümü' },
@@ -24,7 +27,7 @@ const CATEGORY_LABELS: Record<string, string> = {
   aktif: 'Aktif & Rahat',
 };
 
-export default function UrunlerPage() {
+export default function UrunlerPage({ initialProducts }: { initialProducts: ProductType[] }) {
   const { t, lang } = useLanguage();
   
   const tr = (key: string, fallback: string) => {
@@ -39,7 +42,7 @@ export default function UrunlerPage() {
   const langKey = String(lang).toLowerCase();
   const router = useRouter();
   const [gender, setGender] = useState<'all' | 'male' | 'female'>('all');
-  const [products, setProducts] = useState<ProductType[]>([]);
+  const [products] = useState<ProductType[]>(initialProducts);
   // category state — can be set via query param (?category=ic-giyim)
   const [category, setCategory] = useState('all');
   const [query, setQuery] = useState('');
@@ -59,41 +62,7 @@ export default function UrunlerPage() {
   const filteredRef = useRef<ProductType[]>([]);
   const activeProductIndexRef = useRef(-1);
   const [copiedCode, setCopiedCode] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-
-  // localStorage-based client cache disabled during debugging — rely on API
-
-  function safeParseStringArray(input: unknown): string[] {
-    if (Array.isArray(input)) return input.filter((item): item is string => typeof item === 'string');
-    if (typeof input !== 'string') return [];
-    try {
-      const parsed = JSON.parse(input);
-      return Array.isArray(parsed) ? parsed.filter((item): item is string => typeof item === 'string') : [];
-    } catch {
-      return [];
-    }
-  }
-
-  function normalizeI18nMap(input: unknown): Record<string, string> | undefined {
-    if (input && typeof input === 'object' && !Array.isArray(input)) {
-      return Object.fromEntries(
-        Object.entries(input as Record<string, unknown>).map(([key, value]) => [key, String(value ?? '')])
-      );
-    }
-    if (typeof input === 'string') {
-      try {
-        const parsed = JSON.parse(input);
-        if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
-          return Object.fromEntries(
-            Object.entries(parsed as Record<string, unknown>).map(([key, value]) => [key, String(value ?? '')])
-          );
-        }
-      } catch {
-        return undefined;
-      }
-    }
-    return undefined;
-  }
+  const isLoading = false;
 
   function openProductModal(product: ProductType, preview?: number | string) {
     let index = 0;
@@ -113,94 +82,6 @@ export default function UrunlerPage() {
     const rawLocalized = activeProduct.i18nTitle?.[langKey];
     return (rawLocalized && String(rawLocalized).trim()) ? String(rawLocalized) : (activeProduct.title ?? '');
   }, [activeProduct, lang])
-
-  useEffect(() => {
-    let mounted = true
-    async function load() {
-      setIsLoading(true)
-      try {
-        const res = await fetch('/api/content', { cache: 'no-store' })
-        if (!res.ok) {
-          if (mounted) setIsLoading(false)
-          return
-        }
-        const j = await res.json()
-        // Accept multiple shapes from /api/content during debugging:
-        // - legacy: { content: { products: [...] } }
-        // - debug/raw: [ ...products ]
-        const list = Array.isArray(j)
-          ? j
-          : Array.isArray(j?.content?.products)
-          ? j.content.products
-          : Array.isArray(j?.products)
-          ? j.products
-          : []
-        if (!mounted) return
-        function mapGender(raw: unknown) {
-          if (!raw && raw !== '') return undefined
-          const s = String(raw ?? '').trim().toLowerCase()
-          if (!s) return undefined
-          if (s.startsWith('erk') || s === 'male' || s === 'm') return 'male'
-          if (s.startsWith('kad') || s === 'female' || s === 'f') return 'female'
-          return undefined
-        }
-
-        const normalized = list.map((raw: unknown) => {
-          const p = raw as Record<string, unknown>;
-          const imgs = safeParseStringArray(p.images);
-
-          let i18nTitle: Record<string, string> | undefined = undefined;
-          let i18nDescription: Record<string, string> | undefined = undefined;
-          let titleFallback = '';
-          try {
-            i18nTitle = normalizeI18nMap(p.i18nTitle);
-            i18nDescription = normalizeI18nMap(p.i18nDescription);
-            if (i18nTitle) {
-              titleFallback = i18nTitle.tr || i18nTitle.en || Object.values(i18nTitle).find((x) => !!x) || '';
-            } else if (typeof p.title === 'string') {
-              const parsedTitle = normalizeI18nMap(p.title);
-              if (parsedTitle) {
-                i18nTitle = parsedTitle;
-                titleFallback = i18nTitle.tr || i18nTitle.en || Object.values(i18nTitle).find((x) => !!x) || '';
-              } else {
-                titleFallback = String(p.title);
-              }
-            }
-          } catch {
-            // ignore parsing errors
-          }
-
-          return {
-            id: String(p.id),
-            title: titleFallback || String(p.title ?? ''),
-            i18nTitle,
-            i18nDescription,
-            productCode: typeof p.productCode === 'string' ? p.productCode : undefined,
-            description: typeof p.description === 'string' ? p.description : undefined,
-            images: imgs,
-            image: typeof p.image === 'string' ? p.image : imgs[0],
-            color: typeof p.color === 'string' ? p.color : undefined,
-            stock: typeof p.stock === 'number' ? p.stock : Number(p.stock) || 0,
-            createdAt: p.createdAt ? new Date(Number(p.createdAt) || String(p.createdAt)).toISOString() : undefined,
-            gender: mapGender(p.gender),
-            category: typeof p.category === 'string' ? p.category : undefined,
-          } as ProductType;
-        }) as ProductType[];
-        
-        // Always set products if mounted - no additional normalization needed
-        // The API endpoint already returns normalized data
-        if (mounted) {
-          setProducts(normalized)
-          setIsLoading(false)
-        }
-      } catch (err) {
-        void err;
-        if (mounted) setIsLoading(false)
-      }
-    }
-    load()
-    return () => { mounted = false }
-  }, []);
 
   const filtered = useMemo(() => {
     return products.filter((p) => {
@@ -403,10 +284,28 @@ export default function UrunlerPage() {
 
   return (
     <div suppressHydrationWarning>
-      <Head>
-        <title>{tr('pages.products.title','Ürünler — Yasar')}</title>
-        <meta name="description" content={tr('pages.products.description','Yasar ürün koleksiyonu')} />
-      </Head>
+      <SEO
+        title={tr('pages.products.title','Ürünler — Yasar')}
+        description={tr('pages.products.description','Yasar ürün koleksiyonu')}
+        url="/urunler"
+        keywords={['Yasar ürünleri', 'iç giyim koleksiyonu', 'pijama üretimi', 'toptan iç giyim ürünleri']}
+        jsonLd={{
+          '@context': 'https://schema.org',
+          '@type': 'CollectionPage',
+          name: tr('pages.products.title','Ürünler — Yasar'),
+          description: tr('pages.products.description','Yasar ürün koleksiyonu'),
+          url: `${SITE_URL}/urunler`,
+          isPartOf: {
+            '@type': 'WebSite',
+            name: 'Yasar',
+            url: SITE_URL,
+          },
+        }}
+        breadcrumbs={[
+          { name: 'Home', item: '/' },
+          { name: tr('pages.products.title','Ürünler'), item: '/urunler' },
+        ]}
+      />
 
       {/* HERO */}
       <section className="bg-[radial-gradient(circle_at_top_left,_rgba(251,191,36,0.35),_transparent_34%),radial-gradient(circle_at_top_right,_rgba(244,114,182,0.18),_transparent_28%),linear-gradient(135deg,#475569_0%,#64748b_34%,#1e293b_100%)] text-white">
@@ -446,7 +345,7 @@ export default function UrunlerPage() {
                 </div>
                 <div className="rounded-[22px] border border-white/12 bg-white/10 px-4 py-3">
                   <p className="text-sm font-semibold text-white">{tr('pages.products.hero.guide.items.code.title','Ürün kodu ile hızlı arama yapın')}</p>
-                  <p className="mt-1 text-sm text-white/68">{tr('pages.products.hero.guide.items.code.body','Teklif ve sipariş sürecinde doğru ürünü hızlıca ayırt edin.')}</p>
+                  <p className="mt-1 text-sm text-white/68">{tr('pages.products.hero.guide.items.code.body','Bilgi talebi ve sipariş sürecinde doğru ürünü hızlıca ayırt edin.')}</p>
                 </div>
                 <div className="rounded-[22px] border border-white/12 bg-white/10 px-4 py-3">
                   <p className="text-sm font-semibold text-white">{tr('pages.products.hero.guide.items.gallery.title','Detay modali ile tüm görselleri inceleyin')}</p>
@@ -621,9 +520,6 @@ export default function UrunlerPage() {
                     <div
                       className="relative flex min-h-[46svh] w-full items-center justify-center bg-white px-4 py-5 md:min-h-[78vh] md:rounded-[32px] md:border md:border-stone-200 md:px-6 md:py-6 md:shadow-[0_30px_65px_-36px_rgba(15,23,42,0.24)]"
                       style={{ width: '100%', touchAction: 'pan-y' }}
-                      onMouseEnter={() => setIsMagnifierVisible(true)}
-                      onMouseLeave={() => setIsMagnifierVisible(false)}
-                      onMouseMove={handleMagnifierMove}
                       onTouchStart={handleTouchStart}
                       onTouchMove={handleTouchMove}
                       onTouchEnd={handleTouchEnd}
@@ -640,7 +536,7 @@ export default function UrunlerPage() {
                           showNextImage();
                         }
                       }}
-                            aria-label={tr('pages.products.imageAreaAria','Ürün görseli alanı')}
+                      aria-label={tr('pages.products.imageAreaAria','Ürün görseli alanı')}
                     >
                       {modalImages.length > 1 && (
                         <>
@@ -671,19 +567,26 @@ export default function UrunlerPage() {
                           </div>
                         </>
                       )}
-                      <Image
-                        src={modalSrc}
-                        alt={(() => {
-                          if (!activeProduct) return '';
-                          const lk = String(lang).toLowerCase();
-                          const raw = activeProduct.i18nTitle?.[lk];
-                          return (raw && String(raw).trim()) ? String(raw) : (activeProduct.title ?? '');
-                        })()}
-                        width={1200}
-                        height={900}
-                        className="block h-auto max-h-[58svh] w-full max-w-full object-contain object-center md:max-h-[72vh] md:p-0"
-                        style={{ cursor: 'zoom-in' }}
-                      />
+                      <div
+                        className="relative flex h-auto max-h-[58svh] w-full max-w-full items-center justify-center md:max-h-[72vh]"
+                        onMouseEnter={() => setIsMagnifierVisible(true)}
+                        onMouseLeave={() => setIsMagnifierVisible(false)}
+                        onMouseMove={handleMagnifierMove}
+                      >
+                        <Image
+                          src={modalSrc}
+                          alt={(() => {
+                            if (!activeProduct) return '';
+                            const lk = String(lang).toLowerCase();
+                            const raw = activeProduct.i18nTitle?.[lk];
+                            return (raw && String(raw).trim()) ? String(raw) : (activeProduct.title ?? '');
+                          })()}
+                          width={1200}
+                          height={900}
+                          className="block h-auto max-h-[58svh] w-full max-w-full object-contain object-center md:max-h-[72vh] md:p-0"
+                          style={{ cursor: 'zoom-in' }}
+                        />
+                      </div>
                       {isMagnifierVisible && (
                         <div
                           className="pointer-events-none absolute hidden h-52 w-52 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full border-4 border-white/95 shadow-[0_28px_65px_-24px_rgba(15,23,42,0.78)] ring-1 ring-black/10 md:block"
@@ -824,7 +727,7 @@ export default function UrunlerPage() {
                     {copiedCode && <span className="text-sm font-medium text-emerald-600">{tr('pages.products.copied','Kopyalandı')}</span>}
                     </div>
                     <p className="mt-3 text-sm leading-6 text-slate-500">
-                      {tr('pages.products.codeHelp','Teklif ve sipariş sürecinde doğru modele hızlıca referans vermek için ürün kodunu kullanabilirsiniz.')}
+                      {tr('pages.products.codeHelp','Bilgi talebi ve sipariş sürecinde doğru modele hızlıca referans vermek için ürün kodunu kullanabilirsiniz.')}
                     </p>
                   </div>
 
@@ -953,4 +856,12 @@ export default function UrunlerPage() {
       )}
       </div>
   );
+}
+
+export const getStaticProps: GetStaticProps<{ initialProducts: ProductType[] }> = async () => {
+  const initialProducts = await loadProducts()
+  return {
+    props: { initialProducts },
+    revalidate: 300,
+  }
 }

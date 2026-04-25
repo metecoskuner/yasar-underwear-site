@@ -20,6 +20,12 @@ export default function ProductCard({
   const [errored, setErrored] = useState<Record<number, boolean>>({});
   const [active, setActive] = useState(0);
   const activeResetRef = useRef<number | null>(null);
+  const touchStartXRef = useRef<number | null>(null);
+  const touchDeltaXRef = useRef(0);
+  const pointerStartXRef = useRef<number | null>(null);
+  const pointerDeltaXRef = useRef(0);
+  const pointerDraggingRef = useRef(false);
+  const suppressOpenRef = useRef(false);
 
   useEffect(() => {
     if (activeResetRef.current) window.clearTimeout(activeResetRef.current);
@@ -68,13 +74,40 @@ export default function ProductCard({
     setActive((current) => (current + 1) % gallery.length);
   };
 
+  const stepPrevImage = () => {
+    if (!gallery.length) return;
+    setActive((current) => (current - 1 + gallery.length) % gallery.length);
+  };
+
+  const stepNextImage = () => {
+    if (!gallery.length) return;
+    setActive((current) => (current + 1) % gallery.length);
+  };
+
+  const commitGallerySwipe = (deltaX: number) => {
+    if (gallery.length <= 1 || Math.abs(deltaX) < 36) return false;
+    if (deltaX < 0) stepNextImage();
+    else stepPrevImage();
+    suppressOpenRef.current = true;
+    window.setTimeout(() => {
+      suppressOpenRef.current = false;
+    }, 180);
+    return true;
+  };
+
   return (
     <div
       id={elementId}
       role="button"
       tabIndex={0}
       aria-label={`${tr('components.productCard.openDetails', 'Ürün detayını aç')}: ${displayTitle}`}
-      onClick={() => onInspect?.(product, active)}
+      onClick={() => {
+        if (suppressOpenRef.current) {
+          suppressOpenRef.current = false;
+          return;
+        }
+        onInspect?.(product, active);
+      }}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
@@ -83,7 +116,50 @@ export default function ProductCard({
       }}
       className="group overflow-hidden rounded-[26px] border border-stone-200/80 bg-white shadow-[0_18px_45px_-28px_rgba(15,23,42,0.34)] cursor-pointer transition duration-300 md:hover:-translate-y-1.5 md:hover:border-stone-300 md:hover:shadow-[0_30px_65px_-30px_rgba(15,23,42,0.45)] focus:outline-none focus:ring-2 focus:ring-amber-300"
     >
-  <div className={`relative product-card-media h-[300px] sm:h-[340px] md:h-[380px] lg:h-[400px] flex items-center justify-center overflow-hidden ${product.color ?? 'bg-stone-100'}`}>
+  <div
+        className={`relative product-card-media h-[300px] sm:h-[340px] md:h-[380px] lg:h-[400px] flex items-center justify-center overflow-hidden ${product.color ?? 'bg-stone-100'}`}
+        style={{ touchAction: 'pan-y' }}
+        onTouchStart={(e) => {
+          if (gallery.length <= 1) return;
+          touchStartXRef.current = e.touches[0]?.clientX ?? null;
+          touchDeltaXRef.current = 0;
+        }}
+        onTouchMove={(e) => {
+          if (touchStartXRef.current == null) return;
+          touchDeltaXRef.current = (e.touches[0]?.clientX ?? touchStartXRef.current) - touchStartXRef.current;
+        }}
+        onTouchEnd={() => {
+          if (touchStartXRef.current == null) return;
+          const deltaX = touchDeltaXRef.current;
+          touchStartXRef.current = null;
+          touchDeltaXRef.current = 0;
+          commitGallerySwipe(deltaX);
+        }}
+        onPointerDown={(e) => {
+          if (gallery.length <= 1 || e.pointerType !== 'mouse') return;
+          pointerStartXRef.current = e.clientX;
+          pointerDeltaXRef.current = 0;
+          pointerDraggingRef.current = true;
+        }}
+        onPointerMove={(e) => {
+          if (!pointerDraggingRef.current || pointerStartXRef.current == null) return;
+          pointerDeltaXRef.current = e.clientX - pointerStartXRef.current;
+        }}
+        onPointerUp={() => {
+          if (!pointerDraggingRef.current) return;
+          const deltaX = pointerDeltaXRef.current;
+          pointerStartXRef.current = null;
+          pointerDeltaXRef.current = 0;
+          pointerDraggingRef.current = false;
+          commitGallerySwipe(deltaX);
+        }}
+        onPointerLeave={() => {
+          if (!pointerDraggingRef.current) return;
+          pointerStartXRef.current = null;
+          pointerDeltaXRef.current = 0;
+          pointerDraggingRef.current = false;
+        }}
+      >
         {/* category badge */}
         {product.category && (
           <div className="absolute left-4 top-4 z-10 rounded-full bg-white/88 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-700 shadow-sm backdrop-blur-sm ring-1 ring-black/5">

@@ -53,7 +53,7 @@ export default async function handler(
       }
     }
 
-    return res.status(200).json({ ok: true, message: 'Quote received successfully' })
+    return res.status(200).json({ ok: true, message: 'Request received successfully' })
   } catch (err) {
     console.error('[quote] error', err)
     return res.status(500).json({ ok: false, error: 'Server error' })

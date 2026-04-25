@@ -4,7 +4,7 @@ import Link from 'next/link';
 export default function AccountPage() {
   return (
     <>
-      <SEO title="Hesabım - Yasar" description="Hesabınızla ilgili işlemler." url="/account" />
+      <SEO title="Hesabım - Yasar" description="Hesabınızla ilgili işlemler." url="/account" noindex />
 
       <main className="max-w-4xl mx-auto px-4 py-12">
         <h1 className="text-2xl font-semibold mb-4">Hesabım</h1>

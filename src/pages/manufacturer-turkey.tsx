@@ -16,7 +16,7 @@ export default function ManufacturerTurkey() {
     <>
       <SEO
         title={tr('manufacturerTurkey.seo.title',"Türkiye'de İç Giyim Üreticisi — OEM & Özel Marka")}
-        description={tr('manufacturerTurkey.seo.description',"Yasar, Türkiye'de OEM ve özel marka üretimi sunan deneyimli bir iç giyim üreticisidir. Rekabetçi fiyat, güvenilir kalite ve anahtar teslim üretim çözümleri sunuyoruz.")}
+        description={tr('manufacturerTurkey.seo.description',"Yasar, Türkiye'de OEM ve özel marka üretimi sunan deneyimli bir iç giyim üreticisidir. Güvenilir kalite, esnek üretim planlama ve anahtar teslim üretim çözümleri sunuyoruz.")}
         url="/manufacturer-turkey"
         keywords={['underwear manufacturer turkey', 'OEM turkey textile', 'private label turkey', 'underwear supplier turkey']}
         jsonLd={{
@@ -25,9 +25,14 @@ export default function ManufacturerTurkey() {
           name: tr('manufacturerTurkey.seo.title',"Türkiye'de İç Giyim Üreticisi — OEM & Özel Marka"),
           about: {
             '@type': 'Organization',
-            name: 'Yasar',
+            name: 'Yasar Underwear',
+            alternateName: ['Yaşar Çamaşır', 'Yasar Textile'],
           },
         }}
+        breadcrumbs={[
+          { name: 'Home', item: '/' },
+          { name: tr('manufacturerTurkey.hero.title',"Türkiye'de İç Giyim Üreticisi"), item: '/manufacturer-turkey' },
+        ]}
       />
 
       <main className="max-w-6xl mx-auto px-4 py-16">
@@ -49,9 +54,9 @@ export default function ManufacturerTurkey() {
             {tr('manufacturerTurkey.services.body','Numune geliştirme, prototip, üretim planlama, ambalaj tasarımı ve sevkiyat desteği sağlıyoruz. Minimum sipariş miktarları kumaş ve tasarım karmaşıklığına göre değişir.')}
           </p>
 
-          <h2>{tr('manufacturerTurkey.cta.title','Teklif alın')}</h2>
+          <h2>{tr('manufacturerTurkey.cta.title','Üretim bilgisi alın')}</h2>
           <p>
-            {tr('manufacturerTurkey.cta.prefix',"Türkiye'den OEM üretimi veya özel marka hizmetleri için")} <Link href="/private-label">{tr('manufacturerTurkey.cta.privateLabel','Özel Marka')}</Link> {tr('manufacturerTurkey.cta.middle','veya')} <Link href="/wholesale">{tr('manufacturerTurkey.cta.wholesale','Toptan')}</Link> {tr('manufacturerTurkey.cta.suffix','sayfalarımızdaki formu doldurarak bize ulaşabilirsiniz. Ekibimiz zaman çizelgesi ve fiyatlandırma bilgileriyle dönüş yapacaktır.')}
+            {tr('manufacturerTurkey.cta.prefix',"Türkiye'den OEM üretimi veya özel marka hizmetleri için")} <Link href="/private-label">{tr('manufacturerTurkey.cta.privateLabel','Özel Marka')}</Link> {tr('manufacturerTurkey.cta.middle','veya')} <Link href="/wholesale">{tr('manufacturerTurkey.cta.wholesale','Toptan')}</Link> {tr('manufacturerTurkey.cta.suffix','sayfalarımızdaki formu doldurarak bize ulaşabilirsiniz. Ekibimiz zaman çizelgesi ve üretim detaylarıyla dönüş yapacaktır.')}
           </p>
         </article>
       </main>

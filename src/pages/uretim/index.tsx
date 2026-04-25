@@ -8,7 +8,15 @@ export default function UretimIndex() {
 
   return (
     <>
-      <SEO title={t('pages.uretim_index.title')} description={t('pages.uretim_index.pageDescription')} url="/uretim" />
+      <SEO
+        title={t('pages.uretim_index.title')}
+        description={t('pages.uretim_index.pageDescription')}
+        url="/uretim"
+        breadcrumbs={[
+          { name: 'Home', item: '/' },
+          { name: t('pages.uretim_index.title'), item: '/uretim' },
+        ]}
+      />
 
       <main className="max-w-6xl mx-auto px-4 py-12">
         <header className="mb-8">

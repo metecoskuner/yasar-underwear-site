@@ -7,7 +7,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 // flagEmoji removed: not used in footer
 
 export default function Footer() {
-  const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://yasarunderwear.com').replace(/\/$/, '');
+  const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.yasarunderwear.com').replace(/\/$/, '');
   const mapUrl = 'https://www.google.com/maps?q=Yasar+Camasir,+Mahmutpa%C5%9Fa+Cami+Avlu+i%C3%A7i+No:+12/A,+Mahmutpa%C5%9Fa+Yk%C5%9F.+Sk.,+34120,+T%C3%BCrkiye&ftid=0x14caa563cff9b7c9:0x892026ca3f79739e&entry=gps&shh=CAE&lucs=,94259551,94297699,100808508,100794546,94284496,94231188,94280568,47071704,94218641,94282134,100799877,94286869&g_ep=CAISEjI2LjEzLjYuODg4MzU5NjE4MBgAIIgnKm8sOTQyNTk1NTEsOTQyOTc2OTksMTAwODA4NTA4LDEwMDc5NDU0Niw5NDI4NDQ5Niw5NDIzMTE4OCw5NDI4MDU2OCw0NzA3MTcwNCw5NDIxODY0MSw5NDI4MjEzNCwxMDA3OTk4NzcsOTQyODY4NjlCAklF&skid=8dcef658-1ba7-4dac-9dec-f3ef8bdd396f&g_st=iw';
   const FALLBACK_NUMBER = '+902125190149';
   const rawEnvNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '';
@@ -15,9 +15,8 @@ export default function Footer() {
   const envNumber = sanitizedEnvNumber || FALLBACK_NUMBER;
   const phoneHref = envNumber ? `tel:${envNumber}` : 'tel:+902125209299';
   const digitsForWa = envNumber.replace(/[^0-9]/g, '');
-  const envMessage = process.env.NEXT_PUBLIC_WHATSAPP_MESSAGE || '';
   const footerWhatsAppUrl = digitsForWa
-    ? `https://wa.me/${digitsForWa}${envMessage ? `?text=${encodeURIComponent(envMessage)}` : ''}`
+    ? `https://wa.me/${digitsForWa}`
     : 'https://wa.me/902125190149';
   const footerPhoneLabel = envNumber || '+90 212 520 92 99';
   const [showTop, setShowTop] = useState(false);
@@ -166,7 +165,7 @@ export default function Footer() {
         {/* (flags moved to homepage under the map) */}
         <div className="flex flex-col space-y-4">
           <Link href="/" className="inline-block -mt-1 lg:-mt-2" aria-label={tr('footer.home','Yasar ana sayfa')}>
-            <Image src="/photos/yasarLogo2.jpg" alt="Yasar" width={200} height={80} className="h-14 w-auto lg:h-20" />
+            <Image src="/photos/yasarLogo2.jpg" alt="Yasar" width={200} height={80} className="h-14 w-auto lg:h-20" style={{ width: 'auto' }} />
           </Link>
           <p className="max-w-xs text-sm leading-6 text-white/85">{tr('footer.tagline','Türkiye yapımı iç giyim. Konfor ve kalite odaklı.')}</p>
 

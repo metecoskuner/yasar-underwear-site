@@ -3,7 +3,7 @@ import PrivateLabelForm from '@/components/PrivateLabelForm';
 import Link from 'next/link';
 import { useLanguage } from '@/contexts/LanguageContext';
 
-const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://yasarunderwear.com').replace(/\/$/, '');
+const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.yasarunderwear.com').replace(/\/$/, '');
 
 export default function PrivateLabelPage() {
   const { t } = useLanguage();
@@ -34,13 +34,17 @@ export default function PrivateLabelPage() {
           areaServed: 'Worldwide',
           url: `${SITE_URL}/private-label`,
         }}
+        breadcrumbs={[
+          { name: 'Home', item: '/' },
+          { name: tr('pages.privateLabel.header.title','Private Label & OEM'), item: '/private-label' },
+        ]}
       />
 
       <main className="max-w-6xl mx-auto px-4 py-16">
         <section className="text-center mb-10">
           <h1 className="text-3xl font-bold">{tr('pages.privateLabel.header.title','Private Label & OEM')}</h1>
           <p className="mt-3 text-gray-600 max-w-2xl mx-auto">{tr('pages.privateLabel.header.lead','Take your brand to market — we offer full-service private label manufacturing from design to packaging. MOQ and lead times vary by materials and quantities.')}</p>
-          <p className="mt-2 text-sm text-gray-500">{tr('pages.privateLabel.header.typicalMoq','Typical MOQ: 1000 pcs / style — contact us for a custom quote.')}</p>
+          <p className="mt-2 text-sm text-gray-500">{tr('pages.privateLabel.header.typicalMoq','Typical MOQ: 1000 pcs / style — contact us for production details.')}</p>
           <div className="mt-6 flex items-center justify-center gap-3">
             <a href="#form" className="inline-block bg-black text-white px-5 py-2 rounded">{tr('pages.privateLabel.header.ctaStart','Start private label')}</a>
             <Link href="/uretim" className="inline-block border border-gray-300 px-5 py-2 rounded">{tr('pages.privateLabel.header.productionDetails','Production details')}</Link>

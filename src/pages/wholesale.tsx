@@ -4,7 +4,7 @@ import SEO from '@/components/SEO';
 import B2BForm from '@/components/B2BForm';
 import { useLanguage } from '@/contexts/LanguageContext';
 
-const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://yasarunderwear.com').replace(/\/$/, '');
+const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.yasarunderwear.com').replace(/\/$/, '');
 
 export default function WholesalePage() {
   const { t } = useLanguage();
@@ -26,6 +26,10 @@ export default function WholesalePage() {
       areaServed: 'Worldwide',
       url: `${SITE_URL}/wholesale`,
     }}
+    breadcrumbs={[
+      { name: 'Home', item: '/' },
+      { name: t('pages.wholesale.header.title'), item: '/wholesale' },
+    ]}
   />
 
       <main className="max-w-6xl mx-auto px-4 py-12 sm:py-16">

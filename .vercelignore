@@ -5,6 +5,11 @@
 uploads
 media
 storage
+.env
+.env.local
+.env.production
+.env.*
+!.env.example
 
 # Public media
 public/uploads

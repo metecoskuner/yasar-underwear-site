@@ -42,7 +42,7 @@ export default function PrivacyPage(): React.ReactElement {
 
             <article className="bg-white rounded-2xl p-6 shadow-sm border">
               <h2 className="text-xl font-semibold mb-2">{tr('privacy.sections.whyUse', 'Verileri neden kullanıyoruz?')}</h2>
-              <p className="text-slate-700">{tr('privacy.sections.whyUse', 'Topladığımız veriler; taleplerinize yanıt vermek, hizmetlerimizi sunmak ve geliştirmek, sipariş/teklif süreçlerini yürütmek ve yasal yükümlülüklerimizi yerine getirmek için kullanılır.')}</p>
+              <p className="text-slate-700">{tr('privacy.sections.whyUse', 'Topladığımız veriler; taleplerinize yanıt vermek, hizmetlerimizi sunmak ve geliştirmek, sipariş ve bilgi talebi süreçlerini yürütmek ve yasal yükümlülüklerimizi yerine getirmek için kullanılır.')}</p>
             </article>
           </div>
         </section>

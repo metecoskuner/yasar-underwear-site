@@ -7,7 +7,7 @@ import { motion } from 'framer-motion'
 import { useLanguage } from '@/contexts/LanguageContext'
 import LOCATIONS from '@/data/locations'
 
-const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://yasarunderwear.com').replace(/\/$/, '')
+const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.yasarunderwear.com').replace(/\/$/, '')
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const M: any = motion
 

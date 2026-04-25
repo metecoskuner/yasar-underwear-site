@@ -260,7 +260,7 @@
             },
             "code": {
               "title": "Recherchez rapidement avec le code produit",
-              "body": "Identifiez le bon produit plus rapidement pendant le devis et la commande."
+              "body": "Identifiez le bon produit plus rapidement pendant la demande d'information et la commande."
             },
             "gallery": {
               "title": "Consultez tous les visuels dans la fenêtre de détail",
@@ -300,7 +300,7 @@
       "modalIntro": "Vous pouvez consulter les détails du produit, copier le code produit et envoyer directement une demande d’information.",
       "prevProduct": "← Produit précédent",
       "nextProduct": "Produit suivant →",
-      "codeHelp": "Vous pouvez utiliser le code produit pour référencer rapidement le bon modèle lors des devis et commandes.",
+      "codeHelp": "Vous pouvez utiliser le code produit pour référencer rapidement le bon modèle lors des demandes d'information et commandes.",
       "detailEyebrow": "Détail du produit",
       "galleryOptions": "Options visuelles",
       "backToCollection": "Retour à la collection",
@@ -319,6 +319,62 @@
       "requestInfo": "Demander des infos",
       "requestInfoAria": "Demander des infos -"
     },
+    "wholesale": {
+      "seo": {
+        "title": "Vente en gros — Yasar",
+        "description": "Demandes de vente en gros — les distributeurs et grossistes peuvent demander les conditions de production et la disponibilité."
+      },
+      "breadcrumb": {
+        "home": "Accueil",
+        "title": "Vente en gros"
+      },
+      "header": {
+        "title": "Partenariats de vente en gros",
+        "lead": "Nous travaillons avec des distributeurs et des détaillants dans le monde entier. Nous proposons des délais fiables, des MOQ flexibles et des standards de production constants.",
+        "contact": "Contact",
+        "apply": "Postuler"
+      },
+      "sections": {
+        "whoCanApply": {
+          "title": "Qui peut postuler",
+          "body": "Les distributeurs, grossistes, détaillants en ligne et magasins multimarques enregistrés peuvent postuler."
+        },
+        "howItWorks": {
+          "title": "Comment cela fonctionne",
+          "body": "Envoyez les informations de votre entreprise et vos estimations de commande. Notre équipe commerciale reviendra vers vous avec les conditions de production et les délais."
+        },
+        "policies": {
+          "title": "Politiques",
+          "body": "Les politiques de MOQ, d'exclusivité et d'annulation sont partagées pendant la négociation selon la région et le volume."
+        }
+      },
+      "form": {
+        "title": "Demande de vente en gros",
+        "labels": {
+          "companyName": "Nom de l'entreprise",
+          "country": "Pays",
+          "website": "Site web / Réseaux sociaux",
+          "businessType": "Type d'activité",
+          "interestedProducts": "Produits d'intérêt",
+          "estimatedFirstOrder": "Première commande estimée",
+          "annualVolume": "Volume annuel estimé",
+          "contactPerson": "Personne de contact",
+          "email": "E-mail",
+          "phone": "Téléphone",
+          "message": "Message / Détails",
+          "submit": "Envoyer la demande"
+        },
+        "validation": {
+          "companyName": "Le nom de l'entreprise est requis",
+          "country": "Le pays est requis",
+          "contactName": "La personne de contact est requise",
+          "email": "L'e-mail est requis"
+        },
+        "sending": "Envoi...",
+        "success": "Merci — nous avons reçu votre demande. Nous reviendrons vers vous rapidement.",
+        "submitError": "Impossible d'envoyer. Veuillez réessayer plus tard."
+      }
+    },
     "privateLabel": {
       "seo": {
         "title": "Marque privée & OEM — Yasar",
@@ -328,7 +384,7 @@
       "header": {
         "title": "Marque privée & OEM",
         "lead": "Lancez votre marque sur le marché — nous proposons la fabrication en marque privée, du design à l'emballage. Les MOQ et délais varient selon les matériaux et les quantités.",
-        "typicalMoq": "MOQ typique : 1000 pièces / modèle — contactez-nous pour une offre personnalisée.",
+        "typicalMoq": "MOQ typique : 1000 pièces / modèle — contactez-nous pour les détails de production.",
         "ctaStart": "Lancer la marque privée"
       },
       "sections": {
@@ -338,7 +394,7 @@
         },
         "samplePolicy": {
           "title": "Politique d'échantillon",
-          "body": "Les échantillons sont fournis sur demande ; des frais d'échantillonnage peuvent s'appliquer et être remboursés sur les commandes approuvées."
+          "body": "Les échantillons sont fournis sur demande ; les conditions d'échantillonnage sont partagées selon le produit, la quantité et les détails de production."
         },
         "designPayment": {
           "title": "Design & Paiement",
@@ -637,7 +693,23 @@
           "sampleReportTimeLabel": "Délai de Rapport d'Échantillon"
         }
       }
-    }
+    },
+    "uretim_index": {
+      "title": "Production",
+      "lead": "Consultez les liens ci-dessous pour obtenir des informations sur nos installations et nos processus qualité.",
+      "pageDescription": "Page production - installations et processus qualité",
+      "cards": {
+        "facilities": {
+          "title": "Nos installations de production",
+          "desc": "Informations sur l'infrastructure de nos installations, nos capacités et notre approche de production axée sur la qualité."
+        },
+        "quality": {
+          "title": "Nos processus qualité",
+          "desc": "Détails sur nos processus de contrôle qualité, de test et de certification."
+        }
+      }
+    },
+    "uretim_index_seoTitle": "Production - Yasar"
   },
   "wishlist": {
     "title": "Favoris",
@@ -691,6 +763,7 @@
     },
     "terms": "Conditions d'utilisation",
     "copyright": "© {year} Yasar. Tous droits réservés.",
+    "developedBy": "Developed by Mete Coskuner",
     "copyrightRaw": "© ${new Date().getFullYear()} Yasar. Tous droits réservés.",
     "backToTop": "Haut de page",
     "sustainability": "Durabilité"
@@ -764,10 +837,12 @@
       "save": "Enregistrer"
     },
     "hero": {
+      "eyebrow": "Fabricant textile turc",
+      "brand": "Yasar Underwear",
       "title": "Fabricant turc fiable de pyjamas et vêtements d'intérieur depuis 1969",
-      "subtitle": "Production de haute qualité avec une capacité mensuelle de 200K–500K. Solutions de private label et production en gros pour les marques internationales.",
+      "subtitle": "Yasar Underwear est un fabricant turc de pyjamas, sous-vêtements et vêtements d'intérieur au service des marques internationales avec production private label, OEM et vente en gros.",
       "ctaCollections": "Voir les collections",
-      "ctaQuote": "Demander un devis"
+      "ctaQuote": "Demander des infos"
     },
     "heroRaw": {
       "subtitleFragment": ", \"Collection quotidienne douce et respirante qui allie confort et élégance. \nTurquie"
@@ -779,7 +854,7 @@
       "wholesale": {
         "eyebrow": "Partenariat de gros",
         "title": "Demande de vente en gros",
-        "description": "Nous proposons des prix compétitifs, une capacité de production flexible et des livraisons rapides pour les commandes importantes. Yasar Textile fournit des solutions de production en gros durables pour les magasins, les chaînes, les distributeurs et les entreprises de commerce électronique.",
+        "description": "Nous proposons une capacité de production flexible, des délais fiables et une qualité constante pour les commandes importantes. Yasar Textile fournit des solutions de production en gros durables pour les magasins, les chaînes, les distributeurs et les entreprises de commerce électronique.",
         "cta": "Postuler pour la vente en gros"
       },
       "private": {
@@ -864,8 +939,8 @@
       }
     },
     "quoteModal": {
-      "title": "Demande de devis",
-      "lead": "Donnez-nous quelques détails, notre équipe de devis vous répondra.",
+      "title": "Demande d'information production",
+      "lead": "Donnez-nous quelques détails, notre équipe vous répondra.",
   "placeholders": {
   "name": "Votre nom complet",
   "email": "E-mail (vous@entreprise.com)",
@@ -882,7 +957,7 @@
       "success": "Votre demande a été reçue — nous répondrons sous peu.",
       "buttons": {
         "cancel": "Annuler",
-        "submit": "Demander un devis",
+        "submit": "Envoyer la demande",
         "submitting": "Envoi…"
       }
     },
@@ -1094,7 +1169,7 @@
       "lead1": "Nous attachons de l'importance à la protection de vos données personnelles. Ci‑dessous, nous résumons quelles données nous collectons, comment nous les utilisons et vos droits. Pour plus de détails, contactez‑nous.",
       "lead2": "Nous appliquons des mesures techniques et administratives raisonnables pour protéger vos données. Pour toute question, demande ou réclamation relative à la confidentialité, veuillez nous contacter.",
       "personalData": "Votre nom, adresse e‑mail, numéro de téléphone et autres informations saisies dans les formulaires de contact. Nous pouvons également collecter des cookies et des données techniques liées à l'utilisation du site (adresse IP, informations du navigateur, pages vues, etc.).",
-      "whyUse": "Nous utilisons les données collectées pour répondre à vos demandes, fournir et améliorer nos services, gérer les processus de commande/de devis et respecter nos obligations légales.",
+      "whyUse": "Nous utilisons les données collectées pour répondre à vos demandes, fournir et améliorer nos services, gérer les processus de commande et de demande d'information, et respecter nos obligations légales.",
       "sharing": "Vos données ne sont pas partagées avec des tiers sans votre consentement explicite ou sauf si la loi l'exige. Un partage limité et ciblé avec des sous‑traitants (par ex. livraison, prestataires de paiement) peut avoir lieu ; ces transferts sont sécurisés.",
       "rights": "Droit d'accès et de rectification de vos données ; droit de demander la suppression ou la limitation du traitement ; droit d'opposition au traitement et droit à la portabilité des données.",
       "cookies": "Des cookies de performance et d'analyse peuvent être utilisés sur le site. Vous pouvez gérer ou désactiver les cookies via les paramètres de votre navigateur ; certaines fonctionnalités peuvent ne pas fonctionner correctement si les cookies sont désactivés.",
@@ -1118,7 +1193,7 @@
   "manufacturerTurkey": {
     "seo": {
       "title": "Fabricant de sous-vêtements en Turquie — OEM & Marque Privée",
-      "description": "Yasar est un fabricant expérimenté de sous-vêtements en Turquie, spécialisé dans la production OEM et marque privée. Nous proposons des prix compétitifs, une qualité fiable et des solutions clé en main."
+      "description": "Yasar est un fabricant expérimenté de sous-vêtements en Turquie, spécialisé dans la production OEM et marque privée. Nous proposons une qualité fiable, une planification de production flexible et des solutions clé en main."
     },
     "hero": {
       "title": "Fabricant de sous-vêtements en Turquie — OEM & Marque Privée",
@@ -1127,7 +1202,7 @@
     "why": {
       "title": "Pourquoi produire en Turquie ?",
       "items": [
-        "Des coûts de production compétitifs et un accès à une chaîne textile de haute qualité.",
+        "Une planification de production flexible et un accès à une chaîne textile de haute qualité.",
         "Une main-d'œuvre expérimentée et une solide expérience de l'exportation vers l'Europe et le Moyen-Orient.",
         "Un contrôle qualité strict et le respect des normes du secteur."
       ]
@@ -1137,12 +1212,12 @@
       "body": "Nous assurons le développement d'échantillons, le prototypage, la planification de production, la conception d'emballages et la coordination des expéditions. Les quantités minimales varient selon le tissu et la complexité du modèle."
     },
     "cta": {
-      "title": "Demander un devis",
+      "title": "Demander des informations",
       "prefix": "Pour une production OEM ou un service de marque privée depuis la Turquie, consultez nos pages",
       "privateLabel": "Marque Privée",
       "middle": "ou",
       "wholesale": "Vente en gros",
-      "suffix": "et remplissez le formulaire. Notre équipe reviendra vers vous avec les délais et les tarifs."
+      "suffix": "et remplissez le formulaire. Notre équipe reviendra vers vous avec les délais et les détails de production."
     }
   }
 }
