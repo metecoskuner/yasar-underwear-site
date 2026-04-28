@@ -130,7 +130,7 @@ export default function Hero() {
       >
         {shouldLoadVideo ? (
           <source
-            src={isLargeScreen ? '/videos/YasarHero1.mp4' : '/videos/yasarheromobil.mp4'}
+            src={isLargeScreen ? '/videos/YasarHero1-web.mp4' : '/videos/yasarheromobil-web.mp4'}
             type="video/mp4"
           />
         ) : null}
